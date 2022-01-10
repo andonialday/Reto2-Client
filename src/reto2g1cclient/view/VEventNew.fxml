@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.Pane?>
+
+<Pane id="pEventNew" fx:id="pEventNew" prefHeight="540.0" prefWidth="720.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="reto2g1cclient.controller.VEventNewController">
+    <stylesheets>
+        <URL value="@javaFXUIStyles.css" />
+    </stylesheets>  
+    <children>
+        <Button id="btBack" fx:id="btBack" cancelButton="true" layoutX="217.0" layoutY="463.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="108.0" text="Back" />
+        <Button id="btNewEvent" fx:id="btNewEvent" disable="true" layoutX="396.0" layoutY="463.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="108.0" style="-fx-background-color: blue;" text="Nuevo Evento" textFill="WHITE" />
+      <DatePicker layoutX="98.0" layoutY="96.0" />
+      <DatePicker layoutX="444.0" layoutY="96.0" />
+      <TextArea id="txtDescription" fx:id="txtDescription" layoutX="100.0" layoutY="203.0" prefHeight="200.0" prefWidth="521.0" promptText="Introduzca una descripcion del evento." wrapText="true" />
+      <Label id="lblStart" fx:id="lblStart" alignment="CENTER" contentDisplay="CENTER" layoutX="116.0" layoutY="63.0" prefHeight="17.0" prefWidth="137.0" text="Fecha de Inicio" textAlignment="CENTER" />
+      <Label id="lblEnd" fx:id="lblEnd" alignment="CENTER" contentDisplay="CENTER" layoutX="462.0" layoutY="63.0" prefHeight="17.0" prefWidth="137.0" text="Fecha de Finalización" />
+      <Label id="lblDescripcion" fx:id="lblDescripcion" alignment="CENTER" contentDisplay="CENTER" layoutX="273.0" layoutY="172.0" prefHeight="17.0" prefWidth="174.0" text="Descripcion del Evento" />
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="101.0" layoutY="132.0" prefHeight="17.0" prefWidth="521.0" text="La Fecha de Finalización no puede ser anterior a la Fecha de Inicio" textFill="RED" />
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="100.0" layoutY="420.0" prefHeight="17.0" prefWidth="521.0" text="La Descripción es demasiado larga, por favor, limítese a un máximo de 255 carácteres" textFill="RED" />
+    </children>
+</Pane>
