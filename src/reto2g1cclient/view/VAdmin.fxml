@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="360.0" prefWidth="480.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="reto1client.controller.">
+   <children>
+      <MenuBar prefHeight="25.0" prefWidth="480.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="Comerciales">
+            <items>
+                  <MenuItem mnemonicParsing="false" text="Nuevo Comercial" />
+                  <MenuItem mnemonicParsing="false" text="Ver Comerciales" />
+                  <MenuItem mnemonicParsing="false" text="Eliminar Comercial" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Clientes">
+            <items>
+                  <MenuItem mnemonicParsing="false" text="Nuevo Cliente" />
+                  <MenuItem mnemonicParsing="false" text="Ver Clientes" />
+            </items>
+          </Menu>
+            <Menu mnemonicParsing="false" text="Equipamiento">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="Nuevo Equipamiento" />
+                  <MenuItem mnemonicParsing="false" text="Ver Equipamientos" />
+               </items>
+            </Menu>
+          <Menu mnemonicParsing="false" text="Otros">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Ayuda" />
+            </items>
+          </Menu>
+            <Menu mnemonicParsing="false" text="Sesión">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="Cerrar Sesión " />
+                  <MenuItem mnemonicParsing="false" text="Salir" />
+               </items>
+            </Menu>
+        </menus>
+      </MenuBar>
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutY="50.0" prefHeight="20.0" prefWidth="480.0" text="Bienvenido a RentalG1c" textAlignment="CENTER" wrapText="true">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <TextField id="txtLogin" fx:id="txtLogin" editable="false" focusTraversable="false" layoutX="213.0" layoutY="92.0" promptText="login" />
+      <TextField id="txtName" fx:id="txtName" editable="false" focusTraversable="false" layoutX="213.0" layoutY="142.0" promptText="name" />
+      <TextField id="txtEmail" fx:id="txtEmail" editable="false" focusTraversable="false" layoutX="213.0" layoutY="192.0" promptText="email" />
+      <TextField id="txtType" fx:id="txtType" editable="false" focusTraversable="false" layoutX="213.0" layoutY="242.0" />
+      <TextField id="txtDate" fx:id="txtDate" editable="false" focusTraversable="false" layoutX="213.0" layoutY="290.0" />
+      <Label fx:id="lblLogin" layoutX="118.0" layoutY="96.0" text="Login" />
+      <Label fx:id="lblName" layoutX="118.0" layoutY="146.0" text="Nombre" />
+      <Label fx:id="lblEmail" layoutX="118.0" layoutY="196.0" text="Email" />
+      <Label fx:id="lblType" layoutX="118.0" layoutY="246.0" text="Tipo" />
+      <Label fx:id="lblDate" layoutX="118.0" layoutY="294.0" text="Fecha Pendiente" />
+   </children>
+</Pane>
