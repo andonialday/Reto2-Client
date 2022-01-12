@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package reto2g1cclient.entities;
+package reto2g1cclient.controller;
 
 /**
  *
  * @author 2dam
  */
-public class Type {
+public class VClientTableController {
     
 }

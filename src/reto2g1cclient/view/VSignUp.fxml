@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.layout.Pane?>
+
+<Pane id="pSignUp" fx:id="pSignUp" prefHeight="540.0" prefWidth="720.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="reto2g1cclient.controller.VSignUpController">
+    <stylesheets>
+        <URL value="@javaFXUIStyles.css" />
+    </stylesheets>  
+    <children>
+        <TextField id="txtName" fx:id="txtName" layoutX="260.0" layoutY="51.0" prefHeight="32.0" prefWidth="333.0" promptText="Nombre">
+            <tooltip>
+                <Tooltip text="Nombre que se mostrará en la página en tu perfil (máximo 25 carácteres)." />
+            </tooltip>
+        </TextField>
+        <TextField id="txtLogin" fx:id="txtLogin" layoutX="261.0" layoutY="141.0" prefHeight="32.0" prefWidth="333.0" promptText="Login">
+            <tooltip>
+                <Tooltip text="Tu nombre de usuario (mínimo 5 carácteres, máximo 25 carácteres) sólo puede contener letras, números . sirve para iniciar sesión," />
+            </tooltip>
+        </TextField>
+        <TextField id="txtEmail" fx:id="txtEmail" layoutX="260.0" layoutY="221.0" prefHeight="32.0" prefWidth="333.0" promptText="Email">
+            <tooltip>
+                <Tooltip text="Nunca compartiremos tu dirección de correo electrónico con otros usuarios (máximo 50 carácteres)." />
+            </tooltip>
+        </TextField>
+        <PasswordField id="txtPassword" fx:id="txtPassword" layoutX="261.0" layoutY="302.0" prefHeight="32.0" prefWidth="333.0" promptText="Contraseña">
+            <tooltip>
+                <Tooltip text="La contraseña debe contener al menos una mayúscula, una minúscula , un número y minimo un caracter especial. Debe tener al menos 6 dígitos y un máximo de 25." />
+            </tooltip>
+        </PasswordField>
+        <PasswordField id="txtConfirmPassword" fx:id="txtConfirmPassword" layoutX="261.0" layoutY="401.0" prefHeight="32.0" prefWidth="333.0" promptText="Confirmar Contraseña">
+            <tooltip>
+                <Tooltip text="El confirmar contraseña debe ser igual que la contraseña" />
+            </tooltip>
+        </PasswordField>
+        <Button id="btBack" fx:id="btBack" cancelButton="true" layoutX="217.0" layoutY="463.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="108.0" text="Back" />
+        <Button id="btSignUp" fx:id="btSignUp" layoutX="396.0" layoutY="463.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="108.0" style="-fx-background-color: blue;" text="Sign Up" textFill="WHITE" />
+      <Label fx:id="lblName" alignment="CENTER" contentDisplay="CENTER" layoutX="71.0" layoutY="83.0" prefHeight="42.0" prefWidth="581.0" text="El Nombre debe tener máximo 25 carácteres alfanuméricos &#10;(se admiten espacios, pero si comienza o termina con espacios, estos serán ignorados)" textAlignment="CENTER" textFill="RED" />
+      <Label fx:id="lblLogin" alignment="CENTER" contentDisplay="CENTER" layoutY="173.0" prefHeight="17.0" prefWidth="720.0" text="El Login debe ser mínimo 5 carácteres, máximo 25, alfanuméricos (no se admiten espacios)" textAlignment="CENTER" textFill="RED" />
+      <Label fx:id="lblEmail" alignment="CENTER" contentDisplay="CENTER" layoutX="129.0" layoutY="253.0" prefHeight="17.0" prefWidth="464.0" text="El Email debe ser un email real (longitud máxima 50 carácteres)" textAlignment="CENTER" textFill="RED" />
+      <Label fx:id="lblPassword" alignment="CENTER" contentDisplay="CENTER" layoutX="130.0" layoutY="334.0" prefHeight="42.0" prefWidth="464.0" text="La Contraseña debe tener mínimo 6 carácteres alfanuméricos,&#10; incluyendo mayúsculas y minúsculas y un carácter especial" textFill="RED" />
+      <Label fx:id="lblCPassword" alignment="CENTER" contentDisplay="CENTER" layoutX="195.0" layoutY="431.0" prefHeight="17.0" prefWidth="333.0" text="Las Contraseñas deben ser iguales" textFill="RED" />
+      <Label id="lblConfirmInfo" layoutX="122.0" layoutY="408.0" text="Confirmar Contraseña" />
+      <Label id="lblPasswordnfo" layoutX="122.0" layoutY="310.0" text="Contraseña" />
+      <Label id="lblEmailInfo" layoutX="122.0" layoutY="229.0" text="Email" />
+      <Label id="lblLoginInfo" layoutX="122.0" layoutY="149.0" text="Login" />
+      <Label id="lblNombreInfo" layoutX="122.0" layoutY="59.0" text="Nombre" />
+    </children>
+</Pane>
