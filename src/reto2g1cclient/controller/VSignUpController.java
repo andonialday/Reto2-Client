@@ -28,6 +28,8 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import reto2g1cclient.exception.*;
+import reto2g1cclient.logic.Signable;
+import reto2g1cclient.logic.ViewSignableFactory;
 import reto2g1cclient.model.*;
 
 /**
@@ -113,6 +115,7 @@ public class VSignUpController {
         btSignUp.setOnAction(this::signUp);
         btSignUp.setDisable(true);
         btBack.setOnAction(this::backSingIn);
+        // AÑADIR LOS NUEVOS LABEL
         txtName.textProperty().addListener(this::txtNameVal);
         txtLogin.textProperty().addListener(this::txtLoginVal);
         txtEmail.textProperty().addListener(this::txtEmailVal);
@@ -540,8 +543,7 @@ public class VSignUpController {
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
             LOGGER.info("Cerrada ventana SignUp y volviendo a SignIn");
-            stage.close();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/reto1client/view/VSignIn.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/reto2g1cclient/view/VSignIn.fxml"));
             try {
                 Parent root = (Parent) loader.load();
                 VSignInController controller = loader.getController();
