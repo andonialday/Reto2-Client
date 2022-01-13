@@ -5,14 +5,12 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.layout.HBox?>
 
-
 <HBox xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="reto1client.controller.">
    <children>
        <MenuBar prefHeight="25.0" prefWidth="480.0">
            <menus>
                <Menu mnemonicParsing="false" text="Comerciales">
                    <items>
-                       <MenuItem mnemonicParsing="false" text="Nuevo Comercial" />
                        <MenuItem mnemonicParsing="false" text="Ver Comerciales" />
                    </items>
                </Menu>
