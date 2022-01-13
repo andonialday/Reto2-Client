@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Pane?>
+
+<Pane id="pSignIn" fx:id="pSignIn" prefHeight="540.0" prefWidth="720.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="reto2g1cclient.controller.VSignInController">
+    <stylesheets>
+        <URL value="@../../../../../../Downloads/view/view/javaFXUIStyles.css" />
+    </stylesheets>
+    <children>
+      <TableView fx:id="btDeleteEquip" layoutX="4.0" layoutY="72.0" prefHeight="379.0" prefWidth="712.0" tableMenuButtonVisible="true">
+        <columns>
+          <TableColumn maxWidth="720.0" prefWidth="120.0" text="Nombre" />
+            <TableColumn maxWidth="720.0" minWidth="100.0" prefWidth="100.0" text="Coste" />
+          <TableColumn maxWidth="720.0" prefWidth="400.0" text="Descripcion" />
+            <TableColumn maxWidth="720.0" minWidth="100.0" prefWidth="100.0" text="Fecha" />
+        </columns>
+      </TableView>
+      <Button id="btBack" fx:id="btBack" cancelButton="true" layoutX="53.0" layoutY="473.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="108.0" text="ATRAS" />
+      <Button id="btBack" fx:id="btDeleteEquip" disable="true" layoutX="275.0" layoutY="473.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="171.0" style="-fx-background-color: red;" text="ELIMINAR EQUIPAMIENTO" textFill="WHITE" />
+      <Button id="btBack" fx:id="btGuardarEquip" disable="true" layoutX="536.0" layoutY="473.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="127.0" style="-fx-background-color: blue;" text="GUARDAR CAMBIOS" textFill="WHITE" />
+      <Button id="btBack" fx:id="btFind" cancelButton="true" layoutX="600.0" layoutY="29.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="108.0" text="BUSCAR" />
+      <ComboBox layoutX="32.0" layoutY="34.0" prefWidth="150.0" />
+      <TextField layoutX="208.0" layoutY="30.0" prefHeight="32.0" prefWidth="379.0" />
+      <Label layoutX="91.0" layoutY="21.0" text="Filtros" />
+    </children>
+</Pane>
