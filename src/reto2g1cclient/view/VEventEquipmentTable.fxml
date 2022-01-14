@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -15,35 +11,26 @@
 
 <Pane id="pEventTable" fx:id="pEventTable" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="reto2g1cclient.controller.VEventTableController">
     <children>
-      <MenuBar prefHeight="25.0" prefWidth="960.0">
-        <menus>
-          <Menu mnemonicParsing="false" text="AQUI VA EL MENU DEL USUARIO CORRESPONDIENTE">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Close" />
-            </items>
-          </Menu>
-        </menus>
-      </MenuBar>
-        <TableView fx:id="tbEvent" editable="true" layoutX="14.0" layoutY="238.0" prefHeight="468.0" prefWidth="720.0">
+        <TableView fx:id="tbEvent" editable="true" layoutX="5.0" layoutY="197.0" prefHeight="519.0" prefWidth="769.0">
             <columns>
                 <TableColumn fx:id="clDateStart" maxWidth="-1.0" minWidth="310.0" prefWidth="-1.0" text="Equipamiento" />
                 <TableColumn fx:id="clDateEnd" maxWidth="-1.0" minWidth="310.0" prefWidth="-1.0" text="Evento" />
                 <TableColumn fx:id="clDescription" maxWidth="-1.0" minWidth="100.0" prefWidth="-1.0" text="Cantidad" />
             </columns>
         </TableView>
-        <Button id="btnDeleteEvent" fx:id="btnDeleteEvent" disable="true" layoutX="771.0" layoutY="545.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="150.0" style="-fx-background-color: red;" styleClass="mainFxmlClass" stylesheets="@ventanas.css" text="ELIMINAR ALQUILER" textFill="WHITE" />
-        <Button id="btnSaveChanges" fx:id="btnNew" disable="true" layoutX="771.0" layoutY="269.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="150.0" style="-fx-background-color: green;" styleClass="mainFxmlClass" stylesheets="@ventanas.css" text="NUEVO ALQUILER" textFill="WHITE" />
-      <TextField fx:id="txtFilter" layoutX="205.0" layoutY="161.0" prefHeight="25.0" prefWidth="290.0" />
-      <ChoiceBox fx:id="cbFilter" layoutX="55.0" layoutY="161.0" prefWidth="150.0" />
-      <Button id="btnSaveChanges" fx:id="btnSave" disable="true" layoutX="771.0" layoutY="407.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="150.0" style="-fx-background-color: blue;" styleClass="mainFxmlClass" stylesheets="@ventanas.css" text="GUARDAR CAMBIOS" textFill="WHITE" />
-      <Label fx:id="lblDateStart" layoutX="150.0" layoutY="55.0" prefHeight="17.0" prefWidth="38.0" text="Evento" />
-      <Label fx:id="lblDateEnd" layoutX="446.0" layoutY="55.0" prefHeight="17.0" prefWidth="76.0" text="Equipamiento" />
-      <Label fx:id="lbldescription" layoutX="713.0" layoutY="55.0" prefHeight="17.0" prefWidth="66.0" text="Cantidad" />
-      <Button fx:id="btnBack" layoutX="771.0" layoutY="674.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="150.0" text="ATRAS" />
-      <Button fx:id="btnSearch" layoutX="495.0" layoutY="161.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" text="BUSCAR" />
-      <Spinner editable="true" layoutX="672.0" layoutY="93.0" />
-      <ComboBox layoutX="55.0" layoutY="93.0" prefHeight="25.0" prefWidth="290.0" />
-      <ComboBox layoutX="370.0" layoutY="93.0" prefHeight="25.0" prefWidth="290.0" />
-      <Label fx:id="lblDateStart1" layoutX="71.0" layoutY="165.0" prefHeight="17.0" prefWidth="104.0" />
+        <Button id="btnDeleteEvent" fx:id="btnDeleteEvent" disable="true" layoutX="779.0" layoutY="430.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="171.0" style="-fx-background-color: red;" styleClass="mainFxmlClass" stylesheets="@ventanas.css" text="ELIMINAR ALQUILER" textFill="WHITE" />
+        <Button id="btnSaveChanges" fx:id="btnNew" disable="true" layoutX="779.0" layoutY="301.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="171.0" style="-fx-background-color: green;" styleClass="mainFxmlClass" stylesheets="@ventanas.css" text="NUEVO ALQUILER" textFill="WHITE" />
+      <TextField fx:id="txtFilter" layoutX="213.0" layoutY="161.0" prefHeight="32.0" prefWidth="446.0" promptText="Búsqueda ..." />
+      <Button id="btnSaveChanges" fx:id="btnSave" disable="true" layoutX="779.0" layoutY="365.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="171.0" style="-fx-background-color: blue;" styleClass="mainFxmlClass" stylesheets="@ventanas.css" text="GUARDAR CAMBIOS" textFill="WHITE" />
+      <Label fx:id="lblDateStart" layoutX="38.0" layoutY="72.0" prefHeight="17.0" prefWidth="38.0" text="Evento" />
+      <Label fx:id="lblDateEnd" layoutX="353.0" layoutY="72.0" prefHeight="17.0" prefWidth="76.0" text="Equipamiento" />
+      <Label fx:id="lbldescription" layoutX="655.0" layoutY="72.0" prefHeight="17.0" prefWidth="66.0" text="Cantidad" />
+      <Button fx:id="btnBack" layoutX="779.0" layoutY="684.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="171.0" text="ATRAS" />
+      <Button fx:id="btnSearch" layoutX="659.0" layoutY="161.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="115.0" text="BUSCAR" />
+      <Spinner editable="true" layoutX="655.0" layoutY="93.0" />
+      <ComboBox layoutX="38.0" layoutY="93.0" prefHeight="25.0" prefWidth="290.0" />
+      <ComboBox layoutX="353.0" layoutY="93.0" prefHeight="25.0" prefWidth="290.0" />
+      <Button id="btnSaveChanges" fx:id="btnImprimir" layoutX="779.0" layoutY="161.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="171.0" style="-fx-background-color: #4B0082;" styleClass="mainFxmlClass" stylesheets="@ventanas.css" text="IMPRIMIR" textFill="WHITE" />
+      <ComboBox layoutX="38.0" layoutY="165.0" prefWidth="150.0" />
     </children>
 </Pane>
