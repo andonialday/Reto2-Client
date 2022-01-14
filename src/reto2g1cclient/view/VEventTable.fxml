@@ -12,26 +12,30 @@
 
 <Pane id="pEventTable" fx:id="pEventTable" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="reto2g1cclient.controller.VEventTableController">
     <children>
-        <TableView fx:id="tbEvent" editable="true" layoutX="14.0" layoutY="281.0" prefHeight="425.0" prefWidth="720.0">
+        <TableView fx:id="tbEvent" editable="true" layoutX="14.0" layoutY="281.0" prefHeight="425.0" prefWidth="750.0">
             <columns>
                 <TableColumn fx:id="clDateStart" maxWidth="-1.0" minWidth="100.0" prefWidth="-1.0" text="Fecha Inicio" />
                 <TableColumn fx:id="clDateEnd" maxWidth="-1.0" minWidth="100.0" prefWidth="-1.0" text="Fecha Fin" />
-                <TableColumn fx:id="clDescription" maxWidth="-1.0" minWidth="520.0" prefWidth="-1.0" text="Descripción" />
+            <TableColumn fx:id="clName" maxWidth="-1.0" minWidth="150.0" prefWidth="-1.0" text="Nombre" />
+                <TableColumn fx:id="clDescription" maxWidth="-1.0" minWidth="410.0" prefWidth="-1.0" text="Descripción" />
             </columns>
         </TableView>
-        <Button id="btnDeleteEvent" fx:id="btnDeleteEvent" disable="true" layoutX="771.0" layoutY="545.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="150.0" style="-fx-background-color: red;" styleClass="mainFxmlClass" stylesheets="@ventanas.css" text="ELIMINAR EVENTO" textFill="WHITE" />
-        <Button id="btnSaveChanges" fx:id="btnNew" disable="true" layoutX="771.0" layoutY="269.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="150.0" style="-fx-background-color: green;" styleClass="mainFxmlClass" stylesheets="@ventanas.css" text="NUEVO EVENTO" textFill="WHITE" />
-      <TextField fx:id="txtFilter" layoutX="205.0" layoutY="231.0" prefHeight="25.0" prefWidth="290.0" />
-      <ChoiceBox fx:id="cbFilter" layoutX="55.0" layoutY="231.0" prefWidth="150.0" />
-      <TextArea fx:id="txtDescription" layoutX="301.0" layoutY="71.0" prefHeight="117.0" prefWidth="620.0" />
-      <DatePicker fx:id="dtStart" layoutX="55.0" layoutY="78.0" />
-      <DatePicker fx:id="dtEnd" layoutX="55.0" layoutY="167.0" />
-      <Button id="btnSaveChanges" fx:id="btnSave" disable="true" layoutX="771.0" layoutY="413.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="150.0" style="-fx-background-color: blue;" styleClass="mainFxmlClass" stylesheets="@ventanas.css" text="GUARDAR CAMBIOS" textFill="WHITE" />
-      <Label fx:id="lblDateStart" layoutX="55.0" layoutY="44.0" prefHeight="17.0" prefWidth="174.0" text="Fecha de Inicio del Evento" />
-      <Label fx:id="lblDateEnd" layoutX="55.0" layoutY="136.0" prefHeight="17.0" prefWidth="174.0" text="Fecha de Finalizacion del Evento" />
+        <Button id="btnDeleteEvent" fx:id="btnDeleteEvent" disable="true" layoutX="775.0" layoutY="510.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="171.0" style="-fx-background-color: red;" styleClass="mainFxmlClass" stylesheets="@ventanas.css" text="ELIMINAR EVENTO" textFill="WHITE" />
+        <Button id="btnSaveChanges" fx:id="btnNew" disable="true" layoutX="774.0" layoutY="387.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="171.0" style="-fx-background-color: green;" styleClass="mainFxmlClass" stylesheets="@ventanas.css" text="NUEVO EVENTO" textFill="WHITE" />
+      <ChoiceBox fx:id="cbFilter" layoutX="34.0" layoutY="248.0" prefHeight="25.0" prefWidth="150.0" />
+      <TextField fx:id="txtFilter" layoutX="204.0" layoutY="246.0" prefHeight="32.0" prefWidth="447.0" promptText="Búsqueda ..." />
+      <TextArea fx:id="txtDescription" layoutX="301.0" layoutY="63.0" prefHeight="126.0" prefWidth="620.0" promptText="Descripción del Evento" />
+      <DatePicker fx:id="dtStart" layoutX="56.0" layoutY="112.0" promptText="DD/MM/AAAA" />
+      <DatePicker fx:id="dtEnd" layoutX="55.0" layoutY="167.0" promptText="DD/MM/AAAA" />
+      <Button id="btnSaveChanges" fx:id="btnSave" disable="true" layoutX="775.0" layoutY="448.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="171.0" style="-fx-background-color: blue;" styleClass="mainFxmlClass" stylesheets="@ventanas.css" text="GUARDAR CAMBIOS" textFill="WHITE" />
+      <Label fx:id="lblDateStart" layoutX="55.0" layoutY="93.0" prefHeight="17.0" prefWidth="174.0" text="Fecha de Inicio del Evento" />
+      <Label fx:id="lblDateEnd" layoutX="56.0" layoutY="150.0" prefHeight="17.0" prefWidth="174.0" text="Fecha de Finalizacion del Evento" />
       <Label fx:id="lbldescription" layoutX="301.0" layoutY="44.0" prefHeight="17.0" prefWidth="174.0" text="Descripcion del Evento" />
-      <Button fx:id="btnBack" layoutX="771.0" layoutY="654.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="150.0" text="ATRAS" />
-      <Button fx:id="btnSearch" layoutX="495.0" layoutY="231.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" text="BUSCAR" />
+      <Button fx:id="btnBack" layoutX="774.0" layoutY="678.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="171.0" text="ATRAS" />
+      <Button fx:id="btnSearch" layoutX="649.0" layoutY="246.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="115.0" text="BUSCAR" />
       <Label fx:id="lblDateError" layoutX="55.0" layoutY="200.0" prefHeight="17.0" prefWidth="347.0" text="La Fecha de Finalización no puede ser anterior a la de Inicio" textFill="RED" />
+      <Button id="btnSaveChanges" fx:id="btnPrint" layoutX="775.0" layoutY="245.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="171.0" style="-fx-background-color: #4b0082;" styleClass="mainFxmlClass" stylesheets="@ventanas.css" text="IMPRIMIR" textFill="WHITE" />
+      <TextField layoutX="56.0" layoutY="61.0" prefHeight="25.0" prefWidth="174.0" promptText="Nombre del Evento" />
+      <Label fx:id="lblName" layoutX="55.0" layoutY="44.0" prefHeight="17.0" prefWidth="174.0" text="Nombre del Evento" />
     </children>
 </Pane>
