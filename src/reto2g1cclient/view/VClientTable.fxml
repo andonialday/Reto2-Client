@@ -5,9 +5,9 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="reto1client.controller.">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="reto1client.controller.">
    <children>
-      <Button id="btnSignIn" fx:id="btnSignIn" disable="true" layoutX="604.0" layoutY="654.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="116.0" style="-fx-background-color: blue;" styleClass="mainFxmlClass" stylesheets="@ventanas.css" text="Ver Eventos" textFill="WHITE" />
+      <Button id="btnSignIn" fx:id="btnViewEvents" disable="true" layoutX="423.0" layoutY="654.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="116.0" style="-fx-background-color: blue;" styleClass="mainFxmlClass" stylesheets="@ventanas.css" text="Ver Eventos" textFill="WHITE" />
       <TableView editable="true" focusTraversable="false" layoutX="11.0" layoutY="7.0" prefHeight="616.0" prefWidth="939.0">
         <columns>
           <TableColumn prefWidth="75.0" text="Login" />
@@ -20,6 +20,7 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <Button id="btnSignIn" fx:id="btnSignIn12" layoutX="226.0" layoutY="654.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="116.0" styleClass="mainFxmlClass" stylesheets="@ventanas.css" text="Atrás" />
+      <Button id="btnSignIn" fx:id="btnBack" layoutX="102.0" layoutY="654.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="116.0" styleClass="mainFxmlClass" stylesheets="@ventanas.css" text="Atrás" />
+      <Button id="btnSignIn" fx:id="btnPrint" layoutX="729.0" layoutY="654.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="116.0" style="-fx-background-color: #4B0082;" styleClass="mainFxmlClass" stylesheets="@ventanas.css" text="Imprimir" textFill="WHITE" />
    </children>
 </Pane>
