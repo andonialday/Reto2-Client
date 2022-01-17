@@ -34,4 +34,8 @@ public interface Signable {
      */
     public User signUp(User usr) throws ClientServerConnectionException, DBConnectionException, LoginOnUseException;
     
+    
+    
+    
+    //Introducir uno más: el de añadir contraseña
 }

@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package reto2g1cclient.controller;
+package reto2g1cclient.implementation;
 
 /**
  *
  * @author 2dam
  */
-public class VClientMainController {
+public class UserImplementation {
     
 }
