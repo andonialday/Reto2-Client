@@ -10,47 +10,26 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 import java.util.Set;
-import static javax.persistence.CascadeType.ALL;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+
+
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 /**
  * Entidad Equipment para gestion y control de Equipamiento
  * @author Aitor Perez
  */
-@NamedQueries({
-  @NamedQuery(
-    name="findCostRange", query="SELECT q FROM Equipment q WHERE q.cost>:cost1 and q.cost<:cost2"),
-  @NamedQuery(
-    name="findOrderPreviousDate", query="SELECT q FROM Equipment q WHERE q.dateAdd<:date1"),
-  @NamedQuery(
-    name="findOrderAfterDate", query="SELECT q FROM Equipment q WHERE q.dateAdd>:date1"),
-   @NamedQuery(
-    name="deleteOldEquip", query="DELETE FROM Equipment q WHERE q.dateAdd<:date1"),
-  /* name="deleteOldEquip", query="DELETE FROM Equipment WHERE dateAdd<:current_date'-'365*year"),*/
-})
-@Entity
-@Table(name = "EQUIPMENT", schema="reto2g1c")
+
 @XmlRootElement
 public class Equipment implements Serializable {
     
     
-    @Id
-    @GeneratedValue
+
     private Integer id;
     private String description;
-    @Temporal (TemporalType.DATE)
+
     private Date dateAdd;
     private Double cost;
-    @OneToMany(cascade = ALL , mappedBy = "equipment")
+
     private Set<EventEquipment> events;
     
     /**

@@ -5,7 +5,6 @@
  */
 package reto2g1cclient.controller;
 
-import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 import java.io.IOException;
 import java.util.logging.Logger;
 import javafx.scene.Parent;
@@ -64,7 +63,7 @@ public class EquipmentController {
         //Set Windows event handlers 
         stage.setOnShowing(this::handleWindowShowing);
        /* stage.setOnCloseRequest(this::closeVEquipmentTable);
-        // AÑADIR LOS NUEVOS LABEL Y HYPERLINK
+        // AADIR LOS NUEVOS LABEL Y HYPERLINK
 
         tbEvent.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         loadData();
