@@ -6,6 +6,7 @@
 package reto2g1cclient.implementation;
 
 import java.util.Collection;
+import javax.ws.rs.core.GenericType;
 import reto2g1cclient.logic.ClientInterface;
 import reto2g1cclient.model.Client;
 
@@ -15,26 +16,29 @@ import reto2g1cclient.model.Client;
  */
 public class ClientImplementation implements ClientInterface{
 
+    private ClientJersey clientJersey;
+    
     public ClientImplementation() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            clientJersey = new ClientJersey();
     }
     
+    @Override
     public void createClient (Client client){
-    
-    }
-
-    @Override
-    public void updateClient(Client client) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void deleteClient(Client client) {
+    public void editClient(Client client) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void findClient(Client client) {
+    public void removeClient(Client client) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void searchClient(Client client) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -49,7 +53,14 @@ public class ClientImplementation implements ClientInterface{
     }
 
     @Override
-    public Collection<Client> getAllClient() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Collection<Client> getAllClient() throws Exception {
+        Collection <Client> clients = null;
+        try{
+            clients = clientJersey.findAll(new GenericType <Collection <Client>>(){});
+        }catch (Exception e){
+            throw new Exception(e.getMessage());
+        }
+        return clients;
     }
+
 }

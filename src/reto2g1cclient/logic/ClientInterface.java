@@ -14,17 +14,17 @@ import reto2g1cclient.model.Client;
  */
 public interface ClientInterface {
     
-    public void createClient(Client client);
+    public void createClient(Client client) throws Exception;
     
-    public void updateClient(Client client);
+    public void editClient(Client client) throws Exception;
     
-    public void deleteClient(Client client);
+    public void removeClient(Client client) throws Exception;
     
-    public void findClient(Client client);
+    public void searchClient(Client client) throws Exception;
     
-    public void findClientCommercial(Client client);
+    public void findClientCommercial(Client client) throws Exception;
     
-    public void deleteAllClientDisabled(Client client);
+    public void deleteAllClientDisabled(Client client) throws Exception;
     
-    public Collection<Client> getAllClient();
+    public Collection<Client> getAllClient() throws Exception;
 }

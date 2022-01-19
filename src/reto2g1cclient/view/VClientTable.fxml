@@ -9,41 +9,41 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane id="pEventTable" fx:id="pEventTable" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="reto2g1cclient.controller.VClientTableController">
+<Pane id="pEventTable" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="reto2g1cclient.controller.VClientTableController">
     <children>
-        <TableView fx:id="tbEvent" editable="true" layoutX="14.0" layoutY="281.0" prefHeight="425.0" prefWidth="750.0">
+        <TableView fx:id="tbClient" editable="true" layoutX="14.0" layoutY="281.0" prefHeight="425.0" prefWidth="750.0">
             <columns>
-                <TableColumn fx:id="clDateStart" maxWidth="180.0" minWidth="-Infinity" prefWidth="180.0" text="Login" />
-                <TableColumn fx:id="clDateEnd" maxWidth="180.0" minWidth="-Infinity" prefWidth="180.0" text="Nombre" />
-            <TableColumn fx:id="clName" maxWidth="210.0" minWidth="-Infinity" prefWidth="210.0" text="Email" />
-                <TableColumn fx:id="clDescription" maxWidth="180.0" minWidth="-Infinity" prefWidth="180.0" text="Tipo" />
+                <TableColumn fx:id="colLogin" maxWidth="180.0" minWidth="-Infinity" prefWidth="180.0" text="Login" />
+                <TableColumn fx:id="colName" maxWidth="180.0" minWidth="-Infinity" prefWidth="180.0" text="Nombre" />
+            <TableColumn fx:id="colEmail" maxWidth="210.0" minWidth="-Infinity" prefWidth="210.0" text="Email" />
+                <TableColumn fx:id="colType" maxWidth="180.0" minWidth="-Infinity" prefWidth="180.0" text="Tipo" />
             </columns>
         </TableView>
-        <Button id="btnDeleteEvent" fx:id="btnDeleteEvent" disable="true" layoutX="775.0" layoutY="510.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="171.0" style="-fx-background-color: red;" styleClass="mainFxmlClass" stylesheets="@ventanas.css" text="ELIMINAR CLIENTE" textFill="WHITE" />
-        <Button id="btnSaveChanges" fx:id="btnNew" disable="true" layoutX="774.0" layoutY="387.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="171.0" style="-fx-background-color: green;" styleClass="mainFxmlClass" stylesheets="@ventanas.css" text="NUEVO CLIENTE" textFill="WHITE" />
+        <Button id="btnDeleteEvent" fx:id="btnDeleteEvent" disable="true" layoutX="775.0" layoutY="510.0" mnemonicParsing="false" onAction="#handleDeleteClient" prefHeight="32.0" prefWidth="171.0" style="-fx-background-color: red;" styleClass="mainFxmlClass" stylesheets="@ventanas.css" text="ELIMINAR CLIENTE" textFill="WHITE" />
+        <Button id="btnSaveChanges" fx:id="btnNewClient" disable="true" layoutX="774.0" layoutY="387.0" mnemonicParsing="false" onAction="#handleAddClient" prefHeight="32.0" prefWidth="171.0" style="-fx-background-color: green;" styleClass="mainFxmlClass" stylesheets="@ventanas.css" text="NUEVO CLIENTE" textFill="WHITE" />
       <TextField fx:id="txtFilter" layoutX="204.0" layoutY="246.0" prefHeight="32.0" prefWidth="447.0" promptText="Búsqueda ..." />
-      <Button id="btnSaveChanges" fx:id="btnSave" disable="true" layoutX="775.0" layoutY="448.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="171.0" style="-fx-background-color: blue;" styleClass="mainFxmlClass" stylesheets="@ventanas.css" text="GUARDAR CAMBIOS" textFill="WHITE" />
-      <Label fx:id="lblDateStart" layoutX="82.0" layoutY="109.0" prefHeight="17.0" prefWidth="174.0" text="Email del Cliente" />
-      <Label fx:id="lbldescription" layoutX="394.0" layoutY="45.0" prefHeight="17.0" prefWidth="171.0" text="Contraseña del Cliente" />
-      <Button fx:id="btnBack" layoutX="774.0" layoutY="678.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="171.0" text="ATRAS" />
-      <Button fx:id="btnSearch" layoutX="649.0" layoutY="246.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="115.0" text="BUSCAR" />
-      <Label fx:id="lblDateError" contentDisplay="CENTER" layoutX="82.0" layoutY="151.0" prefHeight="17.0" prefWidth="199.0" text="Debe ser un email válido" textAlignment="CENTER" textFill="RED" />
-      <Button id="btnSaveChanges" fx:id="btnPrint" layoutX="775.0" layoutY="245.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="171.0" style="-fx-background-color: #4b0082;" styleClass="mainFxmlClass" stylesheets="@ventanas.css" text="IMPRIMIR" textFill="WHITE" />
-      <TextField layoutX="83.0" layoutY="62.0" prefHeight="25.0" prefWidth="174.0" promptText="Nombre del Cliente" />
-      <Label fx:id="lblName" layoutX="82.0" layoutY="45.0" prefHeight="17.0" prefWidth="174.0" text="Nombre del Cliente" />
-      <TextField layoutX="83.0" layoutY="125.0" prefHeight="25.0" prefWidth="174.0" promptText="Email del Cliente" />
-      <TextField layoutX="83.0" layoutY="192.0" prefHeight="25.0" prefWidth="174.0" promptText="Login del Cliente" />
-      <Label fx:id="lblDateEnd1" layoutX="710.0" layoutY="45.0" prefHeight="17.0" prefWidth="170.0" text="Tipo de Cliente" />
-      <PasswordField layoutX="395.0" layoutY="144.0" prefHeight="25.0" prefWidth="171.0" />
-      <PasswordField layoutX="395.0" layoutY="61.0" prefHeight="25.0" prefWidth="171.0" />
-      <Label fx:id="lbldescription1" layoutX="396.0" layoutY="128.0" prefHeight="17.0" prefWidth="171.0" text="Confirmar Contraseña Cliente" />
-      <ComboBox layoutX="710.0" layoutY="61.0" prefHeight="25.0" prefWidth="171.0" promptText="PARTICULAR" />
-      <Label fx:id="lbldescription2" layoutX="83.0" layoutY="175.0" prefHeight="17.0" prefWidth="171.0" text="Login" />
-      <ComboBox layoutX="26.0" layoutY="249.0" prefWidth="150.0" promptText="Nombre del Cliente" />
-      <Label fx:id="lblDateError1" layoutX="84.0" layoutY="88.0" prefHeight="17.0" prefWidth="199.0" text="El nombre es demasiado largo" textAlignment="CENTER" textFill="RED" />
-      <Label fx:id="lblDateError2" contentDisplay="CENTER" layoutX="396.0" layoutY="86.0" prefHeight="25.0" prefWidth="147.0" text="Contraseña no válida" textAlignment="JUSTIFY" textFill="RED" wrapText="true" />
-      <Label fx:id="lblDateError3" contentDisplay="CENTER" layoutX="396.0" layoutY="168.0" prefHeight="17.0" prefWidth="199.0" text="Las contraseñas deben ser iguales" textAlignment="CENTER" textFill="RED" />
-      <Label fx:id="lblDateError31" contentDisplay="CENTER" layoutX="82.0" layoutY="215.0" prefHeight="17.0" prefWidth="260.0" text="Longitud del login no válida (5-25), sin espacios" textAlignment="CENTER" textFill="RED" />
-      <Button id="btnSaveChanges" fx:id="btnSave1" disable="true" layoutX="710.0" layoutY="141.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="171.0" style="-fx-background-color: blue;" styleClass="mainFxmlClass" stylesheets="@ventanas.css" text="VER EVENTOS DEL CLIENTE" textFill="WHITE" />
+      <Button id="btnSaveChanges" fx:id="btnSaveClient" disable="true" layoutX="775.0" layoutY="448.0" mnemonicParsing="false" onAction="#handleSaveClient" prefHeight="32.0" prefWidth="171.0" style="-fx-background-color: blue;" styleClass="mainFxmlClass" stylesheets="@ventanas.css" text="GUARDAR CAMBIOS" textFill="WHITE" />
+      <Label layoutX="82.0" layoutY="109.0" prefHeight="17.0" prefWidth="174.0" text="Email del Cliente" />
+      <Label layoutX="394.0" layoutY="45.0" prefHeight="17.0" prefWidth="171.0" text="Contraseña del Cliente" />
+      <Button fx:id="btnBack" layoutX="774.0" layoutY="678.0" mnemonicParsing="false" onAction="#handleBack" prefHeight="32.0" prefWidth="171.0" text="ATRAS" />
+      <Button fx:id="btnSearch" layoutX="649.0" layoutY="246.0" mnemonicParsing="false" onAction="#handleSearch" prefHeight="32.0" prefWidth="115.0" text="BUSCAR" />
+      <Label fx:id="lblErrorEmail" contentDisplay="CENTER" layoutX="82.0" layoutY="151.0" prefHeight="17.0" prefWidth="199.0" text="Debe ser un email válido" textAlignment="CENTER" textFill="RED" />
+      <Button id="btnSaveChanges" fx:id="btnPrint" layoutX="775.0" layoutY="245.0" mnemonicParsing="false" onAction="#handlePrintClient" prefHeight="32.0" prefWidth="171.0" style="-fx-background-color: #4b0082;" styleClass="mainFxmlClass" stylesheets="@ventanas.css" text="IMPRIMIR" textFill="WHITE" />
+      <TextField fx:id="tfName" layoutX="83.0" layoutY="62.0" prefHeight="25.0" prefWidth="174.0" promptText="Nombre del Cliente" />
+      <Label layoutX="82.0" layoutY="45.0" prefHeight="17.0" prefWidth="174.0" text="Nombre del Cliente" />
+      <TextField fx:id="tfEmail" layoutX="83.0" layoutY="125.0" prefHeight="25.0" prefWidth="174.0" promptText="Email del Cliente" />
+      <TextField fx:id="tfLogin" layoutX="83.0" layoutY="192.0" prefHeight="25.0" prefWidth="174.0" promptText="Login del Cliente" />
+      <Label layoutX="710.0" layoutY="45.0" prefHeight="17.0" prefWidth="170.0" text="Tipo de Cliente" />
+      <PasswordField fx:id="tfConfirmPassword" layoutX="395.0" layoutY="144.0" prefHeight="25.0" prefWidth="171.0" />
+      <PasswordField fx:id="tfPassword" layoutX="395.0" layoutY="61.0" prefHeight="25.0" prefWidth="171.0" />
+      <Label layoutX="396.0" layoutY="128.0" prefHeight="17.0" prefWidth="171.0" text="Confirmar Contraseña Cliente" />
+      <ComboBox fx:id="cbType" layoutX="710.0" layoutY="61.0" onAction="#handleChangeType" prefHeight="25.0" prefWidth="171.0" promptText="PARTICULAR" />
+      <Label layoutX="83.0" layoutY="175.0" prefHeight="17.0" prefWidth="171.0" text="Login" />
+      <ComboBox fx:id="cbSearchBy" layoutX="26.0" layoutY="249.0" onAction="#handleSearchBy" prefWidth="150.0" promptText="Nombre del Cliente" />
+      <Label fx:id="lblErrorName" layoutX="84.0" layoutY="88.0" prefHeight="17.0" prefWidth="199.0" text="El nombre es demasiado largo" textAlignment="CENTER" textFill="RED" />
+      <Label fx:id="lblErrorPassword" contentDisplay="CENTER" layoutX="396.0" layoutY="86.0" prefHeight="25.0" prefWidth="147.0" text="Contraseña no válida" textAlignment="JUSTIFY" textFill="RED" wrapText="true" />
+      <Label fx:id="lblErrorConfirmPassword" contentDisplay="CENTER" layoutX="396.0" layoutY="168.0" prefHeight="17.0" prefWidth="199.0" text="Las contraseñas deben ser iguales" textAlignment="CENTER" textFill="RED" />
+      <Label fx:id="lblErrorLogin" contentDisplay="CENTER" layoutX="82.0" layoutY="215.0" prefHeight="17.0" prefWidth="260.0" text="Longitud del login no válida (5-25), sin espacios" textAlignment="CENTER" textFill="RED" />
+      <Button id="btnSaveChanges" fx:id="btnViewEvents" disable="true" layoutX="710.0" layoutY="141.0" mnemonicParsing="false" onAction="#handleOpenEventTable" prefHeight="32.0" prefWidth="171.0" style="-fx-background-color: blue;" styleClass="mainFxmlClass" stylesheets="@ventanas.css" text="VER EVENTOS DEL CLIENTE" textFill="WHITE" />
     </children>
 </Pane>

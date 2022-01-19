@@ -12,8 +12,8 @@ import reto2g1cclient.implementation.UserImplementation;
  */
 public class UserFactory {
     //INTERFAZ IGUAL A NEW IMPLEMENTACIÓN
-    public static UserImplementation getUser() {
-        UserImplementation user = new UserImplementation();
+    public static UserInterface getUser() {
+        UserInterface user = new UserImplementation();
         return user;
     }
 }

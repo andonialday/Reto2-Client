@@ -13,11 +13,11 @@ import reto2g1cclient.model.User;
  */
 public interface UserInterface {
     
-    public void createUser(User user);
+    public void createUser(User user) throws Exception;
     
-    public void updateUser(User user);
+    public void editUser(User user) throws Exception;
     
-    public void deleteUser(User user);
+    public void removeUser(User user) throws Exception;
     
-    public void findUser(User user);
+    public void searchUser(User user) throws Exception;
 }
