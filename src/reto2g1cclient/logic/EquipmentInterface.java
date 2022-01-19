@@ -22,9 +22,9 @@ public interface EquipmentInterface {
     
     public void edit(Integer id, Equipment equipment);
     
-    public void remove( Integer id);
+    public void remove(Equipment equipment);
     
-    public Equipment find(Integer id);
+    public Equipment find(Equipment equipment,Integer id);
     
      public List<Equipment> findAll();
      

@@ -23,7 +23,7 @@ public class EquipmentImplementation implements EquipmentInterface{
     @Override
     public List<Equipment> findCostRange(Double min, Double max) {
    
-    return EquipmentClient.findCostRange(responseType, min, max);
+    return EquipmentClient.findCostRange(List.class, min.toString(), max.toString());
     }
 
     @Override
@@ -34,29 +34,29 @@ public class EquipmentImplementation implements EquipmentInterface{
     @Override
     public void edit(Integer id, Equipment equipment) {
     
-    EquipmentClient.edit(equipment, id);
+    EquipmentClient.edit(equipment, equipment.getId().toString());
     }
 
     @Override
-    public void remove(Integer id) {
+    public void remove(Equipment equipment) {
     
-    EquipmentClient.remove(id);
+    EquipmentClient.remove(equipment.getId().toString());
     }
 
     @Override
-    public Equipment find(Integer id) {
+    public Equipment find(Equipment equipment,Integer id) {
    
-    return EquipmentClient.find(responseType, id);
+        return EquipmentClient.find(Equipment.class, id.toString());
     }
 
     @Override
     public List<Equipment> findAll() {
-    return EquipmentClient.findAll(responseType);
+    return EquipmentClient.findAll(List.class);
     }
 
     @Override
     public List<Equipment> findRange(Integer from, Integer to) {
-    return EquipmentClient.findRange(responseType, from, to);
+    return EquipmentClient.findRange(List.class, from.toString(), to.toString());
     }
 
     @Override
@@ -66,17 +66,17 @@ public class EquipmentImplementation implements EquipmentInterface{
 
     @Override
     public List<Equipment> findOrderPreviousDate(Date datePrev) {
-    return EquipmentClient.findOrderPreviousDate(responseType, datePrev);
+    return EquipmentClient.findOrderPreviousDate(List.class, datePrev.toString());
     }
 
     @Override
     public List<Equipment> findOrderAfterDate(Date dateAfter) {
-    return EquipmentClient.findOrderAfterDate(responseType, dateAfter);
+    return EquipmentClient.findOrderAfterDate(List.class, dateAfter.toString());
     }
 
     @Override
     public List<Equipment> deleteOldEquip(Date year) {
-    return EquipmentClient.deleteOldEquip(responseType, year);
+    return EquipmentClient.deleteOldEquip(List.class, year.toString());
     }
 
     

@@ -47,9 +47,7 @@ public class EquipmentController {
     
       public void initStage(Parent root) throws IOException {
 
-        LOGGER.info("Initializing Login stage.");
-
-        //Create a new scene
+             //Create a new scene
         Scene scene = new Scene(root);
 
         //CSS (route & scene)
@@ -64,7 +62,15 @@ public class EquipmentController {
         stage.setResizable(false);
 
         //Set Windows event handlers 
-        
+        stage.setOnShowing(this::handleWindowShowing);
+       /* stage.setOnCloseRequest(this::closeVEquipmentTable);
+        // AÑADIR LOS NUEVOS LABEL Y HYPERLINK
+
+        tbEvent.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        loadData();
+        btnBack.setOnAction(this::back);
+        btnDeleteEvent.setOnAction(this::deleteEvent);
+        btnSave.setOnAction(this::saveChanges);*/
 
         //Show main window
         stage.show();
