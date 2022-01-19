@@ -18,7 +18,7 @@ public interface EquipmentInterface {
     
     public List<Equipment> findCostRange(Double min, Double max);
     
-    public void create();
+    public void create(Equipment equipment);
     
     public void edit(Integer id, Equipment equipment);
     

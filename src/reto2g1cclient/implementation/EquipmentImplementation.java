@@ -27,9 +27,8 @@ public class EquipmentImplementation implements EquipmentInterface{
     }
 
     @Override
-    public void create() {
-    
-    EquipmentClient.create(Equipment.class);
+    public void create(Equipment equipment) {
+    EquipmentClient.create(equipment);
     }
 
     @Override
@@ -62,22 +61,24 @@ public class EquipmentImplementation implements EquipmentInterface{
 
     @Override
     public String countREST() {
-    
+    return EquipmentClient.countREST();
     }
 
     @Override
     public List<Equipment> findOrderPreviousDate(Date datePrev) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    return EquipmentClient.findOrderPreviousDate(responseType, datePrev);
     }
 
     @Override
     public List<Equipment> findOrderAfterDate(Date dateAfter) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    return EquipmentClient.findOrderAfterDate(responseType, dateAfter);
     }
 
     @Override
     public List<Equipment> deleteOldEquip(Date year) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    return EquipmentClient.deleteOldEquip(responseType, year);
     }
+
+    
     
 }
