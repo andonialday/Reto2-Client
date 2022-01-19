@@ -8,6 +8,7 @@ package reto2g1cclient.implementation;
 import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
+import javax.xml.ws.http.HTTPException;
 
 /**
  * Jersey REST client generated for REST resource:EventFacadeREST
@@ -100,10 +101,14 @@ public class EventJerseyClient {
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
     }
 
-    public void create(Object requestEntity) throws ClientErrorException {
-        webTarget.request(javax.ws.rs.core.MediaType.APPLICATION_XML).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_XML));
+    public void create(Object requestEntity) {
+        try {
+            webTarget.request(javax.ws.rs.core.MediaType.APPLICATION_XML).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_XML));
+        } catch (Exception e) {
+            
+        }
     }
-
+        
     public <T> T findDateRangeClient(Class<T> responseType, String dateMin, String dateMax, String idCli) throws ClientErrorException {
         WebTarget resource = webTarget;
         resource = resource.path(java.text.MessageFormat.format("dateClient/{0}/{1}/{2}", new Object[]{dateMin, dateMax, idCli}));
@@ -119,5 +124,5 @@ public class EventJerseyClient {
     public void close() {
         client.close();
     }
-    
+
 }
