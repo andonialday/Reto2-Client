@@ -12,7 +12,7 @@ import reto2g1cclient.model.Evento;
 
 /**
  *
- * @author 2dam
+ * @author Andoni Alday
  */
 public interface EventInterface {
     
@@ -24,22 +24,22 @@ public interface EventInterface {
     
     public String count();
     
-    public List<Evento> findStartRange(List<Evento> events, Date dateMin, Date dateMax);
+    public List<Evento> findStartRange(Date dateMin, Date dateMax);
     
-    public List<Evento> findEventByClient(List<Evento> events, Client client);
+    public List<Evento> findEventByClient(Client client);
     
-    public List<Evento> findRange(List<Evento> events, Date dateMin, Date dateMax);
+    public List<Evento> findRange(Date dateMin, Date dateMax);
     
-    public List<Evento> findEndRange(List<Evento> events, Date dateMin, Date dateMax);
+    public List<Evento> findEndRange(Date dateMin, Date dateMax);
     
-    public List<Evento> findEndRangeClient(List<Evento> events, Date dateMin, Date dateMax, Client client);
+    public List<Evento> findEndRangeClient(Date dateMin, Date dateMax, Client client);
     
-    public List<Evento> findDateRange(List<Evento> events, Date dateMin, Date dateMax);
+    public List<Evento> findDateRange(Date dateMin, Date dateMax);
     
-    public Evento find(Evento event, Integer id);
+    public Evento find(Integer id);
     
     public List<Evento> findAll();
     
-    public List<Evento> eleteOldestEvents(List<Evento> events, Integer year);
+    public List<Evento> deleteOldestEvents(Integer year);
     
 }

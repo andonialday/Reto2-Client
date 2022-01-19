@@ -8,7 +8,6 @@ package reto2g1cclient.implementation;
 import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
-import javax.xml.ws.http.HTTPException;
 
 /**
  * Jersey REST client generated for REST resource:EventFacadeREST
@@ -21,7 +20,7 @@ import javax.xml.ws.http.HTTPException;
  *        client.close();
  * </pre>
  *
- * @author 2dam
+ * @author Andoni Alday
  */
 public class EventJerseyClient {
 

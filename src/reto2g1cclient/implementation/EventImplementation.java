@@ -13,7 +13,7 @@ import reto2g1cclient.model.Evento;
 
 /**
  *
- * @author 2dam
+ * @author Andoni Alday
  */
 public class EventImplementation implements EventInterface {
     
@@ -29,7 +29,7 @@ public class EventImplementation implements EventInterface {
     }
 
     @Override
-    public Evento find(Evento event, Integer id) {
+    public Evento find(Integer id) {
         return ejc.find(Evento.class, id.toString());
     }
 
@@ -54,37 +54,37 @@ public class EventImplementation implements EventInterface {
     }
 
     @Override
-    public List<Evento> findStartRange(List<Evento> events, Date dateMin, Date dateMax) {
+    public List<Evento> findStartRange(Date dateMin, Date dateMax) {
+        return ejc.findStartRange(List.class, dateMin.toString(), dateMax.toString());
+    }
+
+    @Override
+    public List<Evento> findEventByClient(Client client) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<Evento> findEventByClient(List<Evento> events, Client client) {
+    public List<Evento> findRange(Date dateMin, Date dateMax) {
+        return ejc.findRange(List.class, dateMin.toString(), dateMax.toString());
+    }
+
+    @Override
+    public List<Evento> findEndRange(Date dateMin, Date dateMax) {
+        return ejc.findEndRange(List.class, dateMin.toString(), dateMax.toString());
+    }
+
+    @Override
+    public List<Evento> findEndRangeClient(Date dateMin, Date dateMax, Client client) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<Evento> findRange(List<Evento> events, Date dateMin, Date dateMax) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<Evento> findDateRange(Date dateMin, Date dateMax) {
+        return ejc.findDateRange(List.class, dateMin.toString(), dateMax.toString());
     }
 
     @Override
-    public List<Evento> findEndRange(List<Evento> events, Date dateMin, Date dateMax) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public List<Evento> findEndRangeClient(List<Evento> events, Date dateMin, Date dateMax, Client client) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public List<Evento> findDateRange(List<Evento> events, Date dateMin, Date dateMax) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public List<Evento> eleteOldestEvents(List<Evento> events, Integer year) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<Evento> deleteOldestEvents(Integer year) {
+        return ejc.deleteOldestEvents(List.class, year.toString());
     }
 }
