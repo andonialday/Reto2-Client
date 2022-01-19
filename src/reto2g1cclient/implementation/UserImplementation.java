@@ -7,8 +7,12 @@ package reto2g1cclient.implementation;
 
 /**
  *
- * @author 2dam
+ * @author Jaime San Sebastian
  */
 public class UserImplementation {
+
+    public UserImplementation() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }

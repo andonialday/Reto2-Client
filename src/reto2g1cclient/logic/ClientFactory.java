@@ -5,10 +5,15 @@
  */
 package reto2g1cclient.logic;
 
+import reto2g1cclient.implementation.ClientImplementation;
 /**
  *
- * @author 2dam
+ * @author Jaime San Sebastian
  */
 public class ClientFactory {
-    //Interfaz igual a new Implementation
+    //INTERFAZ IGUAL A NEW IMPLEMENTACIÓN
+    public static ClientImplementation getClient() {
+        ClientImplementation client = new ClientImplementation();
+        return client;
+    }
 }

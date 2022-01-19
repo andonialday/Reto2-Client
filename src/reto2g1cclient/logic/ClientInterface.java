@@ -5,17 +5,26 @@
  */
 package reto2g1cclient.logic;
 
+import java.util.Collection;
 import reto2g1cclient.model.Client;
 
 /**
  *
  * @author 2dam
  */
-public class ClientInterface {
-    //Aqui van los métodos sin código
+public interface ClientInterface {
     
-    public Client createCliente(Client client){
-        
-        return null;
-    }
+    public void createClient(Client client);
+    
+    public void updateClient(Client client);
+    
+    public void deleteClient(Client client);
+    
+    public void findClient(Client client);
+    
+    public void findClientCommercial(Client client);
+    
+    public void deleteAllClientDisabled(Client client);
+    
+    public Collection<Client> getAllClient();
 }

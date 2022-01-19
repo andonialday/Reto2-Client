@@ -5,10 +5,19 @@
  */
 package reto2g1cclient.logic;
 
+import reto2g1cclient.model.User;
+
 /**
  *
  * @author 2dam
  */
-public class UserInterface {
+public interface UserInterface {
     
+    public void createUser(User user);
+    
+    public void updateUser(User user);
+    
+    public void deleteUser(User user);
+    
+    public void findUser(User user);
 }

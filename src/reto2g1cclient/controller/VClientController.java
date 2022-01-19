@@ -7,7 +7,7 @@ package reto2g1cclient.controller;
 
 /**
  *
- * @author 2dam
+ * @author Jaime San Sebastian
  */
 public class VClientController {
     

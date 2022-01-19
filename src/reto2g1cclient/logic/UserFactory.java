@@ -5,10 +5,15 @@
  */
 package reto2g1cclient.logic;
 
+import reto2g1cclient.implementation.UserImplementation;
 /**
  *
- * @author 2dam
+ * @author Jaime San Sebastian
  */
 public class UserFactory {
-    
+    //INTERFAZ IGUAL A NEW IMPLEMENTACIÓN
+    public static UserImplementation getUser() {
+        UserImplementation user = new UserImplementation();
+        return user;
+    }
 }
