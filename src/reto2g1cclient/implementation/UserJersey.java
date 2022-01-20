@@ -27,7 +27,7 @@ public class UserJersey {
     private WebTarget webTarget;
     private Client client;
     //ADAPTAR EL PUERTO DEL BASE_URI AL PUERTO HTTP DEL GLASSFISH
-    private static final String BASE_URI = "http://localhost:16836/Reto2G1cServer/webresources";
+    private static final String BASE_URI = "http://localhost:29674/Reto2G1cServer/webresources";
 
     public UserJersey() {
         client = javax.ws.rs.client.ClientBuilder.newClient();

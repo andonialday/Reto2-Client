@@ -20,4 +20,10 @@ public interface UserInterface {
     public void removeUser(User user) throws Exception;
     
     public void searchUser(User user) throws Exception;
+    
+    public void signIn(User user) throws Exception;
+    
+    public void resetPasswordByLogin(String login) throws Exception;
+    
+    public void updatePass(User user) throws Exception;
 }
