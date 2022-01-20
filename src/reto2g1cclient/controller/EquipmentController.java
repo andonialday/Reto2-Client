@@ -6,11 +6,13 @@
 package reto2g1cclient.controller;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.logging.Logger;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import reto2g1cclient.model.Equipment;
 
 /**
  *
@@ -22,7 +24,16 @@ public class EquipmentController {
      * the application.
      */
     private static final Logger LOGGER = Logger.getLogger("package.class");
+    private List<Equipment> equipments;
 
+    public void setEquipments(List<Equipment> equipments) {
+        this.equipments = equipments;
+    }
+
+    public List<Equipment> getEquipments() {
+        return equipments;
+    }
+    
     private Stage stage;
 
     /**
@@ -57,9 +68,11 @@ public class EquipmentController {
         stage.setScene(scene);
 
         //Set the scene properties
-        stage.setTitle("SignIn");
+        stage.setTitle("Equipamiento");
+        stage.setMinWidth(960);
+        stage.setMinHeight(720);
         stage.setResizable(false);
-
+        loaddata();
         //Set Windows event handlers 
         stage.setOnShowing(this::handleWindowShowing);
        /* stage.setOnCloseRequest(this::closeVEquipmentTable);
@@ -95,5 +108,10 @@ public class EquipmentController {
 
         //SignUp hyperlink is enabled
         hyperSignUp.setDisable(false);*/
+    }
+
+    private void loaddata() {
+    
+    
     }
 }
