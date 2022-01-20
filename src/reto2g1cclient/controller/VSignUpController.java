@@ -46,21 +46,31 @@ public class VSignUpController {
     @FXML
     private Label lblName;
     @FXML
+    private Label lbName;
+    @FXML
     private TextField txtLogin;
     @FXML
     private Label lblLogin;
+    @FXML
+    private Label lbLogin;
     @FXML
     private TextField txtEmail;
     @FXML
     private Label lblEmail;
     @FXML
+    private Label lbEmail;
+    @FXML
     private PasswordField txtPassword;
     @FXML
     private Label lblPassword;
     @FXML
+    private Label lbPassword;
+    @FXML
     private PasswordField txtConfirmPassword;
     @FXML
     private Label lblCPassword;
+    @FXML
+    private Label lbConfirm;
     @FXML
     private Button btSignUp;
     @FXML
@@ -91,6 +101,7 @@ public class VSignUpController {
     private Stage stage;
 
     private static Logger LOGGER = Logger.getLogger("package.class");
+    private Signable  sig;
 
     /**
      * Initializes the controller class.
@@ -99,6 +110,7 @@ public class VSignUpController {
      * ventana muestre sus elementos hijos (Cuadros de texto,Botones...)
      */
     public void initStage(Parent root) {
+        sig = ViewSignableFactory.getView();
         LOGGER.info("Initializing SignUp window... ");
         Scene scene = new Scene(root);
         scene.getStylesheets().add("/reto1client/view/javaFXUIStyles.css");
@@ -121,10 +133,9 @@ public class VSignUpController {
         txtEmail.textProperty().addListener(this::txtEmailVal);
         txtPassword.textProperty().addListener(this::txtPasswordVal);
         txtConfirmPassword.textProperty().addListener(this::txtConfirmPasswordVal);
-        
+
         // Método para comprobar si se ejecuta SignUp de Client o Commercial
         // checkType();
-        
         stage.show();
         LOGGER.info("SignUp window started... ");
 
@@ -151,6 +162,11 @@ public class VSignUpController {
         lblEmail.setVisible(false);
         lblPassword.setVisible(false);
         lblCPassword.setVisible(false);
+        lbName.setVisible(true);
+        lbLogin.setVisible(true);
+        lbEmail.setVisible(true);
+        lbPassword.setVisible(true);
+        lbConfirm.setVisible(true);
     }
 
     /**
@@ -423,26 +439,23 @@ public class VSignUpController {
      * Metodo para registrar al usuario en la base de datos si todos los datos
      * estan correctos.
      */
-    
     // cambiar para que reciba un User user = new Client 
     // o un User user = new Commercial
     // desde el método de CheckType;
     // public void signUp(User user) ´{
     // siendo el user un instanceOf Client o Commercial
     // gestionar que en funcion de Type se ejecute un user.setType ó un user.setSpecialization
-    
     public void signUp() {
         LOGGER.info("Sign In procedure initiated");
-        User user = new User();
+        User user = new Client();
         user.setFullName(name);
         user.setLogin(login);
         user.setEmail(email);
         user.setPassword(password);
-        Signable sig = ViewSignableFactory.getView();
-        User usr = null;
+        user.setPrivilege(Privilege.USER);
+        user.setStatus(UserStatus.ENABLED);
         try {
-            usr = sig.signUp(user);
-
+            sig.signUp(user);
             LOGGER.info("Sign In Correct");
 
             Alert altInfoSignUp = new Alert(AlertType.INFORMATION);
@@ -509,8 +522,8 @@ public class VSignUpController {
     }
 
     /**
-     * Method to advise the user when uses the UI's innate
-     * close button (button X) that the application will close
+     * Method to advise the user when uses the UI's innate close button (button
+     * X) that the application will close
      *
      * @param event the event linked to clicking on the button;
      */

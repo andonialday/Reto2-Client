@@ -18,9 +18,9 @@ public interface Signable {
      * Sign In Method Interface
      * @param usr Takes a user from the client side
      * @return Returns a user with all the data
-     * @throws reto1libraries.exception.ClientServerConnectionException If the Client cant Connect With
-     * @throws reto1libraries.exception.DBConnectionException Error processing feedback from the Database
-     * @throws reto1libraries.exception.CredentialErrorException If the user is not correct
+     * @throws ClientServerConnectionException
+     * @throws DBConnectionException
+     * @throws CredentialErrorException
      */
     public User signIn(User usr) throws ClientServerConnectionException, DBConnectionException, CredentialErrorException;
     
@@ -28,10 +28,10 @@ public interface Signable {
      * Sign Up Method Interface
      * @param usr Takes a user from the client side
      * @return Returns a user with all the data
-     * @throws reto1libraries.exception.ClientServerConnectionException If the Client cant Connect With
-     * @throws reto1libraries.exception.DBConnectionException Error processing feedback from the Database
-     * @throws reto1libraries.exception.LoginOnUseException If the User Parameters are rown
+     * @throws ClientServerConnectionException
+     * @throws DBConnectionException
+     * @throws LoginOnUseException
      */
-    public User signUp(User usr) throws ClientServerConnectionException, DBConnectionException, LoginOnUseException;
+    public void signUp(User usr) throws ClientServerConnectionException, DBConnectionException, LoginOnUseException;
     
 }

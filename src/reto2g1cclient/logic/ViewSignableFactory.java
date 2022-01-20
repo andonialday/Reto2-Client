@@ -5,7 +5,7 @@
  */
 package reto2g1cclient.logic;
 
-import reto2g1cclient.view.ViewSignableImplementation;
+import reto2g1cclient.implementation.ViewSignableImplementation;
 
 
 /**

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package reto2g1cclient.view;
+package reto2g1cclient.implementation;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -18,17 +18,24 @@ import reto2g1cclient.model.User;
 
 /**
  * Signable Implementation Class for the View Layer
+ *
  * @author Enaitz Izagirre
  */
 public class ViewSignableImplementation implements Signable {
 
     //establish config file route 
-    private static final ResourceBundle configFile = ResourceBundle.getBundle("reto1client.controller.config");
+    private static final ResourceBundle configFile = ResourceBundle.getBundle("reto2g1cclient.controller.config");
     //declare logger
     private static final Logger LOGGER = Logger.getLogger("package.class");
+    private UserJerseyClient ujc;
+
+    public ViewSignableImplementation() {
+        ujc = new UserJerseyClient();
+    }
 
     /**
      * Method to SignIn the Client in to the Data Base
+     *
      * @param usr Asks a user to encapsulate in order to send it to the server
      * @return Returns a null or a complete user depending if it fails
      * @throws CredentialErrorException If the user is not correct
@@ -52,8 +59,7 @@ public class ViewSignableImplementation implements Signable {
      * the server cause of the Server error
      */
     @Override
-    public User signUp(User usr) throws LoginOnUseException, ClientServerConnectionException, DBConnectionException {
-             
-        return usr;
+    public void signUp(User usr) throws LoginOnUseException, ClientServerConnectionException, DBConnectionException {
+        ujc.create(usr);
     }
 }
