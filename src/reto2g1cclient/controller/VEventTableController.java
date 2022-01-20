@@ -6,10 +6,14 @@
 package reto2g1cclient.controller;
 
 import java.io.IOException;
+import java.time.ZoneId;
+import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.logging.Logger;
 import javafx.application.Platform;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -17,10 +21,18 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import reto2g1cclient.logic.EventFactory;
+import reto2g1cclient.logic.EventInterface;
 import reto2g1cclient.model.Client;
 import reto2g1cclient.model.Evento;
 
@@ -29,13 +41,15 @@ import reto2g1cclient.model.Evento;
  * @author Andoni Alday
  */
 public class VEventTableController {
-
+    
     private static final Logger LOGGER = Logger.getLogger("package.class");
     private Stage stage;
-    private Client user;
-    private Set<Evento> events;
+    private Client client;
+    private List<Evento> events;
     private Evento event;
     private boolean editable;
+    private EventInterface ei;
+    private ObservableList<Evento> eventData;
 
     /**
      *
@@ -57,23 +71,23 @@ public class VEventTableController {
      *
      * @return
      */
-    public Client getUser() {
-        return user;
+    public Client getClient() {
+        return client;
     }
 
     /**
      *
-     * @param user
+     * @param client
      */
-    public void setUser(Client user) {
-        this.user = user;
+    public void setClient(Client client) {
+        this.client = client;
     }
 
     /**
      *
      * @return
      */
-    public Set<Evento> getEvents() {
+    public List<Evento> getEvents() {
         return events;
     }
 
@@ -81,7 +95,7 @@ public class VEventTableController {
      *
      * @param events
      */
-    public void setEvents(Set<Evento> events) {
+    public void setEvents(List<Evento> events) {
         this.events = events;
     }
 
@@ -117,27 +131,148 @@ public class VEventTableController {
         this.editable = editable;
     }
 
+    /**
+     *
+     * @return
+     */
+    public EventInterface getEi() {
+        return ei;
+    }
+
+    /**
+     *
+     * @param ei
+     */
+    public void setEi(EventInterface ei) {
+        this.ei = ei;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public ObservableList<Evento> getEventData() {
+        return eventData;
+    }
+
+    /**
+     *
+     * @param eventData
+     */
+    public void setEventData(ObservableList<Evento> eventData) {
+        this.eventData = eventData;
+    }
+
     // Elementos FXML de la ventana
+    //Botones
+    /**
+     *
+     */
     @FXML
     private Button btnBack;
-
+    /**
+     *
+     */
     @FXML
-    private Button btnDeleteEvent;
-
+    private Button btnDelete;
+    /**
+     *
+     */
+    @FXML
+    private Button btnNew;
+    /**
+     *
+     */
     @FXML
     private Button btnSave;
-
+    /**
+     *
+     */
+    @FXML
+    private Button btnSearch;
+    /**
+     *
+     */
+    @FXML
+    private Button btnPrint;
+    //Tabla
+    /**
+     *
+     */
     @FXML
     private TableView<Evento> tbEvent;
-
+    /**
+     *
+     */
+    @FXML
+    public TableColumn<Evento, String> clName;
+    /**
+     *
+     */
     @FXML
     public TableColumn<Evento, String> clDateStart;
-
+    /**
+     *
+     */
     @FXML
     public TableColumn<Evento, String> clDateEnd;
-
+    /**
+     *
+     */
     @FXML
     public TableColumn<Evento, String> clDescription;
+    //Elementos Filtrado Búsqueda   
+    /**
+     *
+     */
+    @FXML
+    private TextField txtSearch;
+    /**
+     *
+     */
+    @FXML
+    private ComboBox<String> cbSearch;
+    //Elementos Zona Edicion/Creacion
+    /**
+     *
+     */
+    @FXML
+    private TextField txtName;
+    /**
+     *
+     */
+    @FXML
+    private TextArea taDescription;
+    /**
+     *
+     */
+    @FXML
+    private DatePicker dpDateStart;
+    /**
+     *
+     */
+    @FXML
+    private DatePicker dpDateEnd;
+    /**
+     *
+     */
+    @FXML
+    private Label lblName;
+    /**
+     *
+     */
+    @FXML
+    private Label lblDateStart;
+    /**
+     *
+     */
+    @FXML
+    private Label lblDateEnd;
+    /**
+     *
+     */
+    @FXML
+    private Label lblDescription;
 
     /**
      *
@@ -145,7 +280,7 @@ public class VEventTableController {
      * @throws IOException
      */
     public void initStage(Parent root) throws IOException {
-
+        
         LOGGER.info("Initializing Login stage.");
 
         //Create a new scene
@@ -165,32 +300,39 @@ public class VEventTableController {
         //Set Windows event handlers 
         stage.setOnShowing(this::handleWindowShowing);
         stage.setOnCloseRequest(this::closeVEventTable);
-        // AÑADIR LOS NUEVOS LABEL Y HYPERLINK
+        //Set Window initial State
 
         tbEvent.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        ei = EventFactory.getImplementation();
         loadData();
+        tbEvent.getSelectionModel().selectedItemProperty().addListener(this::eventTableSelection);
+        cbSearch.getSelectionModel().selectedItemProperty().addListener(this::selectedFilter);
         btnBack.setOnAction(this::back);
-        btnDeleteEvent.setOnAction(this::deleteEvent);
+        btnDelete.setOnAction(this::deleteEvent);
+        btnNew.setOnAction(this::newEvent);
         btnSave.setOnAction(this::saveChanges);
 
         //Show main window
         stage.show();
-
+        
     }
-
+    
     private void handleWindowShowing(WindowEvent event) {
         LOGGER.info("Beginning LoginController::handleWindowShowing");
-
+        
         btnBack.setDisable(false);
-        btnDeleteEvent.setDisable(true);
+        btnDelete.setDisable(true);
+        btnNew.setDisable(true);
+        btnSearch.setDisable(false);
+        btnPrint.setDisable(false);
         btnSave.setDisable(true);
 
         //Si accede a la vista de eventos un cliente, editable será true y se podrá 
         //editar la tabla, si accede un comercial, editable será false y no será editable
         tbEvent.setEditable(editable);
-
+        
     }
-
+    
     @FXML
     private void back(ActionEvent event) {
         LOGGER.info("Requesting confirmation for application closing...");
@@ -206,9 +348,25 @@ public class VEventTableController {
             LOGGER.info("Closing aborted");
         }
     }
-
+    
     @FXML
     private void deleteEvent(ActionEvent event) {
+        LOGGER.info("Requesting confirmation for Event Deletion...");
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Está Eliminando un Evento");
+        alert.setHeaderText("¿Seguro que desea Eliminar el Evento Seleccionado?");
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK) {
+            ei.remove(this.event);
+        } else {
+            event.consume();
+            LOGGER.info("Closing aborted");
+        }
+    }
+    
+    @FXML
+    private void newEvent(ActionEvent event) {
+        validateData();
         LOGGER.info("Requesting confirmation for application closing...");
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Está Cerrando el Programa");
@@ -222,7 +380,7 @@ public class VEventTableController {
             LOGGER.info("Closing aborted");
         }
     }
-
+    
     @FXML
     private void saveChanges(ActionEvent event) {
         LOGGER.info("Requesting confirmation for application closing...");
@@ -239,6 +397,10 @@ public class VEventTableController {
         }
     }
 
+    /**
+     *
+     * @param event
+     */
     public void closeVEventTable(WindowEvent event) {
         LOGGER.info("Requesting confirmation for application closing...");
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -253,14 +415,67 @@ public class VEventTableController {
             LOGGER.info("Closing aborted");
         }
     }
-
+    
     private void loadData() {
-        //clDateStart.setCellValueFactory(new PropertyValueFactory<>("Fecha de Inicio"));
-        //clDateEnd.setCellValueFactory(new PropertyValueFactory<>("Fecha Finalizacion"));
-        //clDescription.setCellValueFactory(new PropertyValueFactory<>("Descripcion"));
-        for (Evento ev : events) {
-            tbEvent.getItems().add(ev);
+        try {
+            if (client != null) {
+                events = ei.findEventByClient(client);
+            } else {
+                events = ei.findAll();
+            }
+            clName.setCellValueFactory(new PropertyValueFactory<>("name"));
+            clDateStart.setCellValueFactory(new PropertyValueFactory<>("Fecha de Inicio"));
+            clDateEnd.setCellValueFactory(new PropertyValueFactory<>("Fecha Finalizacion"));
+            clDescription.setCellValueFactory(new PropertyValueFactory<>("Descripcion"));
+            eventData = FXCollections.observableArrayList(events);
+        } catch (Exception e) {
+            
+        }
+        tbEvent.setItems(eventData);
+    }
+
+    /**
+     *
+     * @param observable
+     * @param oldValue
+     * @param newValue
+     */
+    public void eventTableSelection(ObservableValue observable, Object oldValue, Object newValue) {
+        // Carga de datos en sección de edición
+        if (newValue != null) {
+            event = (Evento) newValue;
+            txtName.setText(event.getName());
+            dpDateStart.setValue(event.getDateStart().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+            dpDateEnd.setValue(event.getDateEnd().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+            taDescription.setText(event.getDescription());
+            btnNew.setDisable(true);
+            btnDelete.setDisable(false);
+            btnSave.setDisable(false);
+        } else {
+            
         }
     }
 
+    /**
+     *
+     * @param observable
+     * @param oldValue
+     * @param newValue
+     */
+    public void selectedFilter(ObservableValue observable, Object oldValue, Object newValue) {
+        // Carga de datos en sección de edición
+        if (newValue != null) {
+            
+        }
+    }
+    
+    private void validateData() {
+        Boolean name;
+        if (txtName.getText().trim() != null)
+            name = true;
+        Boolean dateStart;
+        if (dpDateStart.getValue() != null)
+            name = true;
+    }
+    
 }

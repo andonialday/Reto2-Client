@@ -28,12 +28,15 @@ public class Evento implements Serializable {
 
     private String description;
 
+    private String name;
+
     private Client client;
-    
+
     private Set<EventEquipment> equipments;
 
     /**
      * Método Getter para obtener la ID del Evento
+     *
      * @return ID del Evento
      */
     public Integer getId() {
@@ -42,6 +45,7 @@ public class Evento implements Serializable {
 
     /**
      * Método Setter para definir la ID del Evento
+     *
      * @param id a asignar al Evento
      */
     public void setId(Integer id) {
@@ -49,7 +53,9 @@ public class Evento implements Serializable {
     }
 
     /**
-     * Método Getter para obtener la DateStart <i>(Fecha de Inicio)</i> del Evento
+     * Método Getter para obtener la DateStart <i>(Fecha de Inicio)</i> del
+     * Evento
+     *
      * @return DateStart <i>(Fecha de Inicio)</i> del Evento
      */
     public Date getDateStart() {
@@ -57,7 +63,9 @@ public class Evento implements Serializable {
     }
 
     /**
-     * Método Setter para definir la DateStart <i>(Fecha de Inicio)</i> del Evento
+     * Método Setter para definir la DateStart <i>(Fecha de Inicio)</i> del
+     * Evento
+     *
      * @param dateStart <i>(Fecha de Inicio)</i> a asignar al Evento
      */
     public void setDateStart(Date dateStart) {
@@ -66,6 +74,7 @@ public class Evento implements Serializable {
 
     /**
      * Método Getter para obtener la DateEnd <i>(Fecha de Fin)</i> del Evento
+     *
      * @return DateEnd <i>(Fecha de Fin)</i> del Evento
      */
     public Date getDateEnd() {
@@ -74,6 +83,7 @@ public class Evento implements Serializable {
 
     /**
      * Método Setter para asignar la DateEnd <i>(Fecha de Fin)</i> al Evento
+     *
      * @param dateEnd <i>(Fecha de Fin)</i> a asignar al Evento
      */
     public void setDateEnd(Date dateEnd) {
@@ -82,6 +92,7 @@ public class Evento implements Serializable {
 
     /**
      * Método Getter para obtener la Description <i>(Descripcion)</i> del Evento
+     *
      * @return Description <i>(Descripcion)</i> del Evento
      */
     public String getDescription() {
@@ -90,14 +101,35 @@ public class Evento implements Serializable {
 
     /**
      * Método Setter para asignar la Description <i>(Descripcion)</i> al Evento
+     *
      * @param description <i>(Descripcion)</i> a asignar al Evento
      */
     public void setDescription(String description) {
         this.description = description;
     }
-    
+
     /**
-     * Método Getter para obtener el Client <i>(Client)</i> "propietario" del Evento
+     * Método Getter para obtener el Name <i>(Nombre)</i> del Evento
+     *
+     * @return Name <i>(Nombre)</i> del Evento
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Método Setter para asignar el Name <i>(Nombre)</i> al Evento
+     *
+     * @param name <i>(Nombre)</i> a asignar al Evento
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * Método Getter para obtener el Client <i>(Client)</i> "propietario" del
+     * Evento
+     *
      * @return Client<i>(Cliente)</i> "propietario" del Evento
      */
     public Client getClient() {
@@ -105,15 +137,19 @@ public class Evento implements Serializable {
     }
 
     /**
-     * Método Setter para asignar el Client <i>(Client)</i> "propietario" al Evento
+     * Método Setter para asignar el Client <i>(Client)</i> "propietario" al
+     * Evento
+     *
      * @param client Client <i>(Cliente)</i> "propietario" a asignar al Evento
      */
     public void setClient(Client client) {
         this.client = client;
     }
-     
+
     /**
-     * Método Getter para obtener los Equipments <i>(Equipamientos empleados)</i> del Evento
+     * Método Getter para obtener los Equipments <i>(Equipamientos
+     * empleados)</i> del Evento
+     *
      * @return Equipments <i>(Equipamientos empleados)</i> del Evento
      */
     @XmlTransient
@@ -122,8 +158,11 @@ public class Evento implements Serializable {
     }
 
     /**
-     * Método Setter para asignar los Equipments <i>(Equipamientos empleados)</i> al Evento
-     * @param equipments Equipments <i>(Equipamientos empleados)</i> a asignar al Evento
+     * Método Setter para asignar los Equipments <i>(Equipamientos
+     * empleados)</i> al Evento
+     *
+     * @param equipments Equipments <i>(Equipamientos empleados)</i> a asignar
+     * al Evento
      */
     public void setEquipments(Set<EventEquipment> equipments) {
         this.equipments = equipments;
