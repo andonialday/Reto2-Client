@@ -7,6 +7,7 @@ package reto2g1cclient.implementation;
 
 import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 
 /**
@@ -29,7 +30,7 @@ public class EventJerseyClient {
     private static final String BASE_URI = "http://localhost:41829/Reto2G1cServer/webresources";
 
     public EventJerseyClient() {
-        client = javax.ws.rs.client.ClientBuilder.newClient();
+        client = (Client) ClientBuilder.newClient();
         webTarget = client.target(BASE_URI).path("entities.event");
     }
 

@@ -20,7 +20,7 @@
                 <TableColumn fx:id="clDescription" maxWidth="-1.0" minWidth="410.0" prefWidth="-1.0" text="Descripción" />
             </columns>
         </TableView>
-        <Button id="btnDeleteEvent" fx:id="btnDeleteEvent" disable="true" layoutX="775.0" layoutY="510.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="171.0" style="-fx-background-color: red;" styleClass="mainFxmlClass" stylesheets="@ventanas.css" text="ELIMINAR EVENTO" textFill="WHITE" />
+        <Button id="btnDeleteEvent" fx:id="btnDelete" disable="true" layoutX="775.0" layoutY="510.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="171.0" style="-fx-background-color: red;" styleClass="mainFxmlClass" stylesheets="@ventanas.css" text="ELIMINAR EVENTO" textFill="WHITE" />
         <Button id="btnSaveChanges" fx:id="btnNew" disable="true" layoutX="774.0" layoutY="387.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="171.0" style="-fx-background-color: green;" styleClass="mainFxmlClass" stylesheets="@ventanas.css" text="NUEVO EVENTO" textFill="WHITE" />
       <TextField fx:id="txtSearch" layoutX="204.0" layoutY="246.0" prefHeight="32.0" prefWidth="447.0" promptText="Búsqueda ..." />
       <TextArea fx:id="taDescription" layoutX="301.0" layoutY="63.0" prefHeight="142.0" prefWidth="620.0" promptText="Descripción del Evento" />
