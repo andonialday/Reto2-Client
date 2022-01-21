@@ -5,35 +5,23 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.layout.HBox?>
 
-<HBox xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="reto1client.controller.">
+<HBox fx:id="hbMenu" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="reto2g1cclient.controller.MenuAdminController">
    <children>
-       <MenuBar prefHeight="25.0" prefWidth="480.0">
+       <MenuBar fx:id="mbAdmin" prefHeight="25.0" prefWidth="480.0">
            <menus>
-               <Menu mnemonicParsing="false" text="Comerciales">
+               <Menu fx:id="mData" mnemonicParsing="false" text="Gestión de Datos">
                    <items>
-                       <MenuItem mnemonicParsing="false" text="Ver Comerciales" />
+                       <MenuItem fx:id="miRental" mnemonicParsing="false" text="Ver Alquileres" />
+                  <MenuItem fx:id="miClient" mnemonicParsing="false" text="Ver Clientes" />
+                  <MenuItem fx:id="miCommercial" mnemonicParsing="false" text="Ver Comerciales" />
+                  <MenuItem fx:id="miEquipment" mnemonicParsing="false" text="Ver Equipamientos" />
+                  <MenuItem fx:id="miEvent" mnemonicParsing="false" text="Ver Eventos" />
                    </items>
                </Menu>
-               <Menu mnemonicParsing="false" text="Clientes">
+               <Menu fx:id="mSession" mnemonicParsing="false" text="Sesión">
                    <items>
-                       <MenuItem mnemonicParsing="false" text="Ver Clientes" />
-                   </items>
-               </Menu>
-               <Menu mnemonicParsing="false" text="Equipamiento">
-                   <items>
-                       <MenuItem mnemonicParsing="false" text="Nuevo Equipamiento" />
-                       <MenuItem mnemonicParsing="false" text="Ver Equipamientos" />
-                   </items>
-               </Menu>
-               <Menu mnemonicParsing="false" text="Otros">
-                   <items>
-                       <MenuItem mnemonicParsing="false" text="Ayuda" />
-                   </items>
-               </Menu>
-               <Menu mnemonicParsing="false" text="Sesión">
-                   <items>
-                       <MenuItem mnemonicParsing="false" text="Cerrar Sesión " />
-                       <MenuItem mnemonicParsing="false" text="Salir" />
+                       <MenuItem fx:id="miLogout" mnemonicParsing="false" text="Cerrar Sesión " />
+                       <MenuItem fx:id="miExit" mnemonicParsing="false" text="Salir" />
                    </items>
                </Menu>
            </menus>
