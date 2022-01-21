@@ -41,7 +41,7 @@
       <Label fx:id="lblBuyData" layoutX="160.0" layoutY="145.0" text="Fecha de compra" />
       <Button id="btNewEquipment" fx:id="btCrearEquip" disable="true" layoutX="781.0" layoutY="316.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="171.0" style="-fx-background-color: green;" text="NUEVO EQUIPAMIENTO" textFill="WHITE" />
       <Label fx:id="lblWarninNumValue" layoutX="162.0" layoutY="130.0" text="Introduzca un valor numerico." textFill="RED" />
-      <Button id="btPrint" fx:id="btCrearEquip1" layoutX="781.0" layoutY="204.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="171.0" style="-fx-background-color: #4B0082;" text="IMPRIMIR" textFill="WHITE" />
+      <Button id="btPrint" fx:id="btPrint" layoutX="781.0" layoutY="204.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="171.0" style="-fx-background-color: #4B0082;" text="IMPRIMIR" textFill="WHITE" />
       <Label fx:id="lblWarningData" layoutX="162.0" layoutY="183.0" text="Debe ser una fecha con formato DD/MM/AAAA." textFill="RED" />
     </children>
 </Pane>

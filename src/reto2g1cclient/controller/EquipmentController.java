@@ -98,6 +98,8 @@ public class EquipmentController {
        @FXML
        private Button btCrearEquip;
        @FXML
+       private Button btPrint;
+       @FXML
        private Label lblNameEquipment;
        @FXML
        private Label lblName;
@@ -157,7 +159,63 @@ public class EquipmentController {
      */
     private void handleWindowShowing(WindowEvent event) {
         LOGGER.info("Beginning LoginController::handleWindowShowing");
+        
+        /* La ventana no es redimensionable
+         - Tabla con 4 columnas (“Nombre”, ”Coste”,”Descripción”, ”Fecha”)
+         Listado del Equipamiento
+         - 6 botones (“Buscar”,”Nuevo Equipamiento”,”Guardar
+         Cambios”,”Eliminar Equipamiento”,”Atrás”,”Imprimir”)
+         - 3 TextField Vacio (“Barra de
+         busqueda”,”Nombre”,”Coste”)
+         - 1 DatePicker habilitado.
+         - 1 textArea habilitado (“Descripción”)
+         - 1 ComboBox para filtrar habilitado
+         - 4 TextField
 
+         32
+
+         - Botones ( “Atrás” / “Buscar / “IMPRIMIR”) siempre
+         habilitados
+         - Botones ( “Nuevo Equipamiento” / “Guardar Cambios”
+         / “Eliminar Equipamiento”) al iniciar la ventanas están
+         deshabilitados
+         - ComboBox (“Nombre”,”Coste”,”Descripción”,”Fecha”)
+         - Cuatro Labels indicativos de campo Visible
+         - Un Label indicativo de Error Invisible
+         * Si surge alguna excepción durante el uso de la ventana, se
+         iniciará un AlertType.ERRORDIALOG avisando al usuario del
+         mismo (En caso de error de conexion al servidor o a la base
+         de datos)*/
+
+        
+        //El boton BUSCAR esta habilitado
+        btFind.setDisable(false);
+        //El boton IMPRIMIR esta habilitado
+        btPrint.setDisable(false);
+        //El boton de crear Equipamiento esta desabilitado
+        btCrearEquip.setDisable(true);
+         //El boton de guardar cambios del Equipamiento esta desabilitado
+        btSaveEquip.setDisable(true);
+         //El boton de borrar Equipamiento esta desabilitado
+        btDeleteEquip.setDisable(true);
+         //El boton de atras esta habilitado
+        btBack.setDisable(false);
+        //El TextField de Nombre esta habilitado
+        tfName.setDisable(false);
+        //El TextField de Coste esta habilitado
+        tfCost.setDisable(false);
+        //El textField de Descripcion esta habilitado
+        taDescription.setDisable(false);
+        //El DatePicker esta habilitado
+        dpDate.setDisable(false);
+        //El lavel WarningNumValue invisible 
+        lblWarninNumValue.setVisible(false);
+        //El lavel lblWarningData invisible 
+        lblWarningData.setVisible(false);
+        //El TextField de Buscar esta habilitado
+        tfFinding.setDisable(true);
+        //El ComboBox esta Habilitado
+        cbSearch.setDisable(false);
         //SignIn button is disabled
        /* btnSignIn.setDisable(true);
         //The SignIn button does not allow spaces to be entered
