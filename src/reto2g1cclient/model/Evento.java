@@ -9,6 +9,9 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 import java.util.Set;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -20,26 +23,47 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 public class Evento implements Serializable {
 
-    private Integer id;
+    private final SimpleIntegerProperty id;
 
-    private Date dateStart;
+    private final SimpleObjectProperty<Date> dateStart;
 
-    private Date dateEnd;
+    private final SimpleObjectProperty<Date> dateEnd;
 
-    private String description;
+    private final SimpleStringProperty description;
 
-    private String name;
+    private final SimpleStringProperty name;
 
-    private Client client;
+    private final SimpleObjectProperty<Client> client;
 
-    private Set<EventEquipment> equipments;
+    private final SimpleObjectProperty<Set<EventEquipment>> equipments;
+
+    /**
+     * Constructor para el objeto Evento
+     *
+     * @param id valor de la propiedad id
+     * @param dateStart valor de la propiedad dateStart
+     * @param dateEnd valor de la propiedad dateEnd
+     * @param description valor de la propiedad description
+     * @param name valor de la propiedad name
+     * @param client valor de la propiedad client
+     * @param equipments valor de la propiedad equipments
+     */
+    public Evento(Integer id, Date dateStart, Date dateEnd, String description, String name, Client client, Set<EventEquipment> equipments) {
+        this.id = new SimpleIntegerProperty(id);
+        this.dateStart = new SimpleObjectProperty<>(dateStart);
+        this.dateEnd = new SimpleObjectProperty<>(dateEnd);
+        this.description = new SimpleStringProperty(description);
+        this.name = new SimpleStringProperty(name);
+        this.client = new SimpleObjectProperty<>(client);
+        this.equipments = new SimpleObjectProperty<>(equipments);
+    }
 
     /**
      * Método Getter para obtener la ID del Evento
      *
      * @return ID del Evento
      */
-    public Integer getId() {
+    public SimpleIntegerProperty getId() {
         return id;
     }
 
@@ -49,7 +73,7 @@ public class Evento implements Serializable {
      * @param id a asignar al Evento
      */
     public void setId(Integer id) {
-        this.id = id;
+        this.id.set(id);
     }
 
     /**
@@ -58,7 +82,7 @@ public class Evento implements Serializable {
      *
      * @return DateStart <i>(Fecha de Inicio)</i> del Evento
      */
-    public Date getDateStart() {
+    public SimpleObjectProperty getDateStart() {
         return dateStart;
     }
 
@@ -69,7 +93,7 @@ public class Evento implements Serializable {
      * @param dateStart <i>(Fecha de Inicio)</i> a asignar al Evento
      */
     public void setDateStart(Date dateStart) {
-        this.dateStart = dateStart;
+        this.dateStart.set(dateStart);
     }
 
     /**
@@ -77,7 +101,7 @@ public class Evento implements Serializable {
      *
      * @return DateEnd <i>(Fecha de Fin)</i> del Evento
      */
-    public Date getDateEnd() {
+    public SimpleObjectProperty getDateEnd() {
         return dateEnd;
     }
 
@@ -87,7 +111,7 @@ public class Evento implements Serializable {
      * @param dateEnd <i>(Fecha de Fin)</i> a asignar al Evento
      */
     public void setDateEnd(Date dateEnd) {
-        this.dateEnd = dateEnd;
+        this.dateEnd.set(dateEnd);
     }
 
     /**
@@ -95,7 +119,7 @@ public class Evento implements Serializable {
      *
      * @return Description <i>(Descripcion)</i> del Evento
      */
-    public String getDescription() {
+    public SimpleStringProperty getDescription() {
         return description;
     }
 
@@ -105,7 +129,7 @@ public class Evento implements Serializable {
      * @param description <i>(Descripcion)</i> a asignar al Evento
      */
     public void setDescription(String description) {
-        this.description = description;
+        this.description.set(description);
     }
 
     /**
@@ -113,7 +137,7 @@ public class Evento implements Serializable {
      *
      * @return Name <i>(Nombre)</i> del Evento
      */
-    public String getName() {
+    public SimpleStringProperty getName() {
         return name;
     }
 
@@ -123,7 +147,7 @@ public class Evento implements Serializable {
      * @param name <i>(Nombre)</i> a asignar al Evento
      */
     public void setName(String name) {
-        this.name = name;
+        this.name.set(name);
     }
 
     /**
@@ -132,7 +156,7 @@ public class Evento implements Serializable {
      *
      * @return Client<i>(Cliente)</i> "propietario" del Evento
      */
-    public Client getClient() {
+    public SimpleObjectProperty getClient() {
         return client;
     }
 
@@ -143,7 +167,7 @@ public class Evento implements Serializable {
      * @param client Client <i>(Cliente)</i> "propietario" a asignar al Evento
      */
     public void setClient(Client client) {
-        this.client = client;
+        this.client.set(client);
     }
 
     /**
@@ -153,7 +177,7 @@ public class Evento implements Serializable {
      * @return Equipments <i>(Equipamientos empleados)</i> del Evento
      */
     @XmlTransient
-    public Set<EventEquipment> getEquipments() {
+    public SimpleObjectProperty getEquipments() {
         return equipments;
     }
 
@@ -165,14 +189,24 @@ public class Evento implements Serializable {
      * al Evento
      */
     public void setEquipments(Set<EventEquipment> equipments) {
-        this.equipments = equipments;
+        this.equipments.set(equipments);
     }
 
+    /**
+     * Método ToString del objeto Evento
+     *
+     * @return conversión a String del objeto Evento
+     */
     @Override
     public String toString() {
         return "Event{" + "id=" + id + ", dateStart=" + dateStart + ", dateEnd=" + dateEnd + ", description=" + description + ", client=" + client + ", equipments=" + equipments + '}';
     }
 
+    /**
+     * Método HashCode del objeto Evento
+     *
+     * @return código hash del objeto Evento
+     */
     @Override
     public int hashCode() {
         int hash = 3;
@@ -185,6 +219,12 @@ public class Evento implements Serializable {
         return hash;
     }
 
+    /**
+     * Método Equals para comparar objetos Evento
+     *
+     * @param obj Evento con el que se va a comparar
+     * @return booleano indicativo de si los objetos son iguales
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {

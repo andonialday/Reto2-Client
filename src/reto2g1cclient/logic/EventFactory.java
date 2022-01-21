@@ -13,6 +13,10 @@ import reto2g1cclient.implementation.EventImplementation;
  */
 public class EventFactory {
     
+    /**
+     *
+     * @return
+     */
     public static  EventInterface getImplementation(){
         EventInterface ei = new EventImplementation();
         return ei;

@@ -29,78 +29,178 @@ public class EventJerseyClient {
     private Client client;
     private static final String BASE_URI = "http://localhost:41829/Reto2G1cServer/webresources";
 
+    /**
+     *
+     */
     public EventJerseyClient() {
         client = (Client) ClientBuilder.newClient();
         webTarget = client.target(BASE_URI).path("entities.event");
     }
 
+    /**
+     *
+     * @param <T>
+     * @param responseType
+     * @param dateMin
+     * @param dateMax
+     * @return
+     * @throws ClientErrorException
+     */
     public <T> T findStartRange(Class<T> responseType, String dateMin, String dateMax) throws ClientErrorException {
         WebTarget resource = webTarget;
         resource = resource.path(java.text.MessageFormat.format("dateStart/{0}/{1}", new Object[]{dateMin, dateMax}));
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
     }
 
+    /**
+     *
+     * @param <T>
+     * @param responseType
+     * @param idCli
+     * @return
+     * @throws ClientErrorException
+     */
     public <T> T findEventByClient(Class<T> responseType, String idCli) throws ClientErrorException {
         WebTarget resource = webTarget;
         resource = resource.path(java.text.MessageFormat.format("byClient/{0}", new Object[]{idCli}));
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
     }
 
+    /**
+     *
+     * @param requestEntity
+     * @param id
+     * @throws ClientErrorException
+     */
     public void edit(Object requestEntity, String id) throws ClientErrorException {
         webTarget.path(java.text.MessageFormat.format("{0}", new Object[]{id})).request(javax.ws.rs.core.MediaType.APPLICATION_XML).put(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_XML));
     }
 
+    /**
+     *
+     * @param <T>
+     * @param responseType
+     * @param from
+     * @param to
+     * @return
+     * @throws ClientErrorException
+     */
     public <T> T findRange(Class<T> responseType, String from, String to) throws ClientErrorException {
         WebTarget resource = webTarget;
         resource = resource.path(java.text.MessageFormat.format("{0}/{1}", new Object[]{from, to}));
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
     }
 
+    /**
+     *
+     * @param <T>
+     * @param responseType
+     * @param dateMin
+     * @param dateMax
+     * @return
+     * @throws ClientErrorException
+     */
     public <T> T findEndRange(Class<T> responseType, String dateMin, String dateMax) throws ClientErrorException {
         WebTarget resource = webTarget;
         resource = resource.path(java.text.MessageFormat.format("dateEnd/{0}/{1}", new Object[]{dateMin, dateMax}));
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
     }
 
+    /**
+     *
+     * @param <T>
+     * @param responseType
+     * @param dateMin
+     * @param dateMax
+     * @param idCli
+     * @return
+     * @throws ClientErrorException
+     */
     public <T> T findEndRangeClient(Class<T> responseType, String dateMin, String dateMax, String idCli) throws ClientErrorException {
         WebTarget resource = webTarget;
         resource = resource.path(java.text.MessageFormat.format("dateEndClient/{0}/{1}/{2}", new Object[]{dateMin, dateMax, idCli}));
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
     }
 
+    /**
+     *
+     * @param <T>
+     * @param responseType
+     * @return
+     * @throws ClientErrorException
+     */
     public <T> T findAll(Class<T> responseType) throws ClientErrorException {
         WebTarget resource = webTarget;
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
     }
 
+    /**
+     *
+     * @param id
+     * @throws ClientErrorException
+     */
     public void remove(String id) throws ClientErrorException {
         webTarget.path(java.text.MessageFormat.format("{0}", new Object[]{id})).request().delete();
     }
 
+    /**
+     *
+     * @return
+     * @throws ClientErrorException
+     */
     public String countREST() throws ClientErrorException {
         WebTarget resource = webTarget;
         resource = resource.path("count");
         return resource.request(javax.ws.rs.core.MediaType.TEXT_PLAIN).get(String.class);
     }
 
+    /**
+     *
+     * @param <T>
+     * @param responseType
+     * @param year
+     * @return
+     * @throws ClientErrorException
+     */
     public <T> T deleteOldestEvents(Class<T> responseType, String year) throws ClientErrorException {
         WebTarget resource = webTarget;
         resource = resource.path(java.text.MessageFormat.format("oldest/{0}", new Object[]{year}));
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
     }
 
+    /**
+     *
+     * @param <T>
+     * @param responseType
+     * @param dateMin
+     * @param dateMax
+     * @return
+     * @throws ClientErrorException
+     */
     public <T> T findDateRange(Class<T> responseType, String dateMin, String dateMax) throws ClientErrorException {
         WebTarget resource = webTarget;
         resource = resource.path(java.text.MessageFormat.format("date/{0}/{1}", new Object[]{dateMin, dateMax}));
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
     }
 
+    /**
+     *
+     * @param <T>
+     * @param responseType
+     * @param id
+     * @return
+     * @throws ClientErrorException
+     */
     public <T> T find(Class<T> responseType, String id) throws ClientErrorException {
         WebTarget resource = webTarget;
         resource = resource.path(java.text.MessageFormat.format("{0}", new Object[]{id}));
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
     }
 
+    /**
+     *
+     * @param requestEntity
+     */
     public void create(Object requestEntity) {
         try {
             webTarget.request(javax.ws.rs.core.MediaType.APPLICATION_XML).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_XML));
@@ -109,18 +209,41 @@ public class EventJerseyClient {
         }
     }
         
+    /**
+     *
+     * @param <T>
+     * @param responseType
+     * @param dateMin
+     * @param dateMax
+     * @param idCli
+     * @return
+     * @throws ClientErrorException
+     */
     public <T> T findDateRangeClient(Class<T> responseType, String dateMin, String dateMax, String idCli) throws ClientErrorException {
         WebTarget resource = webTarget;
         resource = resource.path(java.text.MessageFormat.format("dateClient/{0}/{1}/{2}", new Object[]{dateMin, dateMax, idCli}));
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
     }
 
+    /**
+     *
+     * @param <T>
+     * @param responseType
+     * @param dateMin
+     * @param dateMax
+     * @param idCli
+     * @return
+     * @throws ClientErrorException
+     */
     public <T> T findStartRangeClient(Class<T> responseType, String dateMin, String dateMax, String idCli) throws ClientErrorException {
         WebTarget resource = webTarget;
         resource = resource.path(java.text.MessageFormat.format("dateStartClient/{0}/{1}/{2}", new Object[]{dateMin, dateMax, idCli}));
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
     }
 
+    /**
+     *
+     */
     public void close() {
         client.close();
     }

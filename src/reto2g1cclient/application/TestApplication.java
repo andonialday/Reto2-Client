@@ -6,6 +6,10 @@
 package reto2g1cclient.application;
 
 import java.io.IOException;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.logging.Logger;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
@@ -13,6 +17,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
 import reto2g1cclient.controller.VEventTableController;
+import reto2g1cclient.model.Evento;
 
 /**
  * Client Main class to Launch Client App
@@ -38,12 +43,18 @@ public class TestApplication extends Application {
         Logger.getLogger("Initializing client...");
         //get the route of the 1. View
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/reto2g1cclient/view/VEventTable.fxml"));
-            
+        List<Evento> events = new ArrayList<>();
+        for (int i = 0 ; i < 3 ; i++) {
+            Evento ev = new Evento(i+1, Date.from(Instant.now()), Date.from(Instant.now()), "descripcion de prueba " + (i+1), "nombre de prueba " + (i+1), null, null);
+            events.add(ev);
+        }
         Parent root = (Parent) loader.load();
         //get the controller of the view
         VEventTableController controller = ((VEventTableController) loader.getController());
         controller.setStage(primaryStage);
         //initializate the stage
+        controller.setEvents(events);
+        controller.setEditable(true);
         controller.initStage(root);
 
     }
