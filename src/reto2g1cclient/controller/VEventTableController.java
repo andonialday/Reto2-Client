@@ -41,7 +41,7 @@ import reto2g1cclient.model.Evento;
  * @author Andoni Alday
  */
 public class VEventTableController {
-    
+
     private static final Logger LOGGER = Logger.getLogger("package.class");
     private Stage stage;
     private Client client;
@@ -50,6 +50,10 @@ public class VEventTableController {
     private boolean editable;
     private EventInterface ei;
     private ObservableList<Evento> eventData;
+    private boolean dateEnd;
+    private boolean dateStart;
+    private boolean desc;
+    private boolean name;
 
     /**
      *
@@ -272,6 +276,16 @@ public class VEventTableController {
      *
      */
     @FXML
+    private Label lblDateStartEr;
+    /**
+     *
+     */
+    @FXML
+    private Label lblDateEndEr;
+    /**
+     *
+     */
+    @FXML
     private Label lblDescription;
 
     /**
@@ -280,7 +294,7 @@ public class VEventTableController {
      * @throws IOException
      */
     public void initStage(Parent root) throws IOException {
-        
+
         LOGGER.info("Initializing Login stage.");
 
         //Create a new scene
@@ -311,15 +325,19 @@ public class VEventTableController {
         btnDelete.setOnAction(this::deleteEvent);
         btnNew.setOnAction(this::newEvent);
         btnSave.setOnAction(this::saveChanges);
-
+        //Fields
+        txtName.textProperty().addListener(this::txtNameVal);
+        dpDateStart.valueProperty().addListener(this::dateStartVal);
+        dpDateEnd.valueProperty().addListener(this::dateEndVal);
+        taDescription.textProperty().addListener(this::taDescVal);
         //Show main window
         stage.show();
-        
+
     }
-    
+
     private void handleWindowShowing(WindowEvent event) {
         LOGGER.info("Beginning LoginController::handleWindowShowing");
-        
+
         btnBack.setDisable(false);
         btnDelete.setDisable(true);
         btnNew.setDisable(true);
@@ -330,9 +348,9 @@ public class VEventTableController {
         //Si accede a la vista de eventos un cliente, editable será true y se podrá 
         //editar la tabla, si accede un comercial, editable será false y no será editable
         tbEvent.setEditable(editable);
-        
+
     }
-    
+
     @FXML
     private void back(ActionEvent event) {
         LOGGER.info("Requesting confirmation for application closing...");
@@ -348,7 +366,7 @@ public class VEventTableController {
             LOGGER.info("Closing aborted");
         }
     }
-    
+
     @FXML
     private void deleteEvent(ActionEvent event) {
         LOGGER.info("Requesting confirmation for Event Deletion...");
@@ -363,10 +381,14 @@ public class VEventTableController {
             LOGGER.info("Closing aborted");
         }
     }
-    
+
     @FXML
     private void newEvent(ActionEvent event) {
-        validateData();
+        if (dpDateEnd.getValue().isAfter(dpDateStart.getValue()) || dpDateEnd.getValue().isEqual(dpDateStart.getValue())) {
+            Evento ev = new Evento();
+        } else {
+            lblDateEndEr.setVisible(true);
+        }
         LOGGER.info("Requesting confirmation for application closing...");
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Está Cerrando el Programa");
@@ -380,7 +402,7 @@ public class VEventTableController {
             LOGGER.info("Closing aborted");
         }
     }
-    
+
     @FXML
     private void saveChanges(ActionEvent event) {
         LOGGER.info("Requesting confirmation for application closing...");
@@ -415,7 +437,7 @@ public class VEventTableController {
             LOGGER.info("Closing aborted");
         }
     }
-    
+
     private void loadData() {
         try {
             if (client != null) {
@@ -429,7 +451,7 @@ public class VEventTableController {
             clDescription.setCellValueFactory(new PropertyValueFactory<>("Descripcion"));
             eventData = FXCollections.observableArrayList(events);
         } catch (Exception e) {
-            
+
         }
         tbEvent.setItems(eventData);
     }
@@ -452,7 +474,7 @@ public class VEventTableController {
             btnDelete.setDisable(false);
             btnSave.setDisable(false);
         } else {
-            
+
         }
     }
 
@@ -465,17 +487,48 @@ public class VEventTableController {
     public void selectedFilter(ObservableValue observable, Object oldValue, Object newValue) {
         // Carga de datos en sección de edición
         if (newValue != null) {
-            
+
         }
     }
-    
-    private void validateData() {
-        Boolean name;
-        if (txtName.getText().trim() != null)
-            name = true;
-        Boolean dateStart;
-        if (dpDateStart.getValue() != null)
-            name = true;
+
+    public void validateData() {
+        if (name && dateStart && dateEnd && desc) {
+            btnNew.setDisable(false);
+        } else {
+            btnNew.setDisable(true);
+        }
     }
-    
+
+    public void txtNameVal(ObservableValue observable, Object oldValue, Object newValue) {
+        name = false;
+        if (txtName.getText().trim() != null) {
+            name = true;
+        }
+        validateData();
+    }
+
+    public void dateStartVal(ObservableValue observable, Object oldValue, Object newValue) {
+        dateStart = false;
+        if (dpDateStart.getValue() != null) {
+            dateStart = true;
+        }
+        validateData();
+    }
+
+    public void dateEndVal(ObservableValue observable, Object oldValue, Object newValue) {
+        dateEnd = false;
+        if (dpDateEnd.getValue() != null) {
+            dateEnd = true;
+        }
+        validateData();
+    }
+
+    public void taDescVal(ObservableValue observable, Object oldValue, Object newValue) {
+        desc = false;
+        if (taDescription.getText().trim() != null) {
+            desc = true;
+        }
+        validateData();
+    }
+
 }

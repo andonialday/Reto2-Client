@@ -32,11 +32,11 @@
       <Label fx:id="lblDescription" layoutX="301.0" layoutY="44.0" prefHeight="17.0" prefWidth="174.0" text="Descripcion del Evento" />
       <Button fx:id="btnBack" layoutX="774.0" layoutY="678.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="171.0" text="ATRAS" />
       <Button fx:id="btnSearch" layoutX="649.0" layoutY="246.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="115.0" text="BUSCAR" />
-      <Label fx:id="lblDateEndError" layoutX="34.0" layoutY="211.0" prefHeight="17.0" prefWidth="478.0" text="La Fecha de Finalización no puede ser anterior a la de Inicio y con formato DD/MM/AAAA" textFill="RED" />
+      <Label fx:id="lblDateEndEr" layoutX="34.0" layoutY="211.0" prefHeight="17.0" prefWidth="478.0" text="La Fecha de Finalización no puede ser anterior a la de Inicio y con formato DD/MM/AAAA" textFill="RED" />
       <Button id="btnSaveChanges" fx:id="btnPrint" layoutX="775.0" layoutY="245.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="171.0" style="-fx-background-color: #4b0082;" styleClass="mainFxmlClass" stylesheets="@ventanas.css" text="IMPRIMIR" textFill="WHITE" />
       <TextField fx:id="txtName" layoutX="56.0" layoutY="61.0" prefHeight="25.0" prefWidth="174.0" promptText="Nombre del Evento" />
       <Label fx:id="lblName" layoutX="55.0" layoutY="44.0" prefHeight="17.0" prefWidth="174.0" text="Nombre del Evento" />
-      <Label fx:id="lblDateStartError" layoutX="34.0" layoutY="137.0" prefHeight="17.0" prefWidth="254.0" text="Debe ser una fecha de formato DD/MM/AAAA" textFill="RED" />
+      <Label fx:id="lblDateStartEr" layoutX="34.0" layoutY="137.0" prefHeight="17.0" prefWidth="254.0" text="Debe ser una fecha de formato DD/MM/AAAA" textFill="RED" />
       <ComboBox fx:id="cbSearch" layoutX="27.0" layoutY="249.0" prefWidth="150.0" promptText="Nombre del Evento" />
     </children>
 </Pane>
