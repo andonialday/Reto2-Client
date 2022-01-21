@@ -75,6 +75,9 @@ public class VSignInController {
 
     @FXML
     private Hyperlink hyperSignUp;
+    
+    @FXML
+    private Hyperlink hyperReset;
 
     /**
      * Initialize and show window
@@ -107,6 +110,7 @@ public class VSignInController {
         btnSignIn.setOnAction(this::signIn);
         btnExit.setOnAction(this::exit);
         hyperSignUp.setOnAction(this::signUp);
+        hyperReset.setOnAction(this::reset);
 
         //Show main window
         stage.show();
@@ -241,6 +245,27 @@ public class VSignInController {
             controller.initStage(root);
         } catch (IOException ex) {
             LOGGER.info("Error initializing VSignUp");
+        }
+    }
+    
+    /**
+     * This method is executed when the user clicks the hyperlink SignUp. The
+     * Sign Up window will open.
+     *
+     * @param event
+     */
+    @FXML
+    private void reset(ActionEvent event) {
+        LOGGER.info("Initializing Password Reset");
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/reto2g1cclient/view/VReset.fxml"));
+            Parent root = (Parent) fxmlLoader.load();
+            VResetController controller = ((VResetController) fxmlLoader.getController());
+            Stage primaryStage = this.stage;
+            controller.setStage(primaryStage);
+            controller.initStage(root);
+        } catch (IOException ex) {
+            LOGGER.info("Error initializing Password Reset");
         }
     }
 

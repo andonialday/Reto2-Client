@@ -24,7 +24,7 @@
         </Button>
         <Hyperlink id="hyperSignUp" fx:id="hyperSignUp" alignment="CENTER" contentDisplay="CENTER" layoutX="27.0" layoutY="237.0" prefHeight="23.0" prefWidth="427.0" text="¿No tienes cuenta? Registrate aqui" />
       <Hyperlink id="hyperPassReset" fx:id="hyperReset" alignment="CENTER" contentDisplay="CENTER" layoutX="27.0" layoutY="260.0" prefHeight="23.0" prefWidth="427.0" text="He olvidado mi contraseña" />
-      <Label layoutX="55.0" layoutY="77.0" text="Login" />
-      <Label layoutX="55.0" layoutY="147.0" prefHeight="17.0" prefWidth="70.0" text="Contraseña" />
+      <Label fx:id="lblLogin" layoutX="55.0" layoutY="77.0" text="Login" />
+      <Label fx:id="lblPassword" layoutX="55.0" layoutY="147.0" prefHeight="17.0" prefWidth="70.0" text="Contraseña" />
     </children>
 </Pane>
