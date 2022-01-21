@@ -7,6 +7,7 @@ package reto2g1cclient.implementation;
 
 import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 
 /**
@@ -29,7 +30,7 @@ public class UserJerseyClient {
     private static final String BASE_URI = "http://localhost:8080/Reto2G1cServer/webresources";
 
     public UserJerseyClient() {
-        client = javax.ws.rs.client.ClientBuilder.newClient();
+        client = ClientBuilder.newClient();
         webTarget = client.target(BASE_URI).path("entities.user");
     }
 
@@ -72,7 +73,7 @@ public class UserJerseyClient {
     public <T> T resetPasswordByLogin(Class<T> responseType, String log) throws ClientErrorException {
         WebTarget resource = webTarget;
         resource = resource.path(java.text.MessageFormat.format("resetPassword/{0}", new Object[]{log}));
-        return resource.get(responseType);
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
     }
 
     public <T> T findAll(Class<T> responseType) throws ClientErrorException {
