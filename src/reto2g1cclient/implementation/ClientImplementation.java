@@ -23,33 +23,39 @@ public class ClientImplementation implements ClientInterface{
     }
     
     @Override
-    public void createClient (Client client){
+    public void createClient (Client client)throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void editClient(Client client) {
+    public void editClient(Client client) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void removeClient(Client client) {
+    public Client removeClient(Client client) throws Exception {
+        client = null;
+        try{
+            clients = clientJersey.remove(new GenericType Client(){});
+        }catch (Exception e){
+            throw new Exception(e.getMessage());
+        }
+        return clients;
+    }
+
+    @Override
+    public void searchClient(Client client) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void searchClient(Client client) {
+    public void findClientCommercial(Client client) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void findClientCommercial(Client client) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void deleteAllClientDisabled(Client client) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void deleteAllClientDisabled(Client client) throws Exception {
+        
     }
 
     @Override
