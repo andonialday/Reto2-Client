@@ -7,6 +7,7 @@ package reto2g1cclient.implementation;
 
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
+import reto2g1cclient.cypher.EncryptAsim;
 import reto2g1cclient.exception.*;
 import reto2g1cclient.logic.Signable;
 import reto2g1cclient.model.User;
@@ -40,12 +41,13 @@ public class ViewSignableImplementation implements Signable {
      */
     @Override
     public User signIn(User usr) throws CredentialErrorException, DBConnectionException, ClientServerConnectionException {
-        usr = ujc.signIn(User.class, usr);
+        usr = ujc.signIn(User.class, usr.getLogin(), EncryptAsim.encryption(usr.getPassword()));
         return usr;
     }
 
     @Override
     public void signUp(User usr) throws LoginOnUseException, ClientServerConnectionException, DBConnectionException {
+        usr.setPassword(EncryptAsim.encryption(usr.getPassword()));
         ujc.create(usr);
     }
 
@@ -56,6 +58,7 @@ public class ViewSignableImplementation implements Signable {
 
     @Override
     public void changePassword(User usr) throws ClientServerConnectionException, DBConnectionException, LoginOnUseException {
+        usr.setPassword(EncryptAsim.encryption(usr.getPassword()));
         ujc.updatePass(usr);
     }
 }
