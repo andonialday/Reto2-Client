@@ -8,8 +8,15 @@ package reto2g1cclient.controller;
 import java.io.IOException;
 import java.util.List;
 import java.util.logging.Logger;
+import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import reto2g1cclient.model.Equipment;
@@ -25,6 +32,9 @@ public class EquipmentController {
      */
     private static final Logger LOGGER = Logger.getLogger("package.class");
     private List<Equipment> equipments;
+    private Stage stage;
+    private Equipment equipment;
+    
 
     public void setEquipments(List<Equipment> equipments) {
         this.equipments = equipments;
@@ -34,7 +44,7 @@ public class EquipmentController {
         return equipments;
     }
     
-    private Stage stage;
+    
 
     /**
      * Sets the stage
@@ -53,8 +63,58 @@ public class EquipmentController {
     public Stage getStage() {
         return stage;
     }
-
+    //Elementos FXML 
     
+       @FXML
+       private TableView<Equipment> tbEquipment;
+       @FXML
+       private TableColumn<Equipment, String> clName;
+       @FXML
+       private TableColumn<Equipment, String> clCost;
+       @FXML
+       private TableColumn<Equipment, String> clDescription;
+       @FXML
+       private TableColumn<Equipment, String> clDate;
+       @FXML
+       private Button btBack;
+       @FXML
+       private Button btDeleteEquip;
+       @FXML
+       private Button btSaveEquip;
+       @FXML
+       private Button btFind;
+       @FXML
+       private ComboBox cbSearch;
+       @FXML
+       private TextField tfFinding;
+       @FXML
+       private TextField tfName;
+       @FXML
+       private TextField tfCost;
+       @FXML
+       private TextField dpDate;
+       @FXML
+       private TextField taDescription;
+       @FXML
+       private Button btCrearEquip;
+       @FXML
+       private Label lblNameEquipment;
+       @FXML
+       private Label lblName;
+       @FXML
+       private Label lblCost;
+       @FXML
+       private Label lblDescription;
+       @FXML
+       private Label lblBuyData;
+       @FXML
+       private Label lblWarninNumValue;
+       @FXML
+       private Label lblWarningData;
+       
+       
+       
+       
       public void initStage(Parent root) throws IOException {
 
              //Create a new scene
