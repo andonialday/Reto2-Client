@@ -60,9 +60,9 @@ public class UserJerseyClient {
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
     }
 
-    public <T> T SignIn(Class<T> responseType, String user) throws ClientErrorException {
+    public <T> T signIn(Class<T> responseType, String login, String password) throws ClientErrorException {
         WebTarget resource = webTarget;
-        resource = resource.path(java.text.MessageFormat.format("signIn/{0}", new Object[]{user}));
+        resource = resource.path(java.text.MessageFormat.format("signIn/{0}/{1}", new Object[]{login, password}));
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
     }
 
@@ -88,5 +88,5 @@ public class UserJerseyClient {
     public void close() {
         client.close();
     }
-    
+
 }

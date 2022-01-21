@@ -5,12 +5,7 @@
  */
 package reto2g1cclient.implementation;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import reto2g1cclient.exception.*;
 import reto2g1cclient.logic.Signable;
@@ -45,21 +40,22 @@ public class ViewSignableImplementation implements Signable {
      */
     @Override
     public User signIn(User usr) throws CredentialErrorException, DBConnectionException, ClientServerConnectionException {
-
+        usr = ujc.signIn(User.class, usr);
         return usr;
     }
 
-    /**
-     * Method to Sign Up the Client in to the Data Base
-     *
-     * @param usr Asks a user to encapsulate in order to send it to the server
-     * @return Returns a null or a complete user depending if it fails
-     * @throws LoginOnUseException If the User Parameters are rown
-     * @throws ClientServerConnectionException If the Client cant Connect With
-     * the server cause of the Server error
-     */
     @Override
     public void signUp(User usr) throws LoginOnUseException, ClientServerConnectionException, DBConnectionException {
         ujc.create(usr);
+    }
+
+    @Override
+    public void resetPassword(String log) throws LoginOnUseException, ClientServerConnectionException, DBConnectionException {
+        User usr = ujc.resetPasswordByLogin(User.class, log);
+    }
+
+    @Override
+    public void changePassword(User usr) throws ClientServerConnectionException, DBConnectionException, LoginOnUseException {
+        ujc.updatePass(usr);
     }
 }
