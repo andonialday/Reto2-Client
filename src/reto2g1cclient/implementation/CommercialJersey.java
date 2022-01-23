@@ -24,10 +24,14 @@ import javax.ws.rs.client.WebTarget;
  */
 public class CommercialJersey {
 
+    //puerto??
     private WebTarget webTarget;
     private Client client;
     private static final String BASE_URI = "http://localhost:37388/Reto2G1cServer/webresources";
 
+    /**
+     * 
+     */
     public CommercialJersey() {
         client = javax.ws.rs.client.ClientBuilder.newClient();
         webTarget = client.target(BASE_URI).path("entities.commercial");

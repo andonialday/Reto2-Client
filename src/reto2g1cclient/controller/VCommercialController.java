@@ -21,7 +21,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import reto1libraries.object.User;
+import reto2g1cclient.model.User;
 
 
 /**

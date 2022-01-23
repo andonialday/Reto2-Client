@@ -12,12 +12,12 @@ import java.net.Socket;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import reto1libraries.exception.ClientServerConnectionException;
-import reto1libraries.exception.CredentialErrorException;
-import reto1libraries.exception.DBConnectionException;
-import reto1libraries.exception.LoginOnUseException;
-import reto1libraries.logic.*;
-import reto1libraries.object.*;
+import reto2g1cclient.exception.ClientServerConnectionException;
+import reto2g1cclient.exception.CredentialErrorException;
+import reto2g1cclient.exception.DBConnectionException;
+import reto2g1cclient.exception.LoginOnUseException;
+import reto2g1cclient.logic.Signable;
+import reto2g1cclient.model.User;
 
 /**
  * Signable Implementation Class for the View Layer
@@ -143,4 +143,6 @@ public class ViewSignableImplementation implements Signable {
         //return User object
         return usr;
     }
+
+  
 }

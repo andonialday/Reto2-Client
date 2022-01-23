@@ -5,7 +5,11 @@
  */
 package reto2g1cclient.logic;
 
-import entities.Commercial;
+import java.util.List;
+import reto2g1cclient.model.Client;
+import reto2g1cclient.model.Commercial;
+
+
 
 /**
  *
@@ -13,10 +17,40 @@ import entities.Commercial;
  */
 public interface CommercialInterface {
     
-    /**
-     * Este metodo actualiza los datos del propio commercial 
-     * @param commercial es una entidad que hereda de user
+     /**
+     *
+     * @param commercial
      */
-    public void updateCommercial(Commercial commercial);
+    public void create(Commercial commercial);
+    
+    /**
+     *
+     * @param commercial
+     */
+    public void edit(Commercial commercial);
+    
+    /**
+     *
+     * @param commercial
+     */
+    public void remove(Commercial commercial);
+    
+    
+    /**
+     *
+     * @param id
+     * @return
+     */
+    public Commercial find(Integer id);
+    
+    
+    
+    /**
+     *
+     * @return
+     */
+    public List<Commercial> findAll();
+    
+    
     
 }

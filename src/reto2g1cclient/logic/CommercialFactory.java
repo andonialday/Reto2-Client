@@ -5,7 +5,6 @@
  */
 package reto2g1cclient.logic;
 
-import entities.Commercial;
 import reto2g1cclient.implementation.CommercialImplementation;
 
 /**
@@ -14,9 +13,9 @@ import reto2g1cclient.implementation.CommercialImplementation;
  */
 public class CommercialFactory {
     
-    public static CommercialImplementation getCommercial(){
-        CommercialImplementation commercial = new CommercialImplementation();
-        return commercial;
+    public static CommercialInterface getImplementation(){
+        CommercialInterface coI = new CommercialImplementation();
+        return coI;
     }
     
 }
