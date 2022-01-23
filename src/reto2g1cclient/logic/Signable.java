@@ -10,7 +10,7 @@ import reto2g1cclient.model.*;
 
 /**
  * Signable Interface 
- * @author Jaime San Sebastian,Enaitz Izagirre
+ * @author Jaime San Sebastián y Enaitz Izagirre
  */
 public interface Signable {
  

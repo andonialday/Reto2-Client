@@ -10,7 +10,7 @@ import reto2g1cclient.model.User;
 
 /**
  *
- * @author Jaime San Sebastian
+ * @author Jaime San Sebastián y Enaitz Izagirre
  */
 public class UserImplementation implements UserInterface{
 

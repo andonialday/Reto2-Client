@@ -12,7 +12,7 @@ import java.util.Objects;
 /**
  * Clase con los parámetros para la creación y gestión de usuarios
  *
- * @author Jaime San Sebastián y Enaitz Izaguirre
+ * @author Jaime San Sebastián y Enaitz Izagirre
  */
 public class User implements Serializable {
 

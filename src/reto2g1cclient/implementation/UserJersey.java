@@ -20,7 +20,7 @@ import javax.ws.rs.client.WebTarget;
  *        client.close();
  * </pre>
  *
- * @author Jaime San Sebastian
+ * @author Jaime San Sebastián y Enaitz Izagirre
  */
 public class UserJersey {
 

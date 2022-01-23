@@ -11,7 +11,7 @@ import java.io.Serializable;
  * La enumeración de los privilegios para el usuario, con los posibles valores
  * del campo
  *
- * @author Jaime San Sebastián y Enaitz Izaguirre
+ * @author Jaime San Sebastián y Enaitz Izagirre
  */
 public enum Privilege implements Serializable {
 

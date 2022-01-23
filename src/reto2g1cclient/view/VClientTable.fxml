@@ -19,7 +19,7 @@
                 <TableColumn fx:id="colType" maxWidth="180.0" minWidth="-Infinity" prefWidth="180.0" text="Tipo" />
             </columns>
         </TableView>
-        <Button id="btnDeleteEvent" fx:id="btnDeleteEvent" disable="true" layoutX="775.0" layoutY="510.0" mnemonicParsing="false" onAction="#handleDeleteClient" prefHeight="32.0" prefWidth="171.0" style="-fx-background-color: red;" styleClass="mainFxmlClass" stylesheets="@ventanas.css" text="ELIMINAR CLIENTE" textFill="WHITE" />
+        <Button id="btnDeleteEvent" fx:id="btnDeleteClient" disable="true" layoutX="775.0" layoutY="510.0" mnemonicParsing="false" onAction="#handleDeleteClient" prefHeight="32.0" prefWidth="171.0" style="-fx-background-color: red;" styleClass="mainFxmlClass" stylesheets="@ventanas.css" text="ELIMINAR CLIENTE" textFill="WHITE" />
         <Button id="btnSaveChanges" fx:id="btnNewClient" disable="true" layoutX="774.0" layoutY="387.0" mnemonicParsing="false" onAction="#handleAddClient" prefHeight="32.0" prefWidth="171.0" style="-fx-background-color: green;" styleClass="mainFxmlClass" stylesheets="@ventanas.css" text="NUEVO CLIENTE" textFill="WHITE" />
       <TextField fx:id="txtFilter" layoutX="204.0" layoutY="246.0" prefHeight="32.0" prefWidth="447.0" promptText="Búsqueda ..." />
       <Button id="btnSaveChanges" fx:id="btnSaveClient" disable="true" layoutX="775.0" layoutY="448.0" mnemonicParsing="false" onAction="#handleSaveClient" prefHeight="32.0" prefWidth="171.0" style="-fx-background-color: blue;" styleClass="mainFxmlClass" stylesheets="@ventanas.css" text="GUARDAR CAMBIOS" textFill="WHITE" />

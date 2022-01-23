@@ -9,7 +9,7 @@ import reto2g1cclient.model.User;
 
 /**
  *
- * @author 2dam
+ * @author Jaime San Sebastián y Enaitz Izagirre
  */
 public interface UserInterface {
     

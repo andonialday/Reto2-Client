@@ -11,7 +11,7 @@ import java.io.Serializable;
  * La enumeración del estado de la cuenta del usuario, con los posibles valores
  * del campo
  *
- * @author Jaime San Sebastián y Enaitz Izaguirre
+ * @author Jaime San Sebastián y Enaitz Izagirre
  */
 public enum UserStatus implements Serializable {
 

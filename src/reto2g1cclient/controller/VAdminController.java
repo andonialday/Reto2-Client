@@ -15,7 +15,7 @@ import reto2g1cclient.logic.UserInterface;
 
 /**
  *
- * @author 2dam
+ * @author Jaime San Sebastián y Enaitz Izagirre
  */
 public class VAdminController {
     

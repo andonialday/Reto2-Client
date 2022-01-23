@@ -6,6 +6,7 @@
 package reto2g1cclient.logic;
 
 import java.util.Collection;
+import reto2g1cclient.exception.ClientServerConnectionException;
 import reto2g1cclient.model.Client;
 
 /**
@@ -14,17 +15,17 @@ import reto2g1cclient.model.Client;
  */
 public interface ClientInterface {
     
-    public void createClient(Client client) throws Exception;
+    public void createClient(Client client) throws ClientServerConnectionException;
     
-    public void editClient(Client client) throws Exception;
+    public void editClient(Client client) throws ClientServerConnectionException;
     
-    public void removeClient(Client client) throws Exception;
+    public void removeClient(String clientId) throws ClientServerConnectionException;
     
-    public void searchClient(Client client) throws Exception;
+    public void searchClient(Client client) throws ClientServerConnectionException;
     
-    public void findClientCommercial(Client client) throws Exception;
+    public void findClientCommercial(Client client) throws ClientServerConnectionException;
     
-    public void deleteAllClientDisabled(Client client) throws Exception;
+    public void deleteAllClientDisabled(Client client) throws ClientServerConnectionException;
     
-    public Collection<Client> getAllClient() throws Exception;
+    public Collection<Client> getAllClient() throws ClientServerConnectionException;
 }

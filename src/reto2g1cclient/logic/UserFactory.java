@@ -8,7 +8,7 @@ package reto2g1cclient.logic;
 import reto2g1cclient.implementation.UserImplementation;
 /**
  *
- * @author Jaime San Sebastian
+ * @author Jaime San Sebastián y Enaitz Izagirre
  */
 public class UserFactory {
     //INTERFAZ IGUAL A NEW IMPLEMENTACIÓN
