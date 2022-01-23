@@ -161,38 +161,42 @@ public class VSignInController {
         try {
             usr = sig.signIn(user);
             if (usr instanceof Client) {
-                /*try {
-                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/reto2g1cclient/view/VClient.fxml"));
+                // Inicio de ventana de cliente
+                //      Por falta de tiempo, se ha optado por sustituir VClient por VFinal
+                try {
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/reto2g1cclient/view/VFinal.fxml"));
                     Parent root = (Parent) fxmlLoader.load();
-                    VClientController controller = ((VClientController) fxmlLoader.getController());
+                    VFinalController controller = ((VFinalController) fxmlLoader.getController());
                     Stage primaryStage = this.stage;
                     controller.setUser(usr);
                     controller.setStage(primaryStage);
                     controller.initStage(root);
                 } catch (IOException ex) {
                     LOGGER.info("Error trying to show post SignIn window");
-                }*/
+                }
             } else if (usr instanceof Commercial) {
-                /*try {
-                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/reto2g1cclient/view/VCommercial.fxml"));
+                // Inicio de ventana de cliente
+                //      Por falta de tiempo, se ha optado por sustituir VCommercial por VFinal
+                try {
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/reto2g1cclient/view/VFinal.fxml"));
                     Parent root = (Parent) fxmlLoader.load();
-                    VCommercialController controller = ((VCommercialController) fxmlLoader.getController());
+                    VFinalController controller = ((VFinalController) fxmlLoader.getController());
                     Stage primaryStage = this.stage;
                     controller.setUser(usr);
                     controller.setStage(primaryStage);
                     controller.initStage(root);
                 } catch (IOException ex) {
                     LOGGER.info("Error trying to show post SignIn window");
-                }*/
+                }
             } else {
                 try {
                     FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/reto2g1cclient/view/VAdmin.fxml"));
                     Parent root = (Parent) fxmlLoader.load();
-                    //VAdminController controller = ((VAdminController) fxmlLoader.getController());
+                    VAdminController controller = ((VAdminController) fxmlLoader.getController());
                     Stage primaryStage = this.stage;
-                    //controller.setUser(usr);
-                    //controller.setStage(primaryStage);
-                    //controller.initStage(root);
+                    controller.setUser(usr);
+                    controller.setStage(primaryStage);
+                    controller.initStage(root);
                 } catch (IOException ex) {
                     LOGGER.info("Error trying to show post SignIn window");
                 }
