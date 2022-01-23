@@ -57,10 +57,14 @@ public class VEventTableController {
     private Boolean editable;
     private EventInterface ei;
     private ObservableList<Evento> eventData;
+    // Booleanos para control de contenido introducido valido
     private Boolean dateEnd;
     private Boolean dateStart;
     private Boolean desc;
     private Boolean name;
+    // Booleano para control de seleccion de elemento en tabla para habilitar el Botón Nuevo
+    private Boolean tableSelec;
+    // Integer para control de filtro seleccionado
     private Integer filter;
 
     /**
@@ -341,6 +345,7 @@ public class VEventTableController {
         cbSearch.getSelectionModel().selectedItemProperty().addListener(this::selectedFilter);
         btnSearch.setOnAction(this::filterEvents);
         // Botones y Fields
+        btnPrint.setOnAction(this::printData);
         btnBack.setOnAction(this::back);
         btnDelete.setOnAction(this::deleteEvent);
         btnNew.setOnAction(this::newEvent);
@@ -355,6 +360,9 @@ public class VEventTableController {
     }
 
     /**
+     * Método que determina el valor inicial de los parámetros de control
+     * (Booleans e Integer) e inicia los elementos al estado adecuado
+     * ([des]habilitado / [in]visible)
      *
      * @param event
      */
@@ -379,6 +387,7 @@ public class VEventTableController {
         dateStart = false;
         dateEnd = false;
         desc = false;
+        tableSelec = false;
         //Si accede a la vista de eventos un cliente, editable será true y se podrá 
         //editar la tabla, si accede un comercial, editable será false y no será editable
         tbEvent.setEditable(editable);
@@ -450,25 +459,7 @@ public class VEventTableController {
     @FXML
     public void saveChanges(ActionEvent event) {
         LOGGER.info("Update of data on database requested");
-        List<Evento> evs = ei.findAll();
-        // Lee todos los eventos de la base de datos
-        for (Evento ev : events) {
-            Boolean encontrado = false;
-            // Busca los eventos actuales en los extraidos de la base de datos
-            for (Evento evnt : evs) {
-                if (ev.getId() == evnt.getId()) {
-                    encontrado = true;
-                    // si lo encuentra, analiza si son iguales, si no lo son, lo actualiza
-                    if (!ev.equals(evnt)) {
-                        ei.edit(ev);
-                    }
-                }
-            }
-            // Si no lo ha encontrado, lo añade a la base de datos
-            if (!encontrado) {
-                ei.createEvent(ev);
-            }
-        }
+        saveData();
     }
 
     /**
@@ -531,8 +522,24 @@ public class VEventTableController {
             btnNew.setDisable(true);
             btnDelete.setDisable(false);
             btnSave.setDisable(false);
+            name = false;
+            desc = false;
+            dateStart = false;
+            dateEnd = false;
+            tableSelec = true;
         } else {
-
+            txtName.setText(null);
+            dpDateStart.setValue(null);
+            dpDateEnd.setValue(null);
+            taDescription.setText(null);
+            btnNew.setDisable(true);
+            btnDelete.setDisable(true);
+            btnSave.setDisable(true);
+            name = false;
+            desc = false;
+            dateStart = false;
+            dateEnd = false;
+            tableSelec = false;
         }
     }
 
@@ -638,7 +645,7 @@ public class VEventTableController {
      *
      */
     public void validateData() {
-        if (name && dateStart && dateEnd && desc) {
+        if (name && dateStart && dateEnd && desc && !tableSelec) {
             btnNew.setDisable(false);
         } else {
             btnNew.setDisable(true);
@@ -742,4 +749,55 @@ public class VEventTableController {
                 });
     }
 
+    /**
+     *
+     * @param event
+     */
+    public void printData(WindowEvent event) {
+        LOGGER.info("Preparing to print");
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Proceso de impresión de informes");
+        alert.setHeaderText("Ha solicitado imprimir un informe, para ello, se "
+                + "van a actualizar los datos de la tabla en la base de datos. "
+                + "¿Está seguro de continuar?");
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK) {
+            saveData();
+            print();
+        } else {
+            event.consume();
+        }
+    }
+
+    /**
+     *
+     */
+    public void saveData() {
+        List<Evento> evs = ei.findAll();
+        // Lee todos los eventos de la base de datos
+        for (Evento ev : events) {
+            Boolean encontrado = false;
+            // Busca los eventos actuales en los extraidos de la base de datos
+            for (Evento evnt : evs) {
+                if (ev.getId() == evnt.getId()) {
+                    encontrado = true;
+                    // si lo encuentra, analiza si son iguales, si no lo son, lo actualiza
+                    if (!ev.equals(evnt)) {
+                        ei.edit(ev);
+                    }
+                }
+            }
+            // Si no lo ha encontrado, lo añade a la base de datos
+            if (!encontrado) {
+                ei.createEvent(ev);
+            }
+        }
+    }
+
+    /**
+     *
+     */
+    public void print() {
+
+    }
 }
