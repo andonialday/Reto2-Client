@@ -427,6 +427,9 @@ public class VEventTableController {
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
             ei.remove(this.event);
+            events.remove(event);
+            loadTable();
+            tbEvent.refresh();
         } else {
             event.consume();
             LOGGER.info("Closing aborted");
@@ -446,6 +449,9 @@ public class VEventTableController {
             ev.setDateStart(Date.from(dpDateStart.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
             ev.setDateEnd(Date.from(dpDateEnd.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
             ei.createEvent(ev);
+            events.add(ev);
+            loadTable();
+            tbEvent.refresh();
         } else {
             lblDateEndEr.setVisible(true);
         }
