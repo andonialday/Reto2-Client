@@ -328,25 +328,25 @@ public class EquipmentController {
      * @param oldValue
      * @param newValue
      */
-    public void tfNameValue(ObservableValue observable, Object oldValue, Object newValue) {
+    public void tfNameValue(ObservableValue observable, String oldValue, String newValue) {
         bolName = false;
-        if (tfName.getText().trim() != null) {
+        if (newValue.trim() != null) {
             bolName = true;
               LOGGER.info("name is empty");
         }
         validateEquipData();
     }
-    public void tfCostValue(ObservableValue observable, Object oldValue, Object newValue) {
+    public void tfCostValue(ObservableValue observable, String oldValue, String newValue) {
         bolCost = false;
-        if (tfCost.getText().trim() != null) {
+        if (newValue.trim() != null) {
             bolCost = true;
             LOGGER.info("cost is empty");
         }
         validateEquipData();
     }
-    public void taDescriptionValue(ObservableValue observable, Object oldValue, Object newValue) {
+    public void taDescriptionValue(ObservableValue observable, String oldValue, String newValue) {
         bolDescription = false;
-        if (taDescription.getText().trim() != null) {
+        if (newValue.trim() != null) {
             bolDescription = true;
             LOGGER.info("description is empty");
         }
