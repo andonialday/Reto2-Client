@@ -2,10 +2,8 @@ package reto2g1cclient.controller;
 
 import java.awt.event.MouseEvent;
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -185,14 +183,64 @@ public class VCommercialTableController {
 
         //Acciones de Botones 
         btnPrint.setOnAction(this::printForm);
-
-        btnBack.setMnemonicParsing(true);
         btnBack.setOnAction(this::closeVCommercialTable);
+        btnDeleteCommercial.setOnAction(this::deleteTable);
+        btnNewCommercial.setOnAction(this::nuevoCommercial);
+        btnSaveCommercial.setOnAction(this::saveCommercial);
 
+        //Acciones TextField para que se habiliten los botones
+        tfName.textProperty().addListener(this::txtNameVal);
+        tfLogin.textProperty().addListener(this::txtLoginVal);
+        tfEmail.textProperty().addListener(this::txtEmailVal);
+        tfPassword.textProperty().addListener(this::txtPasswordVal);
+        tfConfirmPassword.textProperty().addListener(this::txtConfirmPasswordVal);
+        
+        //genera la ventana 
         stage.show();
         LOGGER.info("VCommercialTable Window Showing");
     }
-
+    public void validateData() {
+        if (name && login && email && password && passwordR && !tableSelec) {
+            btnNewCommercial.setDisable(false);
+        } else {
+            btnNewCommercial.setDisable(true);
+        }
+    }
+    public void txtConfirmPasswordVal(ObservableValue observable, Object oldValue, Object newValue) {
+        passwordR = false;
+        if (tfConfirmPassword.getText().trim() != null) {
+            passwordR = true;
+        }
+        validateData();
+    }
+    public void txtPasswordVal(ObservableValue observable, Object oldValue, Object newValue) {
+        password = false;
+        if (tfPassword.getText().trim() != null) {
+            password = true;
+        }
+        validateData();
+    }
+    public void txtEmailVal(ObservableValue observable, Object oldValue, Object newValue) {
+        email = false;
+        if (tfEmail.getText().trim() != null) {
+            email = true;
+        }
+        validateData();
+    }
+    public void txtLoginVal(ObservableValue observable, Object oldValue, Object newValue) {
+        login = false;
+        if (tfLogin.getText().trim() != null) {
+            login = true;
+        }
+        validateData();
+    }
+    public void txtNameVal(ObservableValue observable, Object oldValue, Object newValue) {
+        name = false;
+        if (tfName.getText().trim() != null) {
+            name = true;
+        }
+        validateData();
+    }
     @FXML
     public void filterEvents(ActionEvent event) {
         LOGGER.info("Filtering available Commercials");
@@ -388,31 +436,47 @@ public class VCommercialTableController {
 
     }
 
+    @FXML
+    public void saveCommercial(ActionEvent event) {
+        
+         LOGGER.info("Update of data on database requested");
+        saveData();
+        
+    }
+    @FXML
     public void nuevoCommercial(ActionEvent event) {
 
-        if (tfName.getLength() > 0) {
+        if (tfName.getLength() <= 0) {
             btnNewCommercial.setDisable(false);
         }
 
+       
         //antes de eso el asociar en el metodo handle window
         //meter los datos al Commercial 
         User usr = new Commercial();
-        usr.setName(tfName.getText();
-        usr.setLogin(tfLogin.getText();
-        usr.setEmail(tfEmail.getText();
+        usr.setFullName(tfName.getText());
+        usr.setLogin(tfLogin.getText());
+        usr.setEmail(tfEmail.getText());
         //es un combo box CUIDADO
-        usr.setEspecialization(tfEspecialization.getText();
+       // usr.setEspecialization(tfEspecialization.getText();
 
-        if (!this.commercials.contains(usr)) {
-            this.commercials.add(usr);
-            this.CommercialTable.setItems(commercials);
-        } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeaderText(null);
-            alert.setTitle("Error");
-            alert.setContentText("Persona ya existe");
-            alert.showAndWait();
-        }
+       //Actualizamos las listas
+       coI.create((Commercial) usr);
+       coL.add((Commercial) usr);
+       loadTable();
+       tbCommercial.refresh();
+    
+       //Comprobacion si existe
+//        if (!this.commercials.contains(usr)) {
+//            this.commercials.add(usr);
+//            this.CommercialTable.setItems(commercials);
+//        } else {
+//            Alert alert = new Alert(Alert.AlertType.ERROR);
+//            alert.setHeaderText(null);
+//            alert.setTitle("Error");
+//            alert.setContentText("Persona ya existe");
+//            alert.showAndWait();
+//        }
 
     }
 
@@ -463,43 +527,42 @@ public class VCommercialTableController {
         }
 
     }
-
+    /**
+     *
+     * @param event
+     */
+    @FXML
     public void deleteTable(ActionEvent event) {
-
-        Commercial m = this.CommercialTable.getSelectionModel().getSelectedItem();
-
-        if (m == null) {
-
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeaderText(null);
-            alert.setTitle("Error");
-            alert.setContentText("Persona Sin Seleccionar");
-            alert.showAndWait();
-
+        LOGGER.info("Requesting confirmation for Commercial Remove...");
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Está Eliminando un Commercial");
+        alert.setHeaderText("¿Seguro que desea Eliminar el Commercial Seleccionado?");
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK) {
+            coI.remove(this.commercial);
+            coL.remove(commercial);
+            loadTable();
+            tbCommercial.refresh();
         } else {
-
-            this.commercials.remove(m);
-            this.CommercialTable.refresh();
-
+            event.consume();
+            LOGGER.info("Closing aborted");
         }
 
     }
 
     public void printForm(ActionEvent event) {
-
-        //prueba chorcia
-        if (lbeLogin.isVisible() || lbeName.isVisible() || lbeEmail.isVisible() || lbePassword.isVisible() || lbeConfirmPassword.isVisible()) {
-            lbeLogin.setVisible(false);
-            lbeName.setVisible(false);
-            lbeEmail.setVisible(false);
-            lbePassword.setVisible(false);
-            lbeConfirmPassword.setVisible(false);
+        LOGGER.info("Preparing to print");
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Proceso de impresión de informes");
+        alert.setHeaderText("Ha solicitado imprimir un informe, para ello, se "
+                + "van a actualizar los datos de la tabla en la base de datos. "
+                + "¿Está seguro de continuar?");
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK) {
+            saveData();
+            print();
         } else {
-            lbeLogin.setVisible(true);
-            lbeName.setVisible(true);
-            lbeEmail.setVisible(true);
-            lbePassword.setVisible(true);
-            lbeConfirmPassword.setVisible(true);
+            event.consume();
         }
 
     }
@@ -517,8 +580,7 @@ public class VCommercialTableController {
     }
 
     /**
-     * Method of the Close Button (btClose) that closes the scene and the
-     * program completelly
+     * Metodo que cierra VCommercialTable preguntando antes si esta seguro volviendo a la ventana VCommercial
      *
      * @param event the event linked to clicking on the button;
      */
@@ -603,6 +665,36 @@ public class VCommercialTableController {
 //            }
 //        } catch (Exception e) {
 //        }
+    }
+
+    private void saveData() {
+        List<Commercial> coms = coI.findAll();
+        // Lee todos los eventos de la base de datos
+        for (Commercial co : coms) {
+            Boolean encontrado = false;
+            // Busca los eventos actuales en los extraidos de la base de datos
+            for (Commercial com : coms) {
+                if (co.getId() == com.getId()) {
+                    encontrado = true;
+                    // si lo encuentra, analiza si son iguales, si no lo son, lo actualiza
+                    if (!co.equals(com)) {
+                        coI.edit(co);
+                    }
+                }
+            }
+            // Si no lo ha encontrado, lo añade a la base de datos
+            if (!encontrado) {
+                coI.create(co);
+            }
+        }
+    }
+
+    /**
+     * Imprime los datos de la tabla como formulario 
+     */
+    private void print() {
+      
+        
     }
 
 }

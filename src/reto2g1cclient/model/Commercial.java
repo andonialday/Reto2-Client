@@ -20,6 +20,10 @@ public class Commercial extends User implements Serializable{
     
     
     
+    
+    
+    
+    
     //La especializacion del Comercial se implementa mediante las opciones de la clase Especialization
     private Especialization especialization;
     //La lista de clientes que tiene un comercial 
@@ -32,7 +36,7 @@ public class Commercial extends User implements Serializable{
     }
 
     public Commercial() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
     
     /**
