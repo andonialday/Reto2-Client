@@ -26,7 +26,11 @@ public class ClientImplementation implements ClientInterface{
     
     @Override
     public void createClient (Client client)throws ClientServerConnectionException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try{
+            clientJersey.create(client);
+        }catch (ClientErrorException e){
+            throw new ClientServerConnectionException(e.getMessage());
+        }
     }
 
     @Override
