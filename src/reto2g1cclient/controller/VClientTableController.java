@@ -5,12 +5,14 @@
  */
 package reto2g1cclient.controller;
 
+import reto2g1cclient.exception.FieldsEmptyException;
 import reto2g1cclient.exception.PasswordNotValidException;
 import reto2g1cclient.exception.ConfirmPasswordNotValidException;
 import reto2g1cclient.exception.LoginNotValidException;
 import reto2g1cclient.exception.EmailNotValidException;
 import reto2g1cclient.exception.MaxCharacterException;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,11 +37,14 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import reto2g1cclient.exception.ClientServerConnectionException;
 import reto2g1cclient.logic.ClientInterface;
 import reto2g1cclient.model.Client;
+import reto2g1cclient.model.Type;
+import reto2g1cclient.model.UserStatus;
 
 /**
  *
@@ -57,11 +62,17 @@ public class VClientTableController {
     public static final Pattern VALID_PASSWORD_REGEX
             = Pattern.compile("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$", Pattern.CASE_INSENSITIVE);
 
-    //Initialize combobox values
+    //Initialize the values ​​of the combobox of type
     private final String SELECT_PARTICULAR = "PARTICULAR";
     private final String SELECT_ASOCIATION = "ASOCIATION";
     private final String SELECT_ENTERPRISE = "ENTERPRISE";
     private final String SELECT_PUBLIC_ENTITY = "PUBLIC ENTITY";
+
+    //Initialize the values ​​of the combobox of search
+    private final String SELECT_NAME = "Client Name";
+    private final String SELECT_LOGIN = "Client Login";
+    private final String SELECT_EMAIL = "Client Email";
+    private final String SELECT_TYPE = "Client Type";
 
     @FXML
     private TableView<Client> tbClient;
@@ -189,6 +200,9 @@ public class VClientTableController {
         //DeleteClient button is disabled
         btnDeleteClient.setDisable(true);
 
+        //Search button is disabled
+        btnSearch.setDisable(true);
+
         //NewClient button is disabled
         btnNewClient.setDisable(true);
         //The NewClient button does not allow spaces to be entered
@@ -211,28 +225,50 @@ public class VClientTableController {
         //Back button is enabled
         btnBack.setDisable(false);
 
-        //Add the combobox values
-        ObservableList<String> optionsForCombo;
-        optionsForCombo = FXCollections.observableArrayList(SELECT_PARTICULAR, SELECT_ASOCIATION, SELECT_ENTERPRISE, SELECT_PUBLIC_ENTITY);
-        cbType.setItems(optionsForCombo);
+        //Add the values ​​of the customer type combobox
+        ObservableList<String> optionsForComboType;
+        optionsForComboType = FXCollections.observableArrayList(SELECT_PARTICULAR, SELECT_ASOCIATION, SELECT_ENTERPRISE, SELECT_PUBLIC_ENTITY);
+        cbType.setItems(optionsForComboType);
         //Select the first comboBox item by default
         cbType.getSelectionModel().selectFirst();
+
+        //Add the values ​​of the customer type combobox
+        ObservableList<String> optionsForComboSearch;
+        optionsForComboSearch = FXCollections.observableArrayList(SELECT_NAME, SELECT_LOGIN, SELECT_EMAIL, SELECT_TYPE);
+        cbSearchBy.setItems(optionsForComboSearch);
+        //Select the first comboBox item by default
+        cbSearchBy.getSelectionModel().selectFirst();
+
+        //Insert the table of clients with clients
+        colLogin.setCellValueFactory(new PropertyValueFactory<>("login"));
+        colName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
+        //colType.setCellValueFactory(new PropertyValueFactory<>("type"));
+
+        Collection<Client> clients;
+        try {
+            clients = clientInterface.getAllClient();
+            ObservableList<Client> clientsForTable = FXCollections.observableArrayList(clients);
+            tbClient.setItems(clientsForTable);
+        } catch (ClientServerConnectionException ex) {
+            Logger.getLogger(VClientTableController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
-     * Method to control if there's a item selected in the table
+     * Method to control if there's a client selected in the table
      *
      * @param observableValue
      * @param oldValue
      * @param newValue
      */
     private void handleSelection(ObservableValue observableValue, Object oldValue, Object newValue) {
-        //When a table element is selected
+        //When a table client is selected
         if (newValue != null) {
             btnViewEvents.setDisable(false);
             btnSaveClient.setDisable(false);
             btnDeleteClient.setDisable(false);
-            //When a table item is deselected
+            //When a table client is deselected
         } else {
             btnViewEvents.setDisable(true);
             btnSaveClient.setDisable(true);
@@ -241,14 +277,84 @@ public class VClientTableController {
     }
 
     /**
-     * 
+     * Method to check the validity of fields
+     *
+     * @return
+     */
+    private boolean checkFields() throws FieldsEmptyException, MaxCharacterException, EmailNotValidException, LoginNotValidException, PasswordNotValidException, ConfirmPasswordNotValidException {
+
+        //Make all error tags invisible
+        lblErrorName.setVisible(false);
+        lblErrorEmail.setVisible(false);
+        lblErrorLogin.setVisible(false);
+        lblErrorPassword.setVisible(false);
+        lblErrorConfirmPassword.setVisible(false);
+
+        //Checks if all the fields are written
+        if (tfName.getText().trim().isEmpty() || tfEmail.getText().trim().isEmpty()
+                || tfLogin.getText().trim().isEmpty() || tfPassword.getText().trim().isEmpty()
+                || tfConfirmPassword.getText().trim().isEmpty()) {
+            LOGGER.info("Some fields are empty");
+            throw new FieldsEmptyException("Error, some fields are empty");
+        }
+        //Checks if the name field has more than 25 characters
+        if (tfName.getText().trim().length() > 25) {
+            throw new MaxCharacterException("Error, maximum size");
+        }
+        //Check if the email field is written correctly
+        if (!validateEmail(tfEmail.getText().trim())) {
+            throw new EmailNotValidException("Error, invalid email");
+        }
+        //Check if the login field has no more than 25 characters and no less than 5
+        if (tfLogin.getText().trim().length() > 25 || tfLogin.getText().trim().length() < 5) {
+            throw new LoginNotValidException("Error, invalid login");
+        }
+        //Check if the password field is written correctly
+        if (!validatePassword(tfPassword.getText().trim())) {
+            throw new PasswordNotValidException("Error, invalid password");
+        }
+        //Check if the confirm password field is written correctly
+        if (!validatePassword(tfConfirmPassword.getText().trim())) {
+            throw new PasswordNotValidException("Error, invalid password");
+        }
+        //Check that the confirm password field contains exactly the same characters typed
+        if (!tfConfirmPassword.getText().trim().equals(tfPassword.getText().trim())) {
+            throw new ConfirmPasswordNotValidException("Error, different confirmation password");
+        }
+        return true;
+    }
+
+    /**
+     * Method that validates the email
+     *
+     * @param emailStr
+     * @return
+     */
+    public static boolean validateEmail(String emailStr) {
+        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
+        return matcher.find();
+    }
+
+    /**
+     * Method that validates the password
+     *
+     * @param emailStr
+     * @return
+     */
+    public static boolean validatePassword(String emailStr) {
+        Matcher matcher = VALID_PASSWORD_REGEX.matcher(emailStr);
+        return matcher.find();
+    }
+
+    /**
+     * Method that controls the action button of removing a client
      *
      * @param event the event linked to clicking on the button;
      */
     @FXML
     private void handleDeleteClient(ActionEvent event) {
         LOGGER.info("Option to delete the selected client");
-        
+
         Alert alert1 = new Alert(AlertType.CONFIRMATION);
         alert1.setTitle("Delete Client");
         alert1.setHeaderText(null);
@@ -260,8 +366,8 @@ public class VClientTableController {
             try {
                 LOGGER.info("Delete selected client");
                 //Delete the selected client by calling the logic part
-                Client clientSelectedToRemove = tbClient.getSelectionModel().getSelectedItem();
-                clientInterface.removeClient(String.valueOf(clientSelectedToRemove.getId()));
+                Client clientToRemove = tbClient.getSelectionModel().getSelectedItem();
+                clientInterface.removeClient(String.valueOf(clientToRemove.getId()));
                 //Refresh the table
                 tbClient.refresh();
 
@@ -282,24 +388,21 @@ public class VClientTableController {
         }
     }
 
-    //COSAS QUE FALTAN:
-    //NO TIENE QUE HABER NADA SELECCIONADO EN LA TABLA
-    //SI LOS DATOS NO SON CORRECTOS SE VUELVE VISIBLE EL LABEL DE ERROR Y AlertType.WARNING
     /**
-     * 
+     * Method that controls the action button of creating a new client
      *
      * @param event the event linked to clicking on the button;
      */
     @FXML
     private void handleAddClient(ActionEvent event) {
         LOGGER.info("Option to create a new client");
-        
+
         try {
 
             //Check the information of the data entered in the fields
             if (checkFields()) {
                 LOGGER.info("Correct text fields");
-                
+
                 Alert alert1 = new Alert(AlertType.CONFIRMATION);
                 alert1.setTitle("New Client");
                 alert1.setHeaderText(null);
@@ -307,7 +410,7 @@ public class VClientTableController {
                 alert1.showAndWait();
                 Optional<ButtonType> result = alert1.showAndWait();
                 if (result.get() == ButtonType.OK) {
-                    
+
                     try {
                         LOGGER.info("Adding a new client");
                         Client clientToCreate = new Client();
@@ -315,8 +418,22 @@ public class VClientTableController {
                         clientToCreate.setEmail(tfEmail.getText());
                         clientToCreate.setLogin(tfLogin.getText());
                         clientToCreate.setPassword(tfPassword.getText());
-                        clientToCreate.setConfirmPassword(tfConfirmPassword.getText());
-                        clientToCreate.setType(cbType.getText());
+                        clientToCreate.setStatus(UserStatus.ENABLED);
+                        //Type of object selected in the combobox
+                        switch (cbType.getSelectionModel().getSelectedItem()) {
+                            case SELECT_PARTICULAR:
+                                clientToCreate.setType(Type.PARTICULAR);
+                                break;
+                            case SELECT_ASOCIATION:
+                                clientToCreate.setType(Type.ASOCIATION);
+                                break;
+                            case SELECT_ENTERPRISE:
+                                clientToCreate.setType(Type.ENTERPRISE);
+                                break;
+                            case SELECT_PUBLIC_ENTITY:
+                                clientToCreate.setType(Type.PUBLIC_ENTITY);
+                                break;
+                        }
                         //Add the client introduced by calling the logical part
                         clientInterface.createClient(clientToCreate);
                         //Refresh the table
@@ -339,7 +456,12 @@ public class VClientTableController {
                 }
             }
 
-            //Error labels visible if the data is not correct
+        } catch (FieldsEmptyException ex) {
+            Alert alert = new Alert(AlertType.WARNING);
+            alert.setTitle("Warning Dialog");
+            alert.setHeaderText("Look, a Warning Dialog");
+            alert.setContentText(ex.getMessage());
+            alert.showAndWait();
         } catch (MaxCharacterException ex) {
             lblErrorName.setVisible(true);
         } catch (EmailNotValidException ex) {
@@ -353,10 +475,8 @@ public class VClientTableController {
         }
     }
 
-    //COSAS QUE FALTAN:
-    //SI LOS DATOS NO SON CORRECTOS SE VUELVE VISIBLE EL LABEL DE ERROR Y AlertType.WARNING
     /**
-     * 
+     * Method that controls the action button of editing a new client
      *
      * @param event the event linked to clicking on the button;
      */
@@ -364,12 +484,34 @@ public class VClientTableController {
     private void handleSaveClient(ActionEvent event) {
         LOGGER.info("Option to edit a selected client");
         
+        LOGGER.info("Editing a client");
+        Client clientToEdit = tbClient.getSelectionModel().getSelectedItem();
+        clientToEdit.setFullName(tfName.getText());
+        clientToEdit.setEmail(tfEmail.getText());
+        clientToEdit.setLogin(tfLogin.getText());
+        clientToEdit.setPassword(tfPassword.getText());
+        //Type of object selected in the combobox
+        switch (cbType.getSelectionModel().getSelectedItem()) {
+            case SELECT_PARTICULAR:
+                clientToEdit.setType(Type.PARTICULAR);
+                break;
+            case SELECT_ASOCIATION:
+                clientToEdit.setType(Type.ASOCIATION);
+                break;
+            case SELECT_ENTERPRISE:
+                clientToEdit.setType(Type.ENTERPRISE);
+                break;
+            case SELECT_PUBLIC_ENTITY:
+                clientToEdit.setType(Type.PUBLIC_ENTITY);
+                break;
+        }
+        
         try {
 
             //Check the information of the data entered in the fields
             if (checkFields()) {
                 LOGGER.info("Correct text fields");
-                
+
                 Alert alert1 = new Alert(AlertType.CONFIRMATION);
                 alert1.setTitle("Save Client");
                 alert1.setHeaderText(null);
@@ -379,14 +521,13 @@ public class VClientTableController {
                 if (result.get() == ButtonType.OK) {
 
                     try {
-                        LOGGER.info("Editing a new client");
-                        
+                        LOGGER.info("Edit the client");
                         //Edit the client by calling the logical part
-
+                        clientInterface.editClient(clientToEdit);
                         //Refresh the table
                         tbClient.refresh();
 
-                    } catch (Exception e) {
+                    } catch (ClientServerConnectionException e) {
                         Alert alert2 = new Alert(AlertType.ERROR);
                         alert2.setTitle("Ayuda");
                         alert2.setHeaderText("Error");
@@ -402,7 +543,13 @@ public class VClientTableController {
                     alert3.showAndWait();
                 }
             }
-            //Error labels visible if the data is not correct
+
+        } catch (FieldsEmptyException ex) {
+            Alert alert = new Alert(AlertType.WARNING);
+            alert.setTitle("Warning Dialog");
+            alert.setHeaderText("Look, a Warning Dialog");
+            alert.setContentText(ex.getMessage());
+            alert.showAndWait();
         } catch (MaxCharacterException ex) {
             lblErrorName.setVisible(true);
         } catch (EmailNotValidException ex) {
@@ -417,18 +564,19 @@ public class VClientTableController {
     }
 
     /**
-     * 
+     * Method that controls the action button of printing the information of the
+     * clients
      *
      * @param event the event linked to clicking on the button;
      */
     @FXML
     private void handlePrintClient(ActionEvent event) {
         LOGGER.info("Option to print clients information");
-        
+
         Alert alert1 = new Alert(AlertType.CONFIRMATION);
         alert1.setTitle("Print Information");
         alert1.setHeaderText(null);
-        alert1.setContentText("¿Do you want to print the information?");
+        alert1.setContentText("Do you want to print the information?");
         alert1.showAndWait();
         Optional<ButtonType> result = alert1.showAndWait();
         if (result.get() == ButtonType.OK) {
@@ -453,43 +601,9 @@ public class VClientTableController {
             alert3.showAndWait();
         }
     }
-
+    
     /**
-     * 
-     *
-     * @param event the event linked to clicking on the button;
-     */
-    @FXML
-    private void handleBack(ActionEvent event) throws IOException {
-        LOGGER.info("Returning to VAdmin window");
-        
-        Alert alert1 = new Alert(AlertType.CONFIRMATION);
-        alert1.setTitle("Back to VAdmin");
-        alert1.setHeaderText(null);
-        alert1.setContentText("Are you sure you want to return to the previous window?");
-        alert1.showAndWait();
-        Optional<ButtonType> result = alert1.showAndWait();
-        
-        if (result.get() == ButtonType.OK) {
-            LOGGER.info("Closing VClientTable window and returning to VAdmin");
-            stage.close();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/reto2client/view/VAdmin.fxml"));
-            
-            try {
-                Parent root = (Parent) loader.load();
-                VAdminController controller = loader.getController();
-                controller.setStage(this.stage);
-                controller.initStage(root);
-
-            } catch (IOException ex) {
-                Logger.getLogger(VClientTableController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-
-    }
-
-    /**
-     * 
+     * Method that controls a combobox with four different types of clients
      *
      * @param event the event linked to clicking on the button;
      */
@@ -509,7 +623,7 @@ public class VClientTableController {
     }
 
     /**
-     * 
+     * Method that controls a combobox with four different search filter types
      *
      * @param event the event linked to clicking on the button;
      */
@@ -529,7 +643,7 @@ public class VClientTableController {
     }
 
     /**
-     * 
+     * Method that controls the search action button by a specific filter
      *
      * @param event the event linked to clicking on the button;
      */
@@ -548,14 +662,15 @@ public class VClientTableController {
     }
 
     /**
-     * 
+     * Method that controls the action button that allows to see the different
+     * events of a specific client
      *
      * @param event the event linked to clicking on the button;
      */
     @FXML
     private void handleOpenEventTable(ActionEvent event) {
         LOGGER.info("Open the window with the client events table");
-        
+
         try {
             LOGGER.info("Open VEventTable");
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/reto2client/view/VEventTable.fxml"));
@@ -570,6 +685,39 @@ public class VClientTableController {
             alert.setHeaderText("Error");
             alert.setContentText(e.getMessage());
             alert.showAndWait();
+        }
+    }
+
+    /**
+     * Method that controls the action button to return to the previous window
+     *
+     * @param event the event linked to clicking on the button;
+     */
+    @FXML
+    private void handleBack(ActionEvent event) throws IOException {
+        LOGGER.info("Returning to VAdmin window");
+
+        Alert alert1 = new Alert(AlertType.CONFIRMATION);
+        alert1.setTitle("Back to VAdmin");
+        alert1.setHeaderText(null);
+        alert1.setContentText("Are you sure you want to return to the previous window?");
+        alert1.showAndWait();
+        Optional<ButtonType> result = alert1.showAndWait();
+
+        if (result.get() == ButtonType.OK) {
+            LOGGER.info("Closing VClientTable window and returning to VAdmin");
+            stage.close();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/reto2client/view/VAdmin.fxml"));
+
+            try {
+                Parent root = (Parent) loader.load();
+                VAdminController controller = loader.getController();
+                controller.setStage(this.stage);
+                controller.initStage(root);
+
+            } catch (IOException ex) {
+                LOGGER.info("Error closing client table window");
+            }
         }
     }
 
@@ -595,61 +743,6 @@ public class VClientTableController {
     }
 
     /**
-     * Method to check the validity of fields
-     * 
-     * @return
-     */
-    private boolean checkFields() throws MaxCharacterException, EmailNotValidException, LoginNotValidException, PasswordNotValidException, ConfirmPasswordNotValidException {
-
-        //Make all error tags invisible
-        lblErrorName.setVisible(false);
-        lblErrorEmail.setVisible(false);
-        lblErrorLogin.setVisible(false);
-        lblErrorPassword.setVisible(false);
-        lblErrorConfirmPassword.setVisible(false);
-
-        if (tfName.getText().trim().length() > 25) {
-            throw new MaxCharacterException("Error, maximum size");
-        }
-        if (validateEmail(tfEmail.getText().trim())) {
-            throw new EmailNotValidException("Error, invalid email");
-        }
-        if (tfLogin.getText().trim().length() > 25 || tfLogin.getText().trim().length() < 5) {
-            throw new LoginNotValidException("Error, invalid login");
-        }
-        if (validatePassword(tfPassword.getText().trim())) {
-            throw new PasswordNotValidException("Error, invalid password");
-        }
-        if (tfPassword.getText().trim().equals(tfConfirmPassword)) {
-            throw new ConfirmPasswordNotValidException("Error, different confirmation password");
-        }
-
-        return true;
-    }
-
-    /**
-     * Method that validates the email
-     * 
-     * @param emailStr
-     * @return 
-     */
-    public static boolean validateEmail(String emailStr) {
-        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
-        return matcher.find();
-    }
-
-    /**
-     * Method that validates the password
-     * 
-     * @param emailStr
-     * @return 
-     */
-    public static boolean validatePassword(String emailStr) {
-        Matcher matcher = VALID_PASSWORD_REGEX.matcher(emailStr);
-        return matcher.find();
-    }
-
-    /**
      * Method to launch a AlertType.WARNING
      */
     private void warning() {
@@ -661,23 +754,3 @@ public class VClientTableController {
     }
 
 }
-
-
-tcTable.setCellValueFactory(new PropertyValueFactory<>("title"));
-        tcDescription.setCellValueFactory(new PropertyValueFactory<>("Description"));
-        tcPrice.setCellValueFactory(new PropertyValueFactory<>("Price"));
-        tcCategory.setCellValueFactory(new PropertyValueFactory<>("Category"));
-        tcDate.setCellValueFactory(new PropertyValueFactory<>("Date"));
-        tcMinParticipants.setCellValueFactory(new PropertyValueFactory<>("MinParticipants"));
-        tcMaxParticipants.setCellValueFactory(new PropertyValueFactory<>("MaxParticipants"));
-        tcActualParticipants.setCellValueFactory(new PropertyValueFactory<>("ActualParticipants"));
-        tcPlace.setCellValueFactory(new PropertyValueFactory<>("Place"));
-        tcPersonal.setCellValueFactory(new PropertyValueFactory<>("MinParticipants"));
-
-        try {
-            Collection <Event> events = eventinterface.getEvents();
-            ObservableList<Event> eventsForTable = FXCollections.observableArrayList(events);
-            tvTable.setItems(eventsForTable);
-        } catch (ClientLogicException ex) {
-            Logger.getLogger(MyEventsViewController.class.getName()).log(Level.SEVERE, null, ex);
-        }

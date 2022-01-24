@@ -8,6 +8,9 @@ package reto2g1cclient.model;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 
 /**
  * Clase con los parámetros para la creación y gestión de usuarios
@@ -16,15 +19,14 @@ import java.util.Objects;
  */
 public class User implements Serializable {
 
-    private Integer id;
-
-    private String login;
-    private String email;
-    private String fullName;
+    private SimpleIntegerProperty id;
+    private SimpleStringProperty login;
+    private SimpleStringProperty email;
+    private SimpleStringProperty fullName;
     private UserStatus status;
     private Privilege privilege;
-    private String password;
-    private Date lastPasswordChange;
+    private SimpleStringProperty password;
+    private SimpleObjectProperty<Date> lastPasswordChange;
 
     /**
      * Método Getter para obtener la ID del usuario
@@ -32,7 +34,7 @@ public class User implements Serializable {
      * @return el id de un usuario
      */
     public int getId() {
-        return id;
+        return id.get();
     }
 
     /**
@@ -41,7 +43,7 @@ public class User implements Serializable {
      * @param id el id de un usuario a establecer
      */
     public void setId(int id) {
-        this.id = id;
+        this.id.set(id);
     }
 
     /**
@@ -50,7 +52,7 @@ public class User implements Serializable {
      * @return el login de un usuario
      */
     public String getLogin() {
-        return login;
+        return login.get();
     }
 
     /**
@@ -59,7 +61,7 @@ public class User implements Serializable {
      * @param login el login de un usuario a establecer
      */
     public void setLogin(String login) {
-        this.login = login;
+        this.login.set(login);
     }
 
     /**
@@ -68,7 +70,7 @@ public class User implements Serializable {
      * @return el email de un usuario
      */
     public String getEmail() {
-        return email;
+        return email.get();
     }
 
     /**
@@ -77,7 +79,7 @@ public class User implements Serializable {
      * @param email el email de un usuario a establecer
      */
     public void setEmail(String email) {
-        this.email = email;
+        this.email.set(email);
     }
 
     /**
@@ -86,7 +88,7 @@ public class User implements Serializable {
      * @return el nombre completo de un usuario
      */
     public String getFullName() {
-        return fullName;
+        return fullName.get();
     }
 
     /**
@@ -95,7 +97,7 @@ public class User implements Serializable {
      * @param fullName el nombre completo de un usuario a establecer
      */
     public void setFullName(String fullName) {
-        this.fullName = fullName;
+        this.fullName.set(fullName);
     }
 
     /**
@@ -140,7 +142,7 @@ public class User implements Serializable {
      * @return la contraseña de un usuario
      */
     public String getPassword() {
-        return password;
+        return password.get();
     }
 
     /**
@@ -149,7 +151,7 @@ public class User implements Serializable {
      * @param password la contraseña de un usuario a establecer
      */
     public void setPassword(String password) {
-        this.password = password;
+        this.password.set(password);
     }
 
     /**
@@ -159,7 +161,7 @@ public class User implements Serializable {
      * @return el cambio de contraseña de un usuario
      */
     public Date getLastPasswordChange() {
-        return lastPasswordChange;
+        return lastPasswordChange.get();
     }
 
     /**
@@ -170,7 +172,7 @@ public class User implements Serializable {
      * establecer
      */
     public void setLastPasswordChange(Date lastPasswordChange) {
-        this.lastPasswordChange = lastPasswordChange;
+        this.lastPasswordChange.set(lastPasswordChange);
     }
 
     @Override

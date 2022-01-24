@@ -12,7 +12,7 @@ package reto2g1cclient.exception;
 public class ConfirmPasswordNotValidException extends Exception {
 
     public ConfirmPasswordNotValidException(String msg) {
-    super(msg);
+        super(msg);
     }
     
 }

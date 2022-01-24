@@ -12,7 +12,7 @@ package reto2g1cclient.exception;
 public class PasswordNotValidException extends Exception {
 
     public PasswordNotValidException(String msg) {
-    super(msg);
+        super(msg);
     }
     
 }

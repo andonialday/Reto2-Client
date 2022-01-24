@@ -18,7 +18,7 @@ import reto2g1cclient.model.Client;
  */
 public class ClientImplementation implements ClientInterface{
 
-    private ClientJersey clientJersey;
+    private final ClientJersey clientJersey;
     
     public ClientImplementation() {
             clientJersey = new ClientJersey();
@@ -35,7 +35,11 @@ public class ClientImplementation implements ClientInterface{
 
     @Override
     public void editClient(Client client) throws ClientServerConnectionException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try{
+            clientJersey.edit(client);
+        }catch (ClientErrorException e){
+            throw new ClientServerConnectionException(e.getMessage());
+        }
     }
 
     @Override
