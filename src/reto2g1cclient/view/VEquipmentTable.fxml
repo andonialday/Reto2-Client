@@ -24,10 +24,10 @@
             <TableColumn fx:id="clDate" maxWidth="720.0" minWidth="100.0" prefWidth="100.0" text="Fecha" />
         </columns>
       </TableView>
-      <Button id="btBack" fx:id="btBack" cancelButton="true" layoutX="781.0" layoutY="682.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="171.0" text="ATRAS" />
-      <Button id="btDeleteEquip" fx:id="btDeleteEquip" disable="true" layoutX="781.0" layoutY="468.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="171.0" style="-fx-background-color: red;" text="ELIMINAR EQUIPAMIENTO" textFill="WHITE" />
-      <Button id="btSaveEquip" fx:id="btSaveEquip" disable="true" layoutX="781.0" layoutY="392.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="171.0" style="-fx-background-color: blue;" text="GUARDAR CAMBIOS" textFill="WHITE" />
-      <Button id="btFind" fx:id="btFind" cancelButton="true" layoutX="661.0" layoutY="204.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="115.0" text="BUSCAR" />
+      <Button id="btnBack" fx:id="btnBack" cancelButton="true" layoutX="781.0" layoutY="682.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="171.0" text="ATRAS" />
+      <Button id="btnDeleteEquip" fx:id="btnDeleteEquip" disable="true" layoutX="781.0" layoutY="468.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="171.0" style="-fx-background-color: red;" text="ELIMINAR EQUIPAMIENTO" textFill="WHITE" />
+      <Button id="btnSaveEquip" fx:id="btnSaveEquip" disable="true" layoutX="781.0" layoutY="392.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="171.0" style="-fx-background-color: blue;" text="GUARDAR CAMBIOS" textFill="WHITE" />
+      <Button id="btnFind" fx:id="btnFind" cancelButton="true" layoutX="661.0" layoutY="204.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="115.0" text="BUSCAR" />
       <ComboBox fx:id="cbSearch" layoutX="44.0" layoutY="208.0" prefWidth="150.0" />
       <TextField fx:id="tfFinding" layoutX="212.0" layoutY="204.0" prefHeight="32.0" prefWidth="449.0" promptText="Búsqueda ..." />
       <Label fx:id="lblNameEquipment" layoutX="53.0" layoutY="212.0" text="Nombre Equipamiento" />
@@ -39,9 +39,9 @@
       <Label fx:id="lblDescription" layoutX="422.0" layoutY="42.0" text="Descripcion" />
       <TextArea fx:id="taDescription" layoutX="422.0" layoutY="63.0" prefHeight="110.0" prefWidth="470.0" promptText="Descripcion del Equipamiento" />
       <Label fx:id="lblBuyData" layoutX="160.0" layoutY="145.0" text="Fecha de compra" />
-      <Button id="btNewEquipment" fx:id="btCrearEquip" disable="true" layoutX="781.0" layoutY="316.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="171.0" style="-fx-background-color: green;" text="NUEVO EQUIPAMIENTO" textFill="WHITE" />
+      <Button id="btnNewEquipment" fx:id="btnCrearEquip" disable="true" layoutX="781.0" layoutY="316.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="171.0" style="-fx-background-color: green;" text="NUEVO EQUIPAMIENTO" textFill="WHITE" />
       <Label fx:id="lblWarninNumValue" layoutX="162.0" layoutY="130.0" text="Introduzca un valor numerico." textFill="RED" />
-      <Button id="btPrint" fx:id="btPrint" layoutX="781.0" layoutY="204.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="171.0" style="-fx-background-color: #4B0082;" text="IMPRIMIR" textFill="WHITE" />
-      <Label fx:id="lblWarningData" layoutX="162.0" layoutY="183.0" text="Debe ser una fecha con formato DD/MM/AAAA." textFill="RED" />
+      <Button id="btnPrint" fx:id="btnPrint" layoutX="781.0" layoutY="204.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="171.0" style="-fx-background-color: #4B0082;" text="IMPRIMIR" textFill="WHITE" />
+      <Label fx:id="lblWarningDate" layoutX="162.0" layoutY="183.0" text="Debe ser una fecha con formato DD/MM/AAAA." textFill="RED" />
     </children>
 </Pane>

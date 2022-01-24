@@ -26,9 +26,18 @@ public class Equipment implements Serializable {
 
     private Integer id;
     private String description;
-
+    private String name;
     private Date dateAdd;
     private Double cost;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+    
 
     private Set<EventEquipment> events;
     
@@ -125,6 +134,7 @@ public class Equipment implements Serializable {
         hash = 67 * hash + Objects.hashCode(this.id);
         hash = 67 * hash + Objects.hashCode(this.description);
         hash = 67 * hash + Objects.hashCode(this.dateAdd);
+        hash = 67 * hash + Objects.hashCode(this.name);
         hash = 67 * hash + Objects.hashCode(this.cost);
         hash = 67 * hash + Objects.hashCode(this.events);
         return hash;
@@ -149,6 +159,9 @@ public class Equipment implements Serializable {
             return false;
         }
         if (!Objects.equals(this.dateAdd, other.dateAdd)) {
+            return false;
+        }
+        if (!Objects.equals(this.name, other.name)) {
             return false;
         }
         if (!Objects.equals(this.cost, other.cost)) {
