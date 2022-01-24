@@ -7,6 +7,8 @@ package reto2g1cclient.application;
 
 import java.io.IOException;
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -25,6 +27,8 @@ import reto2g1cclient.model.Evento;
  */
 public class TestApplication extends Application {
 
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    
     /**
      * Method to Launch Client 
      * @param args Java Arguments to launch the main
@@ -45,7 +49,7 @@ public class TestApplication extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/reto2g1cclient/view/VEventTable.fxml"));
         List<Evento> events = new ArrayList<>();
         for (int i = 0 ; i < 3 ; i++) {
-            Evento ev = new Evento(i+1, Date.from(Instant.now()), Date.from(Instant.now()), "descripcion de prueba " + (i+1), "nombre de prueba " + (i+1), null, null);
+            Evento ev = new Evento(i+1, LocalDate.now().format(formatter), LocalDate.now().format(formatter), "descripcion de prueba " + (i+1), "nombre de prueba " + (i+1), null, null);
             events.add(ev);
         }
         Parent root = (Parent) loader.load();

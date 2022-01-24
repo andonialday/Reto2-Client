@@ -6,7 +6,6 @@
 package reto2g1cclient.model;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.Objects;
 import java.util.Set;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -25,9 +24,9 @@ public class Evento implements Serializable {
 
     private final SimpleIntegerProperty id;
 
-    private final SimpleObjectProperty<Date> dateStart;
+    private final SimpleStringProperty dateStart;
 
-    private final SimpleObjectProperty<Date> dateEnd;
+    private final SimpleStringProperty dateEnd;
 
     private final SimpleStringProperty description;
 
@@ -48,10 +47,10 @@ public class Evento implements Serializable {
      * @param client valor de la propiedad client
      * @param equipments valor de la propiedad equipments
      */
-    public Evento(Integer id, Date dateStart, Date dateEnd, String description, String name, Client client, Set<EventEquipment> equipments) {
+    public Evento(Integer id, String dateStart, String dateEnd, String description, String name, Client client, Set<EventEquipment> equipments) {
         this.id = new SimpleIntegerProperty(id);
-        this.dateStart = new SimpleObjectProperty<>(dateStart);
-        this.dateEnd = new SimpleObjectProperty<>(dateEnd);
+        this.dateStart = new SimpleStringProperty(dateStart);
+        this.dateEnd = new SimpleStringProperty(dateEnd);
         this.description = new SimpleStringProperty(description);
         this.name = new SimpleStringProperty(name);
         this.client = new SimpleObjectProperty<>(client);
@@ -82,7 +81,7 @@ public class Evento implements Serializable {
      *
      * @return DateStart <i>(Fecha de Inicio)</i> del Evento
      */
-    public SimpleObjectProperty getDateStart() {
+    public SimpleStringProperty getDateStart() {
         return dateStart;
     }
 
@@ -92,7 +91,7 @@ public class Evento implements Serializable {
      *
      * @param dateStart <i>(Fecha de Inicio)</i> a asignar al Evento
      */
-    public void setDateStart(Date dateStart) {
+    public void setDateStart(String dateStart) {
         this.dateStart.set(dateStart);
     }
 
@@ -101,7 +100,7 @@ public class Evento implements Serializable {
      *
      * @return DateEnd <i>(Fecha de Fin)</i> del Evento
      */
-    public SimpleObjectProperty getDateEnd() {
+    public SimpleStringProperty getDateEnd() {
         return dateEnd;
     }
 
@@ -110,7 +109,7 @@ public class Evento implements Serializable {
      *
      * @param dateEnd <i>(Fecha de Fin)</i> a asignar al Evento
      */
-    public void setDateEnd(Date dateEnd) {
+    public void setDateEnd(String dateEnd) {
         this.dateEnd.set(dateEnd);
     }
 
