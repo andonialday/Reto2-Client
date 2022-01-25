@@ -60,7 +60,7 @@ public class EventImplementation implements EventInterface {
      */
     @Override
     public void edit(Evento event) {
-        ejc.edit(event, event.getId().toString());
+        ejc.edit(event, String.valueOf(event.getId()));
     }
 
     /**

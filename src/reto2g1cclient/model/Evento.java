@@ -62,8 +62,8 @@ public class Evento implements Serializable {
      *
      * @return ID del Evento
      */
-    public SimpleIntegerProperty getId() {
-        return id;
+    public int getId() {
+        return this.id.get();
     }
 
     /**
@@ -81,8 +81,8 @@ public class Evento implements Serializable {
      *
      * @return DateStart <i>(Fecha de Inicio)</i> del Evento
      */
-    public SimpleStringProperty getDateStart() {
-        return dateStart;
+    public String getDateStart() {
+        return this.dateStart.get();
     }
 
     /**
@@ -100,8 +100,8 @@ public class Evento implements Serializable {
      *
      * @return DateEnd <i>(Fecha de Fin)</i> del Evento
      */
-    public SimpleStringProperty getDateEnd() {
-        return dateEnd;
+    public String getDateEnd() {
+        return this.dateEnd.get();
     }
 
     /**
@@ -118,8 +118,8 @@ public class Evento implements Serializable {
      *
      * @return Description <i>(Descripcion)</i> del Evento
      */
-    public SimpleStringProperty getDescription() {
-        return description;
+    public String getDescription() {
+        return this.description.get();
     }
 
     /**
@@ -136,8 +136,8 @@ public class Evento implements Serializable {
      *
      * @return Name <i>(Nombre)</i> del Evento
      */
-    public SimpleStringProperty getName() {
-        return name;
+    public String getName() {
+        return this.name.get();
     }
 
     /**
@@ -155,8 +155,8 @@ public class Evento implements Serializable {
      *
      * @return Client<i>(Cliente)</i> "propietario" del Evento
      */
-    public SimpleObjectProperty getClient() {
-        return client;
+    public Client getClient() {
+        return this.client.get();
     }
 
     /**
@@ -176,8 +176,8 @@ public class Evento implements Serializable {
      * @return Equipments <i>(Equipamientos empleados)</i> del Evento
      */
     @XmlTransient
-    public SimpleObjectProperty getEquipments() {
-        return equipments;
+    public Set<EventEquipment> getEquipments() {
+        return this.equipments.get();
     }
 
     /**

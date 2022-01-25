@@ -330,7 +330,7 @@ public class VEventTableController {
 
         //Leer Eventos Disponibles
         ei = EventFactory.getImplementation();
-        //loadData();
+        loadData();
         // Iniciar Tabla
         initiateTableColumns();
         tbEvent.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
@@ -452,6 +452,7 @@ public class VEventTableController {
             tbEvent.refresh();
         } else {
             lblDateEndEr.setVisible(true);
+            dpDateEnd.setValue(dpDateStart.getValue());
         }
 
     }
@@ -521,10 +522,10 @@ public class VEventTableController {
         if (newValue != null) {
             LOGGER.info("New item selected");
             event = (Evento) newValue;
-            txtName.setText(event.getName().getValue());
-            dpDateStart.setValue(LocalDate.parse(event.getDateStart().getValue(), formatter));
-            dpDateEnd.setValue(LocalDate.parse(event.getDateEnd().getValue(), formatter));
-            taDescription.setText(event.getDescription().getValue());
+            txtName.setText(event.getName());
+            dpDateStart.setValue(LocalDate.parse(event.getDateStart(), formatter));
+            dpDateEnd.setValue(LocalDate.parse(event.getDateEnd(), formatter));
+            taDescription.setText(event.getDescription());
             btnNew.setDisable(true);
             btnDelete.setDisable(false);
             btnSave.setDisable(false);
@@ -598,7 +599,7 @@ public class VEventTableController {
                 loadData();
                 for (Evento ev : events) {
                     // Comprobando si el nombre del evento contiene el texto del cuadro de busqueda
-                    if (!ev.getName().getValue().toLowerCase().contains(txtSearch.getText().toLowerCase().trim())) {
+                    if (!ev.getName().toLowerCase().contains(txtSearch.getText().toLowerCase().trim())) {
                         events.remove(ev);
                     }
                 }
@@ -608,7 +609,7 @@ public class VEventTableController {
                 
                 for (Evento ev : events) {
                     // Comprobando si coincide la fecha de inicio del evento
-                    if ((LocalDate.parse(ev.getDateStart().getValue(), formatter)).compareTo(date) != 0) {
+                    if ((LocalDate.parse(ev.getDateStart(), formatter)).compareTo(date) != 0) {
                         events.remove(ev);
                     }
                 }
@@ -617,7 +618,7 @@ public class VEventTableController {
             case 3:
                 for (Evento ev : events) {
                     // Comprobando si coincide la fecha de inicio del evento
-                    if ((LocalDate.parse(ev.getDateEnd().getValue(), formatter)).compareTo(date) != 0) {
+                    if ((LocalDate.parse(ev.getDateEnd(), formatter)).compareTo(date) != 0) {
                         events.remove(ev);
                     }
                 }
@@ -626,7 +627,7 @@ public class VEventTableController {
             case 4:
                 for (Evento ev : events) {
                     // Comprobando si el nombre del evento contiene el texto del cuadro de busqueda
-                    if (!ev.getDescription().getValue().toLowerCase().contains(txtSearch.getText().toLowerCase().trim())) {
+                    if (!ev.getDescription().toLowerCase().contains(txtSearch.getText().toLowerCase().trim())) {
                         events.remove(ev);
                     }
                     break;
@@ -657,7 +658,7 @@ public class VEventTableController {
      */
     public void txtNameVal(ObservableValue observable, String oldValue, String newValue) {
         name = false;
-        if (newValue.trim() != null) {
+        if (!newValue.trim().equals("")) {
             name = true;
         }
         if (newValue.trim().length() > 50) {
@@ -702,7 +703,7 @@ public class VEventTableController {
      */
     public void taDescVal(ObservableValue observable, String oldValue, String newValue) {
         desc = false;
-        if (newValue.trim() != null) {
+        if (!newValue.trim().equals("")) {
             desc = true;
         }        
         if (newValue.trim().length() > 400) {
@@ -726,23 +727,17 @@ public class VEventTableController {
                     t.getTablePosition().getRow())).setName(t.getNewValue());
         });
         clDateStart.setCellValueFactory(new PropertyValueFactory<>("dateStart"));
-        /*clDateStart.setCellFactory(TextFieldTableCell.<Evento>forTableColumn());
+        clDateStart.setCellFactory(TextFieldTableCell.<Evento>forTableColumn());
         clDateStart.setOnEditCommit((CellEditEvent<Evento, String> t) -> {
-            try {
-                ((Evento) t.getTableView().getItems().get(t.getTablePosition().getRow())).setDateStart(new SimpleDateFormat("dd/MM/yyyy").parse(t.getNewValue()));
-            } catch (ParseException ex) {
-                Logger.getLogger(VEventTableController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });*/
+           ((Evento) t.getTableView().getItems().get(
+                    t.getTablePosition().getRow())).setDateStart(t.getNewValue());
+        });
         clDateEnd.setCellValueFactory(new PropertyValueFactory<>("dateEnd"));
-        /*clDateEnd.setCellFactory(TextFieldTableCell.<Evento>forTableColumn());
+        clDateEnd.setCellFactory(TextFieldTableCell.<Evento>forTableColumn());
         clDateEnd.setOnEditCommit((CellEditEvent<Evento, String> t) -> {
-            try {
-                ((Evento) t.getTableView().getItems().get(t.getTablePosition().getRow())).setDateEnd(new SimpleDateFormat("dd/MM/yyyy").parse(t.getNewValue()));
-            } catch (ParseException ex) {
-                Logger.getLogger(VEventTableController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });*/
+            ((Evento) t.getTableView().getItems().get(
+                    t.getTablePosition().getRow())).setDateEnd(t.getNewValue());
+        });
         clDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
         clDescription.setCellFactory(TextFieldTableCell.<Evento>forTableColumn());
         clDescription.setOnEditCommit(
