@@ -76,56 +76,67 @@ public class VClientTableController {
     private final String SELECT_EMAIL = "Client Email";
     private final String SELECT_TYPE = "Client Type";
 
+    //Table
     @FXML
     private TableView<Client> tbClient;
     @FXML
-    private TableColumn<Client, String> colLogin;
-    @FXML
     private TableColumn<Client, String> colName;
+    @FXML
+    private TableColumn<Client, String> colLogin;
     @FXML
     private TableColumn<Client, String> colEmail;
     @FXML
     private TableColumn<Client, String> colType;
-    @FXML
-    private Button btnDeleteClient;
+    
+    //Buttons
     @FXML
     private Button btnNewClient;
     @FXML
-    private TextField txtFilter;
+    private Button btnDeleteClient;
     @FXML
     private Button btnSaveClient;
     @FXML
-    private Button btnBack;
-    @FXML
     private Button btnSearch;
     @FXML
-    private Label lblErrorEmail;
+    private Button btnViewEvents;
     @FXML
     private Button btnPrint;
     @FXML
-    private TextField tfName;
-    @FXML
-    private TextField tfEmail;
-    @FXML
-    private TextField tfLogin;
-    @FXML
-    private PasswordField tfConfirmPassword;
-    @FXML
-    private PasswordField tfPassword;
-    @FXML
-    private ComboBox<String> cbType;
-    @FXML
-    private ComboBox<String> cbSearchBy;
+    private Button btnBack;
+    
+    //Labels
     @FXML
     private Label lblErrorName;
+    @FXML
+    private Label lblErrorLogin;
+    @FXML
+    private Label lblErrorEmail;
     @FXML
     private Label lblErrorPassword;
     @FXML
     private Label lblErrorConfirmPassword;
+    
+    //Text fields
     @FXML
-    private Label lblErrorLogin;
+    private TextField tfName;
     @FXML
-    private Button btnViewEvents;
+    private TextField tfLogin;
+    @FXML
+    private TextField tfEmail;
+    @FXML
+    private TextField txtFilter;
+    
+    //Password fields
+    @FXML
+    private PasswordField tfPassword;
+    @FXML
+    private PasswordField tfConfirmPassword;
+    
+    //Combo box
+    @FXML
+    private ComboBox<String> cbType;
+    @FXML
+    private ComboBox<String> cbSearchBy;
 
     private ClientInterface clientInterface;    
     private Stage stage;
@@ -180,8 +191,8 @@ public class VClientTableController {
         stage.setResizable(false);
 
         //Set Windows event handlers 
-        stage.setOnShowing(this::handleWindowShowing);
-        stage.setOnCloseRequest(this::closeVClientTable);
+        stage.setOnShowing(this::handleWindowShowing); //show window
+        stage.setOnCloseRequest(this::closeVClientTable); //close window
 
         //Show main window
         stage.show();
@@ -191,8 +202,8 @@ public class VClientTableController {
      * Shows the buttons that are enabled or disabled for the client table when
      * we enter the VClientTable window.
      * Add all possible options to the Combobox.
-     * Disable all comments that show an error if the field is entered incorrectly
-     * Insert the name of each column in the table and enter the customer data
+     * Disable all comments that show an error if the field is entered incorrectly.
+     * Insert the name of each column in the table and enter the customer data.
      *
      * @param event
      */
@@ -200,28 +211,28 @@ public class VClientTableController {
         LOGGER.info("Beginning VClientTable::handleWindowShowing");
 
         tbClient.getSelectionModel().selectedItemProperty()
-                .addListener(this::handleSelection);
+                .addListener(this::handleSelection); //selected object from table
 
-        //ViewEvents button is disabled
+        //View Events button is disabled
         btnViewEvents.setDisable(true);
         
-        //DeleteClient button is disabled
+        //Delete Client button is disabled
         btnDeleteClient.setDisable(true);
         
         //Search button is disabled
         btnSearch.setDisable(true);
 
-        //NewClient button is disabled
+        //New Client button is disabled
         btnNewClient.setDisable(true);
-        //The NewClient button does not allow spaces to be entered
+        //The New Client button does not allow spaces to be entered
         btnNewClient.disableProperty().bind(tfEmail.textProperty().isEmpty()
                 .or(tfLogin.textProperty().isEmpty())
                 .or(tfPassword.textProperty().isEmpty())
                 .or(tfConfirmPassword.textProperty().isEmpty()));
 
-        //SaveClient button is disabled
+        //Save Client button is disabled
         btnSaveClient.setDisable(true);
-        //The SaveClient button does not allow spaces to be entered
+        //The Save Client button does not allow spaces to be entered
         btnSaveClient.disableProperty().bind(tfEmail.textProperty().isEmpty()
                 .or(tfLogin.textProperty().isEmpty())
                 .or(tfPassword.textProperty().isEmpty())
@@ -233,7 +244,7 @@ public class VClientTableController {
         //Back button is enabled
         btnBack.setDisable(false);
 
-        //Add the values ​​of the customer type combobox
+        //Add the values ​​of the client type ComboBox
         ObservableList<String> optionsForComboType;
         optionsForComboType = FXCollections.observableArrayList(SELECT_PARTICULAR, 
                 SELECT_ASOCIATION, SELECT_ENTERPRISE, SELECT_PUBLIC_ENTITY);
@@ -241,7 +252,7 @@ public class VClientTableController {
         //Select the first comboBox item by default
         cbType.getSelectionModel().selectFirst();
 
-        //Add the values ​​of the customer type combobox
+        //Add the values ​​of the client filter ComboBox
         ObservableList<String> optionsForComboSearch;
         optionsForComboSearch = FXCollections.observableArrayList(SELECT_NAME, 
                 SELECT_LOGIN, SELECT_EMAIL, SELECT_TYPE);
@@ -256,7 +267,7 @@ public class VClientTableController {
         lblErrorPassword.setVisible(false);
         lblErrorConfirmPassword.setVisible(false);
         
-        //Insert the table of clients with clients
+        //Insert the table columns and link them to clients
         colLogin.setCellValueFactory(new PropertyValueFactory<>("login"));
         colName.setCellValueFactory(new PropertyValueFactory<>("name"));
         colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
@@ -277,7 +288,7 @@ public class VClientTableController {
      * Method to control if there's a client selected in the table.
      * If the user selects a client in the table, the View client events, 
      * save changes and delete clients buttons become visible.
-     * if the user deselects a client in the table, the View client events, 
+     * If the user deselects a client in the table, the View client events, 
      * save changes and delete clients buttons become invisible again.
      *
      * @param observableValue
@@ -286,13 +297,14 @@ public class VClientTableController {
      */
     private void handleSelection(ObservableValue observableValue, 
             Object oldValue, Object newValue) {
-        //When a table client is selected
+
         if (newValue != null) {
+            //Buttons enabled when you select a client
             btnViewEvents.setDisable(false);
             btnSaveClient.setDisable(false);
             btnDeleteClient.setDisable(false);
-            //When a table client is deselected
         } else {
+            //Buttons disabled when you select a client
             btnViewEvents.setDisable(true);
             btnSaveClient.setDisable(true);
             btnDeleteClient.setDisable(true);
@@ -746,7 +758,9 @@ public class VClientTableController {
     @FXML
     private void handleOpenEventTable(ActionEvent event) {
         LOGGER.info("Open the window with the client events table");
-
+        
+        Client clientEvents = tbClient.getSelectionModel().getSelectedItem();
+        
         try {
             LOGGER.info("Open VEventTable");
             FXMLLoader loader = new FXMLLoader(getClass()
@@ -754,7 +768,7 @@ public class VClientTableController {
             Parent root = (Parent) loader.load();
             VEventTableController controller = loader.getController();
             controller.setStage(this.stage);
-            controller.setClient(/**INTRODUCIR EL CLIENTE SELECCIONADO EN LA TABLA*/);
+            controller.setClient(clientEvents);
             controller.setEditable(true);
             controller.initStage(root);
 
