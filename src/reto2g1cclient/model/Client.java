@@ -75,7 +75,9 @@ public class Client extends User {
 
     @Override
     public String toString() {
-        return "Client{" + "Type=" + type + ", events=" + events + ", comercial=" + commercial + '}';
+        return "Client{" + "Type=" + type 
+                + ", events=" + events 
+                + ", comercial=" + commercial + '}';
     }
 
     @Override

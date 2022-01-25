@@ -15,17 +15,24 @@ import reto2g1cclient.model.Client;
  */
 public interface ClientInterface {
     
-    public void createClient(Client client) throws ClientServerConnectionException;
+    public void createClient(Client client) 
+            throws ClientServerConnectionException;
     
-    public void editClient(Client client) throws ClientServerConnectionException;
+    public void editClient(Client client) 
+            throws ClientServerConnectionException;
     
-    public void removeClient(String clientId) throws ClientServerConnectionException;
+    public void removeClient(String clientId) 
+            throws ClientServerConnectionException;
     
-    public void searchClient(Client client) throws ClientServerConnectionException;
+    public void searchClient(Client client) 
+            throws ClientServerConnectionException;
     
-    public void findClientCommercial(Client client) throws ClientServerConnectionException;
+    public void findClientCommercial(Client client) 
+            throws ClientServerConnectionException;
     
-    public void deleteAllClientDisabled(Client client) throws ClientServerConnectionException;
+    public void deleteAllClientDisabled(Client client) 
+            throws ClientServerConnectionException;
     
-    public Collection<Client> getAllClient() throws ClientServerConnectionException;
+    public Collection<Client> getAllClient() 
+            throws ClientServerConnectionException;
 }

@@ -25,7 +25,8 @@ public class ClientImplementation implements ClientInterface{
     }
     
     @Override
-    public void createClient (Client client)throws ClientServerConnectionException {
+    public void createClient (Client client)
+            throws ClientServerConnectionException {
         try{
             clientJersey.create(client);
         }catch (ClientErrorException e){
@@ -34,7 +35,8 @@ public class ClientImplementation implements ClientInterface{
     }
 
     @Override
-    public void editClient(Client client) throws ClientServerConnectionException {
+    public void editClient(Client client) 
+            throws ClientServerConnectionException {
         try{
             clientJersey.edit(client);
         }catch (ClientErrorException e){
@@ -43,7 +45,8 @@ public class ClientImplementation implements ClientInterface{
     }
 
     @Override
-    public void removeClient(String clientId) throws ClientServerConnectionException {
+    public void removeClient(String clientId) 
+            throws ClientServerConnectionException {
         try{
             clientJersey.remove(clientId);
         }catch (ClientErrorException e){
@@ -52,25 +55,30 @@ public class ClientImplementation implements ClientInterface{
     }
 
     @Override
-    public void searchClient(Client client) throws ClientServerConnectionException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void findClientCommercial(Client client) throws ClientServerConnectionException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void deleteAllClientDisabled(Client client) throws ClientServerConnectionException {
+    public void searchClient(Client client) 
+            throws ClientServerConnectionException {
         
     }
 
     @Override
-    public Collection<Client> getAllClient() throws ClientServerConnectionException {
+    public void findClientCommercial(Client client) 
+            throws ClientServerConnectionException {
+        
+    }
+
+    @Override
+    public void deleteAllClientDisabled(Client client) 
+            throws ClientServerConnectionException {
+        
+    }
+
+    @Override
+    public Collection<Client> getAllClient() 
+            throws ClientServerConnectionException {
         Collection <Client> clients = null;
         try{
-            clients = clientJersey.findAll(new GenericType <Collection <Client>>(){});
+            clients = clientJersey
+                    .findAll(new GenericType <Collection <Client>>(){});
         }catch (ClientErrorException e){
             throw new ClientServerConnectionException(e.getMessage());
         }

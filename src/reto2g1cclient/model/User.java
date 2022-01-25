@@ -183,7 +183,7 @@ public class User implements Serializable {
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 73 * hash + this.id;
+        hash = 73 * hash + Objects.hashCode(this.id);
         hash = 73 * hash + Objects.hashCode(this.login);
         hash = 73 * hash + Objects.hashCode(this.email);
         hash = 73 * hash + Objects.hashCode(this.fullName);
