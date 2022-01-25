@@ -5,6 +5,7 @@
  */
 package reto2g1cclient.controller;
 import java.io.IOException;
+import java.text.ParseException;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
@@ -32,6 +33,7 @@ import javafx.stage.WindowEvent;
 import reto2g1cclient.logic.EquipmentInterface;
 import reto2g1cclient.model.Equipment;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Alert.AlertType;
 /**
  *
  * @author Aitor Perez
@@ -160,7 +162,7 @@ public class EquipmentController {
        @FXML
        private Label lblWarningDate;
 
-
+       
 
 
       public void initStage(Parent root) throws IOException {
@@ -277,8 +279,11 @@ public class EquipmentController {
     
     @FXML
     public void newEquipment(ActionEvent event){
-        double coste = Double.parseDouble(tfCost.getText());
-       if(coste > 0  ){
+       try{
+           double coste = Double.parseDouble(tfCost.getText());
+      
+        if(coste > 0  ){
+            lblWarninNumValue.setVisible(false);
             Equipment eq = null;
        eq.setName(tfName.getText());
        eq.setCost(Double.parseDouble(tfCost.getText()));
@@ -291,6 +296,16 @@ public class EquipmentController {
        }else{
            lblWarninNumValue.setVisible(true);
        }
+       }catch(NumberFormatException e){
+           LOGGER.info("Error on cost value" + e);
+            lblWarninNumValue.setVisible(true);
+            Alert altWarningLog = new Alert(AlertType.WARNING);
+            altWarningLog.setTitle("Error ");
+            altWarningLog.setHeaderText("El coste introducido no es numerico");
+            altWarningLog.setContentText("El coste que se ha introducido debe ser numerico");
+            altWarningLog.showAndWait();
+       }
+        
        
        
     }
@@ -330,38 +345,44 @@ public class EquipmentController {
      */
     public void tfNameValue(ObservableValue observable, String oldValue, String newValue) {
         
-        if (newValue.trim() != null) {
+        if (!newValue.trim().equals("")) {
             bolName = true;
               
         }else{
             bolName = false;
-            LOGGER.info("name is empty");
         }
+            
+            LOGGER.info("name is empty");
+        
         
         validateEquipData();
     }
     public void tfCostValue(ObservableValue observable, String oldValue, String newValue) {
         bolCost = false;
-        if (newValue.trim() != null) {
+        if (!newValue.trim().equals("")) {
             bolCost = true;
            
         }else{
-            bolCost = false; 
-            LOGGER.info("cost is empty");
+            bolCost = false;
         }
+             
+            LOGGER.info("cost is empty");
+        
         
         
         validateEquipData();
     }
     public void taDescriptionValue(ObservableValue observable, String oldValue, String newValue) {
         bolDescription = false;
-        if (newValue.trim() != null) {
+        if(!newValue.trim().equals("") ) {
             bolDescription = true;
            
         }else{
-           bolDescription = false; 
-           LOGGER.info("description is empty");
+             bolDescription = false; 
         }
+          
+           LOGGER.info("description is empty");
+        
         
          
         validateEquipData();
@@ -373,18 +394,25 @@ public class EquipmentController {
             
             
         }else{
-             bolDateBuy = false;
-        LOGGER.info("date buy is empty");
+            bolDateBuy = false;
         }
+             
+        LOGGER.info("date buy is empty");
+        
        
         validateEquipData();
     }
      public void validateEquipData(){
          if(bolName && bolDescription && bolCost && bolDateBuy ){
              LOGGER.info("Validate All data is empty");
+            
              btnCrearEquip.setDisable(false);
          }else{
+             
              btnCrearEquip.setDisable(true);
          }
+   
+          
      }
+    
 }
