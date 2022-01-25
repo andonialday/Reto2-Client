@@ -329,36 +329,54 @@ public class EquipmentController {
      * @param newValue
      */
     public void tfNameValue(ObservableValue observable, String oldValue, String newValue) {
-        bolName = false;
+        
         if (newValue.trim() != null) {
             bolName = true;
-              LOGGER.info("name is empty");
+              
+        }else{
+            bolName = false;
+            LOGGER.info("name is empty");
         }
+        
         validateEquipData();
     }
     public void tfCostValue(ObservableValue observable, String oldValue, String newValue) {
         bolCost = false;
         if (newValue.trim() != null) {
             bolCost = true;
+           
+        }else{
+            bolCost = false; 
             LOGGER.info("cost is empty");
         }
+        
+        
         validateEquipData();
     }
     public void taDescriptionValue(ObservableValue observable, String oldValue, String newValue) {
         bolDescription = false;
         if (newValue.trim() != null) {
             bolDescription = true;
-            LOGGER.info("description is empty");
+           
+        }else{
+           bolDescription = false; 
+           LOGGER.info("description is empty");
         }
+        
+         
         validateEquipData();
     }
      public void dpDateAddValue(ObservableValue observable, Object oldValue, Object newValue) {
         bolDateBuy = false;
         if (dpDate.getValue() != null) {
             bolDateBuy = true;
-            LOGGER.info("date buy is empty");
             
+            
+        }else{
+             bolDateBuy = false;
+        LOGGER.info("date buy is empty");
         }
+       
         validateEquipData();
     }
      public void validateEquipData(){
