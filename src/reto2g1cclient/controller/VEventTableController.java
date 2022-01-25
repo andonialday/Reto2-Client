@@ -728,10 +728,7 @@ public class VEventTableController {
         });
         clDateStart.setCellValueFactory(new PropertyValueFactory<>("dateStart"));
         clDateStart.setCellFactory(TextFieldTableCell.<Evento>forTableColumn());
-        clDateStart.setOnEditCommit((CellEditEvent<Evento, String> t) -> {
-           ((Evento) t.getTableView().getItems().get(
-                    t.getTablePosition().getRow())).setDateStart(t.getNewValue());
-        });
+        clDateStart.setOnEditCommit(this::handleEditCommitDateStart);
         clDateEnd.setCellValueFactory(new PropertyValueFactory<>("dateEnd"));
         clDateEnd.setCellFactory(TextFieldTableCell.<Evento>forTableColumn());
         clDateEnd.setOnEditCommit((CellEditEvent<Evento, String> t) -> {
@@ -748,6 +745,11 @@ public class VEventTableController {
         LOGGER.info("Table Columns initiated");
     }
 
+    private void handleEditCommitDateStart (CellEditEvent<Evento, String> t) {
+           ((Evento) t.getTableView().getItems().get(
+                    t.getTablePosition().getRow())).setDateStart(t.getNewValue());
+        }
+    
     /**
      *
      * @param event
