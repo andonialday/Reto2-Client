@@ -10,6 +10,9 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 import java.util.Set;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -24,29 +27,45 @@ public class Equipment implements Serializable {
     
     
 
-    private Integer id;
-    private String description;
-    private String name;
-    private Date dateAdd;
-    private Double cost;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    private final SimpleIntegerProperty id;
+    private final SimpleStringProperty description;
+    private final SimpleStringProperty name;
+    private final SimpleStringProperty dateAdd;
+    private final SimpleStringProperty cost;
+    private final SimpleObjectProperty<Set<EventEquipment>> events;
+    
+    public Equipment(Integer id, String name, String description, String cost, String dateAdd, Set<EventEquipment> events){
+        this.id = new SimpleIntegerProperty(id);
+        this.name = new SimpleStringProperty(name);
+        this.dateAdd = new SimpleStringProperty(dateAdd);
+        this.cost = new SimpleStringProperty(cost);
+        this.description = new SimpleStringProperty(description);
+        this.events = new SimpleObjectProperty<>(events);
     }
     
-
-    private Set<EventEquipment> events;
+    
+    /**
+     * Metodo Getter para obtener el Name del Equipamiento
+     * @return el Nombre del equipamiento
+     */
+    public String getName() {
+        return this.name.get();
+    }
+    
+     /**
+     * Metodo Setter para obtener el Name del Equipamiento
+     * @param name el Nombre del equipamiento
+     */
+    public void setName(String name) {
+        this.name.set(name);
+    }
     
     /**
      * Metodo Getter para obtener la ID del Equipamiento
      * @return ID del equipamiento
      */
     public Integer getId() {
-        return id;
+        return this.id.get();
     }
 
     /**
@@ -54,7 +73,7 @@ public class Equipment implements Serializable {
      * @param id a asignar al Equipamiento
      */
     public void setId(Integer id) {
-        this.id = id;
+        this.id.set(id);
     }
 
     /**
@@ -62,7 +81,7 @@ public class Equipment implements Serializable {
      * @return Descripcion del Equipamiento
      */
     public String getDescription() {
-        return description;
+        return this.description.get();
     }
 
     /**
@@ -70,39 +89,39 @@ public class Equipment implements Serializable {
      * @param description a asignar al Equipamiento
      */
     public void setDescription(String description) {
-        this.description = description;
+        this.description.set(description);
     }
 
     /**
      * Metodo Getter para obtener la DateAdd <i>(Fecha de alta)</i> del Equipamiento
      * @return DateAdd <i>(Fecha de alta)</i> del Equipamiento
      */
-    public Date getDateAdd() {
-        return dateAdd;
+    public String getDateAdd() {
+        return this.dateAdd.get();
     }
 
     /**
      * Metodo Setter para definir el DateAdd <i>(Fecha de alta)</i> del Equipamiento
      * @param dateAdd <i>(Fecha de alta)</i> a asignar al Equipamiento
      */
-    public void setDateAdd(Date dateAdd) {
-        this.dateAdd = dateAdd;
+    public void setDateAdd(String dateAdd) {
+        this.dateAdd.set(dateAdd);
     }
 
     /**
      * Metodo Getter para obtener el Cost <i>(Coste)</i> del Equipamiento
      * @return Cost<i>(Coste)</i> del Equipamiento
      */
-    public Double getCost() {
-        return cost;
+    public String getCost() {
+        return this.cost.get();
     }
 
     /**
      * Metodo Setter para definir el Cost <i>(Coste)</i> del Equipamiento
      * @param cost <i>(Coste)</i> a asignar al Equipamiento
      */
-    public void setCost(Double cost) {
-        this.cost = cost;
+    public void setCost(String cost) {
+        this.cost.set(cost);
     }
 
     /**
@@ -111,7 +130,7 @@ public class Equipment implements Serializable {
      */
     @XmlTransient
     public Set<EventEquipment> getEvents() {
-        return events;
+        return this.events.get();
     }
 
     /**
@@ -119,7 +138,7 @@ public class Equipment implements Serializable {
      * @param events <i>(Eventos)</i> vinculados al Equipamiento
      */
     public void setEvents(Set<EventEquipment> events) {
-        this.events = events;
+        this.events.set(events);
     }
 
     @Override
