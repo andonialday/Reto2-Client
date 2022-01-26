@@ -213,36 +213,23 @@ public class VClientTableController {
         tbClient.getSelectionModel().selectedItemProperty()
                 .addListener(this::handleSelection); //selected object from table
 
-        //View Events button is disabled
+        //Buttons disabled
         btnViewEvents.setDisable(true);
-        
-        //Delete Client button is disabled
         btnDeleteClient.setDisable(true);
-        
-        //Search button is disabled
         btnSearch.setDisable(true);
-
-        //New Client button is disabled
         btnNewClient.setDisable(true);
-        //The New Client button does not allow spaces to be entered
-        btnNewClient.disableProperty().bind(tfEmail.textProperty().isEmpty()
-                .or(tfLogin.textProperty().isEmpty())
-                .or(tfPassword.textProperty().isEmpty())
-                .or(tfConfirmPassword.textProperty().isEmpty()));
-
-        //Save Client button is disabled
         btnSaveClient.setDisable(true);
-        //The Save Client button does not allow spaces to be entered
-        btnSaveClient.disableProperty().bind(tfEmail.textProperty().isEmpty()
-                .or(tfLogin.textProperty().isEmpty())
-                .or(tfPassword.textProperty().isEmpty())
-                .or(tfConfirmPassword.textProperty().isEmpty()));
 
-        //Print button is enabled
+        //Buttons enabled
         btnPrint.setDisable(false);
-
-        //Back button is enabled
         btnBack.setDisable(false);
+        
+        //Make all error tags invisible
+        lblErrorName.setVisible(false);
+        lblErrorEmail.setVisible(false);
+        lblErrorLogin.setVisible(false);
+        lblErrorPassword.setVisible(false);
+        lblErrorConfirmPassword.setVisible(false);
 
         //Add the values ​​of the client type ComboBox
         ObservableList<String> optionsForComboType;
@@ -259,13 +246,6 @@ public class VClientTableController {
         cbSearchBy.setItems(optionsForComboSearch);
         //Select the first comboBox item by default
         cbSearchBy.getSelectionModel().selectFirst();
-
-        //Make all error tags invisible
-        lblErrorName.setVisible(false);
-        lblErrorEmail.setVisible(false);
-        lblErrorLogin.setVisible(false);
-        lblErrorPassword.setVisible(false);
-        lblErrorConfirmPassword.setVisible(false);
         
         //Insert the table columns and link them to clients
         colLogin.setCellValueFactory(new PropertyValueFactory<>("login"));
