@@ -797,7 +797,8 @@ public class VClientTableController {
         alert1.setTitle("Back to VAdmin");
         alert1.setHeaderText(null);
         alert1.setContentText("Are you sure "
-                + "you want to return to the previous window?");
+                + "you want to return to the previous window?"
+                + " You will lose all your data");
         alert1.showAndWait();
         Optional<ButtonType> result = alert1.showAndWait();
 

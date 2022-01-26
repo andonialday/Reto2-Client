@@ -101,4 +101,12 @@ public class VEventTableController {
             LOGGER.info("Application closing cancelled");
         }
     }
+
+    void setClient(Client clientEvents) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    void setEditable(boolean b) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
