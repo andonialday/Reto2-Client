@@ -5,6 +5,7 @@
  */
 package reto2g1cclient.controller;
 
+import com.sun.javafx.scene.control.skin.DatePickerSkin;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -331,15 +332,16 @@ public class VEventTableController {
         //Leer Eventos Disponibles
         ei = EventFactory.getImplementation();
         loadData();
-        // Iniciar Tabla
-        initiateTableColumns();
+        // Iniciar Tabla        
         tbEvent.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         tbEvent.getSelectionModel().selectedItemProperty().addListener(this::eventTableSelection);
         // Cargar Datos Iniciales en tabla
         loadTable();
         // Seccion Busqueda
-        cbSearch.getItems().addAll("Nombre del Evento", "Fecha de Inicio", "Fecha de Finalización", "Descripción");
+        ObservableList<String> filtros = FXCollections.observableArrayList("Nombre del Evento", "Fecha de Inicio", "Fecha de Finalización", "Descripción");
+        cbSearch.getItems().addAll(filtros);
         cbSearch.getSelectionModel().selectedItemProperty().addListener(this::selectedFilter);
+        filter = 1;
         btnSearch.setOnAction(this::filterEvents);
         // Botones y Fields
         btnPrint.setOnAction(this::printData);
@@ -374,7 +376,7 @@ public class VEventTableController {
         lblDateEndEr.setVisible(false);
         lblDateStartEr.setVisible(false);
         // Estado inicial de eventos
-        btnBack.setDisable(false);
+        btnBack.setDisable(!false);
         btnDelete.setDisable(true);
         btnNew.setDisable(true);
         btnSearch.setDisable(false);
@@ -386,9 +388,8 @@ public class VEventTableController {
         dateEnd = false;
         desc = false;
         tableSelec = false;
-        //Si accede a la vista de eventos un cliente, editable será true y se podrá 
-        //editar la tabla, si accede un comercial, editable será false y no será editable
-        tbEvent.setEditable(editable);
+        //Control de edición en función de usuario que accede
+        editableSetter();
 
     }
 
@@ -559,28 +560,30 @@ public class VEventTableController {
      */
     public void selectedFilter(ObservableValue observable, Object oldValue, Object newValue) {
         // Carga de datos en sección de edición
+        LOGGER.info("Filtering parameter selection changed");
         if (newValue != null) {
             switch (cbSearch.getSelectionModel().getSelectedIndex()) {
                 // Filtro Nombre
-                case 1:
+                case 0:
                     filter = 1;
                     break;
                 // Filtro Fecha Inicio
-                case 2:
+                case 1:
                     filter = 2;
                     break;
                 // Filtro Fecha Fin
-                case 3:
+                case 2:
                     filter = 3;
                     break;
                 // Filtro Descripcion
-                case 4:
+                case 3:
                     filter = 4;
                     break;
                 default:
                     filter = 0;
             }
         }
+        LOGGER.info("Filtering parameter selected: " + filter);
     }
 
     /**
@@ -591,7 +594,7 @@ public class VEventTableController {
     public void filterEvents(ActionEvent event) {
         LOGGER.info("Filtering available Events");
         LocalDate date = null;
-        if (filter == 2 || filter == 2) {
+        if (filter == 2 || filter == 3) {
             date = LocalDate.parse(txtSearch.getText(), formatter);
         }
         switch (filter) {
@@ -604,9 +607,9 @@ public class VEventTableController {
                     }
                 }
                 break;
-                // Filtro Fecha Inicio
+            // Filtro Fecha Inicio
             case 2:
-                
+                loadData();
                 for (Evento ev : events) {
                     // Comprobando si coincide la fecha de inicio del evento
                     if ((LocalDate.parse(ev.getDateStart(), formatter)).compareTo(date) != 0) {
@@ -614,8 +617,9 @@ public class VEventTableController {
                     }
                 }
                 break;
-                // Filtro Fecha Fin
+            // Filtro Fecha Fin
             case 3:
+                loadData();
                 for (Evento ev : events) {
                     // Comprobando si coincide la fecha de inicio del evento
                     if ((LocalDate.parse(ev.getDateEnd(), formatter)).compareTo(date) != 0) {
@@ -623,8 +627,9 @@ public class VEventTableController {
                     }
                 }
                 break;
-                // Filtro Descripcion
+            // Filtro Descripcion
             case 4:
+                loadData();
                 for (Evento ev : events) {
                     // Comprobando si el nombre del evento contiene el texto del cuadro de busqueda
                     if (!ev.getDescription().toLowerCase().contains(txtSearch.getText().toLowerCase().trim())) {
@@ -705,7 +710,7 @@ public class VEventTableController {
         desc = false;
         if (!newValue.trim().equals("")) {
             desc = true;
-        }        
+        }
         if (newValue.trim().length() > 400) {
             newValue = oldValue;
         }
@@ -715,8 +720,41 @@ public class VEventTableController {
     /**
      *
      */
-    public void initiateTableColumns() {
+    public void initiateNonEditableTableColumns() {
         LOGGER.info("Generating Table Properties");
+        //Columna Nombre
+        // Factoria de Celda para Valor de Propiedades
+        // -> Factoria de Celdas para Edicion
+        // - - -> lambda para controlar edicion de contenido
+        clName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        clName.setCellFactory(TextFieldTableCell.<Evento>forTableColumn());
+        //Columna Nombre
+        // Factoria de Celda para Valor de Propiedades
+        // -> Factoria de Celdas para Edicion
+        // - - -> Método externo para control de fecha
+        clDateStart.setCellValueFactory(new PropertyValueFactory<>("dateStart"));
+        clDateStart.setCellFactory(TextFieldTableCell.<Evento>forTableColumn());
+        //Columna Nombre
+        // Factoria de Celda para Valor de Propiedades
+        // -> Factoria de Celdas para Edicion
+        // - - -> Método externo para control de fecha
+        clDateEnd.setCellValueFactory(new PropertyValueFactory<>("dateEnd"));
+        clDateEnd.setCellFactory(TextFieldTableCell.<Evento>forTableColumn());
+        //Columna Nombre
+        // Factoria de Celda para Valor de Propiedades
+        // -> Factoria de Celdas para Edicion
+        // - - -> lambda para controlar edicion de contenido
+        clDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
+        clDescription.setCellFactory(TextFieldTableCell.<Evento>forTableColumn());
+        LOGGER.info("Table Columns initiated");
+    }
+
+    /**
+     *
+     */
+    public void initiateEditableTableColumns() {
+        LOGGER.info("Generating Table Properties");
+        //Columna Nombre
         // Factoria de Celda para Valor de Propiedades
         // -> Factoria de Celdas para Edicion
         // - - -> lambda para controlar edicion de contenido
@@ -726,15 +764,24 @@ public class VEventTableController {
             ((Evento) t.getTableView().getItems().get(
                     t.getTablePosition().getRow())).setName(t.getNewValue());
         });
+        //Columna Nombre
+        // Factoria de Celda para Valor de Propiedades
+        // -> Factoria de Celdas para Edicion
+        // - - -> Método externo para control de fecha
         clDateStart.setCellValueFactory(new PropertyValueFactory<>("dateStart"));
         clDateStart.setCellFactory(TextFieldTableCell.<Evento>forTableColumn());
         clDateStart.setOnEditCommit(this::handleEditCommitDateStart);
+        //Columna Nombre
+        // Factoria de Celda para Valor de Propiedades
+        // -> Factoria de Celdas para Edicion
+        // - - -> Método externo para control de fecha
         clDateEnd.setCellValueFactory(new PropertyValueFactory<>("dateEnd"));
         clDateEnd.setCellFactory(TextFieldTableCell.<Evento>forTableColumn());
-        clDateEnd.setOnEditCommit((CellEditEvent<Evento, String> t) -> {
-            ((Evento) t.getTableView().getItems().get(
-                    t.getTablePosition().getRow())).setDateEnd(t.getNewValue());
-        });
+        clDateEnd.setOnEditCommit(this::handleEditCommitDateEnd);
+        //Columna Nombre
+        // Factoria de Celda para Valor de Propiedades
+        // -> Factoria de Celdas para Edicion
+        // - - -> lambda para controlar edicion de contenido
         clDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
         clDescription.setCellFactory(TextFieldTableCell.<Evento>forTableColumn());
         clDescription.setOnEditCommit(
@@ -745,11 +792,16 @@ public class VEventTableController {
         LOGGER.info("Table Columns initiated");
     }
 
-    private void handleEditCommitDateStart (CellEditEvent<Evento, String> t) {
-           ((Evento) t.getTableView().getItems().get(
-                    t.getTablePosition().getRow())).setDateStart(t.getNewValue());
-        }
-    
+    private void handleEditCommitDateStart(CellEditEvent<Evento, String> t) {
+        ((Evento) t.getTableView().getItems().get(
+                t.getTablePosition().getRow())).setDateStart(t.getNewValue());
+    }
+
+    private void handleEditCommitDateEnd(CellEditEvent<Evento, String> t) {
+        ((Evento) t.getTableView().getItems().get(
+                t.getTablePosition().getRow())).setDateStart(t.getNewValue());
+    }
+
     /**
      *
      * @param event
@@ -802,5 +854,24 @@ public class VEventTableController {
      */
     public void print() {
 
+    }
+
+    private void editableSetter() {
+        //Si accede a la vista de eventos un cliente o  un administrador, editable será true y se podrán 
+        //editar la tabla y lños campos superiores, si accede un comercial, editable será false y no serán editables
+        txtName.setEditable(editable);
+        taDescription.setEditable(editable);
+        dpDateEnd.setEditable(editable);
+        dpDateStart.setEditable(editable);
+        tbEvent.setEditable(editable);
+        if (editable) {
+            // Si inician Admin o Cliente, editable = true -> Tabla Editable
+            initiateEditableTableColumns();
+        } else {
+            // Si inicia comercial, editable = false -> Tabla NO Editable, TextFields, DatePicker y TextArea deshabilitados
+            initiateNonEditableTableColumns();
+            ((DatePickerSkin)dpDateEnd.getSkin()).getPopupContent().setVisible(editable);
+            ((DatePickerSkin)dpDateStart.getSkin()).getPopupContent().setVisible(editable);
+        }
     }
 }

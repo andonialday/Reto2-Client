@@ -129,9 +129,13 @@ public class EventJerseyClient {
      * @return
      * @throws ClientErrorException
      */
-    public <T> T findAll(Class<T> responseType) throws ClientErrorException {
+    public <T> T findAll(Class<T> responseType) {
+        // try {
         WebTarget resource = webTarget;
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
+        // } catch (ClientErrorException e) {
+        //    e.getMessage();
+        // }
     }
 
     /**
@@ -145,8 +149,7 @@ public class EventJerseyClient {
 
     /**
      *
-     * @return
-     * @throws ClientErrorException
+     * @return @throws ClientErrorException
      */
     public String countREST() throws ClientErrorException {
         WebTarget resource = webTarget;
@@ -205,10 +208,10 @@ public class EventJerseyClient {
         try {
             webTarget.request(javax.ws.rs.core.MediaType.APPLICATION_XML).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_XML));
         } catch (Exception e) {
-            
+
         }
     }
-        
+
     /**
      *
      * @param <T>
