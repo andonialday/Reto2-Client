@@ -37,7 +37,7 @@
       <Label fx:id="lblCost" layoutX="160.0" layoutY="89.0" text="Coste(€)" />
       <DatePicker fx:id="dpDate" layoutX="160.0" layoutY="162.0" prefHeight="25.0" prefWidth="163.0" promptText="DD/MM/AAAA" />
       <Label fx:id="lblDescription" layoutX="422.0" layoutY="42.0" text="Descripcion" />
-      <TextArea fx:id="taDescription" layoutX="422.0" layoutY="63.0" prefHeight="110.0" prefWidth="470.0" promptText="Descripcion del Equipamiento" />
+      <TextArea fx:id="taDescription" layoutX="422.0" layoutY="63.0" prefHeight="110.0" prefWidth="470.0" promptText="Descripcion del Equipamiento" wrapText="true" />
       <Label fx:id="lblBuyData" layoutX="160.0" layoutY="145.0" text="Fecha de compra" />
       <Button id="btnNewEquipment" fx:id="btnCrearEquip" disable="true" layoutX="781.0" layoutY="316.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="171.0" style="-fx-background-color: green;" text="NUEVO EQUIPAMIENTO" textFill="WHITE" />
       <Label fx:id="lblWarninNumValue" layoutX="162.0" layoutY="130.0" text="Introduzca un valor numerico." textFill="RED" />

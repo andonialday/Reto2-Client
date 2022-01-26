@@ -7,6 +7,7 @@ package reto2g1cclient.controller;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
@@ -174,7 +175,9 @@ public class EquipmentController {
         stage.setMinWidth(960);
         stage.setMinHeight(720);
         stage.setResizable(false);
-
+        //Al seleccionar mandar datos de la tabla a las cajas
+         tbEquipment.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        tbEquipment.getSelectionModel().selectedItemProperty().addListener(this::setDataOnTblEquip);
         //Set Windows event handlers 
         stage.setOnShowing(this::handleWindowShowing);
         btnBack.setOnAction(this::back);
@@ -185,16 +188,18 @@ public class EquipmentController {
         tfCost.textProperty().addListener(this::tfCostValue);
         taDescription.textProperty().addListener(this::taDescriptionValue);
         dpDate.valueProperty().addListener(this::dpDateAddValue);
-        /* stage.setOnCloseRequest(this::closeVEquipmentTable);
+         //stage.setOnCloseRequest(this::closeVEquipmentTable);
         // AADIR LOS NUEVOS LABEL Y HYPERLINK
-        tbEvent.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-        loadData();
+       
+      /*  loadData();closeVEquipmentTable
         
         btnDeleteEvent.setOnAction(this::deleteEvent);
         btnSave.setOnAction(this::saveChanges);*/
         //Show main window
         // loaddata();
+        
         loadTblEquipment();
+        setTableData();
         stage.show();
     }
 
@@ -239,6 +244,7 @@ public class EquipmentController {
         bolDateBuy = false;
         bolDescription = false;
         bolName = false;
+        bolTableEquipSelec=false;
     }
 
     private void loaddata() {
@@ -315,8 +321,9 @@ public class EquipmentController {
         alert.setHeaderText("¿Seguro que desea Eliminar el Equipamiento Seleccionado?");
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
-            eqif.remove(this.equipment);
-            equipments.remove(event);
+            
+           // eqif.remove(this.equipment);
+            equipments.remove(equipment);
             loadTblEquipment();
             tbEquipment.refresh();
         } else {
@@ -324,12 +331,10 @@ public class EquipmentController {
             LOGGER.info("Closing aborted");
         }
     }
-
     @FXML
-    public void editEquipment(ActionEvent event) {
-
+    public void saveEquipment(){
+        
     }
-
     /**
      * ******* METODOS PARA HABILITAR LOS BOTONES ****************
      */
@@ -340,12 +345,13 @@ public class EquipmentController {
      * @param newValue
      */
     public void tfNameValue(ObservableValue observable, String oldValue, String newValue) {
-
+            bolName = false;
         if (!newValue.trim().equals("")) {
             bolName = true;
 
-        } else {
-            bolName = false;
+        }  
+        if (newValue.trim().length() > 50) {
+            newValue = oldValue;
         }
 
         LOGGER.info("name is empty");
@@ -380,12 +386,12 @@ public class EquipmentController {
         if (!newValue.trim().equals("")) {
             bolDescription = true;
 
-        } else {
-            bolDescription = false;
+        } 
+        if (newValue.trim().length() > 400) {
+            newValue = oldValue;
         }
 
-        LOGGER.info("description is empty");
-
+      
         validateEquipData();
     }
 
@@ -398,13 +404,13 @@ public class EquipmentController {
             bolDateBuy = false;
         }
 
-        LOGGER.info("date buy is empty");
+      
 
         validateEquipData();
     }
 
     public void validateEquipData() {
-        if (bolName && bolDescription && bolCost && bolDateBuy) {
+        if (bolName && bolDescription && bolCost && bolDateBuy && !bolTableEquipSelec) {
             LOGGER.info("Validate All data is empty");
 
             btnCrearEquip.setDisable(false);
@@ -423,8 +429,40 @@ public class EquipmentController {
         clCost.setCellFactory(TextFieldTableCell.<Equipment>forTableColumn());
         clDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
         clDescription.setCellFactory(TextFieldTableCell.<Equipment>forTableColumn());
-        clDate.setCellValueFactory(new PropertyValueFactory<>("description"));
+        clDate.setCellValueFactory(new PropertyValueFactory<>("dateAdd"));
         clDate.setCellFactory(TextFieldTableCell.<Equipment>forTableColumn());
+    }
+    
+    public void setDataOnTblEquip(ObservableValue observable, Object oldValue, Object newValue){
+        if(newValue != null){
+            equipment = (Equipment) newValue;
+            tfName.setText(equipment.getName());
+            tfCost.setText(equipment.getCost());
+            taDescription.setText(equipment.getDescription());
+            dpDate.setValue(LocalDate.parse(equipment.getDateAdd()));
+            btnCrearEquip.setDisable(true);
+            btnSaveEquip.setDisable(false);
+            btnDeleteEquip.setDisable(false);
+            bolCost = false;
+            bolDateBuy = false;
+            bolDescription = false;
+            bolName = false;
+            bolTableEquipSelec=false;
+            bolTableEquipSelec=true;
+        }else{
+            tfName.setText(null);
+            tfCost.setText(null);
+            taDescription.setText(null);
+            dpDate.setValue(null);
+            btnCrearEquip.setDisable(true);
+            btnSaveEquip.setDisable(true);
+            btnDeleteEquip.setDisable(true);
+            bolCost = false;
+            bolDateBuy = false;
+            bolDescription = false;
+            bolName = false;
+            bolTableEquipSelec=false;
+        }
     }
 
 }

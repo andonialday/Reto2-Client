@@ -51,6 +51,7 @@ public class TestAplicationEquipment extends Application{
         for (int i = 1; i <= 5; i++) {
             Equipment eq = new Equipment(i, "Microfono "+ i ,"HOLA YO SOY LA PRUEBA NUMEROOOO" + i, valueOf(20d*i) , Date.valueOf(LocalDate.now()).toString() , null);
             equipment.add(eq);
+            System.out.println(eq.toString());
         }
         controller.setEquipments(equipment);
         controller.setStage(primaryStage);
