@@ -5,11 +5,15 @@
  */
 package reto2g1cclient.controller;
 
+import static com.sun.org.apache.xalan.internal.lib.ExsltDatetime.date;
 import java.io.IOException;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Formatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
@@ -60,6 +64,8 @@ public class EquipmentController {
     private Boolean bolDescription;
     private Boolean bolDateBuy;
     private Boolean bolTableEquipSelec;
+    private Boolean bolEquipEncontrado = false;
+    private Integer filters;
 
     public ObservableList<Equipment> getEquipmentData() {
         return equipmentData;
@@ -176,28 +182,30 @@ public class EquipmentController {
         stage.setMinHeight(720);
         stage.setResizable(false);
         //Al seleccionar mandar datos de la tabla a las cajas
-         tbEquipment.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        tbEquipment.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         tbEquipment.getSelectionModel().selectedItemProperty().addListener(this::setDataOnTblEquip);
         //Set Windows event handlers 
         stage.setOnShowing(this::handleWindowShowing);
         btnBack.setOnAction(this::back);
         btnCrearEquip.setOnAction(this::newEquipment);
         btnDeleteEquip.setOnAction(this::deleteEquipment);
-
+        btnSaveEquip.setOnAction(this::saveEquipment);
+        btnFind.setOnAction(this::filterEquipments);
         tfName.textProperty().addListener(this::tfNameValue);
         tfCost.textProperty().addListener(this::tfCostValue);
         taDescription.textProperty().addListener(this::taDescriptionValue);
         dpDate.valueProperty().addListener(this::dpDateAddValue);
-         //stage.setOnCloseRequest(this::closeVEquipmentTable);
+        ObservableList<String> filters = FXCollections.observableArrayList("Nombre del Equipamiento", "Coste maximo", "Coste minimo", "Fecha de compra", "Descripción");
+        cbSearch.getItems().addAll(filters);
+
+        //stage.setOnCloseRequest(this::closeVEquipmentTable);
         // AADIR LOS NUEVOS LABEL Y HYPERLINK
-       
-      /*  loadData();closeVEquipmentTable
+        /*  loadData();closeVEquipmentTable
         
         btnDeleteEvent.setOnAction(this::deleteEvent);
         btnSave.setOnAction(this::saveChanges);*/
         //Show main window
         // loaddata();
-        
         loadTblEquipment();
         setTableData();
         stage.show();
@@ -239,12 +247,13 @@ public class EquipmentController {
         tfFinding.setDisable(false);
         //El ComboBox esta Habilitado
         cbSearch.setDisable(false);
+        cbSearch.getSelectionModel().select(0);
         //Todos los booleanos declarados a false
         bolCost = false;
         bolDateBuy = false;
         bolDescription = false;
         bolName = false;
-        bolTableEquipSelec=false;
+        bolTableEquipSelec = false;
     }
 
     private void loaddata() {
@@ -257,8 +266,10 @@ public class EquipmentController {
     }
 
     private void loadTblEquipment() {
+        LOGGER.info("Cargando datos en tabla");
         equipmentData = FXCollections.observableArrayList(equipments);
         tbEquipment.setItems(equipmentData);
+        
     }
 
     /**
@@ -293,7 +304,7 @@ public class EquipmentController {
                 eq.setCost(tfCost.getText());
                 eq.setDescription(taDescription.getText());
                 eq.setDateAdd(Date.from(dpDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()).toString());
-                eqif.create(eq);
+               // eqif.create(eq);
                 equipments.add(eq);
                 loadTblEquipment();
                 tbEquipment.refresh();
@@ -321,8 +332,8 @@ public class EquipmentController {
         alert.setHeaderText("¿Seguro que desea Eliminar el Equipamiento Seleccionado?");
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
-            
-           // eqif.remove(this.equipment);
+
+            // eqif.remove(this.equipment);
             equipments.remove(equipment);
             loadTblEquipment();
             tbEquipment.refresh();
@@ -331,10 +342,41 @@ public class EquipmentController {
             LOGGER.info("Closing aborted");
         }
     }
+
     @FXML
-    public void saveEquipment(){
-        
+    public void saveEquipment(ActionEvent event) {
+        try {
+            LOGGER.info("Actualizando cambios en la base de datos");
+            List<Equipment> equip = eqif.findAll();
+
+            for (Equipment eq : equipments) {
+                bolEquipEncontrado = false;
+
+                for (Equipment equi : equip) {
+
+                    if (eq.getId() == equi.getId()) {
+                        bolEquipEncontrado = true;
+
+                        if (!eq.equals(equi)) {
+                            eqif.edit(eq.getId(), eq);;
+                        }
+                    }
+                }
+                if (!bolEquipEncontrado) {
+                    eqif.create(eq);
+                }
+            }
+        } catch (Exception e) {
+            LOGGER.severe("Error en el guardado del equipamiento" + e);
+            Alert altWarningLog = new Alert(AlertType.WARNING);
+            altWarningLog.setTitle("Error al guardar en la base de datos");
+            altWarningLog.setHeaderText("El coste introducido no es numerico");
+            altWarningLog.setContentText("El coste que se ha introducido debe ser numerico");
+            altWarningLog.showAndWait();
+        }
+
     }
+
     /**
      * ******* METODOS PARA HABILITAR LOS BOTONES ****************
      */
@@ -345,11 +387,11 @@ public class EquipmentController {
      * @param newValue
      */
     public void tfNameValue(ObservableValue observable, String oldValue, String newValue) {
-            bolName = false;
+        bolName = false;
         if (!newValue.trim().equals("")) {
             bolName = true;
 
-        }  
+        }
         if (newValue.trim().length() > 50) {
             newValue = oldValue;
         }
@@ -374,10 +416,10 @@ public class EquipmentController {
             }
 
         } catch (NumberFormatException e) {
-            LOGGER.severe(e.getMessage());      
-        
+            LOGGER.severe(e.getMessage());
+
         }
-        
+
         validateEquipData();
     }
 
@@ -386,12 +428,11 @@ public class EquipmentController {
         if (!newValue.trim().equals("")) {
             bolDescription = true;
 
-        } 
+        }
         if (newValue.trim().length() > 400) {
             newValue = oldValue;
         }
 
-      
         validateEquipData();
     }
 
@@ -403,8 +444,6 @@ public class EquipmentController {
         } else {
             bolDateBuy = false;
         }
-
-      
 
         validateEquipData();
     }
@@ -432,9 +471,9 @@ public class EquipmentController {
         clDate.setCellValueFactory(new PropertyValueFactory<>("dateAdd"));
         clDate.setCellFactory(TextFieldTableCell.<Equipment>forTableColumn());
     }
-    
-    public void setDataOnTblEquip(ObservableValue observable, Object oldValue, Object newValue){
-        if(newValue != null){
+
+    public void setDataOnTblEquip(ObservableValue observable, Object oldValue, Object newValue) {
+        if (newValue != null) {
             equipment = (Equipment) newValue;
             tfName.setText(equipment.getName());
             tfCost.setText(equipment.getCost());
@@ -447,9 +486,9 @@ public class EquipmentController {
             bolDateBuy = false;
             bolDescription = false;
             bolName = false;
-            bolTableEquipSelec=false;
-            bolTableEquipSelec=true;
-        }else{
+            bolTableEquipSelec = false;
+            bolTableEquipSelec = true;
+        } else {
             tfName.setText(null);
             tfCost.setText(null);
             taDescription.setText(null);
@@ -461,8 +500,70 @@ public class EquipmentController {
             bolDateBuy = false;
             bolDescription = false;
             bolName = false;
-            bolTableEquipSelec=false;
+            bolTableEquipSelec = false;
+
         }
+    }
+
+    @FXML
+    public void filterEquipments(ActionEvent event) {
+        LOGGER.info("ejecutando filtros ");
+        LocalDate fechaBusqueda = null;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        
+        if (cbSearch.getSelectionModel().getSelectedIndex() == 3) {
+            fechaBusqueda = LocalDate.parse(tfFinding.getText(), formatter);
+        }
+        //loaddata();
+        List<Equipment> eqs = new ArrayList<>();
+        switch (cbSearch.getSelectionModel().getSelectedIndex()) {
+            case 0:
+                for (Equipment eq : equipments) {
+                    if (eq.getName().toUpperCase().contains(tfFinding.getText().toUpperCase().trim())) {
+                        System.out.println(eq);
+                        eqs.add(eq);
+                        System.out.println("elemento eliminado");
+                        
+                    }
+                }
+                break;
+            //Equipment -> equipment.getName().toUpperCase().contains(tfFinding.getText().toUpperCase())
+            case 1:
+                for (Equipment eq : equipments) {
+                    if (Double.valueOf(eq.getCost()) <= Double.valueOf(tfFinding.getText())) {
+                         eqs.add(eq);
+                    }
+                }
+                break;
+            case 2:
+                for (Equipment eq : equipments) {
+                      if(Double.valueOf(eq.getCost()) >= Double.valueOf(tfFinding.getText())){
+                        eqs.add(eq);
+                    }
+                }
+                break;
+            case 3:
+                for (Equipment eq : equipments) {
+                    if (LocalDate.parse(eq.getDateAdd(), formatter).compareTo(LocalDate.parse(tfFinding.getText())) == 0 ){
+                         eqs.add(eq);
+                    }
+
+                }
+                break;
+            case 4:
+                for (Equipment eq : equipments) {
+                    if (eq.getDescription().toUpperCase().contains(tfFinding.getText().toUpperCase().trim())) {
+                         eqs.add(eq);
+                    }
+
+                }
+                break;
+            default:
+        }
+        equipments = eqs;
+        loadTblEquipment();
+        tbEquipment.refresh();
+
     }
 
 }
