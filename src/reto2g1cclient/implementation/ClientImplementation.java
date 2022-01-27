@@ -38,7 +38,7 @@ public class ClientImplementation implements ClientInterface{
     public void editClient(Client client) 
             throws ClientServerConnectionException {
         try{
-            clientJersey.edit(client);
+            clientJersey.edit(client, String.valueOf(client.getId()));
         }catch (ClientErrorException e){
             throw new ClientServerConnectionException(e.getMessage());
         }

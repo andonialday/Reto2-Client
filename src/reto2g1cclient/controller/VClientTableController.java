@@ -140,6 +140,7 @@ public class VClientTableController {
 
     private ClientInterface clientInterface;    
     private Stage stage;
+    private ObservableList<Client> clientsForTable;
 
     /**
      * Sets the client interface
@@ -253,11 +254,9 @@ public class VClientTableController {
         colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
         //colType.setCellValueFactory(new PropertyValueFactory<>("type"));
 
-        Collection<Client> clients;
         try {
-            clients = clientInterface.getAllClient();
-            ObservableList<Client> clientsForTable = FXCollections
-                    .observableArrayList(clients);
+            clientsForTable = FXCollections
+                    .observableArrayList(clientInterface.getAllClient());
             tbClient.setItems(clientsForTable);
         } catch (ClientServerConnectionException ex) {
             LOGGER.info("Error, client collection not working");
