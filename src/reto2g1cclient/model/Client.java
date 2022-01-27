@@ -7,6 +7,7 @@ package reto2g1cclient.model;
 
 import java.util.Objects;
 import java.util.Set;
+import javafx.beans.property.SimpleObjectProperty;
 
 /**
  * Clase con los parámetros para la creación y gestión de clientes
@@ -15,7 +16,7 @@ import java.util.Set;
  */
 public class Client extends User {
     
-    private Type type;
+    private SimpleObjectProperty<Type> type;
     private Set<Event> events;
     private Commercial commercial;
 
@@ -24,7 +25,7 @@ public class Client extends User {
      *
      * @return el tipo de un cliente
      */
-    public Type getType() {
+    public SimpleObjectProperty<Type> getType() {
         return type;
     }
 
@@ -34,7 +35,7 @@ public class Client extends User {
      * @param type el tipo de un cliente a establecer
      */
     public void setType(Type type) {
-        this.type = type;
+        this.type.set(type);
     }
 
     /**

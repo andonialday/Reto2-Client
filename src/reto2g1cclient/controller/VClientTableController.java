@@ -266,10 +266,12 @@ public class VClientTableController {
 
     /**
      * Method to control if there's a client selected in the table.
-     * If the user selects a client in the table, the View client events, 
-     * save changes and delete clients buttons become visible.
-     * If the user deselects a client in the table, the View client events, 
-     * save changes and delete clients buttons become invisible again.
+     * If the user selects a client in the table, all client data 
+     * is displayed in the corresponding fields.
+     * If the user selects a client in the table, the View client events 
+     * and delete clients buttons become visible.
+     * If the user deselects a client in the table, the View client events
+     * and delete clients buttons become invisible again.
      *
      * @param observableValue
      * @param oldValue
@@ -278,15 +280,35 @@ public class VClientTableController {
     private void handleSelection(ObservableValue observableValue, 
             Object oldValue, Object newValue) {
 
+        //client selected in the table
         if (newValue != null) {
-            //Buttons enabled when you select a client
+            //Insert client data into fields
+            Client client = tbClient.getSelectionModel().getSelectedItem();
+            tfName.setText(client.getFullName());
+            tfLogin.setText(client.getLogin());
+            tfEmail.setText(client.getEmail());
+            cbType.getSelectionModel().select(Type.valueOf(client.getType()));
+            //Text Fields disabled
+            tfPassword.setDisable(true);
+            tfConfirmPassword.setDisable(true);
+            
+            //Buttons enabled
             btnViewEvents.setDisable(false);
-            btnSaveClient.setDisable(false);
             btnDeleteClient.setDisable(false);
+        
+        //client deselected in the table    
         } else {
-            //Buttons disabled when you select a client
+            //Delete client data from fields
+            tfName.setText("");
+            tfLogin.setText("");
+            tfEmail.setText("");
+            cbType.getSelectionModel().selectFirst();
+            //Text Fields enabled
+            tfPassword.setDisable(false);
+            tfConfirmPassword.setDisable(false);
+            
+            //Buttons disabled
             btnViewEvents.setDisable(true);
-            btnSaveClient.setDisable(true);
             btnDeleteClient.setDisable(true);
         }
     }
