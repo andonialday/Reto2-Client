@@ -5,6 +5,7 @@
  */
 package reto2g1cclient.model;
 
+import java.io.Serializable;
 import java.util.Objects;
 import java.util.Set;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -16,7 +17,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Jaime San Sebastián
  */
 @XmlRootElement
-public class Client extends User {
+public class Client extends User implements Serializable{
 
     private Type type;
 

@@ -37,7 +37,7 @@ public class Evento implements Serializable {
     private final SimpleObjectProperty<Set<EventEquipment>> equipments;
 
     /**
-     * Constructor para el objeto Evento
+     * Constructor con atributos para el objeto Evento
      *
      * @param id valor de la propiedad id
      * @param dateStart valor de la propiedad dateStart
@@ -57,6 +57,19 @@ public class Evento implements Serializable {
         this.equipments = new SimpleObjectProperty<>(equipments);
     }
 
+    /**
+     * Constructor vacío para el objeto Evento
+     */
+    public Evento() {
+        this.id = new SimpleIntegerProperty();
+        this.dateStart = new SimpleStringProperty();
+        this.dateEnd = new SimpleStringProperty();
+        this.description = new SimpleStringProperty();
+        this.name = new SimpleStringProperty();
+        this.client = new SimpleObjectProperty<>();
+        this.equipments = new SimpleObjectProperty<>();
+    }
+    
     /**
      * Método Getter para obtener la ID del Evento
      *

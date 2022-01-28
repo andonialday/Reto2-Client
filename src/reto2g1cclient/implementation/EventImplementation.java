@@ -5,8 +5,14 @@
  */
 package reto2g1cclient.implementation;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.ws.rs.ClientErrorException;
+import javax.ws.rs.core.GenericType;
+import reto2g1cclient.exception.DBServerException;
 import reto2g1cclient.logic.EventInterface;
 import reto2g1cclient.model.Client;
 import reto2g1cclient.model.Evento;
@@ -16,9 +22,10 @@ import reto2g1cclient.model.Evento;
  * @author Andoni Alday
  */
 public class EventImplementation implements EventInterface {
-    
+
+    private static final Logger LOGGER = Logger.getLogger("package.class");
     private EventJerseyClient ejc;
-    
+
     /**
      *
      */
@@ -47,11 +54,19 @@ public class EventImplementation implements EventInterface {
 
     /**
      *
-     * @return
+     * @return @throws reto2g1cclient.exception.DBServerException
      */
     @Override
-    public List<Evento> findAll() {
-        return ejc.findAll(List.class);
+    public Collection<Evento> findAll() throws DBServerException {
+        List<Evento> ret = null;
+        try {
+            ret = ejc.findAll(new GenericType<List<Evento>>() {
+            });
+        } catch (ClientErrorException e) {
+            LOGGER.log(Level.SEVERE, "Error al leer los eventos en la base de datos");
+            throw new DBServerException(e.getMessage());
+        }
+        return ret;
     }
 
     /**
@@ -88,8 +103,8 @@ public class EventImplementation implements EventInterface {
      * @return
      */
     @Override
-    public List<Evento> findStartRange(Date dateMin, Date dateMax) {
-        return ejc.findStartRange(List.class, dateMin.toString(), dateMax.toString());
+    public Collection<Evento> findStartRange(Date dateMin, Date dateMax) {
+        return ejc.findStartRange(new GenericType<List<Evento>>(){},dateMin.toString(),dateMax.toString());
     }
 
     /**
@@ -98,7 +113,7 @@ public class EventImplementation implements EventInterface {
      * @return
      */
     @Override
-    public List<Evento> findEventByClient(Client client) {
+    public Collection<Evento> findEventByClient(Client client) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -109,8 +124,8 @@ public class EventImplementation implements EventInterface {
      * @return
      */
     @Override
-    public List<Evento> findRange(Date dateMin, Date dateMax) {
-        return ejc.findRange(List.class, dateMin.toString(), dateMax.toString());
+    public Collection<Evento> findRange(Date dateMin, Date dateMax) {
+        return ejc.findRange(new GenericType<List<Evento>>(){}, dateMin.toString(), dateMax.toString());
     }
 
     /**
@@ -120,8 +135,8 @@ public class EventImplementation implements EventInterface {
      * @return
      */
     @Override
-    public List<Evento> findEndRange(Date dateMin, Date dateMax) {
-        return ejc.findEndRange(List.class, dateMin.toString(), dateMax.toString());
+    public Collection<Evento> findEndRange(Date dateMin, Date dateMax) {
+        return ejc.findEndRange(new GenericType<List<Evento>>(){}, dateMin.toString(), dateMax.toString());
     }
 
     /**
@@ -132,7 +147,7 @@ public class EventImplementation implements EventInterface {
      * @return
      */
     @Override
-    public List<Evento> findEndRangeClient(Date dateMin, Date dateMax, Client client) {
+    public Collection<Evento> findEndRangeClient(Date dateMin, Date dateMax, Client client) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -143,8 +158,8 @@ public class EventImplementation implements EventInterface {
      * @return
      */
     @Override
-    public List<Evento> findDateRange(Date dateMin, Date dateMax) {
-        return ejc.findDateRange(List.class, dateMin.toString(), dateMax.toString());
+    public Collection<Evento> findDateRange(Date dateMin, Date dateMax) {
+        return ejc.findDateRange(new GenericType<List<Evento>>(){}, dateMin.toString(), dateMax.toString());
     }
 
     /**
@@ -153,7 +168,7 @@ public class EventImplementation implements EventInterface {
      * @return
      */
     @Override
-    public List<Evento> deleteOldestEvents(Integer year) {
-        return ejc.deleteOldestEvents(List.class, year.toString());
+    public Collection<Evento> deleteOldestEvents(Integer year) {
+        return ejc.deleteOldestEvents(new GenericType<List<Evento>>(){}, year.toString());
     }
 }

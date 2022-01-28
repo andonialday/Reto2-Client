@@ -36,7 +36,7 @@
 			<staticText>
 				<reportElement x="0" y="0" width="670" height="62" uuid="65c9afda-55ec-4340-9b65-05fb6d3026f5"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="20"/>
+					<font size="20" isBold="true"/>
 				</textElement>
 				<text><![CDATA[INFORME DE EVENTOS]]></text>
 			</staticText>
@@ -45,7 +45,7 @@
 	<pageHeader>
 		<band height="35" splitType="Stretch">
 			<textField pattern="dd/MM/yyyy">
-				<reportElement x="570" y="15" width="100" height="20" uuid="097d63db-c6ed-4126-98c3-f7823f7b0ba1"/>
+				<reportElement x="570" y="0" width="100" height="20" uuid="097d63db-c6ed-4126-98c3-f7823f7b0ba1"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
@@ -110,7 +110,7 @@
 			</textField>
 			<textField isBlankWhenNull="false">
 				<reportElement x="116" y="0" width="116" height="20" uuid="11a1a443-54ac-4541-ad44-aa37cbbaa1af"/>
-				<textFieldExpression><![CDATA[$F{client.name}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{client.fullName}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
@@ -118,20 +118,20 @@
 		<band height="45" splitType="Stretch"/>
 	</columnFooter>
 	<pageFooter>
-		<band height="54" splitType="Stretch"/>
-	</pageFooter>
-	<summary>
-		<band height="42" splitType="Stretch">
+		<band height="54" splitType="Stretch">
 			<textField>
-				<reportElement x="550" y="22" width="80" height="20" uuid="38194d6e-ed6e-4762-b2b8-e4dfe4529b0b"/>
+				<reportElement x="549" y="34" width="80" height="20" uuid="38194d6e-ed6e-4762-b2b8-e4dfe4529b0b"/>
 				<textElement textAlignment="Right" verticalAlignment="Bottom"/>
 				<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
-				<reportElement x="630" y="22" width="40" height="20" uuid="f7f4086e-fc14-44d8-8a44-a17acaf35096"/>
+				<reportElement x="629" y="34" width="40" height="20" uuid="f7f4086e-fc14-44d8-8a44-a17acaf35096"/>
 				<textElement verticalAlignment="Bottom"/>
 				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
 	</summary>
 </jasperReport>

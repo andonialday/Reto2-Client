@@ -55,7 +55,7 @@ public class TestApplication extends Application {
         VEventTableController controller = ((VEventTableController) loader.getController());
         controller.setStage(primaryStage);
         //initializate the stage
-        controller.setEvents(events);
+        //controller.setEvents(events);
         controller.setEditable(true);
         controller.initStage(root);
 

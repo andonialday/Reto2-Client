@@ -9,9 +9,15 @@ import com.sun.javafx.scene.control.skin.DatePickerSkin;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -35,6 +41,14 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.view.JasperViewer;
+import reto2g1cclient.exception.DBServerException;
 import reto2g1cclient.logic.EventFactory;
 import reto2g1cclient.logic.EventInterface;
 import reto2g1cclient.model.Client;
@@ -50,7 +64,7 @@ public class VEventTableController {
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private Stage stage;
     private Client client;
-    private List<Evento> events;
+    private List<Evento> events = null;
     private Evento event;
     private Boolean editable;
     private EventInterface ei;
@@ -494,12 +508,26 @@ public class VEventTableController {
         LOGGER.info("Loading available Events");
         try {
             if (client != null) {
-                events = ei.findEventByClient(client);
+                events = (List<Evento>) ei.findEventByClient(client);
             } else {
-                events = ei.findAll();
+                events = (List<Evento>) ei.findAll();
             }
-        } catch (Exception e) {
+        } catch (DBServerException e) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Error al actualizar datos en el servidor");
+            alert.setHeaderText("Ha sucedido un error al intentar guardar los cambios "
+                    + "\nen el servidor de datos, por favor, inténtelo más tarde."
+                    + "\nSi el error persiste, comuníquese con el sevicio técnico");
+            alert.showAndWait();
         }
+        /*catch (ClientServerConnectionException ex) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Error al conectar con en el servidor");
+            alert.setHeaderText("Ha sucedido un error al intentar conectar con el "
+                    + "\nservidor, por favor, inténtelo más tarde."
+                    + "\nSi el error persiste, comuníquese con el servicio técnico");
+            alert.showAndWait();;
+        }*/
     }
 
     /**
@@ -537,10 +565,10 @@ public class VEventTableController {
             tableSelec = true;
         } else {
             LOGGER.info("Item Deselected");
-            txtName.setText(null);
+            txtName.setText("");
             dpDateStart.setValue(null);
             dpDateEnd.setValue(null);
-            taDescription.setText(null);
+            taDescription.setText("");
             btnNew.setDisable(true);
             btnDelete.setDisable(true);
             btnSave.setDisable(true);
@@ -583,7 +611,7 @@ public class VEventTableController {
                     filter = 0;
             }
         }
-        LOGGER.info("Filtering parameter selected: " + filter);
+        LOGGER.info("Filtering parameter selected: " + newValue);
     }
 
     /**
@@ -593,55 +621,48 @@ public class VEventTableController {
     @FXML
     public void filterEvents(ActionEvent event) {
         LOGGER.info("Filtering available Events");
-        LocalDate date = null;
-        if (filter == 2 || filter == 3) {
-            date = LocalDate.parse(txtSearch.getText(), formatter);
-        }
-        switch (filter) {
-            case 1:
-                loadData();
-                for (Evento ev : events) {
-                    // Comprobando si el nombre del evento contiene el texto del cuadro de busqueda
-                    if (!ev.getName().toLowerCase().contains(txtSearch.getText().toLowerCase().trim())) {
-                        events.remove(ev);
-                    }
-                }
-                break;
-            // Filtro Fecha Inicio
-            case 2:
-                loadData();
-                for (Evento ev : events) {
-                    // Comprobando si coincide la fecha de inicio del evento
-                    if ((LocalDate.parse(ev.getDateStart(), formatter)).compareTo(date) != 0) {
-                        events.remove(ev);
-                    }
-                }
-                break;
-            // Filtro Fecha Fin
-            case 3:
-                loadData();
-                for (Evento ev : events) {
-                    // Comprobando si coincide la fecha de inicio del evento
-                    if ((LocalDate.parse(ev.getDateEnd(), formatter)).compareTo(date) != 0) {
-                        events.remove(ev);
-                    }
-                }
-                break;
-            // Filtro Descripcion
-            case 4:
-                loadData();
-                for (Evento ev : events) {
-                    // Comprobando si el nombre del evento contiene el texto del cuadro de busqueda
-                    if (!ev.getDescription().toLowerCase().contains(txtSearch.getText().toLowerCase().trim())) {
-                        events.remove(ev);
-                    }
+        try {
+            Collection temp = null;
+            switch (filter) {
+                case 1:
+                    loadData();
+                    temp = events.stream().filter(ev -> !ev.getName().toLowerCase().contains(txtSearch.getText().toLowerCase())).collect(Collectors.toList());
+                    events.removeAll(temp);
                     break;
-                }
-            default:
-                loadData();
-        }
-        loadTable();
+                // Filtro Fecha Inicio
+                case 2:
+                    loadData();
+                    temp = events.stream().filter(ev -> (LocalDate.parse(ev.getDateStart(), formatter)).compareTo(LocalDate.parse(txtSearch.getText(), formatter)) != 0).collect(Collectors.toList());
+                    events.removeAll(temp);
 
+                    break;
+                // Filtro Fecha Fin
+                case 3:
+                    loadData();
+                    temp = events.stream().filter(ev -> (LocalDate.parse(ev.getDateEnd(), formatter)).compareTo(LocalDate.parse(txtSearch.getText(), formatter)) != 0).collect(Collectors.toList());
+                    events.removeAll(temp);
+
+                    break;
+                // Filtro Descripcion
+                case 4:
+                    loadData();
+                    temp = events.stream().filter(ev -> !ev.getDescription().toLowerCase().contains(txtSearch.getText().toLowerCase())).collect(Collectors.toList());
+                    events.removeAll(temp);
+
+                    break;
+                default:
+                    loadData();
+            }
+            loadTable();
+            tbEvent.refresh();
+        } catch (DateTimeParseException e) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Fecha introducida o válida");
+            alert.setHeaderText("Ha realizado una búsqueda por fecha con texto no válido, "
+                    + "si desea buscar por fechas,\nintroduzcala en formato DD/MM/AAAA "
+                    + "(por ejemplo, 14/02/2008)");
+            alert.showAndWait();
+        }
     }
 
     /**
@@ -678,7 +699,7 @@ public class VEventTableController {
      * @param oldValue
      * @param newValue
      */
-    public void dateStartVal(ObservableValue observable, Object oldValue, Object newValue) {
+    public void dateStartVal(ObservableValue observable, LocalDate oldValue, LocalDate newValue) {
         dateStart = false;
         if (newValue != null) {
             dateStart = true;
@@ -692,7 +713,7 @@ public class VEventTableController {
      * @param oldValue
      * @param newValue
      */
-    public void dateEndVal(ObservableValue observable, Object oldValue, Object newValue) {
+    public void dateEndVal(ObservableValue observable, LocalDate oldValue, LocalDate newValue) {
         dateEnd = false;
         if (newValue != null) {
             dateEnd = true;
@@ -760,10 +781,7 @@ public class VEventTableController {
         // - - -> lambda para controlar edicion de contenido
         clName.setCellValueFactory(new PropertyValueFactory<>("name"));
         clName.setCellFactory(TextFieldTableCell.<Evento>forTableColumn());
-        clName.setOnEditCommit((CellEditEvent<Evento, String> t) -> {
-            ((Evento) t.getTableView().getItems().get(
-                    t.getTablePosition().getRow())).setName(t.getNewValue());
-        });
+        clName.setOnEditCommit(this::handleEditCommitName);
         //Columna Nombre
         // Factoria de Celda para Valor de Propiedades
         // -> Factoria de Celdas para Edicion
@@ -784,22 +802,69 @@ public class VEventTableController {
         // - - -> lambda para controlar edicion de contenido
         clDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
         clDescription.setCellFactory(TextFieldTableCell.<Evento>forTableColumn());
-        clDescription.setOnEditCommit(
-                (CellEditEvent<Evento, String> t) -> {
-                    ((Evento) t.getTableView().getItems().get(
-                            t.getTablePosition().getRow())).setDescription(t.getNewValue());
-                });
-        LOGGER.info("Table Columns initiated");
+        clDescription.setOnEditCommit(this::handleEditCommitDescription);
+    }
+
+    private void handleEditCommitName(CellEditEvent<Evento, String> t) {
+        if (!t.getNewValue().equals("") && t.getNewValue().length() <= 50) {
+            ((Evento) t.getTableView().getItems().get(
+                    t.getTablePosition().getRow())).setName(t.getNewValue());
+            txtName.setText(t.getNewValue());
+        } else {
+            ((Evento) t.getTableView().getItems().get(
+                    t.getTablePosition().getRow())).setName(t.getOldValue());
+        }
+        tbEvent.refresh();
     }
 
     private void handleEditCommitDateStart(CellEditEvent<Evento, String> t) {
-        ((Evento) t.getTableView().getItems().get(
-                t.getTablePosition().getRow())).setDateStart(t.getNewValue());
+        try {
+            LocalDate.parse(t.getNewValue(), formatter);
+            ((Evento) t.getTableView().getItems().get(
+                    t.getTablePosition().getRow())).setDateStart(t.getNewValue());
+            dpDateStart.setValue(LocalDate.parse(t.getNewValue(), formatter));
+        } catch (DateTimeParseException e) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Error en el formato de la fecha");
+            alert.setHeaderText("Ha intentado cambiar la fecha por una no válida."
+                    + "\nAsegúrese de que la fecha exista y esté introducida en "
+                    + "formato DD/MM/AAAA");
+            alert.showAndWait();
+            ((Evento) t.getTableView().getItems().get(
+                    t.getTablePosition().getRow())).setDateStart(t.getOldValue());
+        }
+        tbEvent.refresh();
     }
 
     private void handleEditCommitDateEnd(CellEditEvent<Evento, String> t) {
-        ((Evento) t.getTableView().getItems().get(
-                t.getTablePosition().getRow())).setDateStart(t.getNewValue());
+        try {
+            LocalDate.parse(t.getNewValue(), formatter);
+            ((Evento) t.getTableView().getItems().get(
+                    t.getTablePosition().getRow())).setDateEnd(t.getNewValue());
+            dpDateEnd.setValue(LocalDate.parse(t.getNewValue(), formatter));
+        } catch (DateTimeParseException e) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Error en el formato de la fecha");
+            alert.setHeaderText("Ha intentado cambiar la fecha por una no válida."
+                    + "\nAsegúrese de que la fecha exista y esté introducida en "
+                    + "formato DD/MM/AAAA");
+            alert.showAndWait();
+            ((Evento) t.getTableView().getItems().get(
+                    t.getTablePosition().getRow())).setDateEnd(t.getOldValue());
+        }
+        tbEvent.refresh();
+    }
+
+    private void handleEditCommitDescription(CellEditEvent<Evento, String> t) {
+        if (!t.getNewValue().equals("") && t.getNewValue().length() <= 400) {
+            ((Evento) t.getTableView().getItems().get(
+                    t.getTablePosition().getRow())).setDescription(t.getNewValue());
+            taDescription.setText(t.getNewValue());
+        } else {
+            ((Evento) t.getTableView().getItems().get(
+                    t.getTablePosition().getRow())).setDescription(t.getOldValue());
+        }
+        tbEvent.refresh();
     }
 
     /**
@@ -811,8 +876,8 @@ public class VEventTableController {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Proceso de impresión de informes");
         alert.setHeaderText("Ha solicitado imprimir un informe, para ello, se "
-                + "van a actualizar los datos de la tabla en la base de datos. "
-                + "¿Está seguro de continuar?");
+                + "\nvan a actualizar los datos de la tabla en la base de datos. "
+                + "\n¿Está seguro de continuar?");
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
             saveData();
@@ -826,34 +891,62 @@ public class VEventTableController {
      *
      */
     public void saveData() {
-        LOGGER.info("Updating changes on DataBase");
-        List<Evento> evs = ei.findAll();
-        // Lee todos los eventos de la base de datos
-        for (Evento ev : events) {
-            Boolean encontrado = false;
-            // Busca los eventos actuales en los extraidos de la base de datos
-            for (Evento evnt : evs) {
-                if (ev.getId() == evnt.getId()) {
-                    encontrado = true;
-                    // si lo encuentra, analiza si son iguales, si no lo son, lo actualiza
-                    if (!ev.equals(evnt)) {
-                        ei.edit(ev);
+        try {
+            LOGGER.info("Updating changes on DataBase");
+            List<Evento> evs = (List<Evento>) ei.findAll();
+            // Lee todos los eventos de la base de datos
+            for (Evento ev : events) {
+                Boolean encontrado = false;
+                // Busca los eventos actuales en los extraidos de la base de datos
+                for (Evento evnt : evs) {
+                    if (ev.getId() == evnt.getId()) {
+                        encontrado = true;
+                        // si lo encuentra, analiza si son iguales, si no lo son, lo actualiza
+                        if (!ev.equals(evnt)) {
+                            ei.edit(ev);
+                        }
                     }
                 }
+                // Si no lo ha encontrado, lo añade a la base de datos
+                if (!encontrado) {
+                    ei.createEvent(ev);
+                }
             }
-            // Si no lo ha encontrado, lo añade a la base de datos
-            if (!encontrado) {
-                ei.createEvent(ev);
-            }
+            LOGGER.info("Updating changes on DataBase");
+        } catch (DBServerException ex) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Error al actualizar datos en el servidor");
+            alert.setHeaderText("Ha sucedido un error al intentar guardar los cambios "
+                    + "\nen el servidor de datos, por favor, inténtelo más tarde."
+                    + "\nSi el error persiste, comuníquese con el sevicio técnico");
+            alert.showAndWait();
         }
-        LOGGER.info("Updating changes on DataBase");
+        /*catch (ClientServerConnectionException ex) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Error al conectar con en el servidor");
+            alert.setHeaderText("Ha sucedido un error al intentar conectar con el "
+                    + "\nservidor, por favor, inténtelo más tarde."
+                    + "\nSi el error persiste, comuníquese con el servicio técnico");
+            alert.showAndWait();
+        }*/
     }
 
     /**
      *
      */
     public void print() {
-
+        try {
+            // Carga del informe para EventTable
+            JasperReport report = JasperCompileManager.compileReport("/reto2g1cclient/reports/EventReport.jrxml");
+            JRBeanCollectionDataSource dataItems = new JRBeanCollectionDataSource((Collection<Evento>) this.tbEvent.getItems());
+            Map<String, Object> parameters = new HashMap<>();
+            JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, dataItems);
+            JasperViewer jasperviewer = new JasperViewer(jasperPrint);
+            jasperviewer.setVisible(true);
+        } catch (JRException ex) {
+            Logger.getLogger(VEventTableController.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private void editableSetter() {
@@ -870,8 +963,8 @@ public class VEventTableController {
         } else {
             // Si inicia comercial, editable = false -> Tabla NO Editable, TextFields, DatePicker y TextArea deshabilitados
             initiateNonEditableTableColumns();
-            ((DatePickerSkin)dpDateEnd.getSkin()).getPopupContent().setVisible(editable);
-            ((DatePickerSkin)dpDateStart.getSkin()).getPopupContent().setVisible(editable);
+            ((DatePickerSkin) dpDateEnd.getSkin()).getPopupContent().setVisible(editable);
+            ((DatePickerSkin) dpDateStart.getSkin()).getPopupContent().setVisible(editable);
         }
     }
 }

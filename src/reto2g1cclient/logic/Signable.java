@@ -22,7 +22,7 @@ public interface Signable {
      * @throws reto1libraries.exception.DBConnectionException Error processing feedback from the Database
      * @throws reto1libraries.exception.CredentialErrorException If the user is not correct
      */
-    public User signIn(User usr) throws ClientServerConnectionException, DBConnectionException, CredentialErrorException;
+    public User signIn(User usr) throws ClientServerConnectionException, DBServerException, CredentialErrorException;
     
     /**
      * Sign Up Method Interface
@@ -32,6 +32,6 @@ public interface Signable {
      * @throws reto1libraries.exception.DBConnectionException Error processing feedback from the Database
      * @throws reto1libraries.exception.LoginOnUseException If the User Parameters are rown
      */
-    public User signUp(User usr) throws ClientServerConnectionException, DBConnectionException, LoginOnUseException;
+    public User signUp(User usr) throws ClientServerConnectionException, DBServerException, LoginOnUseException;
     
 }
