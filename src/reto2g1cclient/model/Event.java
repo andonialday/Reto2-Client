@@ -9,12 +9,14 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 import java.util.Set;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Entidad Event para la gestion de eventos
  *
  * @author Andoni Alday
  */
+@XmlRootElement
 public class Event implements Serializable {
 
     private Integer id;

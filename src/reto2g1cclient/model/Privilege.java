@@ -6,6 +6,7 @@
 package reto2g1cclient.model;
 
 import java.io.Serializable;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * La enumeración de los privilegios para el usuario, con los posibles valores
@@ -13,6 +14,7 @@ import java.io.Serializable;
  *
  * @author Jaime San Sebastián y Enaitz Izagirre
  */
+@XmlRootElement
 public enum Privilege implements Serializable {
 
     /**

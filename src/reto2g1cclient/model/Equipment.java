@@ -10,10 +10,12 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 import java.util.Set;
+import javax.xml.bind.annotation.XmlRootElement;
 /**
  * Entidad Equipment para gestion y control de Equipamiento
  * @author Aitor Perez
  */
+@XmlRootElement
 public class Equipment implements Serializable {
     
     private Integer id;

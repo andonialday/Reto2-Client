@@ -11,12 +11,14 @@ import java.util.Objects;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Clase con los parámetros para la creación y gestión de usuarios
  *
  * @author Jaime San Sebastián y Enaitz Izagirre
  */
+@XmlRootElement
 public class User implements Serializable {
 
     private SimpleIntegerProperty id;

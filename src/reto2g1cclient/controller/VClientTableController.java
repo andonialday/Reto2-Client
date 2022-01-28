@@ -41,6 +41,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import reto2g1cclient.exception.ClientServerConnectionException;
+import reto2g1cclient.implementation.ClientImplementation;
 import reto2g1cclient.logic.ClientInterface;
 import reto2g1cclient.model.Client;
 import reto2g1cclient.model.Type;
@@ -208,7 +209,7 @@ public class VClientTableController {
      *
      * @param event
      */
-    private void handleWindowShowing(WindowEvent event) {
+    private void handleWindowShowing(WindowEvent event)  {
         LOGGER.info("Beginning VClientTable::handleWindowShowing");
 
         tbClient.getSelectionModel().selectedItemProperty()
@@ -252,15 +253,17 @@ public class VClientTableController {
         colLogin.setCellValueFactory(new PropertyValueFactory<>("login"));
         colName.setCellValueFactory(new PropertyValueFactory<>("name"));
         colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
-        //colType.setCellValueFactory(new PropertyValueFactory<>("type"));
+        colType.setCellValueFactory(new PropertyValueFactory<>("type"));
 
         try {
+            clientInterface = new ClientImplementation();
             clientsForTable = FXCollections
                     .observableArrayList(clientInterface.getAllClient());
+            System.out.println(clientsForTable);
             tbClient.setItems(clientsForTable);
         } catch (ClientServerConnectionException ex) {
             LOGGER.info("Error, client collection not working");
-        }
+        }  
     }
 
     /**
@@ -286,7 +289,7 @@ public class VClientTableController {
             tfName.setText(client.getFullName());
             tfLogin.setText(client.getLogin());
             tfEmail.setText(client.getEmail());
-            cbType.getSelectionModel().select(Type.valueOf(client.getType()));
+            //cbType.getSelectionModel().select(Type.valueOf(client.getType()));
             //Text Fields disabled
             tfPassword.setDisable(true);
             tfConfirmPassword.setDisable(true);
@@ -304,7 +307,9 @@ public class VClientTableController {
             cbType.getSelectionModel().selectFirst();
             //Text Fields enabled
             tfPassword.setDisable(false);
+            tfPassword.setText("");
             tfConfirmPassword.setDisable(false);
+            tfConfirmPassword.setText("");
             
             //Buttons disabled
             btnViewEvents.setDisable(true);

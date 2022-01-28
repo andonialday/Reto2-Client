@@ -8,11 +8,13 @@ package reto2g1cclient.model;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Esta clase es un tipo de Usuario que extiende de User
  * @author Enaitz Izagirre
  */
+@XmlRootElement
 public class Commercial extends User implements Serializable{
     
     //La especializacion del Comercial se implementa mediante las opciones de la clase Especialization

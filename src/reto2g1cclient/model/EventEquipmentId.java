@@ -6,11 +6,13 @@
 package reto2g1cclient.model;
 
 import java.io.Serializable;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Clase para generación de ID Combinada de la relación EventEquipment 
  * @author Andoni Alday , Aitor Perez
  */
+@XmlRootElement
 public class EventEquipmentId implements Serializable{
     
     private Integer eventId;

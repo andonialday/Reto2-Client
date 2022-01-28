@@ -7,6 +7,7 @@ package reto2g1cclient.model;
 
 import java.io.Serializable;
 import java.util.Objects;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Entidad EventEquipment, representativa de la relacion entre os Event y los
@@ -15,6 +16,7 @@ import java.util.Objects;
  *
  * @author Andoni Alday , Aitor Perez
  */
+@XmlRootElement
 public class EventEquipment implements Serializable {
 
     private EventEquipmentId eventEquipmentId;

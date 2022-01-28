@@ -5,16 +5,19 @@
  */
 package reto2g1cclient.model;
 
+import java.io.Serializable;
 import java.util.Objects;
 import java.util.Set;
 import javafx.beans.property.SimpleObjectProperty;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Clase con los parámetros para la creación y gestión de clientes
  *
  * @author Jaime San Sebastián
  */
-public class Client extends User {
+@XmlRootElement
+public class Client extends User implements Serializable {
     
     private SimpleObjectProperty<Type> type;
     private Set<Event> events;
