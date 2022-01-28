@@ -9,6 +9,7 @@ import java.io.IOException;
 import static java.lang.String.valueOf;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -25,7 +26,7 @@ import reto2g1cclient.model.Equipment;
  * @author aitor
  */
 public class TestAplicationEquipment extends Application{
-
+       private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     /**
      * @param args the command line arguments
      */
@@ -49,7 +50,7 @@ public class TestAplicationEquipment extends Application{
         
         List<Equipment>equipment = new ArrayList<Equipment>();
         for (int i = 1; i <= 5; i++) {
-            Equipment eq = new Equipment(i, "Microfono "+ i ,"HOLA YO SOY LA PRUEBA NUMEROOOO" + i, valueOf(20d*i) , Date.valueOf(LocalDate.now()).toString() , null);
+            Equipment eq = new Equipment(i, "Microfono "+ i ,"HOLA YO SOY LA PRUEBA NUMEROOOO" + i, valueOf(20d*i) , LocalDate.now().format(formatter), null);
             equipment.add(eq);
             System.out.println(eq.toString());
         }

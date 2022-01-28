@@ -5,15 +5,13 @@
  */
 package reto2g1cclient.controller;
 
-import static com.sun.org.apache.xalan.internal.lib.ExsltDatetime.date;
 import java.io.IOException;
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Formatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
@@ -40,6 +38,7 @@ import reto2g1cclient.logic.EquipmentInterface;
 import reto2g1cclient.model.Equipment;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 
@@ -66,6 +65,7 @@ public class EquipmentController {
     private Boolean bolTableEquipSelec;
     private Boolean bolEquipEncontrado = false;
     private Integer filters;
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     public ObservableList<Equipment> getEquipmentData() {
         return equipmentData;
@@ -268,6 +268,7 @@ public class EquipmentController {
     private void loadTblEquipment() {
         LOGGER.info("Cargando datos en tabla");
         equipmentData = FXCollections.observableArrayList(equipments);
+        System.out.println(equipmentData);
         tbEquipment.setItems(equipmentData);
         
     }
@@ -335,7 +336,7 @@ public class EquipmentController {
 
             // eqif.remove(this.equipment);
             equipments.remove(equipment);
-            loadTblEquipment();
+            //loadTblEquipment();
             tbEquipment.refresh();
         } else {
             event.consume();
@@ -461,15 +462,116 @@ public class EquipmentController {
     }
 
     public void setTableData() {
-
+        tbEquipment.setEditable(true);
         clName.setCellValueFactory(new PropertyValueFactory<>("name"));
         clName.setCellFactory(TextFieldTableCell.<Equipment>forTableColumn());
+        clName.setOnEditCommit(this::cellNameEdit);
+            
         clCost.setCellValueFactory(new PropertyValueFactory<>("cost"));
         clCost.setCellFactory(TextFieldTableCell.<Equipment>forTableColumn());
+        clCost.setOnEditCommit(this::cellCostEdit);
+         
+        
+        
+        
         clDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
         clDescription.setCellFactory(TextFieldTableCell.<Equipment>forTableColumn());
+        clDescription.setOnEditCommit(this::cellDescriptionEdit);
+            
+         
         clDate.setCellValueFactory(new PropertyValueFactory<>("dateAdd"));
         clDate.setCellFactory(TextFieldTableCell.<Equipment>forTableColumn());
+        clDate.setOnEditCommit(this::cellDateAddEdit);
+            
+       
+    }
+    
+    public void cellNameEdit(CellEditEvent <Equipment, String> t){
+       
+        
+             if(!t.getNewValue().equals("") && t.getNewValue().length() < 50){
+            ((Equipment) t.getTableView().getItems().get(
+                    t.getTablePosition().getRow())).setName(t.getNewValue());
+            tfName.setText(t.getNewValue());
+        }else{
+           ((Equipment) t.getTableView().getItems().get(
+                    t.getTablePosition().getRow())).setName(t.getOldValue()); 
+          
+        }
+        tbEquipment.refresh();
+        
+        
+    }
+    
+    public void cellCostEdit(CellEditEvent <Equipment, String> t){
+     
+          try{
+           Double valor = Double.parseDouble(t.getNewValue());
+        if( valor > 0){
+            ((Equipment) t.getTableView().getItems().get(
+                    t.getTablePosition().getRow())).setCost(t.getNewValue());
+            tfCost.setText(t.getNewValue());
+        }else{
+           ((Equipment) t.getTableView().getItems().get(
+                    t.getTablePosition().getRow())).setCost(t.getOldValue()); 
+            Alert altWarningLog = new Alert(AlertType.INFORMATION);
+            altWarningLog.setTitle("Error al guardar en la base de datos");
+            altWarningLog.setHeaderText("El coste introducido no es valido");
+            altWarningLog.setContentText("El coste que se ha introducido debe ser mayor a 0 "
+                    + "el coste se va a restablecer al valor anterior");
+            altWarningLog.showAndWait();
+        } 
+        tbEquipment.refresh();
+        }catch(NumberFormatException e){
+             
+            LOGGER.severe("El coste introducido no es valido" + e);
+          
+            Alert altWarningLog = new Alert(AlertType.WARNING);
+            altWarningLog.setTitle("Error ");
+            altWarningLog.setHeaderText("El coste introducido no es numerico");
+            altWarningLog.setContentText("El coste que se ha introducido debe ser numerico");
+            altWarningLog.showAndWait();
+            tbEquipment.refresh();
+        }
+        
+    }
+    
+    public void cellDescriptionEdit(CellEditEvent <Equipment, String> t){
+     
+           if(!t.getNewValue().equals("") && t.getNewValue().length() < 400){
+            ((Equipment) t.getTableView().getItems().get(
+                    t.getTablePosition().getRow())).setDescription(t.getNewValue());
+            taDescription.setText(t.getNewValue());
+        }else{
+           ((Equipment) t.getTableView().getItems().get(
+                    t.getTablePosition().getRow())).setDescription(t.getOldValue());
+          
+        }
+        tbEquipment.refresh();
+        
+        
+    }
+    
+    public void cellDateAddEdit(CellEditEvent <Equipment, String> t){
+           try{
+               LocalDate.parse(t.getNewValue(), formatter);
+               dpDate.setValue(LocalDate.parse(t.getNewValue(),formatter));
+               ((Equipment) t.getTableView().getItems().get(
+                    t.getTablePosition().getRow())).setDateAdd(t.getNewValue());
+               
+           }catch(DateTimeParseException e){
+               Alert altWarningLog = new Alert(AlertType.WARNING);
+            altWarningLog.setTitle("La fecha introducida no es correcta ");
+            altWarningLog.setHeaderText("La fecha introducida no cumple los "
+                    + "siguientes paramentros");
+            altWarningLog.setContentText("El coste que se ha introducido deben"
+                    + " cumplir el formato DD/MM/AAAA");
+            altWarningLog.showAndWait();
+           }
+          
+        tbEquipment.refresh();
+        
+        
     }
 
     public void setDataOnTblEquip(ObservableValue observable, Object oldValue, Object newValue) {
@@ -478,7 +580,7 @@ public class EquipmentController {
             tfName.setText(equipment.getName());
             tfCost.setText(equipment.getCost());
             taDescription.setText(equipment.getDescription());
-            dpDate.setValue(LocalDate.parse(equipment.getDateAdd()));
+            dpDate.setValue(LocalDate.parse(equipment.getDateAdd(),formatter));
             btnCrearEquip.setDisable(true);
             btnSaveEquip.setDisable(false);
             btnDeleteEquip.setDisable(false);
@@ -509,7 +611,7 @@ public class EquipmentController {
     public void filterEquipments(ActionEvent event) {
         LOGGER.info("ejecutando filtros ");
         LocalDate fechaBusqueda = null;
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+       
         
         if (cbSearch.getSelectionModel().getSelectedIndex() == 3) {
             fechaBusqueda = LocalDate.parse(tfFinding.getText(), formatter);
