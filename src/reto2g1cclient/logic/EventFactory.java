@@ -17,7 +17,7 @@ public class EventFactory {
      *
      * @return
      */
-    public static  EventInterface getImplementation(){
+    public static EventInterface getImplementation(){
         EventInterface ei = new EventImplementation();
         return ei;
     }

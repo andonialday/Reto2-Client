@@ -84,7 +84,7 @@ public class EventImplementation implements EventInterface {
      */
     @Override
     public void remove(Evento event) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ejc.remove(String.valueOf(event.getId()));
     }
 
     /**

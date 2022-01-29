@@ -22,7 +22,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 public class Evento implements Serializable {
 
-    private final SimpleIntegerProperty id;
+    private final SimpleStringProperty id;
 
     private final SimpleStringProperty dateStart;
 
@@ -47,8 +47,8 @@ public class Evento implements Serializable {
      * @param client valor de la propiedad client
      * @param equipments valor de la propiedad equipments
      */
-    public Evento(Integer id, String dateStart, String dateEnd, String description, String name, Client client, Set<EventEquipment> equipments) {
-        this.id = new SimpleIntegerProperty(id);
+    public Evento(String id, String dateStart, String dateEnd, String description, String name, Client client, Set<EventEquipment> equipments) {
+        this.id = new SimpleStringProperty(id);
         this.dateStart = new SimpleStringProperty(dateStart);
         this.dateEnd = new SimpleStringProperty(dateEnd);
         this.description = new SimpleStringProperty(description);
@@ -61,7 +61,7 @@ public class Evento implements Serializable {
      * Constructor vacío para el objeto Evento
      */
     public Evento() {
-        this.id = new SimpleIntegerProperty();
+        this.id = new SimpleStringProperty();
         this.dateStart = new SimpleStringProperty();
         this.dateEnd = new SimpleStringProperty();
         this.description = new SimpleStringProperty();
@@ -75,7 +75,7 @@ public class Evento implements Serializable {
      *
      * @return ID del Evento
      */
-    public int getId() {
+    public String getId() {
         return this.id.get();
     }
 
@@ -84,7 +84,7 @@ public class Evento implements Serializable {
      *
      * @param id a asignar al Evento
      */
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id.set(id);
     }
 

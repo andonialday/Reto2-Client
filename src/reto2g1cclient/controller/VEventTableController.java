@@ -8,6 +8,7 @@ package reto2g1cclient.controller;
 import com.sun.javafx.scene.control.skin.DatePickerSkin;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Collection;
@@ -62,10 +63,11 @@ public class VEventTableController {
 
     private static final Logger LOGGER = Logger.getLogger("package.class");
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private static final DateTimeFormatter database = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
     private Stage stage;
     private Client client;
     private List<Evento> events = null;
-    private Evento event;
+    //private Evento event;
     private Boolean editable;
     private EventInterface ei;
     private ObservableList<Evento> eventData;
@@ -131,22 +133,6 @@ public class VEventTableController {
      *
      * @return
      */
-    public Evento getEvent() {
-        return event;
-    }
-
-    /**
-     *
-     * @param event
-     */
-    public void setEvent(Evento event) {
-        this.event = event;
-    }
-
-    /**
-     *
-     * @return
-     */
     public boolean isEditable() {
         return editable;
     }
@@ -193,8 +179,8 @@ public class VEventTableController {
 
     // Elementos FXML de la ventana
     //Controlador del Menu
-    //@FXML
-    //private MenuAdminController hMenuBar;
+    @FXML
+    private MenuAdminController hMenuBar;
     //Botones
     /**
      *
@@ -328,14 +314,13 @@ public class VEventTableController {
         Scene scene = new Scene(root);
 
         //CSS (route & scene)
-        String css = this.getClass().getResource("/reto2g1cclient/view/javaFXUIStyles.css").toExternalForm();
-        scene.getStylesheets().add(css);
-
+        //String css = this.getClass().getResource("/reto2g1cclient/view/javaFXUIStyles.css").toExternalForm();
+        //scene.getStylesheets().add(css);
         //Associate the scene to the stage
         stage.setScene(scene);
 
         //Set the scene properties
-        stage.setTitle("SignIn");
+        stage.setTitle("Ventana de Gestión de Eventos");
         stage.setResizable(false);
 
         //Set Windows event handlers 
@@ -390,7 +375,7 @@ public class VEventTableController {
         lblDateEndEr.setVisible(false);
         lblDateStartEr.setVisible(false);
         // Estado inicial de eventos
-        btnBack.setDisable(!false);
+        btnBack.setDisable(false);
         btnDelete.setDisable(true);
         btnNew.setDisable(true);
         btnSearch.setDisable(false);
@@ -439,8 +424,8 @@ public class VEventTableController {
         alert.setHeaderText("¿Seguro que desea Eliminar el Evento Seleccionado?");
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
-            ei.remove(this.event);
-            events.remove(event);
+            ei.remove(tbEvent.getSelectionModel().getSelectedItem());
+            loadData();
             loadTable();
             tbEvent.refresh();
         } else {
@@ -456,15 +441,21 @@ public class VEventTableController {
     @FXML
     public void newEvent(ActionEvent event) {
         if (dpDateEnd.getValue().isAfter(dpDateStart.getValue()) || dpDateEnd.getValue().isEqual(dpDateStart.getValue())) {
-            Evento ev = null;
+            Evento ev = new Evento();
             ev.setName(txtName.getText().trim());
             ev.setDescription(taDescription.getText().trim());
             ev.setDateStart(dpDateStart.getValue().format(formatter));
             ev.setDateEnd(dpDateEnd.getValue().format(formatter));
+            ev = devolverFormatoFechas(ev);
             ei.createEvent(ev);
             events.add(ev);
+            loadData();
             loadTable();
             tbEvent.refresh();
+            txtName.setText("");
+            taDescription.setText("");
+            dpDateStart.setValue(null);
+            dpDateEnd.setValue(null);
         } else {
             lblDateEndEr.setVisible(true);
             dpDateEnd.setValue(dpDateStart.getValue());
@@ -502,15 +493,22 @@ public class VEventTableController {
     }
 
     /**
-     *
+     * Método para cargar los eventos de la base de datos, fiultrandolos por
+     * cliente en caso de que de acceda a la ventana desde un cliente
      */
     public void loadData() {
         LOGGER.info("Loading available Events");
         try {
             if (client != null) {
                 events = (List<Evento>) ei.findEventByClient(client);
+                for (Evento event : events) {
+                    System.out.println(event.getId());
+                }
             } else {
                 events = (List<Evento>) ei.findAll();
+                for (Evento event : events) {
+                    System.out.println(event.getId());
+                }
             }
         } catch (DBServerException e) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -520,18 +518,11 @@ public class VEventTableController {
                     + "\nSi el error persiste, comuníquese con el sevicio técnico");
             alert.showAndWait();
         }
-        /*catch (ClientServerConnectionException ex) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Error al conectar con en el servidor");
-            alert.setHeaderText("Ha sucedido un error al intentar conectar con el "
-                    + "\nservidor, por favor, inténtelo más tarde."
-                    + "\nSi el error persiste, comuníquese con el servicio técnico");
-            alert.showAndWait();;
-        }*/
+        cambiarFormatoFechas();
     }
 
     /**
-     *
+     * Método para cargar los datos obtenidos en la tabla
      */
     public void loadTable() {
         LOGGER.info("Loading Data on Table");
@@ -546,15 +537,14 @@ public class VEventTableController {
      * @param oldValue
      * @param newValue
      */
-    public void eventTableSelection(ObservableValue observable, Object oldValue, Object newValue) {
+    public void eventTableSelection(ObservableValue observable, Evento oldValue, Evento newValue) {
         // Carga de datos en sección de edición
         if (newValue != null) {
             LOGGER.info("New item selected");
-            event = (Evento) newValue;
-            txtName.setText(event.getName());
-            dpDateStart.setValue(LocalDate.parse(event.getDateStart(), formatter));
-            dpDateEnd.setValue(LocalDate.parse(event.getDateEnd(), formatter));
-            taDescription.setText(event.getDescription());
+            txtName.setText(newValue.getName());
+            dpDateStart.setValue(LocalDate.parse(newValue.getDateStart(), formatter));
+            dpDateEnd.setValue(LocalDate.parse(newValue.getDateEnd(), formatter));
+            taDescription.setText(newValue.getDescription());
             btnNew.setDisable(true);
             btnDelete.setDisable(false);
             btnSave.setDisable(false);
@@ -641,14 +631,12 @@ public class VEventTableController {
                     loadData();
                     temp = events.stream().filter(ev -> (LocalDate.parse(ev.getDateEnd(), formatter)).compareTo(LocalDate.parse(txtSearch.getText(), formatter)) != 0).collect(Collectors.toList());
                     events.removeAll(temp);
-
                     break;
                 // Filtro Descripcion
                 case 4:
                     loadData();
                     temp = events.stream().filter(ev -> !ev.getDescription().toLowerCase().contains(txtSearch.getText().toLowerCase())).collect(Collectors.toList());
                     events.removeAll(temp);
-
                     break;
                 default:
                     loadData();
@@ -666,7 +654,9 @@ public class VEventTableController {
     }
 
     /**
-     *
+     * Método para comprobar que los campos para crear nuevos eventos están
+     * informados y que no hay ningún elemento de la tabla seleccionado para
+     * habilitar el botón de nuevo evento
      */
     public void validateData() {
         if (name && dateStart && dateEnd && desc && !tableSelec) {
@@ -739,77 +729,59 @@ public class VEventTableController {
     }
 
     /**
-     *
+     * Método para iniciar las celdas en la tabla en modo NO editable para el
+     * uso de la ventasna por parte de un comercial
      */
     public void initiateNonEditableTableColumns() {
         LOGGER.info("Generating Table Properties");
-        //Columna Nombre
+        //Columna
         // Factoria de Celda para Valor de Propiedades
         // -> Factoria de Celdas para Edicion
-        // - - -> lambda para controlar edicion de contenido
         clName.setCellValueFactory(new PropertyValueFactory<>("name"));
         clName.setCellFactory(TextFieldTableCell.<Evento>forTableColumn());
-        //Columna Nombre
-        // Factoria de Celda para Valor de Propiedades
-        // -> Factoria de Celdas para Edicion
-        // - - -> Método externo para control de fecha
         clDateStart.setCellValueFactory(new PropertyValueFactory<>("dateStart"));
         clDateStart.setCellFactory(TextFieldTableCell.<Evento>forTableColumn());
-        //Columna Nombre
-        // Factoria de Celda para Valor de Propiedades
-        // -> Factoria de Celdas para Edicion
-        // - - -> Método externo para control de fecha
         clDateEnd.setCellValueFactory(new PropertyValueFactory<>("dateEnd"));
         clDateEnd.setCellFactory(TextFieldTableCell.<Evento>forTableColumn());
-        //Columna Nombre
-        // Factoria de Celda para Valor de Propiedades
-        // -> Factoria de Celdas para Edicion
-        // - - -> lambda para controlar edicion de contenido
         clDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
         clDescription.setCellFactory(TextFieldTableCell.<Evento>forTableColumn());
         LOGGER.info("Table Columns initiated");
     }
 
     /**
-     *
+     * Método para iniciar las celdas en la tabla en modo editable para el uso
+     * de la ventasna por parte de un cliente o el administrador
      */
     public void initiateEditableTableColumns() {
         LOGGER.info("Generating Table Properties");
         //Columna Nombre
         // Factoria de Celda para Valor de Propiedades
         // -> Factoria de Celdas para Edicion
-        // - - -> lambda para controlar edicion de contenido
         clName.setCellValueFactory(new PropertyValueFactory<>("name"));
         clName.setCellFactory(TextFieldTableCell.<Evento>forTableColumn());
         clName.setOnEditCommit(this::handleEditCommitName);
-        //Columna Nombre
-        // Factoria de Celda para Valor de Propiedades
-        // -> Factoria de Celdas para Edicion
-        // - - -> Método externo para control de fecha
         clDateStart.setCellValueFactory(new PropertyValueFactory<>("dateStart"));
         clDateStart.setCellFactory(TextFieldTableCell.<Evento>forTableColumn());
         clDateStart.setOnEditCommit(this::handleEditCommitDateStart);
-        //Columna Nombre
-        // Factoria de Celda para Valor de Propiedades
-        // -> Factoria de Celdas para Edicion
-        // - - -> Método externo para control de fecha
         clDateEnd.setCellValueFactory(new PropertyValueFactory<>("dateEnd"));
         clDateEnd.setCellFactory(TextFieldTableCell.<Evento>forTableColumn());
         clDateEnd.setOnEditCommit(this::handleEditCommitDateEnd);
-        //Columna Nombre
-        // Factoria de Celda para Valor de Propiedades
-        // -> Factoria de Celdas para Edicion
-        // - - -> lambda para controlar edicion de contenido
         clDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
         clDescription.setCellFactory(TextFieldTableCell.<Evento>forTableColumn());
         clDescription.setOnEditCommit(this::handleEditCommitDescription);
     }
 
+    /**
+     * Método para controlar la edición de los nombres en la tabla
+     *
+     * @param t celda de la tabla siendo editada
+     */
     private void handleEditCommitName(CellEditEvent<Evento, String> t) {
         if (!t.getNewValue().equals("") && t.getNewValue().length() <= 50) {
             ((Evento) t.getTableView().getItems().get(
                     t.getTablePosition().getRow())).setName(t.getNewValue());
             txtName.setText(t.getNewValue());
+            ei.edit(tbEvent.getSelectionModel().getSelectedItem());
         } else {
             ((Evento) t.getTableView().getItems().get(
                     t.getTablePosition().getRow())).setName(t.getOldValue());
@@ -817,12 +789,18 @@ public class VEventTableController {
         tbEvent.refresh();
     }
 
+    /**
+     * Método para controlar la edición de las fechas de inicio en la tabla
+     *
+     * @param t celda de la tabla siendo editada
+     */
     private void handleEditCommitDateStart(CellEditEvent<Evento, String> t) {
         try {
             LocalDate.parse(t.getNewValue(), formatter);
             ((Evento) t.getTableView().getItems().get(
                     t.getTablePosition().getRow())).setDateStart(t.getNewValue());
             dpDateStart.setValue(LocalDate.parse(t.getNewValue(), formatter));
+            editandoFecha(tbEvent.getSelectionModel().getSelectedItem());
         } catch (DateTimeParseException e) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Error en el formato de la fecha");
@@ -836,12 +814,29 @@ public class VEventTableController {
         tbEvent.refresh();
     }
 
+    /**
+     * Método para controlar la edición de las fechas de finalizacion en la
+     * tabla
+     *
+     * @param t celda de la tabla siendo editada
+     */
     private void handleEditCommitDateEnd(CellEditEvent<Evento, String> t) {
         try {
             LocalDate.parse(t.getNewValue(), formatter);
             ((Evento) t.getTableView().getItems().get(
                     t.getTablePosition().getRow())).setDateEnd(t.getNewValue());
-            dpDateEnd.setValue(LocalDate.parse(t.getNewValue(), formatter));
+            if (correctDateEnd(tbEvent.getSelectionModel().getSelectedItem(), t.getNewValue())) {
+                dpDateEnd.setValue(LocalDate.parse(t.getNewValue(), formatter));
+                editandoFecha(tbEvent.getSelectionModel().getSelectedItem());
+            } else {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Error en el valor de la fecha");
+                alert.setHeaderText("La fecha de fnalizacion no puee ser anterior "
+                        + "a la fecha de inicio");
+                alert.showAndWait();
+                ((Evento) t.getTableView().getItems().get(
+                        t.getTablePosition().getRow())).setDateEnd(t.getOldValue());
+            }
         } catch (DateTimeParseException e) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Error en el formato de la fecha");
@@ -855,11 +850,17 @@ public class VEventTableController {
         tbEvent.refresh();
     }
 
+    /**
+     * Método para controlar la edición de las descripciones en la tabla
+     *
+     * @param t celda de la tabla siendo editada
+     */
     private void handleEditCommitDescription(CellEditEvent<Evento, String> t) {
         if (!t.getNewValue().equals("") && t.getNewValue().length() <= 400) {
             ((Evento) t.getTableView().getItems().get(
                     t.getTablePosition().getRow())).setDescription(t.getNewValue());
             taDescription.setText(t.getNewValue());
+            ei.edit(tbEvent.getSelectionModel().getSelectedItem());
         } else {
             ((Evento) t.getTableView().getItems().get(
                     t.getTablePosition().getRow())).setDescription(t.getOldValue());
@@ -868,8 +869,9 @@ public class VEventTableController {
     }
 
     /**
+     * Método ejecutado por el botón imprimir
      *
-     * @param event
+     * @param event evento ejecutado por el botón imprimir
      */
     public void printData(ActionEvent event) {
         LOGGER.info("Preparing to print");
@@ -888,32 +890,21 @@ public class VEventTableController {
     }
 
     /**
-     *
+     * Método para guarar los cambios realizados en la base de datos
      */
     public void saveData() {
-        try {
-            LOGGER.info("Updating changes on DataBase");
-            List<Evento> evs = (List<Evento>) ei.findAll();
-            // Lee todos los eventos de la base de datos
-            for (Evento ev : events) {
-                Boolean encontrado = false;
-                // Busca los eventos actuales en los extraidos de la base de datos
-                for (Evento evnt : evs) {
-                    if (ev.getId() == evnt.getId()) {
-                        encontrado = true;
-                        // si lo encuentra, analiza si son iguales, si no lo son, lo actualiza
-                        if (!ev.equals(evnt)) {
-                            ei.edit(ev);
-                        }
-                    }
-                }
-                // Si no lo ha encontrado, lo añade a la base de datos
-                if (!encontrado) {
-                    ei.createEvent(ev);
-                }
-            }
-            LOGGER.info("Updating changes on DataBase");
-        } catch (DBServerException ex) {
+        //try {
+        LOGGER.info("Updating changes on DataBase");
+        // Lee todos los eventos de la base de datos
+        for (Evento ev : events) {
+            ev = devolverFormatoFechas(ev);
+            ei.edit(ev);
+        }
+        loadData();
+        loadTable();
+        tbEvent.refresh();
+        LOGGER.info("Updating changes on DataBase");
+        /*} catch (DBServerException ex) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Error al actualizar datos en el servidor");
             alert.setHeaderText("Ha sucedido un error al intentar guardar los cambios "
@@ -921,7 +912,7 @@ public class VEventTableController {
                     + "\nSi el error persiste, comuníquese con el sevicio técnico");
             alert.showAndWait();
         }
-        /*catch (ClientServerConnectionException ex) {
+        catch (ClientServerConnectionException ex) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Error al conectar con en el servidor");
             alert.setHeaderText("Ha sucedido un error al intentar conectar con el "
@@ -932,7 +923,7 @@ public class VEventTableController {
     }
 
     /**
-     *
+     * Método para imprimir un informe con los datos de la tabla
      */
     public void print() {
         try {
@@ -949,6 +940,10 @@ public class VEventTableController {
         }
     }
 
+    /**
+     * Método para activar las opciones de edicion en los elementos de la
+     * ventana si el usuario que la usa tiene lor permisos adecuados
+     */
     private void editableSetter() {
         //Si accede a la vista de eventos un cliente o  un administrador, editable será true y se podrán 
         //editar la tabla y lños campos superiores, si accede un comercial, editable será false y no serán editables
@@ -966,5 +961,68 @@ public class VEventTableController {
             ((DatePickerSkin) dpDateEnd.getSkin()).getPopupContent().setVisible(editable);
             ((DatePickerSkin) dpDateStart.getSkin()).getPopupContent().setVisible(editable);
         }
+    }
+
+    /**
+     * Método para cambiar el formato de las fechas de los eventos del de la
+     * base de datos () al que se desea mostrar (AAAA-DD-MMTHH:mm:ss+TMZ)
+     */
+    public void cambiarFormatoFechas() {
+        for (Evento ev : events) {
+            LocalDate fecha = LocalDate.parse(ev.getDateStart(), database);
+            String dt = fecha.format(formatter);
+            ev.setDateStart(dt);
+            fecha = LocalDate.parse(ev.getDateEnd(), database);
+            dt = fecha.format(formatter);
+            ev.setDateEnd(dt);
+        }
+    }
+
+    /**
+     * Método para devolver al evento las fechas del formato que se desea
+     * mostrar (DD/MM/AAAA) al formato que emplea la BBDD
+     * (AAAA-DD-MMTHH:mm:ss+TMZ)
+     *
+     * @param event evento al que se va a actualizar las fechas
+     * @return evento con las fechas actualizadas
+     */
+    public Evento devolverFormatoFechas(Evento event) {
+        LocalDate date = LocalDate.parse(event.getDateStart(), formatter);
+        String fecha = date.atStartOfDay().atZone(ZoneId.systemDefault()).format(database);
+        event.setDateStart(fecha);
+        date = LocalDate.parse(event.getDateEnd(), formatter);
+        fecha = date.atStartOfDay().atZone(ZoneId.systemDefault()).format(database);
+        event.setDateEnd(fecha);
+        return event;
+    }
+
+    /**
+     * Método para actualizar la fecha en la Base de Datos convirtiendo la fecha
+     * mostrada (DD/MM/AAAA) en el formato de la BBDD (AAAA-DD-MMTHH:mm:ss+TMZ)
+     * y tras actualizarlo volviendo a convertirla en el formato que se desea
+     * mostrar
+     *
+     * @param event el evento del que se está modificando la fecha
+     */
+    public void editandoFecha(Evento event) {
+        LocalDate date = LocalDate.parse(event.getDateStart(), formatter);
+        String fecha = date.atStartOfDay().atZone(ZoneId.systemDefault()).format(database);
+        event.setDateStart(fecha);
+        LocalDate date2 = LocalDate.parse(event.getDateEnd(), formatter);
+        String fecha2 = date2.atStartOfDay().atZone(ZoneId.systemDefault()).format(database);
+        event.setDateEnd(fecha2);
+        ei.edit(event);
+        date = LocalDate.parse(event.getDateStart(), database);
+        fecha = date.format(formatter);
+        event.setDateStart(fecha);
+        date = LocalDate.parse(event.getDateEnd(), database);
+        fecha = date.format(formatter);
+        event.setDateEnd(fecha);
+    }
+
+    private boolean correctDateEnd(Evento ev, String dateEnd) {
+        boolean correct = false;
+        System.out.println(ev.getDateStart() + "\t" + dateEnd);
+        return correct;
     }
 }

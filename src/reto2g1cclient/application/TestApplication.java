@@ -45,17 +45,11 @@ public class TestApplication extends Application {
         Logger.getLogger("Initializing client...");
         //get the route of the 1. View
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/reto2g1cclient/view/VEventTable.fxml"));
-        List<Evento> events = new ArrayList<>();
-        for (int i = 0 ; i < 3 ; i++) {
-            Evento ev = new Evento(i+1, LocalDate.now().format(formatter), LocalDate.now().format(formatter), "descripcion de prueba " + (i+1), "nombre de prueba " + (i+1), null, null);
-            events.add(ev);
-        }
         Parent root = (Parent) loader.load();
         //get the controller of the view
         VEventTableController controller = ((VEventTableController) loader.getController());
         controller.setStage(primaryStage);
         //initializate the stage
-        //controller.setEvents(events);
         controller.setEditable(true);
         controller.initStage(root);
 
