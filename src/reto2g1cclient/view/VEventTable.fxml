@@ -33,8 +33,8 @@
         <Button fx:id="btnBack" layoutX="774.0" layoutY="678.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="171.0" text="ATRAS" />
         <TableView fx:id="tbEvent" editable="true" layoutX="14.0" layoutY="281.0" prefHeight="425.0" prefWidth="750.0">
             <columns>
-                <TableColumn fx:id="clDateStart" maxWidth="-1.0" minWidth="100.0" prefWidth="-1.0" text="Fecha Inicio" />
-                <TableColumn fx:id="clDateEnd" maxWidth="-1.0" minWidth="100.0" prefWidth="-1.0" text="Fecha Fin" />
+                <TableColumn fx:id="clDateStart" maxWidth="-1.0" minWidth="95.0" prefWidth="-1.0" text="Fecha Inicio" />
+                <TableColumn fx:id="clDateEnd" maxWidth="-1.0" minWidth="95.0" prefWidth="-1.0" text="Fecha Fin" />
                 <TableColumn fx:id="clName" maxWidth="-1.0" minWidth="150.0" prefWidth="-1.0" text="Nombre" />
                 <TableColumn fx:id="clDescription" maxWidth="-1.0" minWidth="410.0" prefWidth="-1.0" text="Descripción" />
             </columns>

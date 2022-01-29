@@ -622,14 +622,14 @@ public class VEventTableController {
                 // Filtro Fecha Inicio
                 case 2:
                     loadData();
-                    temp = events.stream().filter(ev -> (LocalDate.parse(ev.getDateStart(), formatter)).compareTo(LocalDate.parse(txtSearch.getText(), formatter)) != 0).collect(Collectors.toList());
+                    temp = events.stream().filter(ev -> (LocalDate.parse(ev.getDateStart(), formatter)).compareTo(LocalDate.parse(txtSearch.getText(), formatter)) < 0).collect(Collectors.toList());
                     events.removeAll(temp);
 
                     break;
                 // Filtro Fecha Fin
                 case 3:
                     loadData();
-                    temp = events.stream().filter(ev -> (LocalDate.parse(ev.getDateEnd(), formatter)).compareTo(LocalDate.parse(txtSearch.getText(), formatter)) != 0).collect(Collectors.toList());
+                    temp = events.stream().filter(ev -> (LocalDate.parse(ev.getDateEnd(), formatter)).compareTo(LocalDate.parse(txtSearch.getText(), formatter)) < 0).collect(Collectors.toList());
                     events.removeAll(temp);
                     break;
                 // Filtro Descripcion
@@ -781,7 +781,7 @@ public class VEventTableController {
             ((Evento) t.getTableView().getItems().get(
                     t.getTablePosition().getRow())).setName(t.getNewValue());
             txtName.setText(t.getNewValue());
-            ei.edit(tbEvent.getSelectionModel().getSelectedItem());
+            editando(tbEvent.getSelectionModel().getSelectedItem());;
         } else {
             ((Evento) t.getTableView().getItems().get(
                     t.getTablePosition().getRow())).setName(t.getOldValue());
@@ -799,8 +799,18 @@ public class VEventTableController {
             LocalDate.parse(t.getNewValue(), formatter);
             ((Evento) t.getTableView().getItems().get(
                     t.getTablePosition().getRow())).setDateStart(t.getNewValue());
-            dpDateStart.setValue(LocalDate.parse(t.getNewValue(), formatter));
-            editandoFecha(tbEvent.getSelectionModel().getSelectedItem());
+            if (correctDateStart(tbEvent.getSelectionModel().getSelectedItem(), t.getNewValue())) {
+                dpDateStart.setValue(LocalDate.parse(t.getNewValue(), formatter));
+                editando(tbEvent.getSelectionModel().getSelectedItem());
+            } else {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Error en el valor de la fecha");
+                alert.setHeaderText("La Fecha de Inicio no puede ser posterior a "
+                        + "la Fecha de Finalización");
+                alert.showAndWait();
+                ((Evento) t.getTableView().getItems().get(
+                        t.getTablePosition().getRow())).setDateStart(t.getOldValue());
+            }
         } catch (DateTimeParseException e) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Error en el formato de la fecha");
@@ -827,15 +837,15 @@ public class VEventTableController {
                     t.getTablePosition().getRow())).setDateEnd(t.getNewValue());
             if (correctDateEnd(tbEvent.getSelectionModel().getSelectedItem(), t.getNewValue())) {
                 dpDateEnd.setValue(LocalDate.parse(t.getNewValue(), formatter));
-                editandoFecha(tbEvent.getSelectionModel().getSelectedItem());
+                editando(tbEvent.getSelectionModel().getSelectedItem());
             } else {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Error en el valor de la fecha");
-                alert.setHeaderText("La fecha de fnalizacion no puee ser anterior "
-                        + "a la fecha de inicio");
+                alert.setHeaderText("La Fecha de Finalizacion no puee ser anterior "
+                        + "a la Fecha de Inicio");
                 alert.showAndWait();
                 ((Evento) t.getTableView().getItems().get(
-                        t.getTablePosition().getRow())).setDateEnd(t.getOldValue());
+                    t.getTablePosition().getRow())).setDateEnd(t.getOldValue());
             }
         } catch (DateTimeParseException e) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -860,7 +870,7 @@ public class VEventTableController {
             ((Evento) t.getTableView().getItems().get(
                     t.getTablePosition().getRow())).setDescription(t.getNewValue());
             taDescription.setText(t.getNewValue());
-            ei.edit(tbEvent.getSelectionModel().getSelectedItem());
+            editando(tbEvent.getSelectionModel().getSelectedItem());
         } else {
             ((Evento) t.getTableView().getItems().get(
                     t.getTablePosition().getRow())).setDescription(t.getOldValue());
@@ -896,15 +906,26 @@ public class VEventTableController {
         //try {
         LOGGER.info("Updating changes on DataBase");
         // Lee todos los eventos de la base de datos
-        for (Evento ev : events) {
-            ev = devolverFormatoFechas(ev);
-            ei.edit(ev);
-        }
-        loadData();
-        loadTable();
-        tbEvent.refresh();
-        LOGGER.info("Updating changes on DataBase");
-        /*} catch (DBServerException ex) {
+        if (tableSelec) {
+            if (txtName.getText().trim().length() != 0
+                    && taDescription.getText().trim().length() != 0
+                    && dpDateEnd.getValue() != null && dpDateStart.getValue() != null
+                    && dpDateEnd.getValue().compareTo(dpDateStart.getValue()) >= 0) {
+                events.remove(tbEvent.getSelectionModel().getSelectedItem());
+                Evento e = tbEvent.getSelectionModel().getSelectedItem();
+                e.setName(txtName.getText());
+                e.setDescription(taDescription.getText());
+                e.setDateEnd(dpDateEnd.getValue().format(formatter));
+                e.setDateStart(dpDateStart.getValue().format(formatter));
+                events.add(e);
+                for (Evento ev : events) {
+                    editando(ev);
+                }
+                loadData();
+                loadTable();
+                tbEvent.refresh();
+                LOGGER.info("Updating changes on DataBase");
+                /*} catch (DBServerException ex) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Error al actualizar datos en el servidor");
             alert.setHeaderText("Ha sucedido un error al intentar guardar los cambios "
@@ -920,6 +941,17 @@ public class VEventTableController {
                     + "\nSi el error persiste, comuníquese con el servicio técnico");
             alert.showAndWait();
         }*/
+
+            } else {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Nuevos valores no válidos");
+                alert.setHeaderText("Debe introducir valores válidos:"
+                        + "\nEl Nombre y la Descripción no pueden ser nulos"
+                        + "\nLas Fechas deben estar en formato válido"
+                        + "\nLa Fecha de Finalización no puede ser anterior a la de Inicio");
+                alert.showAndWait();
+            }
+        }
     }
 
     /**
@@ -1004,13 +1036,13 @@ public class VEventTableController {
      *
      * @param event el evento del que se está modificando la fecha
      */
-    public void editandoFecha(Evento event) {
+    public void editando(Evento event) {
         LocalDate date = LocalDate.parse(event.getDateStart(), formatter);
         String fecha = date.atStartOfDay().atZone(ZoneId.systemDefault()).format(database);
         event.setDateStart(fecha);
-        LocalDate date2 = LocalDate.parse(event.getDateEnd(), formatter);
-        String fecha2 = date2.atStartOfDay().atZone(ZoneId.systemDefault()).format(database);
-        event.setDateEnd(fecha2);
+        date = LocalDate.parse(event.getDateEnd(), formatter);
+        fecha = date.atStartOfDay().atZone(ZoneId.systemDefault()).format(database);
+        event.setDateEnd(fecha);
         ei.edit(event);
         date = LocalDate.parse(event.getDateStart(), database);
         fecha = date.format(formatter);
@@ -1020,9 +1052,35 @@ public class VEventTableController {
         event.setDateEnd(fecha);
     }
 
+    /**
+     * Método para controlar que la nueva fecha de finalización del evento es
+     * posterior o igual a la de finalización
+     *
+     * @param ev evento que se está actualizando
+     * @param dateStart nueva fecha de finalización introducida
+     * @return boolean indicando si la fecha es válida
+     */
     private boolean correctDateEnd(Evento ev, String dateEnd) {
         boolean correct = false;
-        System.out.println(ev.getDateStart() + "\t" + dateEnd);
+        if (LocalDate.parse(ev.getDateStart(), formatter).compareTo(LocalDate.parse(dateEnd, formatter)) <= 0) {
+            correct = true;
+        }
+        return correct;
+    }
+
+    /**
+     * Método para controlar que la nueva fecha de inicio del evento es anterior
+     * o igual a la de finalización
+     *
+     * @param ev evento que se está actualizando
+     * @param dateStart nueva fecha de inicio introducida
+     * @return boolean indicando si la fecha es válida
+     */
+    private boolean correctDateStart(Evento ev, String dateStart) {
+        boolean correct = false;
+        if (LocalDate.parse(ev.getDateEnd(), formatter).compareTo(LocalDate.parse(dateStart, formatter)) >= 0) {
+            correct = true;
+        }
         return correct;
     }
 }
