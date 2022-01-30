@@ -18,6 +18,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
@@ -65,13 +66,17 @@ public class EquipmentController {
     private Equipment equipment;
     private EquipmentInterface eqif;
     private ObservableList<Equipment> equipmentData;
+    //Boleanos para el control de todo el contenido de la ventana
     private Boolean bolName;
     private Boolean bolCost;
     private Boolean bolDescription;
     private Boolean bolDateBuy;
     private Boolean bolTableEquipSelec;
+    
     private Boolean bolEquipEncontrado = false;
+    //Integer para  control de filtros
     private Integer filters;
+    //Se usa para cambiar el formato de las fechas
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private static final DateTimeFormatter database = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
 
@@ -194,28 +199,24 @@ public class EquipmentController {
         tbEquipment.getSelectionModel().selectedItemProperty().addListener(this::setDataOnTblEquip);
         //Set Windows event handlers 
         stage.setOnShowing(this::handleWindowShowing);
-
+        //Botones
         btnBack.setOnAction(this::back);
         btnCrearEquip.setOnAction(this::newEquipment);
         btnDeleteEquip.setOnAction(this::deleteEquipment);
         btnSaveEquip.setOnAction(this::saveEquipment);
         btnFind.setOnAction(this::filterEquipments);
-
+        
+        //Fields textArea y DatePicker
         tfName.textProperty().addListener(this::tfNameValue);
         tfCost.textProperty().addListener(this::tfCostValue);
         taDescription.textProperty().addListener(this::taDescriptionValue);
         dpDate.valueProperty().addListener(this::dpDateAddValue);
-
+        
+        //Filtros
         ObservableList<String> filters = FXCollections.observableArrayList("Nombre del Equipamiento", "Coste maximo", "Coste minimo", "Fecha de compra", "Descripción");
         cbSearch.getItems().addAll(filters);
 
-        //stage.setOnCloseRequest(this::closeVEquipmentTable);
-        // AADIR LOS NUEVOS LABEL Y HYPERLINK
-        /*  loadData();closeVEquipmentTable
-        
-        btnDeleteEvent.setOnAction(this::deleteEvent);
-        btnSave.setOnAction(this::saveChanges);*/
-        //Show main window
+       
         eqif = EquipmentFactory.getImplementation();
         loaddata();
         loadTblEquipment();
@@ -301,9 +302,9 @@ public class EquipmentController {
                 LOGGER.info("Cambiando a ventana de Admin");
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/reto2g1cclient/view/VAdmin.fxml"));
                 Parent root = (Parent) loader.load();
-                //VAdminController controller = ((VAdminController) loader.getController());
-               // controller.setStage(this.stage);
-               // controller.initStage(root);  
+                VAdminController controller = ((VAdminController) loader.getController());
+                controller.setStage(this.stage);
+                controller.initStage(root);  
             }catch (Exception e) {
                 Alert alertVolver = new Alert(Alert.AlertType.WARNING);
                 alertVolver.setTitle("Error al cambiar de ventana");
@@ -312,7 +313,7 @@ public class EquipmentController {
                         + "en el caso de ser persistente intentelo denuevo o mas tarde");
                 alertVolver.showAndWait();
             }
-            Platform.exit();
+           event.consume();
             LOGGER.info("Closing the application");
         } else {
             event.consume();
@@ -335,7 +336,7 @@ public class EquipmentController {
     }
 
     @FXML
-    public void newEquipment(ActionEvent event) throws DBServerException {
+    public void newEquipment(ActionEvent event) {
         try {
             double coste = Double.parseDouble(tfCost.getText());
 
@@ -367,12 +368,20 @@ public class EquipmentController {
             altWarningLog.setHeaderText("El coste introducido no es numerico");
             altWarningLog.setContentText("El coste que se ha introducido debe ser numerico");
             altWarningLog.showAndWait();
+        } catch (DBServerException ex) {
+             LOGGER.severe("Error en el guardado del equipamiento" + ex);
+            Alert altWarningLog = new Alert(AlertType.WARNING);
+            altWarningLog.setTitle("Error al guardar en la base de datos");
+            altWarningLog.setHeaderText("La base de datos puede no estar disponible en este momento ");
+            altWarningLog.setContentText("Porfavor intentelo mas tarde");
+            altWarningLog.showAndWait();
+
         }
 
     }
 
     @FXML
-    public void deleteEquipment(ActionEvent event) throws DBServerException {
+    public void deleteEquipment(ActionEvent event) {
         try {
             LOGGER.info("Deleting Equipment");
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -382,7 +391,7 @@ public class EquipmentController {
             if (result.get() == ButtonType.OK) {
 
                 eqif.remove(tbEquipment.getSelectionModel().getSelectedItem());
-                equipments.remove(equipment);
+            
                 loaddata();
                 loadTblEquipment();
                 tbEquipment.refresh();
@@ -402,7 +411,7 @@ public class EquipmentController {
     }
 
     @FXML
-    public void saveEquipment(ActionEvent event) throws DBServerException {
+    public void saveEquipment(ActionEvent event){
         try {
             LOGGER.info("Actualizando cambios en la base de datos");
             if (bolTableEquipSelec) {
@@ -466,15 +475,6 @@ public class EquipmentController {
             altWarningLog.setContentText("La fecha introducida debe de cumplir el formato,"
                     + " \n DD/MM/AAAA");
             altWarningLog.showAndWait();
-        } catch (DBServerException e) {
-
-            LOGGER.severe("Error en el guardado del equipamiento" + e);
-            Alert altWarningLog = new Alert(AlertType.WARNING);
-            altWarningLog.setTitle("Error al guardar en la base de datos");
-            altWarningLog.setHeaderText("La base de datos puede no estar disponible en este momento ");
-            altWarningLog.setContentText("Porfavor intentelo mas tarde");
-            altWarningLog.showAndWait();
-
         }
     }
 
@@ -828,28 +828,38 @@ public class EquipmentController {
      * @param equipment que se va a actualizar en la base de datos
      */
     public void editandoFormatosCondicionales(Equipment equipment) {
-        LocalDate date = LocalDate.parse(equipment.getDateAdd(), formatter);
-        String fecha = date.atStartOfDay().atZone(ZoneId.systemDefault()).format(database);
-        equipment.setDateAdd(fecha);
-
-        eqif.edit(equipment);
-
-        date = LocalDate.parse(equipment.getDateAdd(), database);
-        fecha = date.format(formatter);
-        equipment.setDateAdd(fecha);
-
-        String coste = tfCost.getText();
-        if (!tfCost.getText().trim().equals("")) {
-
-            /*Codigo para cambiar todos los decimales anteriores y remplazarlos para
+        try {
+            LocalDate date = LocalDate.parse(equipment.getDateAdd(), formatter);
+            String fecha = date.atStartOfDay().atZone(ZoneId.systemDefault()).format(database);
+            equipment.setDateAdd(fecha);
+            
+            eqif.edit(equipment);
+            
+            date = LocalDate.parse(equipment.getDateAdd(), database);
+            fecha = date.format(formatter);
+            equipment.setDateAdd(fecha);
+            
+            String coste = tfCost.getText();
+            if (!tfCost.getText().trim().equals("")) {
+                
+                /*Codigo para cambiar todos los decimales anteriores y remplazarlos para
                 que solo son dos*/
-            DecimalFormatSymbols simbolos = DecimalFormatSymbols.getInstance(Locale.ENGLISH);
-            Double remplazo = Double.valueOf(coste);
+                DecimalFormatSymbols simbolos = DecimalFormatSymbols.getInstance(Locale.ENGLISH);
+                Double remplazo = Double.valueOf(coste);
+                
+                coste = new DecimalFormat("#.0#", simbolos).format(remplazo);
+                
+                tfCost.setText(coste);
+                tbEquipment.getSelectionModel().getSelectedItem().setCost(coste);
+            }
+        } catch (DBServerException ex) {
+           LOGGER.severe("Error en el guardado del equipamiento" + ex);
+            Alert altWarningLog = new Alert(AlertType.WARNING);
+            altWarningLog.setTitle("Error al guardar en la base de datos");
+            altWarningLog.setHeaderText("La base de datos puede no estar disponible en este momento ");
+            altWarningLog.setContentText("Porfavor intentelo mas tarde");
+            altWarningLog.showAndWait();
 
-            coste = new DecimalFormat("#.0#", simbolos).format(remplazo);
-
-            tfCost.setText(coste);
-            tbEquipment.getSelectionModel().getSelectedItem().setCost(coste);
         }
 
     }
