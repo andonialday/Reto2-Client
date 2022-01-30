@@ -5,8 +5,14 @@
  */
 package reto2g1cclient.implementation;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.ws.rs.ClientErrorException;
+import javax.ws.rs.core.GenericType;
+import reto2g1cclient.exception.DBServerException;
 import reto2g1cclient.logic.EquipmentInterface;
 import reto2g1cclient.model.Equipment;
 
@@ -14,71 +20,167 @@ import reto2g1cclient.model.Equipment;
  *
  * @author Aitor Perez
  */
-public class EquipmentImplementation implements EquipmentInterface{
-    private EquipmentJerseyClient EquipmentClient;
+public class EquipmentImplementation implements EquipmentInterface {
+
+    private final EquipmentJerseyClient EquipmentClient;
+    private static final Logger LOGGER = Logger.getLogger("package.class");
+
+    public EquipmentImplementation() {
+        EquipmentClient = new EquipmentJerseyClient();
+    }
+
+    @Override
+    public Collection<Equipment> findCostRange(Double min, Double max)throws DBServerException{
+          List<Equipment> result = null;
+
+        try {
+        result =  EquipmentClient.findCostRange(new GenericType<List<Equipment>>() {
+        }, min.toString(), max.toString());
+         } catch (ClientErrorException e) {
+            LOGGER.log(Level.SEVERE, "Error al leer los equipamientos de la base de datos");
+            throw new DBServerException(e.getMessage());
+             
+        }
+        return result;
+    }
+
+    @Override
+    public void create(Equipment equipment) throws DBServerException{
+       
+        try {
+         EquipmentClient.create(equipment);
+        } catch (ClientErrorException e) {
+            LOGGER.log(Level.SEVERE, "Error al leer los equipamientos de la base de datos");
+            throw new DBServerException(e.getMessage());
+        }
+        
+    }
+
+    @Override
+    public void edit(Equipment equipment) throws DBServerException {
+         try {
+        EquipmentClient.edit(equipment, equipment.getId());
+          } catch (ClientErrorException e) {
+            LOGGER.log(Level.SEVERE, "Error al leer los equipamientos de la base de datos");
+            throw new DBServerException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void remove(Equipment equipment) throws DBServerException {
+        try{
+        EquipmentClient.remove(equipment.getId());
+          } catch (ClientErrorException e) {
+            LOGGER.log(Level.SEVERE, "Error al leer los equipamientos de la base de datos");
+            throw new DBServerException(e.getMessage());
+        }
+    }
+
+    @Override
+    public Equipment find(Integer id) throws DBServerException {
+        Equipment result = null;
+        try {
+            result = EquipmentClient.find(Equipment.class, id.toString());
+        } catch (ClientErrorException e) {
+            LOGGER.log(Level.SEVERE, "Error al leer los equipamientos de la base de datos");
+            throw new DBServerException(e.getMessage());
+        }
+        return result;
+
+    }
+
+    @Override
+    public Collection<Equipment> findAll() throws DBServerException {
+        List<Equipment> result = null;
+
+        try {
+            result = EquipmentClient.findAll(new GenericType<List<Equipment>>() {});
+
+        } catch (ClientErrorException e) {
+            LOGGER.log(Level.SEVERE, "Error al leer los equipamientos de la base de datos");
+            throw new DBServerException(e.getMessage());
+        }
+        return result;
+    }
+
+    @Override
+    public Collection<Equipment> findRange(Integer from, Integer to) throws DBServerException {
+        List<Equipment> result = null;
+        try {
+            result = EquipmentClient.findRange(new GenericType<List<Equipment>>() {
+            }, from.toString(), to.toString());
+        } catch (ClientErrorException e) {
+            LOGGER.log(Level.SEVERE, "Error al leer los equipamientos de la base de datos");
+            throw new DBServerException(e.getMessage());
+        }
+        return result;
+    }
+
+    @Override
+    public String countREST() throws DBServerException {
+        String result = null;
+        try {
+            result = EquipmentClient.countREST();
+        } catch (ClientErrorException e) {
+            LOGGER.log(Level.SEVERE, "Error al leer los equipamientos de la base de datos");
+            throw new DBServerException(e.getMessage());
+        }
+        return result;
+    }
+
+    @Override
+    public Collection<Equipment> findOrderPreviousDate(Date datePrev)throws DBServerException{
+        List<Equipment> result = null;
+        try {
+            result = EquipmentClient.findOrderPreviousDate
+        (new GenericType<List<Equipment>>() {}, datePrev.toString());
+
+        } catch (ClientErrorException e) {
+            LOGGER.log(Level.SEVERE, "Error al leer los equipamientos de la base de datos");
+            throw new DBServerException(e.getMessage());
+        }
+        return result;
+    }
+        @Override
+        public Collection<Equipment> findOrderAfterDate(Date dateAfter) throws DBServerException{ 
+            List<Equipment> result = null;
+        
+        try {
+            
+    result = EquipmentClient.findOrderAfterDate
+        (new GenericType<List<Equipment>>() {}, dateAfter.toString());
+        }  catch (ClientErrorException e) {
+            LOGGER.log(Level.SEVERE, "Error al leer los equipamientos de la base de datos");
+            throw new DBServerException(e.getMessage());
+        }
+        return result;
+        }
+        @Override
+        public Collection<Equipment> deleteOldEquip(Date year)throws DBServerException{
+            
+              List<Equipment> result = null;
+        
+        try {
+    result = EquipmentClient.deleteOldEquip(new GenericType<List<Equipment>>() {}, year.toString());
     
-    public EquipmentImplementation(){
-      EquipmentClient = new  EquipmentJerseyClient(); 
-    }
-    @Override
-    public List<Equipment> findCostRange(Double min, Double max) {
-   
-    return EquipmentClient.findCostRange(List.class, min.toString(), max.toString());
-    }
+             }  catch (ClientErrorException e) {
+            LOGGER.log(Level.SEVERE, "Error al leer los equipamientos de la base de datos");
+            throw new DBServerException(e.getMessage());
+        }
+        return result;
+        }
 
-    @Override
-    public void create(Equipment equipment) {
-    EquipmentClient.create(equipment);
+        @Override
+        public Collection<Equipment> updateCost(Double ratio)throws DBServerException{
+              List<Equipment> result = null;
+        
+        try {
+    result =  EquipmentClient.updateCost(new GenericType<List<Equipment>>() {}, ratio.toString());
+       
+        }  catch (ClientErrorException e) {
+            LOGGER.log(Level.SEVERE, "Error al leer los equipamientos de la base de datos");
+            throw new DBServerException(e.getMessage());
+        }
+        return result;
     }
-
-    @Override
-    public void edit(Integer id, Equipment equipment) {
-    
-    EquipmentClient.edit(equipment, equipment.getId().toString());
-    }
-
-    @Override
-    public void remove(Equipment equipment) {
-    
-    EquipmentClient.remove(equipment.getId().toString());
-    }
-
-    @Override
-    public Equipment find(Equipment equipment,Integer id) {
-   
-        return EquipmentClient.find(Equipment.class, id.toString());
-    }
-
-    @Override
-    public List<Equipment> findAll() {
-    return EquipmentClient.findAll(List.class);
-    }
-
-    @Override
-    public List<Equipment> findRange(Integer from, Integer to) {
-    return EquipmentClient.findRange(List.class, from.toString(), to.toString());
-    }
-
-    @Override
-    public String countREST() {
-    return EquipmentClient.countREST();
-    }
-
-    @Override
-    public List<Equipment> findOrderPreviousDate(Date datePrev) {
-    return EquipmentClient.findOrderPreviousDate(List.class, datePrev.toString());
-    }
-
-    @Override
-    public List<Equipment> findOrderAfterDate(Date dateAfter) {
-    return EquipmentClient.findOrderAfterDate(List.class, dateAfter.toString());
-    }
-
-    @Override
-    public List<Equipment> deleteOldEquip(Date year) {
-    return EquipmentClient.deleteOldEquip(List.class, year.toString());
-    }
-
-    
-    
 }

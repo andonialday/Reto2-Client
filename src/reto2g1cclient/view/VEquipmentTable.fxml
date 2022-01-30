@@ -16,12 +16,12 @@
         <URL value="@../../../../../../Downloads/view/view/javaFXUIStyles.css" />
     </stylesheets>
     <children>
-      <TableView fx:id="tbEquipment" layoutX="7.0" layoutY="241.0" prefHeight="473.0" prefWidth="769.0" tableMenuButtonVisible="true">
+      <TableView fx:id="tbEquipment" layoutX="7.0" layoutY="241.0" prefHeight="473.0" prefWidth="769.0">
         <columns>
-          <TableColumn fx:id="clName" maxWidth="720.0" prefWidth="120.0" text="Nombre" />
-            <TableColumn fx:id="clCost" maxWidth="720.0" minWidth="100.0" prefWidth="100.0" text="Coste" />
-          <TableColumn fx:id="clDescription" maxWidth="720.0" prefWidth="400.0" text="Descripcion" />
-            <TableColumn fx:id="clDate" maxWidth="720.0" minWidth="100.0" prefWidth="100.0" text="Fecha" />
+          <TableColumn fx:id="clName" maxWidth="720.0" prefWidth="120.0" resizable="false" text="Nombre" />
+            <TableColumn fx:id="clCost" maxWidth="720.0" minWidth="100.0" prefWidth="100.0" resizable="false" text="Coste €" />
+          <TableColumn fx:id="clDescription" maxWidth="720.0" prefWidth="440.00006103515625" resizable="false" text="Descripcion" />
+            <TableColumn fx:id="clDate" maxWidth="720.0" minWidth="100.0" prefWidth="104.0" resizable="false" text="Fecha" />
         </columns>
       </TableView>
       <Button id="btnBack" fx:id="btnBack" cancelButton="true" layoutX="781.0" layoutY="682.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="171.0" text="ATRAS" />

@@ -5,8 +5,11 @@
  */
 package reto2g1cclient.logic;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import javax.ws.rs.PathParam;
+import reto2g1cclient.exception.DBServerException;
 import reto2g1cclient.model.Equipment;
 
 /**
@@ -16,25 +19,27 @@ import reto2g1cclient.model.Equipment;
 public interface EquipmentInterface {
     
     
-    public List<Equipment> findCostRange(Double min, Double max);
+    public Collection<Equipment> findCostRange(Double min, Double max)throws DBServerException;
     
-    public void create(Equipment equipment);
+    public void create(Equipment equipment)throws DBServerException;
     
-    public void edit(Integer id, Equipment equipment);
+    public void edit(Equipment equipment)throws DBServerException;
     
-    public void remove(Equipment equipment);
+    public void remove(Equipment equipment)throws DBServerException;
     
-    public Equipment find(Equipment equipment,Integer id);
+    public Equipment find(Integer id)throws DBServerException;
     
-     public List<Equipment> findAll();
+     public Collection<Equipment> findAll() throws DBServerException;
      
-     public List<Equipment> findRange(Integer from, Integer to);
+     public Collection<Equipment> findRange(Integer from, Integer to)throws DBServerException;
      
-     public String countREST();
+     public String countREST()throws DBServerException;
      
-    public List<Equipment> findOrderPreviousDate(Date datePrev);
+    public Collection<Equipment> findOrderPreviousDate(Date datePrev)throws DBServerException;
     
-    public List<Equipment> findOrderAfterDate(Date dateAfter);
+    public Collection<Equipment> findOrderAfterDate(Date dateAfter)throws DBServerException;
     
-     public List<Equipment> deleteOldEquip(Date year);
+     public Collection<Equipment> deleteOldEquip(Date year)throws DBServerException;
+     
+      public Collection<Equipment> updateCost(Double ratio)throws DBServerException;
 }

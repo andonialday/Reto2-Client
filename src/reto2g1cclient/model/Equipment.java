@@ -27,20 +27,29 @@ public class Equipment implements Serializable {
     
     
 
-    private final SimpleIntegerProperty id;
+    private final SimpleStringProperty id;
     private final SimpleStringProperty description;
     private final SimpleStringProperty name;
     private final SimpleStringProperty dateAdd;
     private final SimpleStringProperty cost;
     private final SimpleObjectProperty<Set<EventEquipment>> events;
     
-    public Equipment(Integer id, String name, String description, String cost, String dateAdd, Set<EventEquipment> events){
-        this.id = new SimpleIntegerProperty(id);
+    public Equipment(String id, String name, String description, String cost, String dateAdd, Set<EventEquipment> events){
+        this.id = new SimpleStringProperty(id);
         this.name = new SimpleStringProperty(name);
         this.dateAdd = new SimpleStringProperty(dateAdd);
         this.cost = new SimpleStringProperty(cost);
         this.description = new SimpleStringProperty(description);
         this.events = new SimpleObjectProperty<>(events);
+    }
+      public Equipment() {
+        this.id = new SimpleStringProperty();
+        this.name = new SimpleStringProperty();
+        this.dateAdd = new SimpleStringProperty();
+        this.cost = new SimpleStringProperty();
+        this.description = new SimpleStringProperty();
+        this.events = new SimpleObjectProperty();
+       
     }
     
     
@@ -64,7 +73,7 @@ public class Equipment implements Serializable {
      * Metodo Getter para obtener la ID del Equipamiento
      * @return ID del equipamiento
      */
-    public Integer getId() {
+    public String getId() {
         return this.id.get();
     }
 
@@ -72,7 +81,7 @@ public class Equipment implements Serializable {
      * Metodo Setter para definir el ID del Equipamiento
      * @param id a asignar al Equipamiento
      */
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id.set(id);
     }
 

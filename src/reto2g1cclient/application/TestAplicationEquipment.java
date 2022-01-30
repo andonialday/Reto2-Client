@@ -48,13 +48,13 @@ public class TestAplicationEquipment extends Application{
         //get the controller of the view
         EquipmentController controller = ((EquipmentController) loader.getController());
         
-        List<Equipment>equipment = new ArrayList<Equipment>();
+       /* List<Equipment>equipment = new ArrayList<Equipment>();
         for (int i = 1; i <= 5; i++) {
             Equipment eq = new Equipment(i, "Microfono "+ i ,"HOLA YO SOY LA PRUEBA NUMEROOOO" + i, valueOf(20d*i) , LocalDate.now().format(formatter), null);
             equipment.add(eq);
             System.out.println(eq.toString());
-        }
-        controller.setEquipments(equipment);
+        }*/
+        //controller.setEquipments(equipment);
         controller.setStage(primaryStage);
         //initializate the stage
         controller.initStage(root);
