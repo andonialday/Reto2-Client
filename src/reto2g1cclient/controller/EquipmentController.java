@@ -80,10 +80,18 @@ public class EquipmentController {
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private static final DateTimeFormatter database = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
 
+    /**
+     *
+     * @return
+     */
     public ObservableList<Equipment> getEquipmentData() {
         return equipmentData;
     }
 
+    /**
+     *
+     * @param equipmentData
+     */
     public void setEquipmentData(ObservableList<Equipment> equipmentData) {
         this.equipmentData = equipmentData;
     }
@@ -106,26 +114,50 @@ public class EquipmentController {
         return stage;
     }
 
+    /**
+     *
+     * @return
+     */
     public Equipment getEquipment() {
         return equipment;
     }
 
+    /**
+     *
+     * @param equipment
+     */
     public void setEquipment(Equipment equipment) {
         this.equipment = equipment;
     }
 
+    /**
+     *
+     * @return
+     */
     public EquipmentInterface getEqif() {
         return eqif;
     }
 
+    /**
+     *
+     * @param eqif
+     */
     public void setEqif(EquipmentInterface eqif) {
         this.eqif = eqif;
     }
 
+    /**
+     *
+     * @param equipments
+     */
     public void setEquipments(List<Equipment> equipments) {
         this.equipments = equipments;
     }
 
+    /**
+     *
+     * @return
+     */
     public List<Equipment> getEquipments() {
         return equipments;
     }
@@ -180,6 +212,11 @@ public class EquipmentController {
     @FXML
     private Label lblWarningDate;
 
+    /**
+     *
+     * @param root
+     * @throws IOException
+     */
     public void initStage(Parent root) throws IOException {
 
         //Create a new scene
@@ -320,7 +357,12 @@ public class EquipmentController {
             LOGGER.info("Closing aborted");
         }
     }
-        public void closeVEquipmentTable(WindowEvent event) {
+
+    /**
+     *
+     * @param event
+     */
+    public void closeVEquipmentTable(WindowEvent event) {
         LOGGER.info("Preguntando si desea cerrar la ventana");
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Esta Cerrando la ventana");
@@ -335,6 +377,10 @@ public class EquipmentController {
         }
     }
 
+    /**
+     *
+     * @param event
+     */
     @FXML
     public void newEquipment(ActionEvent event) {
         try {
@@ -380,6 +426,10 @@ public class EquipmentController {
 
     }
 
+    /**
+     *
+     * @param event
+     */
     @FXML
     public void deleteEquipment(ActionEvent event) {
         try {
@@ -410,6 +460,10 @@ public class EquipmentController {
 
     }
 
+    /**
+     *
+     * @param event
+     */
     @FXML
     public void saveEquipment(ActionEvent event){
         try {
@@ -500,6 +554,12 @@ public class EquipmentController {
         validateEquipData();
     }
 
+    /**
+     *
+     * @param observable
+     * @param oldValue
+     * @param newValue
+     */
     public void tfCostValue(ObservableValue observable, String oldValue, String newValue) {
         bolCost = false;
         try {
@@ -523,6 +583,12 @@ public class EquipmentController {
         validateEquipData();
     }
 
+    /**
+     *
+     * @param observable
+     * @param oldValue
+     * @param newValue
+     */
     public void taDescriptionValue(ObservableValue observable, String oldValue, String newValue) {
         bolDescription = false;
         if (!newValue.trim().equals("")) {
@@ -536,6 +602,12 @@ public class EquipmentController {
         validateEquipData();
     }
 
+    /**
+     * Metodo para controlar el cambio e la fecha
+     * @param observable
+     * @param oldValue
+     * @param newValue
+     */
     public void dpDateAddValue(ObservableValue observable, LocalDate oldValue, LocalDate newValue) {
         bolDateBuy = false;
         if (newValue != null) {
@@ -546,6 +618,9 @@ public class EquipmentController {
         validateEquipData();
     }
 
+    /**
+     *
+     */
     public void validateEquipData() {
         if (bolName && bolDescription && bolCost && bolDateBuy && !bolTableEquipSelec) {
             LOGGER.info("Validate All data is empty");
@@ -558,6 +633,9 @@ public class EquipmentController {
 
     }
 
+    /**
+     *
+     */
     public void setTableData() {
         tbEquipment.setEditable(true);
         clName.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -580,6 +658,10 @@ public class EquipmentController {
 
     }
 
+    /**
+     *
+     * @param t
+     */
     public void cellNameEdit(CellEditEvent<Equipment, String> t) {
 
         if (!t.getNewValue().equals("") && t.getNewValue().length() < 50) {
@@ -596,6 +678,10 @@ public class EquipmentController {
 
     }
 
+    /**
+     *
+     * @param t
+     */
     public void cellCostEdit(CellEditEvent<Equipment, String> t) {
 
         try {
@@ -632,6 +718,10 @@ public class EquipmentController {
 
     }
 
+    /**
+     *
+     * @param t
+     */
     public void cellDescriptionEdit(CellEditEvent<Equipment, String> t) {
 
         if (!t.getNewValue().equals("") && t.getNewValue().length() < 400) {
@@ -648,6 +738,10 @@ public class EquipmentController {
 
     }
 
+    /**
+     *
+     * @param t
+     */
     public void cellDateAddEdit(CellEditEvent<Equipment, String> t) {
         try {
             LocalDate.parse(t.getNewValue(), formatter);
@@ -671,6 +765,12 @@ public class EquipmentController {
 
     }
 
+    /**
+     *
+     * @param observable
+     * @param oldValue
+     * @param newValue
+     */
     public void setDataOnTblEquip(ObservableValue observable, Equipment oldValue, Equipment newValue) {
         if (newValue != null) {
             LOGGER.info("Equipamiento seleccionado");
@@ -705,6 +805,10 @@ public class EquipmentController {
         }
     }
 
+    /**
+     *
+     * @param event
+     */
     @FXML
     public void filterEquipments(ActionEvent event) {
         LOGGER.info("ejecutando filtros ");
@@ -803,6 +907,11 @@ public class EquipmentController {
     }
 
     /* -------------------------- SOLUCION PARA FECHAS ------------------------------*/
+
+    /**
+     *
+     */
+
     public void cambiarFormatoFecha() {
         for (Equipment eq : equipments) {
             LocalDate fecha = LocalDate.parse(eq.getDateAdd(), database);
@@ -813,6 +922,11 @@ public class EquipmentController {
 
     }
 
+    /**
+     *
+     * @param equipment
+     * @return
+     */
     public Equipment devolverFormatoFecha(Equipment equipment) {
         LocalDate date = LocalDate.parse(equipment.getDateAdd(), formatter);
         String fecha = date.atStartOfDay().atZone(ZoneId.systemDefault()).format(database);
@@ -864,6 +978,10 @@ public class EquipmentController {
 
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean comprobarValoresGuardar() {
         return tfName.getText().trim().length() != 0
                 && tfName.getText().trim().length() <= 50
