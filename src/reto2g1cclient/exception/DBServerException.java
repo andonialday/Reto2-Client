@@ -8,7 +8,7 @@ import java.util.logging.Logger;
  *
  * @author Jaime San Sebastian
  */
-public class DBConnectionException extends Exception {
+public class DBServerException extends Exception {
 
     private static final long serialVersionUID = 1L;
 
@@ -17,7 +17,7 @@ public class DBConnectionException extends Exception {
      *
      * @param message
      */
-    public DBConnectionException(String message) {
+    public DBServerException(String message) {
         Logger logger = Logger.getAnonymousLogger();
         logger.log(Level.SEVERE, message, this);
     }

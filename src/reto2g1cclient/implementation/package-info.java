@@ -3,4 +3,4 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package reto2g1cclient.mailing;
+package reto2g1cclient.implementation;
