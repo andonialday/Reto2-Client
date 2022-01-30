@@ -119,9 +119,9 @@ public class MenuAdminController {
         alert.setContentText("La ventana VEventEquipment no se ha podido desarrollar por falta de tiempo, perdone las molestias");
          */
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/reto2g1cclient/view/VSignIn.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/reto2g1cclient/view/VClient.fxml"));
             Parent root = (Parent) fxmlLoader.load();
-            VSignInController controller = ((VSignInController) fxmlLoader.getController());
+            VClientController controller = ((VClientController) fxmlLoader.getController());
             Stage primaryStage = this.stage;
             controller.setStage(primaryStage);
             controller.initStage(root);
@@ -145,9 +145,9 @@ public class MenuAdminController {
         alert.setContentText("La ventana VEventEquipment no se ha podido desarrollar por falta de tiempo, perdone las molestias");
          */
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/reto2g1cclient/view/VSignIn.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/reto2g1cclient/view/Vcommerce.fxml"));
             Parent root = (Parent) fxmlLoader.load();
-            VSignInController controller = ((VSignInController) fxmlLoader.getController());
+            VCommerceController controller = ((VCommerceController) fxmlLoader.getController());
             Stage primaryStage = this.stage;
             controller.setStage(primaryStage);
             controller.initStage(root);
@@ -171,9 +171,9 @@ public class MenuAdminController {
         alert.setContentText("La ventana VEventEquipment no se ha podido desarrollar por falta de tiempo, perdone las molestias");
          */
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/reto2g1cclient/view/VSignIn.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/reto2g1cclient/view/VEquipmentTable.fxml"));
             Parent root = (Parent) fxmlLoader.load();
-            VSignInController controller = ((VSignInController) fxmlLoader.getController());
+            EquipmentController controller = ((EquipmentController) fxmlLoader.getController());
             Stage primaryStage = this.stage;
             controller.setStage(primaryStage);
             controller.initStage(root);
@@ -197,9 +197,9 @@ public class MenuAdminController {
         alert.setContentText("La ventana VEventEquipment no se ha podido desarrollar por falta de tiempo, perdone las molestias");
          */
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/reto2g1cclient/view/VSignIn.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/reto2g1cclient/view/VEventTable.fxml"));
             Parent root = (Parent) fxmlLoader.load();
-            VSignInController controller = ((VSignInController) fxmlLoader.getController());
+            VEventTableController controller = ((VEventTableController) fxmlLoader.getController());
             Stage primaryStage = this.stage;
             controller.setStage(primaryStage);
             controller.initStage(root);
