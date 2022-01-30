@@ -7,7 +7,7 @@
 
 <HBox fx:id="hbMenu" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="reto2g1cclient.controller.MenuAdminController">
    <children>
-       <MenuBar fx:id="mbAdmin" prefHeight="25.0" prefWidth="480.0">
+       <MenuBar fx:id="mbAdmin" prefHeight="25.0" prefWidth="960.0">
            <menus>
                <Menu fx:id="mData" mnemonicParsing="false" text="Gestión de Datos">
                    <items>
@@ -21,6 +21,7 @@
                <Menu fx:id="mSession" mnemonicParsing="false" text="Sesión">
                    <items>
                        <MenuItem fx:id="miLogout" mnemonicParsing="false" text="Cerrar Sesión " />
+                  <MenuItem fx:id="miPassword" mnemonicParsing="false" text="Cambiar Contraseña" />
                        <MenuItem fx:id="miExit" mnemonicParsing="false" text="Salir" />
                    </items>
                </Menu>
