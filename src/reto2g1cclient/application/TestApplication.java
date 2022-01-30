@@ -52,6 +52,5 @@ public class TestApplication extends Application {
         //initializate the stage
         controller.setEditable(true);
         controller.initStage(root);
-
     }
 }

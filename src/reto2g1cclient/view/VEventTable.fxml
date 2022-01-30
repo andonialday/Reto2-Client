@@ -12,7 +12,9 @@
 
 <Pane id="pEventTable" fx:id="pEventTable" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="reto2g1cclient.controller.VEventTableController">
     <children>
-        <!--fx:include fx:id="hMenuBar" source="MenuAdmin.fxml"/-->
+        <fx:include fx:id="hbMenu" source="MenuAdmin.fxml"/>
+    </children>
+    <children>
         <Label fx:id="lblName" layoutX="55.0" layoutY="44.0" prefHeight="17.0" prefWidth="174.0" text="Nombre del Evento" />
         <TextField fx:id="txtName" layoutX="56.0" layoutY="61.0" prefHeight="25.0" prefWidth="174.0" promptText="Nombre del Evento" />
         <Label fx:id="lblDateStart" layoutX="55.0" layoutY="93.0" prefHeight="17.0" prefWidth="174.0" text="Fecha de Inicio del Evento" />

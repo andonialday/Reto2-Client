@@ -201,12 +201,8 @@ public class EventJerseyClient {
      *
      * @param requestEntity
      */
-    public void create(Object requestEntity) {
-        try {
+    public void create(Object requestEntity) throws ClientErrorException {
             webTarget.request(javax.ws.rs.core.MediaType.APPLICATION_XML).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_XML));
-        } catch (Exception e) {
-
-        }
     }
 
     /**

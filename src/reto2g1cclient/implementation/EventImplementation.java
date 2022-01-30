@@ -38,8 +38,13 @@ public class EventImplementation implements EventInterface {
      * @param event
      */
     @Override
-    public void createEvent(Evento event) {
-        ejc.create(event);
+    public void createEvent(Evento event) throws DBServerException {
+        try {
+            ejc.create(event);
+        } catch (ClientErrorException e) {
+            LOGGER.log(Level.SEVERE, "Error al leer los eventos en la base de datos");
+            throw new DBServerException(e.getMessage());
+        }
     }
 
     /**
@@ -48,8 +53,15 @@ public class EventImplementation implements EventInterface {
      * @return
      */
     @Override
-    public Evento find(Integer id) {
-        return ejc.find(Evento.class, id.toString());
+    public Evento find(Integer id) throws DBServerException {
+        Evento ret = null;
+        try {
+            ret = ejc.find(Evento.class, id.toString());
+        } catch (ClientErrorException e) {
+            LOGGER.log(Level.SEVERE, "Error al leer los eventos en la base de datos");
+            throw new DBServerException(e.getMessage());
+        }
+        return ret;
     }
 
     /**
@@ -74,8 +86,13 @@ public class EventImplementation implements EventInterface {
      * @param event
      */
     @Override
-    public void edit(Evento event) {
-        ejc.edit(event, String.valueOf(event.getId()));
+    public void edit(Evento event) throws DBServerException {
+        try {
+            ejc.edit(event, String.valueOf(event.getId()));
+        } catch (ClientErrorException e) {
+            LOGGER.log(Level.SEVERE, "Error al leer los eventos en la base de datos");
+            throw new DBServerException(e.getMessage());
+        }
     }
 
     /**
@@ -83,8 +100,13 @@ public class EventImplementation implements EventInterface {
      * @param event
      */
     @Override
-    public void remove(Evento event) {
-        ejc.remove(String.valueOf(event.getId()));
+    public void remove(Evento event) throws DBServerException {
+        try {
+            ejc.remove(String.valueOf(event.getId()));
+        } catch (ClientErrorException e) {
+            LOGGER.log(Level.SEVERE, "Error al leer los eventos en la base de datos");
+            throw new DBServerException(e.getMessage());
+        }
     }
 
     /**
@@ -92,8 +114,15 @@ public class EventImplementation implements EventInterface {
      * @return
      */
     @Override
-    public String count() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public String count() throws DBServerException {
+        String ret = null;
+        try {
+            ret = ejc.countREST();
+        } catch (ClientErrorException e) {
+            LOGGER.log(Level.SEVERE, "Error al leer los eventos en la base de datos");
+            throw new DBServerException(e.getMessage());
+        }
+        return ret;
     }
 
     /**
@@ -103,8 +132,16 @@ public class EventImplementation implements EventInterface {
      * @return
      */
     @Override
-    public Collection<Evento> findStartRange(Date dateMin, Date dateMax) {
-        return ejc.findStartRange(new GenericType<List<Evento>>(){},dateMin.toString(),dateMax.toString());
+    public Collection<Evento> findStartRange(Date dateMin, Date dateMax) throws DBServerException {
+        List<Evento> ret = null;
+        try {
+            ret = ejc.findStartRange(new GenericType<List<Evento>>() {
+            }, dateMin.toString(), dateMax.toString());
+        } catch (ClientErrorException e) {
+            LOGGER.log(Level.SEVERE, "Error al leer los eventos en la base de datos");
+            throw new DBServerException(e.getMessage());
+        }
+        return ret;
     }
 
     /**
@@ -113,8 +150,16 @@ public class EventImplementation implements EventInterface {
      * @return
      */
     @Override
-    public Collection<Evento> findEventByClient(Client client) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Collection<Evento> findEventByClient(Client client) throws DBServerException {
+        List<Evento> ret = null;
+        try {
+            ret = ejc.findEventByClient(new GenericType<List<Evento>>() {
+            }, String.valueOf(client.getId()));
+        } catch (ClientErrorException e) {
+            LOGGER.log(Level.SEVERE, "Error al leer los eventos en la base de datos");
+            throw new DBServerException(e.getMessage());
+        }
+        return ret;
     }
 
     /**
@@ -124,8 +169,16 @@ public class EventImplementation implements EventInterface {
      * @return
      */
     @Override
-    public Collection<Evento> findRange(Date dateMin, Date dateMax) {
-        return ejc.findRange(new GenericType<List<Evento>>(){}, dateMin.toString(), dateMax.toString());
+    public Collection<Evento> findRange(Date dateMin, Date dateMax) throws DBServerException {
+        List<Evento> ret = null;
+        try {
+            ret = ejc.findRange(new GenericType<List<Evento>>() {
+            }, dateMin.toString(), dateMax.toString());
+        } catch (ClientErrorException e) {
+            LOGGER.log(Level.SEVERE, "Error al leer los eventos en la base de datos");
+            throw new DBServerException(e.getMessage());
+        }
+        return ret;
     }
 
     /**
@@ -135,8 +188,16 @@ public class EventImplementation implements EventInterface {
      * @return
      */
     @Override
-    public Collection<Evento> findEndRange(Date dateMin, Date dateMax) {
-        return ejc.findEndRange(new GenericType<List<Evento>>(){}, dateMin.toString(), dateMax.toString());
+    public Collection<Evento> findEndRange(Date dateMin, Date dateMax) throws DBServerException {
+        List<Evento> ret = null;
+        try {
+            ret = ejc.findEndRange(new GenericType<List<Evento>>() {
+            }, dateMin.toString(), dateMax.toString());
+        } catch (ClientErrorException e) {
+            LOGGER.log(Level.SEVERE, "Error al leer los eventos en la base de datos");
+            throw new DBServerException(e.getMessage());
+        }
+        return ret;
     }
 
     /**
@@ -147,8 +208,16 @@ public class EventImplementation implements EventInterface {
      * @return
      */
     @Override
-    public Collection<Evento> findEndRangeClient(Date dateMin, Date dateMax, Client client) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Collection<Evento> findEndRangeClient(Date dateMin, Date dateMax, Client client) throws DBServerException {
+        List<Evento> ret = null;
+        try {
+            ret = ejc.findEndRangeClient(new GenericType<List<Evento>>() {
+            }, dateMin.toString(), dateMax.toString(), String.valueOf(client.getId()));
+        } catch (ClientErrorException e) {
+            LOGGER.log(Level.SEVERE, "Error al leer los eventos en la base de datos");
+            throw new DBServerException(e.getMessage());
+        }
+        return ret;
     }
 
     /**
@@ -158,8 +227,16 @@ public class EventImplementation implements EventInterface {
      * @return
      */
     @Override
-    public Collection<Evento> findDateRange(Date dateMin, Date dateMax) {
-        return ejc.findDateRange(new GenericType<List<Evento>>(){}, dateMin.toString(), dateMax.toString());
+    public Collection<Evento> findDateRange(Date dateMin, Date dateMax) throws DBServerException {
+        List<Evento> ret = null;
+        try {
+            ret = ejc.findDateRange(new GenericType<List<Evento>>() {
+            }, dateMin.toString(), dateMax.toString());
+        } catch (ClientErrorException e) {
+            LOGGER.log(Level.SEVERE, "Error al leer los eventos en la base de datos");
+            throw new DBServerException(e.getMessage());
+        }
+        return ret;
     }
 
     /**
@@ -168,7 +245,15 @@ public class EventImplementation implements EventInterface {
      * @return
      */
     @Override
-    public Collection<Evento> deleteOldestEvents(Integer year) {
-        return ejc.deleteOldestEvents(new GenericType<List<Evento>>(){}, year.toString());
+    public Collection<Evento> deleteOldestEvents(Integer year) throws DBServerException {
+        List<Evento> ret = null;
+        try {
+            ret = ejc.deleteOldestEvents(new GenericType<List<Evento>>() {
+            }, year.toString());
+        } catch (ClientErrorException e) {
+            LOGGER.log(Level.SEVERE, "Error al leer los eventos en la base de datos");
+            throw new DBServerException(e.getMessage());
+        }
+        return ret;
     }
 }

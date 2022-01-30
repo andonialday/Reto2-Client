@@ -7,7 +7,6 @@ package reto2g1cclient.logic;
 
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 import reto2g1cclient.exception.DBServerException;
 import reto2g1cclient.model.Client;
 import reto2g1cclient.model.Evento;
@@ -17,98 +16,111 @@ import reto2g1cclient.model.Evento;
  * @author Andoni Alday
  */
 public interface EventInterface {
-    
+
+    /**
+     * Método para recibir peticiones de POST - Create para añadir datos
+     * pertenecientes a la entidad a la BBDD
+     *
+     * @param event con los datos de la nueva entrada en la BBDD
+     * @throws reto2g1cclient.exception.DBServerException si hay un error en la
+     * realizacion del proceso en el servidor
+     */
+    public void createEvent(Evento event) throws DBServerException;
+
     /**
      *
      * @param event
+     * @throws reto2g1cclient.exception.DBServerException
      */
-    public void createEvent(Evento event);
-    
+    public void edit(Evento event) throws DBServerException;
+
     /**
      *
      * @param event
+     * @throws reto2g1cclient.exception.DBServerException
      */
-    public void edit(Evento event);
-    
+    public void remove(Evento event) throws DBServerException;
+
     /**
      *
-     * @param event
+     * @return @throws reto2g1cclient.exception.DBServerException
      */
-    public void remove(Evento event);
-    
-    /**
-     *
-     * @return
-     */
-    public String count();
-    
+    public String count() throws DBServerException;
+
     /**
      *
      * @param dateMin
      * @param dateMax
      * @return
+     * @throws reto2g1cclient.exception.DBServerException
      */
-    public Collection<Evento> findStartRange(Date dateMin, Date dateMax);
-    
+    public Collection<Evento> findStartRange(Date dateMin, Date dateMax) throws DBServerException;
+
     /**
      *
      * @param client
      * @return
+     * @throws reto2g1cclient.exception.DBServerException
      */
-    public Collection<Evento> findEventByClient(Client client);
-    
+    public Collection<Evento> findEventByClient(Client client) throws DBServerException;
+
     /**
      *
      * @param dateMin
      * @param dateMax
      * @return
+     * @throws reto2g1cclient.exception.DBServerException
      */
-    public Collection<Evento> findRange(Date dateMin, Date dateMax);
-    
+    public Collection<Evento> findRange(Date dateMin, Date dateMax) throws DBServerException;
+
     /**
      *
      * @param dateMin
      * @param dateMax
      * @return
+     * @throws reto2g1cclient.exception.DBServerException
      */
-    public Collection<Evento> findEndRange(Date dateMin, Date dateMax);
-    
+    public Collection<Evento> findEndRange(Date dateMin, Date dateMax) throws DBServerException;
+
     /**
      *
      * @param dateMin
      * @param dateMax
      * @param client
      * @return
+     * @throws reto2g1cclient.exception.DBServerException
      */
-    public Collection<Evento> findEndRangeClient(Date dateMin, Date dateMax, Client client);
-    
+    public Collection<Evento> findEndRangeClient(Date dateMin, Date dateMax, Client client) throws DBServerException;
+
     /**
      *
      * @param dateMin
      * @param dateMax
      * @return
+     * @throws reto2g1cclient.exception.DBServerException
      */
-    public Collection<Evento> findDateRange(Date dateMin, Date dateMax);
-    
+    public Collection<Evento> findDateRange(Date dateMin, Date dateMax) throws DBServerException;
+
     /**
      *
      * @param id
      * @return
-     */
-    public Evento find(Integer id);
-    
-    /**
-     *
-     * @return
      * @throws reto2g1cclient.exception.DBServerException
      */
+    public Evento find(Integer id) throws DBServerException;
+
+    /**
+     *
+     * @return @throws reto2g1cclient.exception.DBServerException
+     */
     public Collection<Evento> findAll() throws DBServerException;
-    
+
     /**
      *
      * @param year
      * @return
+     * @throws reto2g1cclient.exception.DBServerException
      */
-    public Collection<Evento> deleteOldestEvents(Integer year);
-    
+    public Collection<Evento> deleteOldestEvents(Integer year) throws DBServerException;
+
 }
