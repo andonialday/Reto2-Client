@@ -40,6 +40,22 @@ public class MenuAdminController {
     private MenuItem miPassword;
     private MenuItem miExit;
     private Stage stage;
+    // User for Password changing
+    private User user;
+    /*
+    * Getter del usuario que ha iniciado sesión y está usando la aplicación
+    * @return user usuario que ha iniciado sesión
+    */
+    public User getUser() {
+        return user;
+    }
+    /*
+    * Setter del usuario que ha iniciado sesión y está usando la aplicación
+    * @param user usuario que ha iniciado sesión
+    */
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     /**
      * Getter del Stage que va a emplear el menú
@@ -228,6 +244,7 @@ public class MenuAdminController {
             Parent root = (Parent) fxmlLoader.load();
             VPasswordController controller = ((VPasswordController) fxmlLoader.getController());
             Stage primaryStage = this.stage;
+            controller.setUser(user);
             controller.setStage(primaryStage);
             controller.initStage(root);
         } catch (IOException ex) {
