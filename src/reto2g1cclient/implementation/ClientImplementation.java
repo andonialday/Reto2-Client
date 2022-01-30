@@ -80,6 +80,7 @@ public class ClientImplementation implements ClientInterface{
             clients = clientJersey
                     .findAll(new GenericType <Collection <Client>>(){});
         }catch (ClientErrorException e){
+            e.printStackTrace();
             throw new ClientServerConnectionException(e.getMessage());
         }
         return clients;

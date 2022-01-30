@@ -8,9 +8,6 @@ package reto2g1cclient.model;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -21,22 +18,38 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class User implements Serializable {
 
-    private SimpleIntegerProperty id;
-    private SimpleStringProperty login;
-    private SimpleStringProperty email;
-    private SimpleStringProperty fullName;
+    private Integer id;
+    private String login;
+    private String email;
+    private String fullName;
     private UserStatus status;
     private Privilege privilege;
-    private SimpleStringProperty password;
-    private SimpleObjectProperty<Date> lastPasswordChange;
+    private String password;
+    private Date lastPasswordChange;
 
+    public User(Integer id, String login, String email, String fullName, UserStatus status, Privilege privilege, String password, Date lastPasswordChange) {
+        this.id = id;
+        this.login = login;
+        this.email = email;
+        this.fullName = fullName;
+        this.status = status;
+        this.privilege = privilege;
+        this.password = password;
+        this.lastPasswordChange = lastPasswordChange;
+    }
+
+    public User() {
+        
+    }
+
+    
     /**
      * Método Getter para obtener la ID del usuario
      *
      * @return el id de un usuario
      */
-    public int getId() {
-        return id.get();
+    public Integer getId() {
+        return id;
     }
 
     /**
@@ -44,8 +57,8 @@ public class User implements Serializable {
      *
      * @param id el id de un usuario a establecer
      */
-    public void setId(int id) {
-        this.id.set(id);
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     /**
@@ -54,7 +67,7 @@ public class User implements Serializable {
      * @return el login de un usuario
      */
     public String getLogin() {
-        return login.get();
+        return login;
     }
 
     /**
@@ -63,7 +76,7 @@ public class User implements Serializable {
      * @param login el login de un usuario a establecer
      */
     public void setLogin(String login) {
-        this.login.set(login);
+        this.login = login;
     }
 
     /**
@@ -72,7 +85,7 @@ public class User implements Serializable {
      * @return el email de un usuario
      */
     public String getEmail() {
-        return email.get();
+        return email;
     }
 
     /**
@@ -81,7 +94,7 @@ public class User implements Serializable {
      * @param email el email de un usuario a establecer
      */
     public void setEmail(String email) {
-        this.email.set(email);
+        this.email = email;
     }
 
     /**
@@ -90,7 +103,7 @@ public class User implements Serializable {
      * @return el nombre completo de un usuario
      */
     public String getFullName() {
-        return fullName.get();
+        return fullName;
     }
 
     /**
@@ -99,7 +112,7 @@ public class User implements Serializable {
      * @param fullName el nombre completo de un usuario a establecer
      */
     public void setFullName(String fullName) {
-        this.fullName.set(fullName);
+        this.fullName = fullName;
     }
 
     /**
@@ -144,7 +157,7 @@ public class User implements Serializable {
      * @return la contraseña de un usuario
      */
     public String getPassword() {
-        return password.get();
+        return password;
     }
 
     /**
@@ -153,7 +166,7 @@ public class User implements Serializable {
      * @param password la contraseña de un usuario a establecer
      */
     public void setPassword(String password) {
-        this.password.set(password);
+        this.password = password;
     }
 
     /**
@@ -163,7 +176,7 @@ public class User implements Serializable {
      * @return el cambio de contraseña de un usuario
      */
     public Date getLastPasswordChange() {
-        return lastPasswordChange.get();
+        return lastPasswordChange;
     }
 
     /**
@@ -174,7 +187,7 @@ public class User implements Serializable {
      * establecer
      */
     public void setLastPasswordChange(Date lastPasswordChange) {
-        this.lastPasswordChange.set(lastPasswordChange);
+        this.lastPasswordChange = lastPasswordChange;
     }
 
     @Override

@@ -17,19 +17,32 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Jaime San Sebastián
  */
 @XmlRootElement
-public class Client extends User implements Serializable {
+public class Client extends User implements Serializable{
     
     private SimpleObjectProperty<Type> type;
     private Set<Event> events;
     private Commercial commercial;
 
+    public Client() {
+        
+    }
+
+    
+    public Client(SimpleObjectProperty<Type> type, Set<Event> events, Commercial commercial) {
+        this.type = type;
+        this.events = events;
+        this.commercial = commercial;
+    }
+
+    
+    
     /**
      * Método Getter para obtener el tipo de un cliente
      *
      * @return el tipo de un cliente
      */
-    public SimpleObjectProperty<Type> getType() {
-        return type;
+    public Type getType() {
+        return type.get();
     }
 
     /**

@@ -12,6 +12,7 @@ import reto2g1cclient.exception.LoginNotValidException;
 import reto2g1cclient.exception.EmailNotValidException;
 import reto2g1cclient.exception.MaxCharacterException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.logging.Level;
@@ -57,12 +58,12 @@ public class VClientTableController {
 
     //Initialization of the email validation pattern
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX
-            = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", 
+            = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$",
                     Pattern.CASE_INSENSITIVE);
 
     //Initialization of the password validation pattern
     public static final Pattern VALID_PASSWORD_REGEX
-            = Pattern.compile("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$", 
+            = Pattern.compile("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$",
                     Pattern.CASE_INSENSITIVE);
 
     //Initialize the values ​​of the combobox of type
@@ -88,7 +89,7 @@ public class VClientTableController {
     private TableColumn<Client, String> colEmail;
     @FXML
     private TableColumn<Client, String> colType;
-    
+
     //Buttons
     @FXML
     private Button btnNewClient;
@@ -104,7 +105,7 @@ public class VClientTableController {
     private Button btnPrint;
     @FXML
     private Button btnBack;
-    
+
     //Labels
     @FXML
     private Label lblErrorName;
@@ -116,7 +117,7 @@ public class VClientTableController {
     private Label lblErrorPassword;
     @FXML
     private Label lblErrorConfirmPassword;
-    
+
     //Text fields
     @FXML
     private TextField tfName;
@@ -126,53 +127,25 @@ public class VClientTableController {
     private TextField tfEmail;
     @FXML
     private TextField txtFilter;
-    
+
     //Password fields
     @FXML
     private PasswordField tfPassword;
     @FXML
     private PasswordField tfConfirmPassword;
-    
+
     //Combo box
     @FXML
     private ComboBox<String> cbType;
     @FXML
     private ComboBox<String> cbSearchBy;
 
-    private ClientInterface clientInterface;    
+    private ClientInterface clientInterface;
     private Stage stage;
     private ObservableList<Client> clientsForTable;
 
     /**
-     * Sets the client interface
-     *
-     * @param clientInterface to set
-     */
-    public void setClientInterface(ClientInterface clientInterface) {
-        this.clientInterface = clientInterface;
-    }
-
-    /**
-     * Sets the stage
-     *
-     * @param stage to set
-     */
-    public void setStage(Stage stage) {
-        this.stage = stage;
-    }
-
-    /**
-     * Gets the stage
-     *
-     * @return stage to get
-     */
-    public Stage getStage() {
-        return stage;
-    }
-
-    /**
-     * Initialize and show window.
-     * Initialize the window, create a scene, 
+     * Initialize and show window. Initialize the window, create a scene,
      * associate it with a stage and show the window
      *
      * @param root
@@ -202,14 +175,14 @@ public class VClientTableController {
 
     /**
      * Shows the buttons that are enabled or disabled for the client table when
-     * we enter the VClientTable window.
-     * Add all possible options to the Combobox.
-     * Disable all comments that show an error if the field is entered incorrectly.
-     * Insert the name of each column in the table and enter the customer data.
+     * we enter the VClientTable window. Add all possible options to the
+     * Combobox. Disable all comments that show an error if the field is entered
+     * incorrectly. Insert the name of each column in the table and enter the
+     * customer data.
      *
      * @param event
      */
-    private void handleWindowShowing(WindowEvent event)  {
+    private void handleWindowShowing(WindowEvent event) {
         LOGGER.info("Beginning VClientTable::handleWindowShowing");
 
         tbClient.getSelectionModel().selectedItemProperty()
@@ -218,24 +191,27 @@ public class VClientTableController {
         //Buttons disabled
         btnViewEvents.setDisable(true);
         btnDeleteClient.setDisable(true);
-        btnSearch.setDisable(true);
         btnNewClient.setDisable(true);
         btnSaveClient.setDisable(true);
 
         //Buttons enabled
         btnPrint.setDisable(false);
+        btnSearch.setDisable(false);
         btnBack.setDisable(false);
-        
+
         //Make all error tags invisible
         lblErrorName.setVisible(false);
         lblErrorEmail.setVisible(false);
         lblErrorLogin.setVisible(false);
         lblErrorPassword.setVisible(false);
         lblErrorConfirmPassword.setVisible(false);
+        
+        //Search field disabled
+        txtFilter.setDisable(true);
 
         //Add the values ​​of the client type ComboBox
         ObservableList<String> optionsForComboType;
-        optionsForComboType = FXCollections.observableArrayList(SELECT_PARTICULAR, 
+        optionsForComboType = FXCollections.observableArrayList(SELECT_PARTICULAR,
                 SELECT_ASOCIATION, SELECT_ENTERPRISE, SELECT_PUBLIC_ENTITY);
         cbType.setItems(optionsForComboType);
         //Select the first comboBox item by default
@@ -243,12 +219,12 @@ public class VClientTableController {
 
         //Add the values ​​of the client filter ComboBox
         ObservableList<String> optionsForComboSearch;
-        optionsForComboSearch = FXCollections.observableArrayList(SELECT_NAME, 
+        optionsForComboSearch = FXCollections.observableArrayList(SELECT_NAME,
                 SELECT_LOGIN, SELECT_EMAIL, SELECT_TYPE);
         cbSearchBy.setItems(optionsForComboSearch);
         //Select the first comboBox item by default
         cbSearchBy.getSelectionModel().selectFirst();
-        
+
         //Insert the table columns and link them to clients
         colLogin.setCellValueFactory(new PropertyValueFactory<>("login"));
         colName.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -256,30 +232,27 @@ public class VClientTableController {
         colType.setCellValueFactory(new PropertyValueFactory<>("type"));
 
         try {
-            clientInterface = new ClientImplementation();
             clientsForTable = FXCollections
                     .observableArrayList(clientInterface.getAllClient());
-            System.out.println(clientsForTable);
             tbClient.setItems(clientsForTable);
         } catch (ClientServerConnectionException ex) {
             LOGGER.info("Error, client collection not working");
-        }  
+        }
     }
 
     /**
-     * Method to control if there's a client selected in the table.
-     * If the user selects a client in the table, all client data 
-     * is displayed in the corresponding fields.
-     * If the user selects a client in the table, the View client events 
-     * and delete clients buttons become visible.
-     * If the user deselects a client in the table, the View client events
-     * and delete clients buttons become invisible again.
+     * Method to control if there's a client selected in the table. If the user
+     * selects a client in the table, all client data is displayed in the
+     * corresponding fields. If the user selects a client in the table, the View
+     * client events and delete clients buttons become visible. If the user
+     * deselects a client in the table, the View client events and delete
+     * clients buttons become invisible again.
      *
      * @param observableValue
      * @param oldValue
      * @param newValue
      */
-    private void handleSelection(ObservableValue observableValue, 
+    private void handleSelection(ObservableValue observableValue,
             Object oldValue, Object newValue) {
 
         //client selected in the table
@@ -289,16 +262,16 @@ public class VClientTableController {
             tfName.setText(client.getFullName());
             tfLogin.setText(client.getLogin());
             tfEmail.setText(client.getEmail());
-            //cbType.getSelectionModel().select(Type.valueOf(client.getType()));
+            //cbType.getSelectionModel().select(client.getType());
             //Text Fields disabled
             tfPassword.setDisable(true);
             tfConfirmPassword.setDisable(true);
-            
+
             //Buttons enabled
             btnViewEvents.setDisable(false);
             btnDeleteClient.setDisable(false);
-        
-        //client deselected in the table    
+
+            //client deselected in the table    
         } else {
             //Delete client data from fields
             tfName.setText("");
@@ -310,7 +283,7 @@ public class VClientTableController {
             tfPassword.setText("");
             tfConfirmPassword.setDisable(false);
             tfConfirmPassword.setText("");
-            
+
             //Buttons disabled
             btnViewEvents.setDisable(true);
             btnDeleteClient.setDisable(true);
@@ -318,56 +291,56 @@ public class VClientTableController {
     }
 
     /**
-     * Method to check the validity of fields.
-     * Check that all data fields are complete before creating or saving a client.
-     * Check that the name and login fields have the correct size.
-     * Validate that the email and password fields are written correctly.
-     * Check that the password and confirm password fields are the same
+     * Method to check the validity of fields. Check that all data fields are
+     * complete before creating or saving a client. Check that the name and
+     * login fields have the correct size. Validate that the email and password
+     * fields are written correctly. Check that the password and confirm
+     * password fields are the same
      *
      * @return
      */
-    private boolean checkFields() throws FieldsEmptyException, 
-            MaxCharacterException, EmailNotValidException, 
-            LoginNotValidException, PasswordNotValidException, 
+    private boolean checkFields() throws FieldsEmptyException,
+            MaxCharacterException, EmailNotValidException,
+            LoginNotValidException, PasswordNotValidException,
             ConfirmPasswordNotValidException {
-        
+
         //Checks if all the fields are written
-        if (tfName.getText().trim().isEmpty() 
+        if (tfName.getText().trim().isEmpty()
                 || tfEmail.getText().trim().isEmpty()
-                || tfLogin.getText().trim().isEmpty() 
+                || tfLogin.getText().trim().isEmpty()
                 || tfPassword.getText().trim().isEmpty()
                 || tfConfirmPassword.getText().trim().isEmpty()) {
             LOGGER.info("Some fields are empty");
             throw new FieldsEmptyException("Error, some fields are empty");
         }
-        
+
         //Checks if the name field has more than 25 characters
         if (tfName.getText().trim().length() > 25) {
             throw new MaxCharacterException("Error, maximum size");
         }
-        
+
         //Check if the email field is written correctly
         if (!validateEmail(tfEmail.getText().trim())) {
             throw new EmailNotValidException("Error, invalid email");
         }
-        
+
         //Check if the login field has no more than 25 characters 
         //and no less than 5
-        if (tfLogin.getText().trim().length() > 25 
+        if (tfLogin.getText().trim().length() > 25
                 || tfLogin.getText().trim().length() < 5) {
             throw new LoginNotValidException("Error, invalid login");
         }
-        
+
         //Check if the password field is written correctly
         if (!validatePassword(tfPassword.getText().trim())) {
             throw new PasswordNotValidException("Error, invalid password");
         }
-        
+
         //Check if the confirm password field is written correctly
         if (!validatePassword(tfConfirmPassword.getText().trim())) {
             throw new PasswordNotValidException("Error, invalid password");
         }
-        
+
         //Check that the confirm password field 
         //contains exactly the same characters typed
         if (!tfConfirmPassword.getText().trim()
@@ -375,7 +348,7 @@ public class VClientTableController {
             throw new ConfirmPasswordNotValidException("Error, "
                     + "different confirmation password");
         }
-        
+
         return true;
     }
 
@@ -393,27 +366,24 @@ public class VClientTableController {
     /**
      * Method that validates the password
      *
-     * @param emailStr
-     * @return
+     * @param password
+     * @return true if its valid
      */
-    public static boolean validatePassword(String emailStr) {
-        Matcher matcher = VALID_PASSWORD_REGEX.matcher(emailStr);
+    public static boolean validatePassword(String password) {
+        Matcher matcher = VALID_PASSWORD_REGEX.matcher(password);
         return matcher.find();
     }
 
     /**
-     * Method that controls the action button of removing a client:
-     * The delete client button is enabled 
-     * when a client is selected in the table.
-     * Pressing the button will send a confirmation alert.
-     * If the remove is confirmed, the implementation method 
-     * that implements the remove interface will be called.
-     * The client ID is sent.
-     * The remove implementation will call the client remove restful 
-     * which will send the information to the server remove restful.
-     * The server part removes the client with that ID 
-     * and the client table is updated.
-     * 
+     * Method that controls the action button of removing a client: The delete
+     * client button is enabled when a client is selected in the table. Pressing
+     * the button will send a confirmation alert. If the remove is confirmed,
+     * the implementation method that implements the remove interface will be
+     * called. The client ID is sent. The remove implementation will call the
+     * client remove restful which will send the information to the server
+     * remove restful. The server part removes the client with that ID and the
+     * client table is updated.
+     *
      *
      * @param event the event linked to clicking on the button;
      */
@@ -458,18 +428,15 @@ public class VClientTableController {
     }
 
     /**
-     * Method that controls the action button of creating a new client:
-     * If there are no clients selected in the table, 
-     * the New Client button is enabled.
-     * All data fields are filled in 
-     * and it is checked that they are written correctly.
-     * Pressing the button will send a confirmation alert.
-     * If the creation is confirmed, the implementation method 
-     * that implements the creation interface will be called.
-     * The client object is sent.
-     * The create implementation will call the client create restful 
-     * which will send the information to the server create restful.
-     * The server part creates the client and the client table is updated.
+     * Method that controls the action button of creating a new client: If there
+     * are no clients selected in the table, the New Client button is enabled.
+     * All data fields are filled in and it is checked that they are written
+     * correctly. Pressing the button will send a confirmation alert. If the
+     * creation is confirmed, the implementation method that implements the
+     * creation interface will be called. The client object is sent. The create
+     * implementation will call the client create restful which will send the
+     * information to the server create restful. The server part creates the
+     * client and the client table is updated.
      *
      * @param event the event linked to clicking on the button;
      */
@@ -495,6 +462,7 @@ public class VClientTableController {
                     try {
                         LOGGER.info("Adding a new client");
                         Client clientToCreate = new Client();
+                        clientToCreate.setId(null);
                         clientToCreate.setFullName(tfName.getText());
                         clientToCreate.setEmail(tfEmail.getText());
                         clientToCreate.setLogin(tfLogin.getText());
@@ -557,26 +525,23 @@ public class VClientTableController {
     }
 
     /**
-     * Method that controls the action button of editing a new client:
-     * The save change button is enabled when a client is selected in the table.
-     * The data of the selected client is displayed in the fields.
-     * The necessary changes are made in the fields.
-     * It is checked that all the fields are complete 
-     * and that all the data is correctly entered.
-     * Pressing the button will send a confirmation alert.
-     * If the edition is confirmed, the implementation method 
-     * that implements the edit interface will be called.
-     * The client object is sent.
-     * The edit implementation will call the client edit restful 
-     * which will send the information to the server edit restful.
-     * The server part edits the client and the client table is updated.
+     * Method that controls the action button of editing a new client: The save
+     * change button is enabled when a client is selected in the table. The data
+     * of the selected client is displayed in the fields. The necessary changes
+     * are made in the fields. It is checked that all the fields are complete
+     * and that all the data is correctly entered. Pressing the button will send
+     * a confirmation alert. If the edition is confirmed, the implementation
+     * method that implements the edit interface will be called. The client
+     * object is sent. The edit implementation will call the client edit restful
+     * which will send the information to the server edit restful. The server
+     * part edits the client and the client table is updated.
      *
      * @param event the event linked to clicking on the button;
      */
     @FXML
     private void handleSaveClient(ActionEvent event) {
         LOGGER.info("Option to edit a selected client");
-        
+
         LOGGER.info("Editing a client");
         Client clientToEdit = tbClient.getSelectionModel().getSelectedItem();
         clientToEdit.setFullName(tfName.getText());
@@ -598,7 +563,7 @@ public class VClientTableController {
                 clientToEdit.setType(Type.PUBLIC_ENTITY);
                 break;
         }
-        
+
         try {
 
             //Check the information of the data entered in the fields
@@ -695,7 +660,7 @@ public class VClientTableController {
             alert3.showAndWait();
         }
     }
-    
+
     /**
      * Method that controls a combobox with four different types of clients.
      *
@@ -718,15 +683,31 @@ public class VClientTableController {
 
     /**
      * Method that controls a combobox with four different search filter types.
+     * When you select one of the options the search field is enabled
      *
      * @param event the event linked to clicking on the button;
      */
     @FXML
     private void handleSearchBy(ActionEvent event) {
-        //COMBOBOX CON LOS CUATRO POSIBLES TIPOS DE CLIENTE
-        //LOGIN, NOMBRE, EMAIL y TIPO
+        
         try {
 
+            //Type of filter selected in the combobox
+            switch (cbSearchBy.getValue()) {
+                //Filter by client name
+                case SELECT_NAME:
+                    txtFilter.setDisable(false);
+                //Filter by client login    
+                case SELECT_LOGIN:
+                    txtFilter.setDisable(false);
+                 //Filter by client email   
+                case SELECT_EMAIL:
+                    txtFilter.setDisable(false);
+                //Filter by client type   
+                case SELECT_TYPE:
+                    txtFilter.setDisable(false);
+            }
+            
         } catch (Exception e) {
             Alert alert = new Alert(AlertType.INFORMATION);
             alert.setTitle("AYUDA");
@@ -738,14 +719,180 @@ public class VClientTableController {
 
     /**
      * Method that controls the search action button by a specific filter.
+     * Depending on the Combo Box filter and the filter introduced in the
+     * search, the filtering will be executed in the table
      *
      * @param event the event linked to clicking on the button;
      */
     @FXML
     private void handleSearch(ActionEvent event) {
-        //EN FUNCION DEL COMBOBOX Y EL TEXTFIELD DE BUSQUEDA EJECUTAR EL FILTRADO EN LA TABLA
+
         try {
 
+            //Type of filter selected in the combobox
+            switch (cbSearchBy.getValue()) {
+
+                //Filter by client name
+                case SELECT_NAME:
+                    //Check that there is something written in the search field
+                    if (txtFilter.getText().trim().isEmpty()) {
+                        LOGGER.info("Search field are empty");
+                        throw new FieldsEmptyException("Error, "
+                                + "search field are empty");
+
+                    } else {
+                        //Check that the entered name exists
+                        Collection<Client> clients = clientInterface
+                                .getAllClient();
+                        Client clientName = null;
+                        for (Client client : clients) {
+                            if (client.getFullName()
+                                    .equalsIgnoreCase(txtFilter.getText())) {
+                                clientName = client;
+                                break;
+                            }
+                        }
+                        //Show an alert if the entered name does not exist
+                        if (clientName == null) {
+                            Alert alert3 = new Alert(AlertType.INFORMATION);
+                            alert3.setTitle("Client not found");
+                            alert3.setHeaderText(null);
+                            alert3.setContentText(null);
+                            alert3.showAndWait();
+                        //If the entered name exist add the client to the table
+                        } else {
+                            LOGGER.info("Client found");
+                            //Delete all clients from the table
+                            if (tbClient.getItems().size() >= 1){
+                                clients.clear();
+                            }
+                            //Show the requested client in the table
+                            tbClient.setItems((ObservableList<Client>) clientName);
+                        }
+                    }
+                    break;
+
+                //Filter by client login    
+                case SELECT_LOGIN:
+                    //Check that there is something written in the search field
+                    if (txtFilter.getText().trim().isEmpty()) {
+                        LOGGER.info("Search field are empty");
+                        throw new FieldsEmptyException("Error, "
+                                + "search field are empty");
+
+                    } else {
+                        //Check that the entered login exists
+                        Collection<Client> clients = clientInterface
+                                .getAllClient();
+                        Client clientLogin = null;
+                        for (Client client : clients) {
+                            if (client.getLogin()
+                                    .equalsIgnoreCase(txtFilter.getText())) {
+                                clientLogin = client;
+                                break;
+                            }
+                        }
+                        //Show an alert if the entered name does not exist
+                        if (clientLogin == null) {
+                            Alert alert3 = new Alert(AlertType.INFORMATION);
+                            alert3.setTitle("Client not found");
+                            alert3.setHeaderText(null);
+                            alert3.setContentText(null);
+                            alert3.showAndWait();
+                        //If the entered login exist add the client to the table
+                        } else {
+                            LOGGER.info("Client found");
+                            //Delete all clients from the table
+                            if (tbClient.getItems().size() >= 1){
+                                clients.clear();
+                            }
+                            //Show the requested client in the table
+                            tbClient.setItems((ObservableList<Client>) clientLogin);
+                        }
+                    }
+                    break;
+
+                //Filter by client email   
+                case SELECT_EMAIL:
+                    //Check that there is something written in the search field
+                    if (txtFilter.getText().trim().isEmpty()) {
+                        LOGGER.info("Search field are empty");
+                        throw new FieldsEmptyException("Error, "
+                                + "search field are empty");
+
+                    } else {
+                        //Check that the entered email exists
+                        Collection<Client> clients = clientInterface
+                                .getAllClient();
+                        Client clientEmail = null;
+                        for (Client client : clients) {
+                            if (client.getEmail()
+                                    .equalsIgnoreCase(txtFilter.getText())) {
+                                clientEmail = client;
+                                break;
+                            }
+                        }
+                        //Show an alert if the entered name does not exist
+                        if (clientEmail == null) {
+                            Alert alert3 = new Alert(AlertType.INFORMATION);
+                            alert3.setTitle("Client not found");
+                            alert3.setHeaderText(null);
+                            alert3.setContentText(null);
+                            alert3.showAndWait();
+                        //If the entered email exist add the client to the table
+                        } else {
+                            LOGGER.info("Client found");
+                            //Delete all clients from the table
+                            if (tbClient.getItems().size() >= 1){
+                                clients.clear();
+                            }
+                            //Show the requested client in the table
+                            tbClient.setItems((ObservableList<Client>) clientEmail);
+                        }
+                    }
+                    break;
+
+                //Filter by client type   
+                case SELECT_TYPE:
+                    //Check that there is something written in the search field
+                    if (txtFilter.getText().trim().isEmpty()) {
+                        LOGGER.info("Search field are empty");
+                        throw new FieldsEmptyException("Error, "
+                                + "search field are empty");
+
+                    } else {
+                        //Check that the entered type exists
+                        Collection<Client> clients = clientInterface
+                                .getAllClient();
+                        Client clientType = null;
+                        for (Client client : clients) {
+                            if (String.valueOf(client.getType())
+                                    .equalsIgnoreCase(txtFilter.getText())) {
+                                clientType = client;
+                                break;
+                            }
+                        }
+                        //Show an alert if the entered name does not exist
+                        if (clientType == null) {
+                            Alert alert3 = new Alert(AlertType.INFORMATION);
+                            alert3.setTitle("Client not found");
+                            alert3.setHeaderText(null);
+                            alert3.setContentText(null);
+                            alert3.showAndWait();
+                        //If the entered type exist add the client to the table
+                        } else {
+                            LOGGER.info("Client found");
+                            //Delete all clients from the table
+                            if (tbClient.getItems().size() >= 1){
+                                clients.clear();
+                            }
+                            //Show the requested client in the table
+                            tbClient.setItems((ObservableList<Client>) clientType);
+                        }
+                    }
+                    break;
+
+            }
         } catch (Exception e) {
             Alert alert = new Alert(AlertType.INFORMATION);
             alert.setTitle("AYUDA");
@@ -754,7 +901,7 @@ public class VClientTableController {
             alert.showAndWait();
         }
     }
-
+    
     /**
      * Method that controls the action button that allows to see the different
      * events of a specific client.
@@ -764,9 +911,9 @@ public class VClientTableController {
     @FXML
     private void handleOpenEventTable(ActionEvent event) {
         LOGGER.info("Open the window with the client events table");
-        
+
         Client clientEvents = tbClient.getSelectionModel().getSelectedItem();
-        
+
         try {
             LOGGER.info("Open VEventTable");
             FXMLLoader loader = new FXMLLoader(getClass()
@@ -789,9 +936,8 @@ public class VClientTableController {
 
     /**
      * Method that controls the action button to return to the previous window.
-     * Pressing the button will send a confirmation alert.
-     * if the confirmation is accepted, 
-     * the window will close and load the Admin window.
+     * Pressing the button will send a confirmation alert. if the confirmation
+     * is accepted, the window will close and load the Admin window.
      *
      * @param event the event linked to clicking on the button;
      */
@@ -804,13 +950,13 @@ public class VClientTableController {
         alert1.setHeaderText(null);
         alert1.setContentText("Are you sure "
                 + "you want to return to the previous window?"
-                + " You will lose all your data");
+                + " You will lose all your new data");
         alert1.showAndWait();
         Optional<ButtonType> result = alert1.showAndWait();
 
         if (result.get() == ButtonType.OK) {
             LOGGER.info("Closing VClientTable window and returning to VAdmin");
-            stage.close();
+
             FXMLLoader loader = new FXMLLoader(getClass()
                     .getResource("/reto2client/view/VAdmin.fxml"));
 
@@ -823,6 +969,7 @@ public class VClientTableController {
             } catch (IOException ex) {
                 LOGGER.info("Error closing client table window");
             }
+            this.stage.close();
         }
     }
 
@@ -845,5 +992,32 @@ public class VClientTableController {
             event.consume();
             LOGGER.info("Application closing cancelled");
         }
+    }
+
+    /**
+     * Sets the client interface
+     *
+     * @param clientInterface to set
+     */
+    public void setClientInterface(ClientInterface clientInterface) {
+        this.clientInterface = clientInterface;
+    }
+
+    /**
+     * Sets the stage
+     *
+     * @param stage to set
+     */
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
+
+    /**
+     * Gets the stage
+     *
+     * @return stage to get
+     */
+    public Stage getStage() {
+        return stage;
     }
 }
