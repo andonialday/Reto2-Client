@@ -19,12 +19,13 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 /**
+ * Controlador de la ventana de VAdmin
  *
  * @author Andoni Alday y Aitor Perez
  */
 public class VAdminController {
 
-   /**
+    /**
      * Initializes the controller class. We use logger to record the activity of
      * the application.
      */
@@ -62,13 +63,11 @@ public class VAdminController {
     // añadir enlace de recuperar contraseña
     public void initStage(Parent root) throws IOException {
 
-        LOGGER.info("Initializing Admin Main Window");        
-        
+        LOGGER.info("Initializing Admin Main Window");
+
         //Create a new scene
         Scene scene = new Scene(root);
-        
-        
-        
+
         //CSS (route & scene)
         String css = this.getClass().getResource("/reto2g1cclient/view/javaFXUIStyles.css").toExternalForm();
         scene.getStylesheets().add(css);
@@ -88,12 +87,12 @@ public class VAdminController {
         stage.show();
 
     }
-    
+
     private void handleWindowShowing(WindowEvent event) {
         LOGGER.info("Beginning AdminController::handleWindowShowing");
         lblWelcome.isVisible();
     }
-    
+
     /**
      * Method to advise the user when uses the UI's innate close button (button
      * X) that the application will close
