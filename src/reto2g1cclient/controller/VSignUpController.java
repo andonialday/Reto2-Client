@@ -480,7 +480,7 @@ public class VSignUpController {
                     + "\n The Server may be busy with too many incoming requests, "
                     + "try again later, if this error continues, contact support or check server availability");
             altErrorSC.showAndWait();
-        } catch (DBConnectionException e) {
+        } catch (DBServerException e) {
             Alert altErrorDB = new Alert(AlertType.ERROR);
             altErrorDB.setTitle("System Error");
             altErrorDB.setHeaderText("Could not Connect to the DataBase");

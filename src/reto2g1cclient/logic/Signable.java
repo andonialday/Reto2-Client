@@ -15,30 +15,13 @@ import reto2g1cclient.model.*;
  */
 public interface Signable {
 
-    /**
-     * Sign In Method Interface
-     *
-     * @param usr Takes a user from the client side
-     * @return Returns a user with all the data
-     * @throws ClientServerConnectionException
-     * @throws DBConnectionException
-     * @throws CredentialErrorException
-     */
-    public User signIn(User usr) throws ClientServerConnectionException, DBConnectionException, CredentialErrorException;
+   
+    public User signIn(User usr) throws DBServerException, CredentialErrorException, ClientServerConnectionException;
 
-    /**
-     * Sign Up Method Interface
-     *
-     * @param usr Takes a user from the client side
-     * @return Returns a user with all the data
-     * @throws ClientServerConnectionException
-     * @throws DBConnectionException
-     * @throws LoginOnUseException
-     */
-    public void signUp(User usr) throws ClientServerConnectionException, DBConnectionException, LoginOnUseException;
+    public void signUp(User usr) throws DBServerException, LoginOnUseException, ClientServerConnectionException;
 
-    public void resetPassword(String log) throws ClientServerConnectionException, DBConnectionException, LoginOnUseException;
+    public void resetPassword(String log) throws ClientServerConnectionException, DBServerException;
 
-    public void changePassword(User usr) throws ClientServerConnectionException, DBConnectionException, LoginOnUseException;
+    public void changePassword(User usr) throws ClientServerConnectionException, DBServerException;
 
 }

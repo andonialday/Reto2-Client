@@ -9,6 +9,7 @@ import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
+import reto2g1cclient.model.User;
 
 /**
  * Jersey REST client generated for REST resource:UserFacadeREST
@@ -87,6 +88,12 @@ public class UserJerseyClient {
 
     public void close() {
         client.close();
+    }
+    
+    public <T> T signUp(Class<T> responseType, User user) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path(java.text.MessageFormat.format("signUp/{0}/{1}/{2}/{3}", new Object[]{user.getLogin(), user.getEmail(), user.getPassword(), user.getFullName()}));
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
     }
 
 }

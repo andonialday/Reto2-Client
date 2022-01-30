@@ -7,6 +7,7 @@ package reto2g1cclient.implementation;
 
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
+import javax.ws.rs.ClientErrorException;
 import reto2g1cclient.cypher.EncryptAsim;
 import reto2g1cclient.exception.*;
 import reto2g1cclient.logic.Signable;
@@ -34,31 +35,58 @@ public class ViewSignableImplementation implements Signable {
      *
      * @param usr Asks a user to encapsulate in order to send it to the server
      * @return Returns a null or a complete user depending if it fails
-     * @throws CredentialErrorException If the user is not correct
-     * @throws DBConnectionException Error processing feedback from the Database
-     * @throws ClientServerConnectionException If the Client cant Connect With
-     * the server cause of the Server error
+     * @throws reto2g1cclient.exception.DBServerException
      */
     @Override
-    public User signIn(User usr) throws CredentialErrorException, DBConnectionException, ClientServerConnectionException {
-        usr = ujc.signIn(User.class, usr.getLogin(), EncryptAsim.encryption(usr.getPassword()));
+    public User signIn(User usr) throws DBServerException, CredentialErrorException, ClientServerConnectionException {
+        try {
+            usr = ujc.signIn(User.class, usr.getLogin(), EncryptAsim.encryption(usr.getPassword()));
+            if (usr == null) {
+                throw new CredentialErrorException("No existe ningún usuario con esas credenciales");
+            }
+        } catch (ClientErrorException e) {
+            throw new DBServerException(e.getMessage());
+        } catch (Exception es) {
+            throw new ClientServerConnectionException(es.getMessage());
+        }
         return usr;
     }
 
     @Override
-    public void signUp(User usr) throws LoginOnUseException, ClientServerConnectionException, DBConnectionException {
-        usr.setPassword(EncryptAsim.encryption(usr.getPassword()));
-        ujc.create(usr);
+    public void signUp(User usr) throws DBServerException, LoginOnUseException, ClientServerConnectionException {
+        try {
+            usr.setPassword(EncryptAsim.encryption(usr.getPassword()));
+            User user = ujc.signUp(User.class, usr);
+            if (!usr.getFullName().equals(user.getFullName()) || !usr.getEmail().equals(user.getEmail())) {
+                throw new LoginOnUseException("El login está en uso");
+            }
+        } catch (ClientErrorException e) {
+            throw new DBServerException(e.getMessage());
+        } catch (Exception es) {
+            throw new ClientServerConnectionException(es.getMessage());
+        }
     }
 
     @Override
-    public void resetPassword(String log) throws LoginOnUseException, ClientServerConnectionException, DBConnectionException {
-        User usr = ujc.resetPasswordByLogin(User.class, log);
+    public void resetPassword(String log) throws DBServerException, ClientServerConnectionException {
+        try {
+            ujc.resetPasswordByLogin(User.class, log);
+        } catch (ClientErrorException e) {
+            throw new DBServerException(e.getMessage());
+        } catch (Exception es) {
+            throw new ClientServerConnectionException(es.getMessage());
+        }
     }
 
     @Override
-    public void changePassword(User usr) throws ClientServerConnectionException, DBConnectionException, LoginOnUseException {
-        usr.setPassword(EncryptAsim.encryption(usr.getPassword()));
-        ujc.updatePass(usr);
+    public void changePassword(User usr) throws DBServerException, ClientServerConnectionException {
+        try {
+            usr.setPassword(EncryptAsim.encryption(usr.getPassword()));
+            ujc.updatePass(usr);
+        } catch (ClientErrorException e) {
+            throw new DBServerException(e.getMessage());
+        } catch (Exception es) {
+            throw new ClientServerConnectionException(es.getMessage());
+        }
     }
 }
