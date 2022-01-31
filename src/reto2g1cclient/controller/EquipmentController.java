@@ -601,8 +601,11 @@ public class EquipmentController {
     public void tfCostValue(ObservableValue observable, String oldValue, String newValue) {
         bolCost = false;
         try {
-            if (!newValue.trim().equals("")) {
-                
+            if (!newValue.trim().equals("") ) {
+                //PROBANDOOO
+               /* if(newValue.length() >= 6){
+                    tfCost.setText(oldValue);
+                }*/
                     
                 Double c = Double.valueOf(newValue);
                 lblWarninNumValue.setVisible(false);
@@ -728,10 +731,11 @@ public class EquipmentController {
 
         try {
             Double valor = Double.parseDouble(t.getNewValue());
-            if (valor > 0) {
+            //PROBANDOO
+            if (valor > 0  ) {
                 ((Equipment) t.getTableView().getItems().get(
                         t.getTablePosition().getRow())).setCost(t.getNewValue());
-              
+               
                 tfCost.setText(t.getNewValue());
                 editandoFormatosCondicionales(tbEquipment.getSelectionModel().getSelectedItem());
             } else {
@@ -1036,7 +1040,7 @@ public class EquipmentController {
     public boolean comprobarValoresGuardar() {
         return tfName.getText().trim().length() != 0
                 && tfName.getText().trim().length() <= 50
-                && taDescription.getText().trim().length() != 0
+                && tfCost.getText().trim().length() != 0 
                 && taDescription.getText().trim().length() <= 400
                 && dpDate.getValue() != null
                 && Double.parseDouble(tfCost.getText()) > 0;
