@@ -9,6 +9,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import javax.ws.rs.PathParam;
+import reto2g1cclient.exception.ClientServerConnectionException;
 import reto2g1cclient.exception.DBServerException;
 import reto2g1cclient.model.Equipment;
 
@@ -19,27 +20,27 @@ import reto2g1cclient.model.Equipment;
 public interface EquipmentInterface {
     
     
-    public Collection<Equipment> findCostRange(Double min, Double max)throws DBServerException;
+    public Collection<Equipment> findCostRange(Double min, Double max)throws DBServerException, ClientServerConnectionException;
     
-    public void create(Equipment equipment)throws DBServerException;
+    public void create(Equipment equipment)throws DBServerException, ClientServerConnectionException;
     
-    public void edit(Equipment equipment)throws DBServerException;
+    public void edit(Equipment equipment)throws DBServerException, ClientServerConnectionException;
     
-    public void remove(Equipment equipment)throws DBServerException;
+    public void remove(Equipment equipment)throws DBServerException, ClientServerConnectionException;
     
-    public Equipment find(Integer id)throws DBServerException;
+    public Equipment find(Integer id)throws DBServerException, ClientServerConnectionException ;
     
-     public Collection<Equipment> findAll() throws DBServerException;
+     public Collection<Equipment> findAll() throws DBServerException, ClientServerConnectionException;
      
-     public Collection<Equipment> findRange(Integer from, Integer to)throws DBServerException;
+     public Collection<Equipment> findRange(Integer from, Integer to)throws DBServerException, ClientServerConnectionException;
      
-     public String countREST()throws DBServerException;
+     public String countREST()throws DBServerException, ClientServerConnectionException;
      
-    public Collection<Equipment> findOrderPreviousDate(Date datePrev)throws DBServerException;
+    public Collection<Equipment> findOrderPreviousDate(Date datePrev)throws DBServerException, ClientServerConnectionException;
     
-    public Collection<Equipment> findOrderAfterDate(Date dateAfter)throws DBServerException;
+    public Collection<Equipment> findOrderAfterDate(Date dateAfter)throws DBServerException, ClientServerConnectionException;
     
-     public Collection<Equipment> deleteOldEquip(Date year)throws DBServerException;
+     public Collection<Equipment> deleteOldEquip(Date year)throws DBServerException, ClientServerConnectionException;
      
-      public Collection<Equipment> updateCost(Double ratio)throws DBServerException;
+      public Collection<Equipment> updateCost(Double ratio)throws DBServerException, ClientServerConnectionException;
 }

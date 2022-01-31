@@ -14,13 +14,17 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
+import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -47,6 +51,14 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.view.JasperViewer;
+import reto2g1cclient.exception.ClientServerConnectionException;
 import reto2g1cclient.exception.DBServerException;
 import reto2g1cclient.logic.EquipmentFactory;
 
@@ -79,7 +91,7 @@ public class EquipmentController {
     //Se usa para cambiar el formato de las fechas
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private static final DateTimeFormatter database = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
-
+    private static final int MAX_LENGHT_CANTIDAD = 2;
     /**
      *
      * @return
@@ -236,12 +248,14 @@ public class EquipmentController {
         tbEquipment.getSelectionModel().selectedItemProperty().addListener(this::setDataOnTblEquip);
         //Set Windows event handlers 
         stage.setOnShowing(this::handleWindowShowing);
+         stage.setOnCloseRequest(this::closeVEquipmentTable);
         //Botones
         btnBack.setOnAction(this::back);
         btnCrearEquip.setOnAction(this::newEquipment);
         btnDeleteEquip.setOnAction(this::deleteEquipment);
         btnSaveEquip.setOnAction(this::saveEquipment);
         btnFind.setOnAction(this::filterEquipments);
+        btnPrint.setOnAction(this::printData);
         
         //Fields textArea y DatePicker
         tfName.textProperty().addListener(this::tfNameValue);
@@ -311,6 +325,14 @@ public class EquipmentController {
             equipments = (List<Equipment>) eqif.findAll();
         } catch (DBServerException e) {
             LOGGER.info(e.getMessage() + " Load data fallo");
+        }catch (ClientServerConnectionException ex) {
+             LOGGER.severe("Error en el guardado del equipamiento" + ex);
+            Alert altWarningLog = new Alert(AlertType.WARNING);
+            altWarningLog.setTitle("Error al guardar en la base de datos");
+            altWarningLog.setHeaderText("La base de datos puede no estar disponible en este momento ");
+            altWarningLog.setContentText("Porfavor intentelo mas tarde");
+            altWarningLog.showAndWait();
+
         }
         cambiarFormatoFecha();
     }
@@ -337,11 +359,11 @@ public class EquipmentController {
         if (result.get() == ButtonType.OK) {
             try{
                 LOGGER.info("Cambiando a ventana de Admin");
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/reto2g1cclient/view/VAdmin.fxml"));
+               /* FXMLLoader loader = new FXMLLoader(getClass().getResource("/reto2g1cclient/view/VAdmin.fxml"));
                 Parent root = (Parent) loader.load();
                 VAdminController controller = ((VAdminController) loader.getController());
                 controller.setStage(this.stage);
-                controller.initStage(root);  
+                controller.initStage(root);  */
             }catch (Exception e) {
                 Alert alertVolver = new Alert(Alert.AlertType.WARNING);
                 alertVolver.setTitle("Error al cambiar de ventana");
@@ -351,7 +373,7 @@ public class EquipmentController {
                 alertVolver.showAndWait();
             }
            event.consume();
-            LOGGER.info("Closing the application");
+            LOGGER.info("Redireccionando ventana Admin");
         } else {
             event.consume();
             LOGGER.info("Closing aborted");
@@ -422,6 +444,14 @@ public class EquipmentController {
             altWarningLog.setContentText("Porfavor intentelo mas tarde");
             altWarningLog.showAndWait();
 
+        }catch (ClientServerConnectionException ex) {
+             LOGGER.severe("Error en el guardado del equipamiento" + ex);
+            Alert altWarningLog = new Alert(AlertType.WARNING);
+            altWarningLog.setTitle("Error al guardar en la base de datos");
+            altWarningLog.setHeaderText("La base de datos puede no estar disponible en este momento ");
+            altWarningLog.setContentText("Porfavor intentelo mas tarde");
+            altWarningLog.showAndWait();
+
         }
 
     }
@@ -456,6 +486,14 @@ public class EquipmentController {
             altWarningLog.setHeaderText("La base de datos puede no estar disponible en este momento ");
             altWarningLog.setContentText("Porfavor intentelo mas tarde");
             altWarningLog.showAndWait();
+        }catch (ClientServerConnectionException ex) {
+             LOGGER.severe("Error en el guardado del equipamiento" + ex);
+            Alert altWarningLog = new Alert(AlertType.WARNING);
+            altWarningLog.setTitle("Error al guardar en la base de datos");
+            altWarningLog.setHeaderText("La base de datos puede no estar disponible en este momento ");
+            altWarningLog.setContentText("Porfavor intentelo mas tarde");
+            altWarningLog.showAndWait();
+
         }
 
     }
@@ -564,13 +602,14 @@ public class EquipmentController {
         bolCost = false;
         try {
             if (!newValue.trim().equals("")) {
-
+                
+                    
                 Double c = Double.valueOf(newValue);
                 lblWarninNumValue.setVisible(false);
                 if (c > 0) {
                     bolCost = true;
                 }
-
+                
             } else {
                 bolCost = false;
             }
@@ -582,6 +621,9 @@ public class EquipmentController {
 
         validateEquipData();
     }
+      
+
+           
 
     /**
      *
@@ -689,6 +731,7 @@ public class EquipmentController {
             if (valor > 0) {
                 ((Equipment) t.getTableView().getItems().get(
                         t.getTablePosition().getRow())).setCost(t.getNewValue());
+              
                 tfCost.setText(t.getNewValue());
                 editandoFormatosCondicionales(tbEquipment.getSelectionModel().getSelectedItem());
             } else {
@@ -974,6 +1017,14 @@ public class EquipmentController {
             altWarningLog.setContentText("Porfavor intentelo mas tarde");
             altWarningLog.showAndWait();
 
+        }catch (ClientServerConnectionException ex) {
+             LOGGER.severe("Error en el guardado del equipamiento" + ex);
+            Alert altWarningLog = new Alert(AlertType.WARNING);
+            altWarningLog.setTitle("Error al guardar en la base de datos");
+            altWarningLog.setHeaderText("La base de datos puede no estar disponible en este momento ");
+            altWarningLog.setContentText("Porfavor intentelo mas tarde");
+            altWarningLog.showAndWait();
+
         }
 
     }
@@ -989,6 +1040,42 @@ public class EquipmentController {
                 && taDescription.getText().trim().length() <= 400
                 && dpDate.getValue() != null
                 && Double.parseDouble(tfCost.getText()) > 0;
+    }
+    
+    public void printData(ActionEvent event) {
+        // Confirmacion de creacion de informe
+        // Si acepta, se actualizan datos y se imprime informe
+        // Si cancela, no se imprime informe
+        LOGGER.info("Preparando impresion de los equipamientos");
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Proceso de impresión de informes");
+        alert.setHeaderText("Ha solicitado imprimir un informe, para ello, se "
+                + "\nvan a actualizar los datos de la tabla en la base de datos. "
+                + "\n¿Esta seguro de continuar?");
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK) {
+            saveEquipment(event);
+            print();
+        } else {
+            event.consume();
+        }
+    }
+    public void print() {
+        try {
+            // Carga del informe para Equipment table
+            JasperReport report = JasperCompileManager.compileReport(getClass()
+                    .getResourceAsStream("/reto2g1cclient/reports/EquipmentReport.jrxml"));
+            JRBeanCollectionDataSource dataItems = new JRBeanCollectionDataSource((Collection<Equipment>) this.tbEquipment.getItems());
+            // Carga de propiedades
+            Map<String, Object> parameters = new HashMap<>();
+            JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, dataItems);
+            // Inicialización e visor de informe
+            JasperViewer jasperviewer = new JasperViewer(jasperPrint,false);
+            jasperviewer.setVisible(true);
+        } catch (JRException ex) {
+            Logger.getLogger(EquipmentController.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 }

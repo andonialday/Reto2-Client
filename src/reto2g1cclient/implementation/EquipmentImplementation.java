@@ -12,6 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.core.GenericType;
+import reto2g1cclient.exception.ClientServerConnectionException;
 import reto2g1cclient.exception.DBServerException;
 import reto2g1cclient.logic.EquipmentInterface;
 import reto2g1cclient.model.Equipment;
@@ -30,7 +31,7 @@ public class EquipmentImplementation implements EquipmentInterface {
     }
 
     @Override
-    public Collection<Equipment> findCostRange(Double min, Double max)throws DBServerException{
+    public Collection<Equipment> findCostRange(Double min, Double max)throws DBServerException, ClientServerConnectionException{
           List<Equipment> result = null;
 
         try {
@@ -40,57 +41,72 @@ public class EquipmentImplementation implements EquipmentInterface {
             LOGGER.log(Level.SEVERE, "Error al leer los equipamientos de la base de datos");
             throw new DBServerException(e.getMessage());
              
+        }catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Error al leer los equipamientos de la base de datos");
+            throw new ClientServerConnectionException(e.getMessage());
         }
         return result;
     }
 
     @Override
-    public void create(Equipment equipment) throws DBServerException{
+    public void create(Equipment equipment) throws DBServerException, ClientServerConnectionException{
        
         try {
          EquipmentClient.create(equipment);
         } catch (ClientErrorException e) {
             LOGGER.log(Level.SEVERE, "Error al leer los equipamientos de la base de datos");
             throw new DBServerException(e.getMessage());
+        }  catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Error al leer los equipamientos de la base de datos");
+            throw new ClientServerConnectionException(e.getMessage());
         }
         
     }
 
     @Override
-    public void edit(Equipment equipment) throws DBServerException {
+    public void edit(Equipment equipment) throws DBServerException, ClientServerConnectionException {
          try {
         EquipmentClient.edit(equipment, equipment.getId());
           } catch (ClientErrorException e) {
             LOGGER.log(Level.SEVERE, "Error al leer los equipamientos de la base de datos");
             throw new DBServerException(e.getMessage());
+        }catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Error al leer los equipamientos de la base de datos");
+            throw new ClientServerConnectionException(e.getMessage());
         }
     }
 
     @Override
-    public void remove(Equipment equipment) throws DBServerException {
+    public void remove(Equipment equipment) throws DBServerException, ClientServerConnectionException {
         try{
         EquipmentClient.remove(equipment.getId());
           } catch (ClientErrorException e) {
             LOGGER.log(Level.SEVERE, "Error al leer los equipamientos de la base de datos");
             throw new DBServerException(e.getMessage());
+        }catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Error al leer los equipamientos de la base de datos");
+            throw new ClientServerConnectionException(e.getMessage());
         }
     }
 
     @Override
-    public Equipment find(Integer id) throws DBServerException {
+    public Equipment find(Integer id) throws DBServerException, ClientServerConnectionException {
         Equipment result = null;
         try {
             result = EquipmentClient.find(Equipment.class, id.toString());
         } catch (ClientErrorException e) {
             LOGGER.log(Level.SEVERE, "Error al leer los equipamientos de la base de datos");
             throw new DBServerException(e.getMessage());
+        }catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Error al leer los equipamientos de la base de datos");
+            throw new ClientServerConnectionException(e.getMessage());
         }
         return result;
 
     }
 
     @Override
-    public Collection<Equipment> findAll() throws DBServerException {
+    public Collection<Equipment> findAll() throws DBServerException, ClientServerConnectionException {
         List<Equipment> result = null;
 
         try {
@@ -99,12 +115,15 @@ public class EquipmentImplementation implements EquipmentInterface {
         } catch (ClientErrorException e) {
             LOGGER.log(Level.SEVERE, "Error al leer los equipamientos de la base de datos");
             throw new DBServerException(e.getMessage());
+        }catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Error al leer los equipamientos de la base de datos");
+            throw new ClientServerConnectionException(e.getMessage());
         }
         return result;
     }
 
     @Override
-    public Collection<Equipment> findRange(Integer from, Integer to) throws DBServerException {
+    public Collection<Equipment> findRange(Integer from, Integer to) throws DBServerException, ClientServerConnectionException {
         List<Equipment> result = null;
         try {
             result = EquipmentClient.findRange(new GenericType<List<Equipment>>() {
@@ -112,24 +131,30 @@ public class EquipmentImplementation implements EquipmentInterface {
         } catch (ClientErrorException e) {
             LOGGER.log(Level.SEVERE, "Error al leer los equipamientos de la base de datos");
             throw new DBServerException(e.getMessage());
+        }catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Error al leer los equipamientos de la base de datos");
+            throw new ClientServerConnectionException(e.getMessage());
         }
         return result;
     }
 
     @Override
-    public String countREST() throws DBServerException {
+    public String countREST() throws DBServerException, ClientServerConnectionException {
         String result = null;
         try {
             result = EquipmentClient.countREST();
         } catch (ClientErrorException e) {
             LOGGER.log(Level.SEVERE, "Error al leer los equipamientos de la base de datos");
             throw new DBServerException(e.getMessage());
+        }catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Error al leer los equipamientos de la base de datos");
+            throw new ClientServerConnectionException(e.getMessage());
         }
         return result;
     }
 
     @Override
-    public Collection<Equipment> findOrderPreviousDate(Date datePrev)throws DBServerException{
+    public Collection<Equipment> findOrderPreviousDate(Date datePrev)throws DBServerException, ClientServerConnectionException{
         List<Equipment> result = null;
         try {
             result = EquipmentClient.findOrderPreviousDate
@@ -138,11 +163,14 @@ public class EquipmentImplementation implements EquipmentInterface {
         } catch (ClientErrorException e) {
             LOGGER.log(Level.SEVERE, "Error al leer los equipamientos de la base de datos");
             throw new DBServerException(e.getMessage());
+        }catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Error al leer los equipamientos de la base de datos");
+            throw new ClientServerConnectionException(e.getMessage());
         }
         return result;
     }
         @Override
-        public Collection<Equipment> findOrderAfterDate(Date dateAfter) throws DBServerException{ 
+        public Collection<Equipment> findOrderAfterDate(Date dateAfter) throws DBServerException, ClientServerConnectionException{ 
             List<Equipment> result = null;
         
         try {
@@ -152,11 +180,16 @@ public class EquipmentImplementation implements EquipmentInterface {
         }  catch (ClientErrorException e) {
             LOGGER.log(Level.SEVERE, "Error al leer los equipamientos de la base de datos");
             throw new DBServerException(e.getMessage());
+        }catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Error al leer los equipamientos de la base de datos");
+            throw new ClientServerConnectionException(e.getMessage());
         }
         return result;
         }
+        
+        
         @Override
-        public Collection<Equipment> deleteOldEquip(Date year)throws DBServerException{
+        public Collection<Equipment> deleteOldEquip(Date year)throws DBServerException, ClientServerConnectionException{
             
               List<Equipment> result = null;
         
@@ -166,12 +199,15 @@ public class EquipmentImplementation implements EquipmentInterface {
              }  catch (ClientErrorException e) {
             LOGGER.log(Level.SEVERE, "Error al leer los equipamientos de la base de datos");
             throw new DBServerException(e.getMessage());
+        }catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Error al leer los equipamientos de la base de datos");
+            throw new ClientServerConnectionException(e.getMessage());
         }
         return result;
         }
 
         @Override
-        public Collection<Equipment> updateCost(Double ratio)throws DBServerException{
+        public Collection<Equipment> updateCost(Double ratio)throws DBServerException, ClientServerConnectionException{
               List<Equipment> result = null;
         
         try {
@@ -180,6 +216,9 @@ public class EquipmentImplementation implements EquipmentInterface {
         }  catch (ClientErrorException e) {
             LOGGER.log(Level.SEVERE, "Error al leer los equipamientos de la base de datos");
             throw new DBServerException(e.getMessage());
+        }catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Error al leer los equipamientos de la base de datos");
+            throw new ClientServerConnectionException(e.getMessage());
         }
         return result;
     }
