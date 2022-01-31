@@ -1125,7 +1125,7 @@ public class VEventTableController {
     public void print() {
         try {
             // Carga del informe para EventTable
-            JasperReport report = JasperCompileManager.compileReport("/reto2g1cclient/reports/EventReport.jrxml");
+            JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reto2g1cclient/reports/EventReport.jrxml"));
             JRBeanCollectionDataSource dataItems = new JRBeanCollectionDataSource((Collection<Evento>) this.tbEvent.getItems());
             // Carga de propiedades
             Map<String, Object> parameters = new HashMap<>();

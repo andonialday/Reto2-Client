@@ -3,31 +3,11 @@
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
-	<style name="table">
-		<box>
-			<pen lineWidth="1.0" lineColor="#000000"/>
-		</box>
-	</style>
-	<style name="table_TH" mode="Opaque" backcolor="#C3CFD9">
-		<box>
-			<pen lineWidth="0.5" lineColor="#000000"/>
-		</box>
-	</style>
-	<style name="table_CH" mode="Opaque" backcolor="#E6F3FF">
-		<box>
-			<pen lineWidth="0.5" lineColor="#000000"/>
-		</box>
-	</style>
-	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
-		<box>
-			<pen lineWidth="0.5" lineColor="#000000"/>
-		</box>
-		<conditionalStyle>
-			<conditionExpression><![CDATA[new Boolean($V{REPORT_COUNT}.intValue()%2==0)]]></conditionExpression>
-			<style backcolor="#F8FCFF"/>
-		</conditionalStyle>
-	</style>
-	<subDataset name="New Dataset 1" uuid="698a0bf8-3904-44fb-b804-ec7653f7a287"/>
+        <field name="name" class="java.lang.String"/>
+        <field name="dateStart" class="java.lang.String"/>
+        <field name="dateEnd" class="java.lang.String"/>
+        <field name="description" class="java.lang.String"/>
+        <field name="client.fullName" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -40,16 +20,15 @@
 				</textElement>
 				<text><![CDATA[INFORME DE EVENTOS]]></text>
 			</staticText>
-		</band>
-	</title>
-	<pageHeader>
-		<band height="35" splitType="Stretch">
 			<textField pattern="dd/MM/yyyy">
-				<reportElement x="570" y="0" width="100" height="20" uuid="097d63db-c6ed-4126-98c3-f7823f7b0ba1"/>
+				<reportElement x="569" y="0" width="100" height="20" uuid="097d63db-c6ed-4126-98c3-f7823f7b0ba1"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
 	</pageHeader>
 	<columnHeader>
 		<band height="47" splitType="Stretch">
