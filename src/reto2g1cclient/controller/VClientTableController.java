@@ -77,6 +77,14 @@ public class VClientTableController {
     private final String SELECT_LOGIN = "Client Login";
     private final String SELECT_EMAIL = "Client Email";
     private final String SELECT_TYPE = "Client Type";
+    
+    //Control to enable the buttons
+    private boolean name;
+    private boolean email;
+    private boolean login;
+    private boolean password;
+    private boolean confirmPassword;
+    private boolean tableSelect;
 
     //Table
     @FXML
@@ -208,6 +216,13 @@ public class VClientTableController {
         
         //Search field disabled
         txtFilter.setDisable(true);
+        
+        //TextField actions for buttons to be enabled
+        tfName.textProperty().addListener(this::txtNameFull);
+        tfLogin.textProperty().addListener(this::txtLoginFull);
+        tfEmail.textProperty().addListener(this::txtEmailFull);
+        tfPassword.textProperty().addListener(this::txtPasswordFull);
+        tfConfirmPassword.textProperty().addListener(this::txtConfirmPasswordFull);
 
         //Add the values ​​of the client type ComboBox
         ObservableList<String> optionsForComboType;
@@ -266,10 +281,19 @@ public class VClientTableController {
             //Text Fields disabled
             tfPassword.setDisable(true);
             tfConfirmPassword.setDisable(true);
+            
+            //Button disabled
+            btnNewClient.setDisable(true);
 
             //Buttons enabled
             btnViewEvents.setDisable(false);
             btnDeleteClient.setDisable(false);
+            
+            //Field controllers
+            name = false;
+            email = false;
+            login = false;
+            tableSelect = true;
 
             //client deselected in the table    
         } else {
@@ -287,6 +311,12 @@ public class VClientTableController {
             //Buttons disabled
             btnViewEvents.setDisable(true);
             btnDeleteClient.setDisable(true);
+            
+            //Field controllers
+            name = false;
+            email = false;
+            login = false;
+            tableSelect = false;
         }
     }
 
@@ -424,6 +454,71 @@ public class VClientTableController {
             alert3.setHeaderText(null);
             alert3.setContentText(null);
             alert3.showAndWait();
+        }
+    }
+    
+    //Check that the name field is filled
+    public void txtNameFull(ObservableValue observable, 
+            Object oldValue, Object newValue) {
+        name = false;
+        if (tfName.getText().trim() != null) {
+            name = true;
+        }
+        filledFields();
+    }
+     
+    //Check that the email field is filled
+    public void txtEmailFull(ObservableValue observable, 
+            Object oldValue, Object newValue) {
+        email = false;
+        if (tfEmail.getText().trim() != null) {
+            email = true;
+        }
+        filledFields();
+    }
+
+    //Check that the login field is filled
+    public void txtLoginFull(ObservableValue observable, 
+            Object oldValue, Object newValue) {
+        login = false;
+        if (tfLogin.getText().trim() != null) {
+            login = true;
+        }
+        filledFields();
+    }
+    
+    //Check that the password field is filled
+    public void txtPasswordFull(ObservableValue observable, 
+            Object oldValue, Object newValue) {
+        password = false;
+        if (tfPassword.getText().trim() != null) {
+            password = true;
+        }
+        filledFields();
+    }
+    
+    //Check that the confirm password field is filled
+    public void txtConfirmPasswordFull(ObservableValue observable, 
+            Object oldValue, Object newValue) {
+        confirmPassword = false;
+        if (tfConfirmPassword.getText().trim() != null) {
+            confirmPassword = true;
+        }
+        filledFields();
+    }
+    
+    
+    /**
+     * Check that the new client button is enabled 
+     * when all the fields are complete 
+     * and there is no client selected in the table
+     */
+    public void filledFields() {
+        if (name && login && email && password && confirmPassword 
+                && !tableSelect) {
+            btnNewClient.setDisable(false);
+        } else {
+            btnNewClient.setDisable(true);
         }
     }
 
