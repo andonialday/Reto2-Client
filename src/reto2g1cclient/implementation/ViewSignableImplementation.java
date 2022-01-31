@@ -38,10 +38,12 @@ public class ViewSignableImplementation implements Signable {
      * @param usr Asks a user to encapsulate in order to send it to the server
      * @return Returns a null or a complete user depending if it fails
      * @throws reto2g1cclient.exception.DBServerException
+     * @throws reto2g1cclient.exception.CredentialErrorException
+     * @throws reto2g1cclient.exception.ClientServerConnectionException
      */
     @Override
     public User signIn(User usr) throws DBServerException, CredentialErrorException, ClientServerConnectionException {
-        List<User>user;
+        List<User> user;
         try {
             user = ujc.signIn(new GenericType<List<User>>() {
             }, usr.getLogin(), EncryptAsim.encryption(usr.getPassword()));
@@ -51,6 +53,8 @@ public class ViewSignableImplementation implements Signable {
             }
         } catch (ClientErrorException e) {
             throw new DBServerException(e.getMessage());
+        } catch (javax.ws.rs.InternalServerErrorException es) {
+            throw new CredentialErrorException(es.getMessage());
         } catch (Exception es) {
             throw new ClientServerConnectionException(es.getMessage());
         }
@@ -61,7 +65,8 @@ public class ViewSignableImplementation implements Signable {
     public void signUp(User usr) throws DBServerException, LoginOnUseException, ClientServerConnectionException {
         try {
             usr.setPassword(EncryptAsim.encryption(usr.getPassword()));
-            User user = ujc.signUp(User.class, usr);
+            User user = ujc.signUp(User.class,
+                    usr);
             if (!usr.getFullName().equals(user.getFullName()) || !usr.getEmail().equals(user.getEmail())) {
                 throw new LoginOnUseException("El login está en uso");
             }
@@ -75,7 +80,8 @@ public class ViewSignableImplementation implements Signable {
     @Override
     public void resetPassword(String log) throws DBServerException, ClientServerConnectionException {
         try {
-            ujc.resetPasswordByLogin(User.class, log);
+            ujc.resetPasswordByLogin(User.class,
+                    log);
         } catch (ClientErrorException e) {
             throw new DBServerException(e.getMessage());
         } catch (Exception es) {
