@@ -3,10 +3,10 @@
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
-        <field name="name" class="java.lang.String"/>
-        <field name="description" class="java.lang.String"/>
-        <field name="dateAdd" class="java.lang.String"/>
-        <field name="cost" class="java.lang.String"/>
+	<field name="name" class="java.lang.String"/>
+	<field name="description" class="java.lang.String"/>
+	<field name="dateAdd" class="java.lang.String"/>
+	<field name="cost" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -24,54 +24,83 @@
 		</band>
 	</title>
 	<pageHeader>
-		<band height="35" splitType="Stretch">
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="15" width="100" height="20" uuid="8c852206-0146-4e5e-9f04-6a4d23270e67"/>
+				<reportElement x="26" y="41" width="100" height="20" uuid="8c852206-0146-4e5e-9f04-6a4d23270e67"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Nombre]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="146" y="15" width="100" height="20" uuid="883bea22-e406-4ad8-a61c-a19ce190638b"/>
+				<reportElement x="146" y="41" width="100" height="20" uuid="883bea22-e406-4ad8-a61c-a19ce190638b"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Descripcion]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="288" y="15" width="100" height="20" uuid="b91bb843-aa38-48d5-9b3a-f20199092195"/>
+				<reportElement x="288" y="41" width="100" height="20" uuid="b91bb843-aa38-48d5-9b3a-f20199092195"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Coste]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="429" y="15" width="100" height="20" uuid="cc98d4d2-5eb7-4f6a-b437-3fb7cbc57a88"/>
+				<reportElement x="429" y="41" width="100" height="20" uuid="cc98d4d2-5eb7-4f6a-b437-3fb7cbc57a88"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Fecha de Compra]]></text>
 			</staticText>
 		</band>
-	</pageHeader>
-	<columnHeader>
-		<band height="61" splitType="Stretch">
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch">
 			<textField>
-				<reportElement x="27" y="0" width="100" height="20" uuid="000895ca-1faf-4302-8816-6c3b9aee07e2"/>
+				<reportElement x="26" y="0" width="100" height="20" uuid="000895ca-1faf-4302-8816-6c3b9aee07e2"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.25" lineStyle="Solid"/>
+					<topPen lineWidth="1.25" lineStyle="Solid"/>
+					<leftPen lineWidth="1.25" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.25" lineStyle="Solid"/>
+					<rightPen lineWidth="1.25" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="146" y="0" width="100" height="20" uuid="bec78c2d-26f1-4cb6-a768-fd69b425054e"/>
+				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+					<pen lineWidth="1.25"/>
+					<topPen lineWidth="1.25"/>
+					<leftPen lineWidth="1.25"/>
+					<bottomPen lineWidth="1.25"/>
+					<rightPen lineWidth="1.25"/>
+				</box>
 				<textElement textAlignment="Justified"/>
 				<textFieldExpression><![CDATA[$F{description}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="288" y="0" width="100" height="20" uuid="7505882e-6179-474d-a11f-1bdd1e355a79"/>
+				<reportElement x="288" y="0" width="85" height="20" uuid="7505882e-6179-474d-a11f-1bdd1e355a79"/>
+				<box>
+					<pen lineWidth="1.25"/>
+					<topPen lineWidth="1.25"/>
+					<leftPen lineWidth="1.25"/>
+					<bottomPen lineWidth="1.25"/>
+					<rightPen lineWidth="1.25"/>
+				</box>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$F{cost}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="429" y="0" width="100" height="20" uuid="a512691d-da4d-4155-a042-eef9f78c334b"/>
+				<box>
+					<pen lineWidth="1.25"/>
+					<topPen lineWidth="1.25"/>
+					<leftPen lineWidth="1.25"/>
+					<bottomPen lineWidth="1.25"/>
+					<rightPen lineWidth="1.25"/>
+				</box>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{dateAdd}]]></textFieldExpression>
 			</textField>
 		</band>
-	</columnHeader>
-	<detail>
-		<band height="125" splitType="Stretch"/>
 	</detail>
 	<columnFooter>
 		<band height="45" splitType="Stretch"/>

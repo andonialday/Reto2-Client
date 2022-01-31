@@ -408,7 +408,7 @@ public class EquipmentController {
         try {
             double coste = Double.parseDouble(tfCost.getText());
 
-            if (coste > 0) {
+            if (coste > 0 && coste <= 10000) {
                 lblWarninNumValue.setVisible(false);
                 Equipment eq = new Equipment();
                 eq.setName(tfName.getText().trim());
@@ -427,6 +427,13 @@ public class EquipmentController {
                 dpDate.setValue(null);
             } else {
                 lblWarninNumValue.setVisible(true);
+                LOGGER.info("Error on cost value" );
+            lblWarninNumValue.setVisible(true);
+            Alert altWarningLog = new Alert(AlertType.INFORMATION);
+            altWarningLog.setTitle("Error ");
+            altWarningLog.setHeaderText("El coste introducido no es numerico o es mayor al coste maximo <b>10000€</b>");
+            altWarningLog.setContentText("Porfavor introduzca un valor numerico dentro del rango establecido");
+            altWarningLog.showAndWait();
             }
         } catch (NumberFormatException e) {
             LOGGER.info("Error on cost value" + e);
@@ -609,7 +616,7 @@ public class EquipmentController {
                     
                 Double c = Double.valueOf(newValue);
                 lblWarninNumValue.setVisible(false);
-                if (c > 0) {
+                if (c > 0 ) {
                     bolCost = true;
                 }
                 
@@ -732,7 +739,7 @@ public class EquipmentController {
         try {
             Double valor = Double.parseDouble(t.getNewValue());
             //PROBANDOO
-            if (valor > 0  ) {
+            if (valor > 0  && valor <= 10000) {
                 ((Equipment) t.getTableView().getItems().get(
                         t.getTablePosition().getRow())).setCost(t.getNewValue());
                
@@ -745,7 +752,7 @@ public class EquipmentController {
                 Alert altWarningLog = new Alert(AlertType.INFORMATION);
                 altWarningLog.setTitle("Error al guardar en la base de datos");
                 altWarningLog.setHeaderText("El coste introducido no es valido");
-                altWarningLog.setContentText("El coste que se ha introducido debe ser mayor a 0 "
+                altWarningLog.setContentText("El coste que se ha introducido debe ser mayor a 0 y menor que 10000 "
                         + "en formato xxx.yy "
                         + "el coste se va a restablecer al valor anterior");
                 altWarningLog.showAndWait();
@@ -1040,10 +1047,11 @@ public class EquipmentController {
     public boolean comprobarValoresGuardar() {
         return tfName.getText().trim().length() != 0
                 && tfName.getText().trim().length() <= 50
-                && tfCost.getText().trim().length() != 0 
+                && taDescription.getText().trim().length() != 0 
                 && taDescription.getText().trim().length() <= 400
                 && dpDate.getValue() != null
-                && Double.parseDouble(tfCost.getText()) > 0;
+                && Double.parseDouble(tfCost.getText()) > 0 
+                && Double.parseDouble(tfCost.getText()) <= 10000 ;
     }
     
     public void printData(ActionEvent event) {
