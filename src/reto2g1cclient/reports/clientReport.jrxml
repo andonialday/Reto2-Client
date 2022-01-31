@@ -3,6 +3,10 @@
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
+	<field name="fullName" class="java.lang.String"/>
+	<field name="email" class="java.lang.String"/>
+	<field name="login" class="java.lang.String"/>
+	<field name="type" class="reto2g1cclient.model.Type"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -28,68 +32,56 @@
 	<columnHeader>
 		<band height="61" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="24" width="115" height="37" uuid="620dac59-1fd9-4eac-b360-fd573d14af6f"/>
+				<reportElement x="0" y="24" width="127" height="37" uuid="620dac59-1fd9-4eac-b360-fd573d14af6f"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Nombre]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="115" y="24" width="123" height="37" uuid="0914925c-aa27-48b1-b0e9-cfe904fd8d48"/>
+				<reportElement x="127" y="24" width="151" height="37" uuid="0914925c-aa27-48b1-b0e9-cfe904fd8d48"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Login]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="278" y="24" width="132" height="37" uuid="8ec9ebc0-139d-4ea1-b20a-3219f57fc45b"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Email]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="238" y="24" width="118" height="37" uuid="8ec9ebc0-139d-4ea1-b20a-3219f57fc45b"/>
+				<reportElement x="410" y="24" width="145" height="37" uuid="db8b7916-97cb-4c15-982d-2eb438bd2699"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="14" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Tipo]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="420" y="24" width="135" height="37" uuid="db8b7916-97cb-4c15-982d-2eb438bd2699"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="14" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Nombre de Comercial]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="356" y="24" width="64" height="37" uuid="489ce25d-95ff-4383-823c-80b75715d341"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="14" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Nº de Eventos]]></text>
+				<text><![CDATA[Type]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="125" splitType="Stretch">
+		<band height="46" splitType="Stretch">
 			<textField>
-				<reportElement x="0" y="0" width="115" height="46" uuid="18837419-463d-469d-b84d-2f7b7ae90bcf"/>
+				<reportElement x="0" y="0" width="127" height="46" uuid="18837419-463d-469d-b84d-2f7b7ae90bcf"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{fullName}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="115" y="0" width="123" height="46" uuid="9b49ca67-ae0a-4a05-b662-6cada51df4f4"/>
+				<reportElement x="127" y="0" width="151" height="46" uuid="9b49ca67-ae0a-4a05-b662-6cada51df4f4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{login}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="278" y="0" width="132" height="46" uuid="f9d3a4e9-dfd3-46c2-833d-0fe90eae2f5f"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{email}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="238" y="0" width="118" height="46" uuid="f9d3a4e9-dfd3-46c2-833d-0fe90eae2f5f"/>
+				<reportElement x="410" y="0" width="145" height="46" uuid="b8602dca-6c85-4357-8adc-097a8024ff9f"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{type}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="356" y="0" width="64" height="46" uuid="50d49ac7-83a3-47b9-8c35-0e02bba82e5d"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{events.size}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="420" y="0" width="135" height="46" uuid="b8602dca-6c85-4357-8adc-097a8024ff9f"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{commercial.fullName}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

@@ -114,6 +114,7 @@ public class ClientTest extends ApplicationTest {
         eraseText(8);
         
         clickOn("#cbType");
+        clickOn("PARTICULAR");
         //Escoger una opción del Combo Box
         verifyThat("#btnNewClient", isDisabled());
         
@@ -726,7 +727,7 @@ public class ClientTest extends ApplicationTest {
         //Escribir un tipo que no exista en la base de datos
         
         clickOn("#btnSearch");
-        //Mensaje de error de clientes no encontrados
+        verifyThat("There are no clients with this type", isVisible()); //Mensaje de error de clientes no encontrados
     }
     
 }
