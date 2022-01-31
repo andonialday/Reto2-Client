@@ -88,7 +88,7 @@ public class VClientTableController {
     @FXML
     private TableColumn<Client, String> colEmail;
     @FXML
-    private TableColumn<Client, String> colType;
+    private TableColumn<Client, Type> colType;
 
     //Buttons
     @FXML
@@ -227,7 +227,7 @@ public class VClientTableController {
 
         //Insert the table columns and link them to clients
         colLogin.setCellValueFactory(new PropertyValueFactory<>("login"));
-        colName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        colName.setCellValueFactory(new PropertyValueFactory<>("fullName"));
         colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
         colType.setCellValueFactory(new PropertyValueFactory<>("type"));
 
@@ -658,26 +658,6 @@ public class VClientTableController {
             alert3.setHeaderText(null);
             alert3.setContentText(null);
             alert3.showAndWait();
-        }
-    }
-
-    /**
-     * Method that controls a combobox with four different types of clients.
-     *
-     * @param event the event linked to clicking on the button;
-     */
-    @FXML
-    private void handleChangeType(ActionEvent event) {
-        //COMBOBOX CON LOS CUATRO POSIBLES TIPOS DE CLIENTE
-        //PARTICULAR, ASSOCIATION, ENTERPRISE y PUBLIC ENTITY
-        try {
-
-        } catch (Exception e) {
-            Alert alert = new Alert(AlertType.INFORMATION);
-            alert.setTitle("AYUDA");
-            alert.setHeaderText("Error");
-            alert.setContentText(e.getMessage());
-            alert.showAndWait();
         }
     }
 

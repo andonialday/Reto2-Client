@@ -27,7 +27,9 @@ public class User implements Serializable {
     private String password;
     private Date lastPasswordChange;
 
-    public User(Integer id, String login, String email, String fullName, UserStatus status, Privilege privilege, String password, Date lastPasswordChange) {
+    public User(Integer id, String login, String email, String fullName, 
+            UserStatus status, Privilege privilege, String password, 
+            Date lastPasswordChange) {
         this.id = id;
         this.login = login;
         this.email = email;
@@ -190,11 +192,23 @@ public class User implements Serializable {
         this.lastPasswordChange = lastPasswordChange;
     }
 
+    /**
+     * Método toString que convierte a String el objeto usuario
+     * 
+     * @return String
+     */
     @Override
     public String toString() {
         return "User{" + "id=" + id + ", login=" + login + ", email=" + email + ", fullName=" + fullName + ", status=" + status + ", privilege=" + privilege + ", password=" + password + ", lastPasswordChange=" + lastPasswordChange + '}';
     }
 
+    /**
+     * Método hashCode que complementa al método equals 
+     * y sirve para comparar los datos del objeto usuario.
+     * Devuelve un número entero.
+     * 
+     * @return int
+     */
     @Override
     public int hashCode() {
         int hash = 7;
@@ -209,6 +223,15 @@ public class User implements Serializable {
         return hash;
     }
 
+    /**
+     * Método equals que compara los datos del objeto usuario, 
+     * para saber si son del mismo tipo y tienen los mismos datos.
+     * Nos devuelve el valor true si son iguales
+     * y el valor false si no lo son.
+     *  
+     * @param obj
+     * @return boolean
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {

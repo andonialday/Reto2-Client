@@ -19,7 +19,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class Client extends User implements Serializable{
     
-    private SimpleObjectProperty<Type> type;
+    private Type type;
     private Set<Event> events;
     private Commercial commercial;
 
@@ -28,7 +28,7 @@ public class Client extends User implements Serializable{
     }
 
     
-    public Client(SimpleObjectProperty<Type> type, Set<Event> events, Commercial commercial) {
+    public Client(Type type, Set<Event> events, Commercial commercial) {
         this.type = type;
         this.events = events;
         this.commercial = commercial;
@@ -42,7 +42,7 @@ public class Client extends User implements Serializable{
      * @return el tipo de un cliente
      */
     public Type getType() {
-        return type.get();
+        return type;
     }
 
     /**
@@ -51,7 +51,7 @@ public class Client extends User implements Serializable{
      * @param type el tipo de un cliente a establecer
      */
     public void setType(Type type) {
-        this.type.set(type);
+        this.type = type;
     }
 
     /**
@@ -90,6 +90,11 @@ public class Client extends User implements Serializable{
         this.commercial = commercial;
     }
 
+    /**
+     * Método toString que convierte a String el objeto cliente
+     * 
+     * @return String
+     */
     @Override
     public String toString() {
         return "Client{" + "Type=" + type 
@@ -97,6 +102,13 @@ public class Client extends User implements Serializable{
                 + ", comercial=" + commercial + '}';
     }
 
+    /**
+     * Método hashCode que complementa al método equals 
+     * y sirve para comparar los datos del objeto cliente.
+     * Devuelve un número entero.
+     * 
+     * @return int
+     */
     @Override
     public int hashCode() {
         int hash = 7;
@@ -106,6 +118,15 @@ public class Client extends User implements Serializable{
         return hash;
     }
 
+    /**
+     * Método equals que compara los datos del objeto cliente, 
+     * para saber si son del mismo tipo y tienen los mismos datos.
+     * Nos devuelve el valor true si son iguales
+     * y el valor false si no lo son.
+     *  
+     * @param obj
+     * @return boolean
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
