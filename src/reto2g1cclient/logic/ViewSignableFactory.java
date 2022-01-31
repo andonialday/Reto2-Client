@@ -5,6 +5,8 @@
  */
 package reto2g1cclient.logic;
 
+import reto2g1cclient.implementation.ViewSignableImplementation;
+
 
 /**
  * Class Factory to get View

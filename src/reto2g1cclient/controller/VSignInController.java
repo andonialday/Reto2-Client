@@ -75,7 +75,7 @@ public class VSignInController {
 
     @FXML
     private Hyperlink hyperSignUp;
-    
+
     @FXML
     private Hyperlink hyperReset;
 
@@ -160,7 +160,7 @@ public class VSignInController {
         User usr = null;
         try {
             usr = sig.signIn(user);
-            if (usr instanceof Client) {
+            if (usr.getPrivilege().equals(Privilege.USER)) {
                 // Inicio de ventana de cliente
                 //      Por falta de tiempo, se ha optado por sustituir VClient por VFinal
                 try {
@@ -171,20 +171,14 @@ public class VSignInController {
                     controller.setUser(usr);
                     controller.setStage(primaryStage);
                     controller.initStage(root);
-                } catch (IOException ex) {
-                    LOGGER.info("Error trying to show post SignIn window");
-                }
-            } else if (usr instanceof Commercial) {
-                // Inicio de ventana de cliente
-                //      Por falta de tiempo, se ha optado por sustituir VCommercial por VFinal
-                try {
-                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/reto2g1cclient/view/VFinal.fxml"));
-                    Parent root = (Parent) fxmlLoader.load();
-                    VFinalController controller = ((VFinalController) fxmlLoader.getController());
-                    Stage primaryStage = this.stage;
-                    controller.setUser(usr);
-                    controller.setStage(primaryStage);
-                    controller.initStage(root);
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Seccion no finalizada");
+                    alert.setHeaderText("Ha iniciado con Éxito Sesión, " + usr.getFullName()
+                            + ",\n pero por descragia no podemos mostrarle el contenido en estos momentos");
+                    alert.setContentText("La seccion de la aplicacion a la que intenta "
+                            + "acceder no se encuentra disponible en este momento."
+                            + "\nLamentamos las molestias.");
+                    alert.showAndWait();
                 } catch (IOException ex) {
                     LOGGER.info("Error trying to show post SignIn window");
                 }
@@ -210,7 +204,7 @@ public class VSignInController {
                     + "\n The Server may be busy with too many incoming requests, "
                     + "try again later, if this error continues, contact support or check server availability");
             alert.showAndWait();
-        } catch (DBConnectionException e) {
+        } catch (DBServerException e) {
             LOGGER.info("Sign In Data Comprobation Error");
             Alert alert = new Alert(AlertType.ERROR);
             alert.setTitle("System Error");
@@ -251,7 +245,7 @@ public class VSignInController {
             LOGGER.info("Error initializing VSignUp");
         }
     }
-    
+
     /**
      * This method is executed when the user clicks the hyperlink SignUp. The
      * Sign Up window will open.

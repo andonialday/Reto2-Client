@@ -23,6 +23,7 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import reto2g1cclient.model.User;
 
 /**
  * FXML VFinalController class Controller for the VFinal JavaFX scene

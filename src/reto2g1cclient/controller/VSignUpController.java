@@ -28,6 +28,8 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import reto2g1cclient.exception.*;
+import reto2g1cclient.logic.Signable;
+import reto2g1cclient.logic.ViewSignableFactory;
 import reto2g1cclient.model.*;
 
 /**
@@ -118,10 +120,9 @@ public class VSignUpController {
         txtEmail.textProperty().addListener(this::txtEmailVal);
         txtPassword.textProperty().addListener(this::txtPasswordVal);
         txtConfirmPassword.textProperty().addListener(this::txtConfirmPasswordVal);
-        
+
         // Método para comprobar si se ejecuta SignUp de Client o Commercial
         // checkType();
-        
         stage.show();
         LOGGER.info("SignUp window started... ");
 
@@ -420,14 +421,12 @@ public class VSignUpController {
      * Metodo para registrar al usuario en la base de datos si todos los datos
      * estan correctos.
      */
-    
     // cambiar para que reciba un User user = new Client 
     // o un User user = new Commercial
     // desde el método de CheckType;
     // public void signUp(User user) ´{
     // siendo el user un instanceOf Client o Commercial
     // gestionar que en funcion de Type se ejecute un user.setType ó un user.setSpecialization
-    
     public void signUp() {
         LOGGER.info("Sign In procedure initiated");
         User user = new User();
@@ -438,10 +437,8 @@ public class VSignUpController {
         Signable sig = ViewSignableFactory.getView();
         User usr = null;
         try {
-            usr = sig.signUp(user);
-
+            sig.signUp(user);
             LOGGER.info("Sign In Correct");
-
             Alert altInfoSignUp = new Alert(AlertType.INFORMATION);
             altInfoSignUp.setTitle("SignUp Completado");
             altInfoSignUp.setHeaderText(null);
@@ -464,7 +461,7 @@ public class VSignUpController {
                     + "\n The Server may be busy with too many incoming requests, "
                     + "try again later, if this error continues, contact support or check server availability");
             altErrorSC.showAndWait();
-        } catch (DBConnectionException e) {
+        } catch (DBServerException e) {
             Alert altErrorDB = new Alert(AlertType.ERROR);
             altErrorDB.setTitle("System Error");
             altErrorDB.setHeaderText("Could not Connect to the DataBase");
@@ -506,8 +503,8 @@ public class VSignUpController {
     }
 
     /**
-     * Method to advise the user when uses the UI's innate
-     * close button (button X) that the application will close
+     * Method to advise the user when uses the UI's innate close button (button
+     * X) that the application will close
      *
      * @param event the event linked to clicking on the button;
      */
