@@ -1247,17 +1247,26 @@ public class VEventTableController {
      * @return evento con las fechas actualizadas
      */
     public Evento devolverFormatoFechas(Evento event) {
-        //Convertir fechas mostradas en fecha compatible con la BBDD
-        //  Fecha mostrada en String a LocalDate
-        LocalDate date = LocalDate.parse(event.getDateStart(), formatter);
-        //  LocalDate a String compatible en BBDD
-        String fecha = date.atStartOfDay().atZone(ZoneId.systemDefault()).format(database);
-        //  Actualizacion de fecha del evento
-        event.setDateStart(fecha);
-        //      Repetir para DateEnd
-        date = LocalDate.parse(event.getDateEnd(), formatter);
-        fecha = date.atStartOfDay().atZone(ZoneId.systemDefault()).format(database);
-        event.setDateEnd(fecha);
+        try {
+            //Convertir fechas mostradas en fecha compatible con la BBDD
+            //  Fecha mostrada en String a LocalDate
+            LocalDate date = LocalDate.parse(event.getDateStart(), formatter);
+            //  LocalDate a String compatible en BBDD
+            String fecha = date.atStartOfDay().atZone(ZoneId.systemDefault()).format(database);
+            //  Actualizacion de fecha del evento
+            event.setDateStart(fecha);
+            //      Repetir para DateEnd
+            date = LocalDate.parse(event.getDateEnd(), formatter);
+            fecha = date.atStartOfDay().atZone(ZoneId.systemDefault()).format(database);
+            event.setDateEnd(fecha);
+        } catch (DateTimeParseException e) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Error en el formato de Fecha");
+            alert.setHeaderText("Ha intentado cambiar la Fecha por una no valida."
+                    + "\nAsegurese de que la fecha exista y este introducida en "
+                    + "formato DD/MM/AAAA");
+            alert.showAndWait();
+        }
         return event;
     }
 

@@ -33,7 +33,7 @@
         <Button id="btnSave" fx:id="btnSave" disable="true" layoutX="775.0" layoutY="448.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="171.0" style="-fx-background-color: blue;" styleClass="mainFxmlClass" stylesheets="@ventanas.css" text="GUARDAR CAMBIOS" textFill="WHITE" />
         <Button id="btnDelete" fx:id="btnDelete" disable="true" layoutX="775.0" layoutY="510.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="171.0" style="-fx-background-color: red;" styleClass="mainFxmlClass" stylesheets="@ventanas.css" text="ELIMINAR EVENTO" textFill="WHITE" />
         <Button fx:id="btnBack" layoutX="774.0" layoutY="678.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="171.0" text="ATRAS" />
-        <TableView fx:id="tbEvent" editable="true" layoutX="14.0" layoutY="281.0" prefHeight="425.0" prefWidth="750.0">
+        <TableView fx:id="tbEvent" editable="true" layoutX="11.0" layoutY="284.0" prefHeight="425.0" prefWidth="760.0">
             <columns>
                 <TableColumn fx:id="clDateStart" maxWidth="-1.0" minWidth="95.0" prefWidth="-1.0" text="Fecha Inicio" />
                 <TableColumn fx:id="clDateEnd" maxWidth="-1.0" minWidth="95.0" prefWidth="-1.0" text="Fecha Fin" />
