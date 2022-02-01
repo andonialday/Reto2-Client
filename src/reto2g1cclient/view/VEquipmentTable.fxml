@@ -12,6 +12,9 @@
 <?import javafx.scene.layout.Pane?>
 
 <Pane id="pEquipment" fx:id="pEquipment" prefHeight="720.0" prefWidth="960.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="reto2g1cclient.controller.EquipmentController">
+        <children>
+        <fx:include fx:id="hbMenu" source="MenuAdmin.fxml" />
+    </children>
     <stylesheets>
         <URL value="@../../../../../../Downloads/view/view/javaFXUIStyles.css" />
     </stylesheets>
@@ -28,7 +31,7 @@
       <Button id="btnDeleteEquip" fx:id="btnDeleteEquip" disable="true" layoutX="781.0" layoutY="468.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="171.0" style="-fx-background-color: red;" text="ELIMINAR EQUIPAMIENTO" textFill="WHITE" />
       <Button id="btnSaveEquip" fx:id="btnSaveEquip" disable="true" layoutX="781.0" layoutY="392.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="171.0" style="-fx-background-color: blue;" text="GUARDAR CAMBIOS" textFill="WHITE" />
       <Button id="btnFind" fx:id="btnFind" cancelButton="true" layoutX="661.0" layoutY="204.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="115.0" text="BUSCAR" />
-      <ComboBox fx:id="cbSearch" layoutX="44.0" layoutY="208.0" prefWidth="150.0" />
+      <ComboBox fx:id="cbSearch" layoutX="11.0" layoutY="208.0" prefHeight="25.0" prefWidth="183.0" />
       <TextField fx:id="tfFinding" layoutX="212.0" layoutY="204.0" prefHeight="32.0" prefWidth="449.0" promptText="Búsqueda ..." />
             <TextField fx:id="tfName" layoutX="160.0" layoutY="63.0" prefHeight="25.0" prefWidth="163.0" promptText="Nombre" />
       <Label fx:id="lblName" layoutX="160.0" layoutY="42.0" text="Nombre" />

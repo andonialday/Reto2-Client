@@ -63,7 +63,9 @@ import reto2g1cclient.exception.DBServerException;
 import reto2g1cclient.logic.EquipmentFactory;
 
 /**
- *
+ * Controlador de la ventana de VEquipamientTable para la gestion de 
+ * Creacion,Visualizacion, Edicion y Borrado de Equipamientos
+ * (Crear,Mostrar,Editar y Borrar)
  * @author Aitor Perez
  */
 public class EquipmentController {
@@ -84,25 +86,27 @@ public class EquipmentController {
     private Boolean bolDescription;
     private Boolean bolDateBuy;
     private Boolean bolTableEquipSelec;
-    
     private Boolean bolEquipEncontrado = false;
+    
     //Integer para  control de filtros
     private Integer filters;
+    
     //Se usa para cambiar el formato de las fechas
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private static final DateTimeFormatter database = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
     private static final int MAX_LENGHT_CANTIDAD = 2;
+   
     /**
-     *
-     * @return
+     * Metodo get para obtener la coleccion editable a emplear en la tabla
+     * @return la coleccion de la tabla
      */
     public ObservableList<Equipment> getEquipmentData() {
         return equipmentData;
     }
 
-    /**
-     *
-     * @param equipmentData
+    /** 
+     * Metodo set enviar una coleccion editable para emplear en la tabla
+     * @param equipmentData coleccion editable
      */
     public void setEquipmentData(ObservableList<Equipment> equipmentData) {
         this.equipmentData = equipmentData;
@@ -127,74 +131,87 @@ public class EquipmentController {
     }
 
     /**
-     *
-     * @return
+     * Metodo get para obetener los equipamientos
+     * @return un equipamiento
      */
     public Equipment getEquipment() {
         return equipment;
     }
 
     /**
-     *
-     * @param equipment
+     * Metodo set para enviar un equipamieto
+     * @param equipment a enviar
      */
     public void setEquipment(Equipment equipment) {
         this.equipment = equipment;
     }
 
     /**
-     *
-     * @return
+     * Metodo get para la obtencion de la interfaz del equipamiento
+     * @return la interfaz del equipamiento
      */
     public EquipmentInterface getEqif() {
         return eqif;
     }
 
     /**
-     *
-     * @param eqif
+     * Metodo set para determinar la interfaz a emplear por el controlador
+     * @param eqif la interfaz a emplear por el controlador
      */
     public void setEqif(EquipmentInterface eqif) {
         this.eqif = eqif;
     }
 
     /**
-     *
-     * @param equipments
+     * Metodo para enviar la coleccion de los equipamientos
+     * @param equipments  coleccion a enviar
      */
     public void setEquipments(List<Equipment> equipments) {
         this.equipments = equipments;
     }
 
     /**
-     *
-     * @return
+     * Metodo get para obtener la coleccion de equipamientos    
+     * @return coleccion de los equipamientos
      */
     public List<Equipment> getEquipments() {
         return equipments;
     }
 
-    //Elementos FXML 
+    //Elementos FXML declarados 
+    
+    //Tabla de los Equipamientos
     @FXML
     private TableView<Equipment> tbEquipment;
+    
+    //Columna de Nombre en la tabla de Equipamientos
     @FXML
     private TableColumn<Equipment, String> clName;
+    //Columna de Coste en la tabla de Equipamientos
     @FXML
     private TableColumn<Equipment, String> clCost;
+    //Columna de Descripcion en la tabla de Equipamientos
     @FXML
     private TableColumn<Equipment, String> clDescription;
+    //Columna de Fecha en la tabla de Equipamientos
     @FXML
     private TableColumn<Equipment, String> clDate;
+    //Boton para volver a la ventana anterior 
     @FXML
     private Button btnBack;
+    //Boton para borrar el equipamiento
     @FXML
     private Button btnDeleteEquip;
+    //Boton para guardar cambios
     @FXML
     private Button btnSaveEquip;
+    //Boton para aplicar la busqueda del filtro seleccionado
     @FXML
     private Button btnFind;
+    //Combobox para seleccionar los filtros
     @FXML
     private ComboBox cbSearch;
+    //TextField para introducir el texto/numeros a filtrar
     @FXML
     private TextField tfFinding;
     @FXML
@@ -225,20 +242,21 @@ public class EquipmentController {
     private Label lblWarningDate;
 
     /**
+     * Metodo para lanzar la ventana VEquipmentTable con sus respectivos elementos 
+     * @param root recivido desde VAdmin, que permite que la ventana mueste sus
+     * elementos hijos (Botones, TextField...)
      *
-     * @param root
-     * @throws IOException
      */
-    public void initStage(Parent root) throws IOException {
+    public void initStage(Parent root) {
 
-        //Create a new scene
+        //Crea una nueva Scene
         Scene scene = new Scene(root);
         //CSS (route & scene)
         String css = this.getClass().getResource("/reto2g1cclient/view/javaFXUIStyles.css").toExternalForm();
         scene.getStylesheets().add(css);
-        //Associate the scene to the stage
+        //Asocia la scena con el Stage
         stage.setScene(scene);
-        //Set the scene properties
+        //Asigna las propiedades de la scene
         stage.setTitle("Equipamiento");
         stage.setMinWidth(960);
         stage.setMinHeight(720);
@@ -267,8 +285,9 @@ public class EquipmentController {
         ObservableList<String> filters = FXCollections.observableArrayList("Nombre del Equipamiento", "Coste maximo", "Coste minimo", "Fecha de compra", "Descripción");
         cbSearch.getItems().addAll(filters);
 
-       
+        //Implementacion del Equipamiento
         eqif = EquipmentFactory.getImplementation();
+        //Recuperacion y Cargado de datos en la ventana
         loaddata();
         loadTblEquipment();
         setTableData();
@@ -276,10 +295,12 @@ public class EquipmentController {
     }
 
     /**
-     * Shows the buttons that are enabled or disabled for the user when we enter
-     * the Sign In window
+    * Metodo que determina el valor inicial de los parametros de control
+     * (Boolean , Integer) e inicia los elementos de la ventana al estado
+     * predetermninado (Habilitado / Desabilitado
+     * 
      *
-     * @param event
+     * @param event 
      */
     private void handleWindowShowing(WindowEvent event) {
         LOGGER.info("Beginning LoginController::handleWindowShowing");
@@ -295,8 +316,9 @@ public class EquipmentController {
         btnDeleteEquip.setDisable(true);
         //El boton de atras esta habilitado
         btnBack.setDisable(false);
-        //El TextField de Nombre esta habilitado
+        //El TextField de Nombre esta habilitado y foco en el nombre
         tfName.setDisable(false);
+        tfName.requestFocus();
         //El TextField de Coste esta habilitado
         tfCost.setDisable(false);
         //El textField de Descripcion esta habilitado
@@ -319,14 +341,17 @@ public class EquipmentController {
         bolName = false;
         bolTableEquipSelec = false;
     }
-
+    
+    /**
+     * Metodo para cargar los equipamientos de la base de datos.
+     */
     private void loaddata() {
         try {
             equipments = (List<Equipment>) eqif.findAll();
         } catch (DBServerException e) {
             LOGGER.info(e.getMessage() + " Load data fallo");
         }catch (ClientServerConnectionException ex) {
-             LOGGER.severe("Error en el guardado del equipamiento" + ex);
+             LOGGER.severe("Error al comunicarse con el servidor" + ex);
             Alert altWarningLog = new Alert(AlertType.WARNING);
             altWarningLog.setTitle("Error al ejecutar la aplicacion");
             altWarningLog.setHeaderText("La base de datos puede no estar disponible en este momento ");
@@ -336,34 +361,43 @@ public class EquipmentController {
         }
         cambiarFormatoFecha();
     }
-
+    
+    /**
+     * Metodo para cargar datos de la base de datos en la tabla
+     */
     private void loadTblEquipment() {
         LOGGER.info("Cargando datos en tabla");
         equipmentData = FXCollections.observableArrayList(equipments);
-        System.out.println(equipmentData);
+     
         tbEquipment.setItems(equipmentData);
 
     }
 
     /**
+     * Metodo para controlar el retorno a la ventana anterior
+     * 
+     * Se solicita confirmacion para volver a la ventana anterior en el caso 
+     * de confirmacion se volvera a la venetana anterior, En el caso de cancelacion
+     * nos mantendremos en la ventana.
      *
-     * @param event
+     * 
+     * @param event evento de cierre de ventana
      */
     @FXML
     public void back(ActionEvent event) {
-        LOGGER.info("Se va a cerrar la aplicacion");
+        LOGGER.info("Se va a volver a la ventana anterior");
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Está Cerrando el Programa");
-        alert.setHeaderText("¿Seguro que desea cerrar el programa?");
+        alert.setTitle("Se va a volver a la ventana anterior");
+        alert.setHeaderText("¿Seguro que desea volver a la ventana anterior?");
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
             try{
                 LOGGER.info("Cambiando a ventana de Admin");
-               /* FXMLLoader loader = new FXMLLoader(getClass().getResource("/reto2g1cclient/view/VAdmin.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/reto2g1cclient/view/VAdmin.fxml"));
                 Parent root = (Parent) loader.load();
                 VAdminController controller = ((VAdminController) loader.getController());
                 controller.setStage(this.stage);
-                controller.initStage(root);  */
+                controller.initStage(root);  
             }catch (Exception e) {
                 Alert alertVolver = new Alert(Alert.AlertType.WARNING);
                 alertVolver.setTitle("Error al cambiar de ventana");
@@ -372,7 +406,7 @@ public class EquipmentController {
                         + "en el caso de ser persistente intentelo denuevo o mas tarde");
                 alertVolver.showAndWait();
             }
-           event.consume();
+         
             LOGGER.info("Redireccionando ventana Admin");
         } else {
             event.consume();
@@ -381,8 +415,10 @@ public class EquipmentController {
     }
 
     /**
-     *
-     * @param event
+     *  Metodo para mostrar un mensaje de informacion de cierre de ventana
+     * al presionar el boton X en el caso de confirmacion la ventana se cerrara y
+     * en caso contrario la ventana se mantendra habierta
+     * @param event evento de cierre de ventana
      */
     public void closeVEquipmentTable(WindowEvent event) {
         LOGGER.info("Preguntando si desea cerrar la ventana");
@@ -400,8 +436,9 @@ public class EquipmentController {
     }
 
     /**
-     *
-     * @param event
+     * Metodo para crear un nuevo equipamiento al pulsar el boton se creara un 
+     * equipamiento con los campos superiores correspondientes
+     * @param event de solicitud de nuevo equipamiento al pulsar el boton
      */
     @FXML
     public void newEquipment(ActionEvent event) {
@@ -425,12 +462,26 @@ public class EquipmentController {
                 tfCost.setText("");
                 taDescription.setText("");
                 dpDate.setValue(null);
-            } else {
+                //Comprueba si los textos cumplen los parametros establecidos
+            } else if(comprobarValoresTextoGuardar()){
                 lblWarninNumValue.setVisible(true);
-                LOGGER.info("Error on cost value" );
+                LOGGER.info("Error nombre o descripcion han"
+                        + " superado el tamaño establecido" );
             lblWarninNumValue.setVisible(true);
             Alert altWarningLog = new Alert(AlertType.INFORMATION);
-            altWarningLog.setTitle("Error ");
+            altWarningLog.setTitle("Error el contenido no es valido");
+            altWarningLog.setHeaderText("Error el contenido no es valido");
+            altWarningLog.setContentText("El nombre o la descripcion superan los"
+                    + " limites establecidos.\n "
+                    + "el nombre no puede superar los 50 caracteres y la descripcion"
+                    + " no puede superar los 400 caracteres");
+            altWarningLog.showAndWait();
+            } else {
+                lblWarninNumValue.setVisible(true);
+                LOGGER.info("Error on cost value or Cuantity" );
+            lblWarninNumValue.setVisible(true);
+            Alert altWarningLog = new Alert(AlertType.INFORMATION);
+            altWarningLog.setTitle("Error el coste introducido no es valido");
             altWarningLog.setHeaderText("El coste introducido no es numerico o es mayor al coste maximo 10000€");
             altWarningLog.setContentText("Porfavor introduzca un valor numerico dentro del rango establecido");
             altWarningLog.showAndWait();
@@ -439,9 +490,9 @@ public class EquipmentController {
             LOGGER.info("Error on cost value" + e);
             lblWarninNumValue.setVisible(true);
             Alert altWarningLog = new Alert(AlertType.WARNING);
-            altWarningLog.setTitle("Error ");
-            altWarningLog.setHeaderText("El coste introducido no es numerico");
-            altWarningLog.setContentText("El coste que se ha introducido debe ser numerico");
+            altWarningLog.setTitle("Error el coste introducido no es valido");
+            altWarningLog.setHeaderText("El coste introducido no es numerico o es mayor al coste maximo 10000€");
+            altWarningLog.setContentText("Porfavor introduzca un valor numerico dentro del rango establecido");
             altWarningLog.showAndWait();
         } catch (DBServerException ex) {
              LOGGER.severe("Error en el guardado del equipamiento" + ex);
@@ -464,8 +515,10 @@ public class EquipmentController {
     }
 
     /**
-     *
-     * @param event
+     * Metodo para eliminar un equipamiento seleccionado en la tabla
+     * despues de confirmacion en caso contrario no se borrara el equipamiento
+     * @param event evento de solicitud de eliminacion de equipamiento despues de 
+     * pulsar el boton
      */
     @FXML
     public void deleteEquipment(ActionEvent event) {
@@ -506,44 +559,58 @@ public class EquipmentController {
     }
 
     /**
-     *
-     * @param event
+     * Metodo para guardar en la base de datos los cambios despues de pulsar el boton 
+     * Guardar Cambios 
+     * @param event evento de solicitud de Guardar Cambios al pulsar el boton
      */
     @FXML
     public void saveEquipment(ActionEvent event){
         try {
             LOGGER.info("Actualizando cambios en la base de datos");
             if (bolTableEquipSelec) {
+                /*
+                    Llama al metodo para comprobar si los parametros establecidos
+                    son correctos en el caso de serlo se guardaran 
+                    
+                */
                 if (comprobarValoresGuardar()) {
-
+                    //Creacion de equipamiento actualizado en memoria local 
                     Equipment e = tbEquipment.getSelectionModel().getSelectedItem();
                     e.setName(tfName.getText());
                     e.setCost(tfCost.getText());
                     e.setDateAdd(dpDate.getValue().format(formatter));
                     e.setDescription(taDescription.getText());
+                    //Carga de equipamiento actualizado en coleccion local
                     equipments.add(e);
+                    //Restauracion de formatos compatibles con base de datos
                     for (Equipment eq : equipments) {
                         editandoFormatosCondicionales(eq);
                     }
-
+                    /*NOTA: Se aniade el equipamiento a la base de datos empleando
+                    el ajuste del metodo "edit" del Restfull que crea
+                    elementos nuevos si no existen en la base de datos*/
                     loaddata();
                     loadTblEquipment();
                     tbEquipment.refresh();
                 } else {
+                    //En el caso de haber errores se restauran los datos previos
                     tfName.setText(tbEquipment.getSelectionModel().getSelectedItem().getName());
                     tfCost.setText(tbEquipment.getSelectionModel().getSelectedItem().getCost());
                     taDescription.setText(tbEquipment.getSelectionModel().getSelectedItem().getDescription());
                     dpDate.setValue(LocalDate.parse(tbEquipment.getSelectionModel().getSelectedItem().getDateAdd(), formatter));
-                    LOGGER.severe("Aviso alguno de los valores introducidos no cumple con los parametros"
+                    LOGGER.severe("Aviso: alguno de los valores introducidos no cumple con los parametros"
                             + "o esta vacio");
                     Alert altWarningLog = new Alert(AlertType.INFORMATION);
                     altWarningLog.setTitle("Error al modificar los datos");
                     altWarningLog.setHeaderText("Aviso alguno de los valores introducidos no cumple con los parametros"
                             + " o esta vacio");
-                    altWarningLog.setContentText("En el caso de ser un coste "
-                            + "debe cumplir con el siguiente formato xxx.yy \n"
-                            + "a su vez si lo que ha modificado es una fecha debera cumplir "
-                            + "el formato DD/MM/AAAA");
+                    altWarningLog.setContentText("Parametros validos para los campos:\n"
+                            + " El coste debe cumplir con el siguiente formato xxx.yy , el valor mayor que 0 y menor que 10000\n" +
+                              "Si lo que desea modificar es una FECHA debera cumplir "
+                            + "el formato DD/MM/AAAA.\n"
+                            + "El nombre no puede superar la longitd maxima 50 caracteres ni ser nulo.\n"
+                            + "La descripcion no puede superar la longitd maxima"
+                            + " de 400 caracteres ni ser nulo.");
                     altWarningLog.showAndWait();
                 }
 
@@ -558,7 +625,7 @@ public class EquipmentController {
             altWarningLog.setTitle("Error  al guardar en la base de datos");
             altWarningLog.setHeaderText("El coste introducido no es numerico");
             altWarningLog.setContentText("El coste que se ha introducido debe ser numerico"
-                    + ",mayor que 0 y ademas con formato xxx.yy."
+                    + ",mayor que 0 y menor que 10000 ademas con formato xxx.yy."
                     + "Dado este error se establecera al valor previo a la modificacion");
             altWarningLog.showAndWait();
 
@@ -581,10 +648,11 @@ public class EquipmentController {
      * ******* METODOS PARA HABILITAR LOS BOTONES ****************
      */
     /**
-     *
-     * @param observable
-     * @param oldValue
-     * @param newValue
+     * Metodo de comprobacion a tiempo real de los cambios en el
+     * TextField de nombre (tfName)
+     * @param observable parametro cuyo cambio se esta observando
+     * @param oldValue parametro antiguo del valor
+     * @param newValue parametro nuevo del valor
      */
     public void tfNameValue(ObservableValue observable, String oldValue, String newValue) {
         bolName = false;
@@ -600,10 +668,11 @@ public class EquipmentController {
     }
 
     /**
-     *
-     * @param observable
-     * @param oldValue
-     * @param newValue
+     * Metodo de comprobacion a tiempo real de los cambios en el
+     * TextField de nombre (tfCost)
+     * @param observable parametro cuyo cambio se esta observando
+     * @param oldValue parametro antiguo del valor
+     * @param newValue parametro nuevo del valor
      */
     public void tfCostValue(ObservableValue observable, String oldValue, String newValue) {
         bolCost = false;
@@ -636,10 +705,11 @@ public class EquipmentController {
            
 
     /**
-     *
-     * @param observable
-     * @param oldValue
-     * @param newValue
+     * Metodo de comprobacion a tiempo real de los cambios en el
+     * TextField de nombre (taDescription)
+     * @param observable parametro cuyo cambio se esta observando
+     * @param oldValue parametro antiguo del valor
+     * @param newValue parametro nuevo del valor
      */
     public void taDescriptionValue(ObservableValue observable, String oldValue, String newValue) {
         bolDescription = false;
@@ -655,10 +725,11 @@ public class EquipmentController {
     }
 
     /**
-     * Metodo para controlar el cambio e la fecha
-     * @param observable
-     * @param oldValue
-     * @param newValue
+     * Metodo de comprobacion a tiempo real de los cambios en el
+     * TextField de nombre (dpDate)
+     * @param observable parametro cuyo cambio se esta observando
+     * @param oldValue parametro antiguo del valor
+     * @param newValue parametro nuevo del valor
      */
     public void dpDateAddValue(ObservableValue observable, LocalDate oldValue, LocalDate newValue) {
         bolDateBuy = false;
@@ -671,7 +742,9 @@ public class EquipmentController {
     }
 
     /**
-     *
+     * Metodo para comprobar si todos los campos Texfield, TextArea y datePicker estan
+     * informados y ademas no se ha seleccionado ningun elemto en la base de datos
+     * 
      */
     public void validateEquipData() {
         if (bolName && bolDescription && bolCost && bolDateBuy && !bolTableEquipSelec) {
@@ -686,7 +759,7 @@ public class EquipmentController {
     }
 
     /**
-     *
+     * Metodo que configura la tabla de equipamientos para la funcionalidad editable
      */
     public void setTableData() {
         tbEquipment.setEditable(true);
@@ -711,8 +784,8 @@ public class EquipmentController {
     }
 
     /**
-     *
-     * @param t
+     * Controlador de edicion de la celda de nombre
+     * @param t el indicativo de la celda seleccionada
      */
     public void cellNameEdit(CellEditEvent<Equipment, String> t) {
 
@@ -724,21 +797,27 @@ public class EquipmentController {
         } else {
             ((Equipment) t.getTableView().getItems().get(
                     t.getTablePosition().getRow())).setName(t.getOldValue());
-
+             Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Error en el valor del Nombre");
+            alert.setHeaderText("El Nombre no puede ser un campo vacio ni superar "
+                    + "la longitud maxima de 50 caracteres");
+            alert.showAndWait();
         }
         tbEquipment.refresh();
 
     }
 
     /**
-     *
-     * @param t
+      * Controlador de edicion de la celda de coste
+     * @param t el indicativo de la celda seleccionada
      */
     public void cellCostEdit(CellEditEvent<Equipment, String> t) {
 
         try {
             Double valor = Double.parseDouble(t.getNewValue());
-            //PROBANDOO
+            /*Comprueba que el valor del coste no sea menor que 0
+              ni mayor que 10000
+            */
             if (valor > 0  && valor <= 10000) {
                 ((Equipment) t.getTableView().getItems().get(
                         t.getTablePosition().getRow())).setCost(t.getNewValue());
@@ -773,8 +852,8 @@ public class EquipmentController {
     }
 
     /**
-     *
-     * @param t
+     * Controlador de edicion de la celda de descripcion
+     * @param t el indicativo de la celda seleccionada
      */
     public void cellDescriptionEdit(CellEditEvent<Equipment, String> t) {
 
@@ -786,15 +865,19 @@ public class EquipmentController {
         } else {
             ((Equipment) t.getTableView().getItems().get(
                     t.getTablePosition().getRow())).setDescription(t.getOldValue());
-
+                       Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Error en el valor de la Descripcion");
+            alert.setHeaderText("La Descripcion no puede ser un campo vacio ni superar "
+                    + "la longitud maxima de 400 caracteres");
+            alert.showAndWait();
         }
         tbEquipment.refresh();
 
     }
 
     /**
-     *
-     * @param t
+      * Controlador de edicion de la celda de fecha de compra
+     * @param t el indicativo de la celda seleccionada
      */
     public void cellDateAddEdit(CellEditEvent<Equipment, String> t) {
         try {
@@ -820,10 +903,12 @@ public class EquipmentController {
     }
 
     /**
-     *
-     * @param observable
-     * @param oldValue
-     * @param newValue
+     * Metodo de insercion de datos en sus correspondientes campos superiores al
+     * seleccionar una fila de la tabla en el caso de deseleccionar dicha fila los 
+     * campos se vaciaran.
+     * @param observable parametro cuyo cambio se esta observando
+     * @param oldValue parametro antiguo del valor
+     * @param newValue parametro nuevo del valor
      */
     public void setDataOnTblEquip(ObservableValue observable, Equipment oldValue, Equipment newValue) {
         if (newValue != null) {
@@ -860,8 +945,11 @@ public class EquipmentController {
     }
 
     /**
-     *
-     * @param event
+      * Metodo para ejecutar filtrados en la tabla en función de la opcion seleccionada
+      * 
+     * el ComboBox de busqueda empleando el contenido del cuadro de texto de
+     * busqueda
+     * @param event evento de pulsacion de boton de busqueda
      */
     @FXML
     public void filterEquipments(ActionEvent event) {
@@ -873,12 +961,13 @@ public class EquipmentController {
             loaddata();
             switch (cbSearch.getSelectionModel().getSelectedIndex()) {
                 case 0:
+                    //Filtra por nombre y en el caso de no introducir nada muestra todos
                     if (!tfFinding.getText().trim().equals("")) {
                         for (Equipment eq : equipments) {
                             if (eq.getName().toUpperCase().contains(tfFinding.getText().toUpperCase().trim())) {
-                                System.out.println(eq);
+                              
                                 eqs.add(eq);
-                                System.out.println("elemento eliminado");
+                                
 
                             }
                         }
@@ -890,6 +979,7 @@ public class EquipmentController {
                     break;
 
                 case 1:
+                    //Filtra por coste maximo y en el caso de no introducir nada muestra todos
                     if (!tfFinding.getText().trim().equals("")) {
                         for (Equipment eq : equipments) {
                             if (Double.valueOf(eq.getCost()) <= Double.valueOf(tfFinding.getText())) {
@@ -903,6 +993,7 @@ public class EquipmentController {
 
                     break;
                 case 2:
+                    //Filtra por coste minimo y en el caso de no introducir nada muestra todos
                     if (!tfFinding.getText().trim().equals("")) {
                         for (Equipment eq : equipments) {
                             if (Double.valueOf(eq.getCost()) >= Double.valueOf(tfFinding.getText())) {
@@ -916,6 +1007,7 @@ public class EquipmentController {
 
                     break;
                 case 3:
+                    //Filtra por fecha de compra y en el caso de no introducir nada muestra todos
                     if (!tfFinding.getText().trim().equals("")) {
                         LocalDate fechaBusqueda = LocalDate.parse(tfFinding.getText(), formatter);
                         for (Equipment eq : equipments) {
@@ -931,6 +1023,7 @@ public class EquipmentController {
 
                     break;
                 case 4:
+                    //Filtra por descripcion y en el caso de no introducir nada muestra todos
                     if (!tfFinding.getText().trim().equals("")) {
                         for (Equipment eq : equipments) {
                             if (eq.getDescription().toUpperCase().contains(tfFinding.getText().toUpperCase().trim())) {
@@ -960,16 +1053,21 @@ public class EquipmentController {
         }
     }
 
-    /* -------------------------- SOLUCION PARA FECHAS ------------------------------*/
+    /* -------------------------- SOLUCION PARA FECHAS  ------------------------------*/
 
     /**
-     *
+     * Metodo para cambiar el formato de las fechas de los equipamientos del de la
+     * base de datos () al que se desea mostrar (AAAA-DD-MMTHH:mm:ss+TMZ)
      */
 
     public void cambiarFormatoFecha() {
+        //Convertir las fechas de la base de datos en las fechas mostradas
         for (Equipment eq : equipments) {
+            //fechas de la base de datos en string LocalDate
             LocalDate fecha = LocalDate.parse(eq.getDateAdd(), database);
+            //LocalDate a String mostrado
             String dt = fecha.format(formatter);
+            //Actualizacion a fecha del equipamiento
             eq.setDateAdd(dt);
 
         }
@@ -977,13 +1075,19 @@ public class EquipmentController {
     }
 
     /**
-     *
-     * @param equipment
-     * @return
+     * Metodo para devolver al equipamiento las fechas del formato que se desea
+     * mostrar (DD/MM/AAAA) al formato que emplea la base de datos
+     * (AAAA-DD-MMTHH:mm:ss+TMZ)
+     * @param equipment equipamiento al que se va a actualizar las fechas
+     * @return equipamiento con las fechas actualizadas
      */
     public Equipment devolverFormatoFecha(Equipment equipment) {
+         //Convertir fechas mostradas en fecha compatible con la base de datos
+        //  Fecha mostrada en String a LocalDate
         LocalDate date = LocalDate.parse(equipment.getDateAdd(), formatter);
+         //  LocalDate a String compatible en base de datos
         String fecha = date.atStartOfDay().atZone(ZoneId.systemDefault()).format(database);
+        //Actualizacion de la fecha del equipamiento
         equipment.setDateAdd(fecha);
 
         return equipment;
@@ -997,12 +1101,16 @@ public class EquipmentController {
      */
     public void editandoFormatosCondicionales(Equipment equipment) {
         try {
+            //fechas de la base de datos en string LocalDate
             LocalDate date = LocalDate.parse(equipment.getDateAdd(), formatter);
+              //  LocalDate a fecha mostrada
             String fecha = date.atStartOfDay().atZone(ZoneId.systemDefault()).format(database);
+            //Actualizacion de la fecha del equipamiento
             equipment.setDateAdd(fecha);
             
             eqif.edit(equipment);
             
+             
             date = LocalDate.parse(equipment.getDateAdd(), database);
             fecha = date.format(formatter);
             equipment.setDateAdd(fecha);
@@ -1041,8 +1149,9 @@ public class EquipmentController {
     }
 
     /**
-     *
-     * @return
+     * Metodo para comprobar que todos los parametros de Nombre,Coste,descripcion
+     * y fecha de compra estan informados y dentro de los parametros establecidos
+     * @return valor true o false dependiendo de si cumple o no las condiciones
      */
     public boolean comprobarValoresGuardar() {
         return tfName.getText().trim().length() != 0
@@ -1053,7 +1162,25 @@ public class EquipmentController {
                 && Double.parseDouble(tfCost.getText()) > 0 
                 && Double.parseDouble(tfCost.getText()) <= 10000 ;
     }
+    /**
+     * Metodo para comprobar si el nombreno es nulo y no tiene mas de
+     * 50 caracteres y,
+     * La descripcion no es nulo y tiene menos de 400 caracteres
+     * 
+     * @return valor true o false dependiendo de si cumple o no las condiciones
+     */
+    public boolean comprobarValoresTextoGuardar() {
+       return tfName.getText().trim().length() != 0
+                && tfName.getText().trim().length() <= 50
+                && taDescription.getText().trim().length() != 0 
+                && taDescription.getText().trim().length() <= 400 ;
+    }
     
+    
+    /**
+     * Metodo que ejecuta el boton imprimir
+     * @param event evento ejecutado por el botón imprimir
+     */
     public void printData(ActionEvent event) {
         // Confirmacion de creacion de informe
         // Si acepta, se actualizan datos y se imprime informe
@@ -1072,6 +1199,10 @@ public class EquipmentController {
             event.consume();
         }
     }
+
+    /**
+     *  Metodo para imprimir un informe con los datos de la tabla
+     */
     public void print() {
         try {
             // Carga del informe para Equipment table
