@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="710" pageHeight="842" columnWidth="670" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8fd666c2-09bd-490d-b339-9ed4cef8d707">
-	<property name="ireport.zoom" value="1.0"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="710" pageHeight="1040" columnWidth="670" leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="30" isFloatColumnFooter="true" uuid="8fd666c2-09bd-490d-b339-9ed4cef8d707">
+	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
-        <field name="name" class="java.lang.String"/>
-        <field name="dateStart" class="java.lang.String"/>
-        <field name="dateEnd" class="java.lang.String"/>
-        <field name="description" class="java.lang.String"/>
-        <field name="client.fullName" class="java.lang.String"/>
+	<field name="name" class="java.lang.String"/>
+	<field name="dateStart" class="java.lang.String"/>
+	<field name="dateEnd" class="java.lang.String"/>
+	<field name="description" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -16,13 +15,15 @@
 			<staticText>
 				<reportElement x="0" y="0" width="670" height="62" uuid="65c9afda-55ec-4340-9b65-05fb6d3026f5"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="20" isBold="true"/>
+					<font size="26" isBold="true" isUnderline="false"/>
 				</textElement>
 				<text><![CDATA[INFORME DE EVENTOS]]></text>
 			</staticText>
 			<textField pattern="dd/MM/yyyy">
 				<reportElement x="569" y="0" width="100" height="20" uuid="097d63db-c6ed-4126-98c3-f7823f7b0ba1"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isItalic="true"/>
+				</textElement>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 		</band>
@@ -33,84 +34,138 @@
 	<columnHeader>
 		<band height="47" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="14" width="116" height="33" uuid="cb83d753-7ca5-4878-9442-eaf10d5e75fe"/>
+				<reportElement mode="Opaque" x="0" y="0" width="116" height="47" backcolor="#E1E1E1" uuid="cb83d753-7ca5-4878-9442-eaf10d5e75fe"/>
+				<box topPadding="5" leftPadding="5" bottomPadding="5" rightPadding="5">
+					<topPen lineWidth="2.5"/>
+					<leftPen lineWidth="2.5"/>
+					<bottomPen lineWidth="2.5"/>
+					<rightPen lineWidth="1.5"/>
+				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="12" isBold="true"/>
+					<font size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Nombre del Evento]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="231" y="14" width="116" height="33" uuid="13204a4d-9aa0-4a58-ae88-6a37a7cc5951"/>
+				<reportElement mode="Opaque" x="116" y="0" width="116" height="47" backcolor="#E1E1E1" uuid="13204a4d-9aa0-4a58-ae88-6a37a7cc5951"/>
+				<box topPadding="5" leftPadding="5" bottomPadding="5" rightPadding="5">
+					<topPen lineWidth="2.5"/>
+					<leftPen lineWidth="1.5"/>
+					<bottomPen lineWidth="2.5"/>
+				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="12" isBold="true"/>
+					<font size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Fecha de Inicio]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="347" y="14" width="116" height="33" uuid="43effa18-4ccd-484c-8e32-a512671d8f7d"/>
+				<reportElement mode="Opaque" x="232" y="0" width="116" height="47" backcolor="#E1E1E1" uuid="43effa18-4ccd-484c-8e32-a512671d8f7d"/>
+				<box topPadding="5" leftPadding="5" bottomPadding="5" rightPadding="5">
+					<topPen lineWidth="2.5"/>
+					<leftPen lineWidth="1.5"/>
+					<bottomPen lineWidth="2.5"/>
+				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="12" isBold="true"/>
+					<font size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Fecha de Finalización]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="463" y="14" width="207" height="33" uuid="515048ad-1ff5-48c8-b4c1-c3cc741f2b69"/>
+				<reportElement mode="Opaque" x="348" y="0" width="322" height="47" backcolor="#E1E1E1" uuid="515048ad-1ff5-48c8-b4c1-c3cc741f2b69"/>
+				<box topPadding="5" leftPadding="5" bottomPadding="5" rightPadding="5">
+					<topPen lineWidth="2.5"/>
+					<leftPen lineWidth="1.5"/>
+					<bottomPen lineWidth="2.5"/>
+					<rightPen lineWidth="2.5"/>
+				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="12" isBold="true"/>
+					<font size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Descripción del Evento]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="116" y="14" width="116" height="33" uuid="50dd33ac-e323-4b12-8372-ee9b6242c2b0"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Nombre del Cliente]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="125" splitType="Stretch">
 			<textField isBlankWhenNull="false">
-				<reportElement x="0" y="0" width="116" height="20" uuid="47c28030-db8f-43fd-9259-3d6886a0e893"/>
+				<reportElement x="0" y="0" width="116" height="125" uuid="47c28030-db8f-43fd-9259-3d6886a0e893"/>
+				<box leftPadding="5" rightPadding="5">
+					<leftPen lineWidth="2.5"/>
+					<bottomPen lineWidth="1.5" lineStyle="Dotted" lineColor="#999999"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="231" y="0" width="116" height="20" uuid="4d8a14ed-196e-4342-8f6c-8dc4c6bef242"/>
+				<reportElement x="116" y="0" width="116" height="125" uuid="4d8a14ed-196e-4342-8f6c-8dc4c6bef242"/>
+				<box leftPadding="5" rightPadding="5">
+					<leftPen lineWidth="1.0" lineStyle="Dashed" lineColor="#CCCCCC"/>
+					<bottomPen lineWidth="1.5" lineStyle="Dotted" lineColor="#999999"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed" lineColor="#CCCCCC"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{dateStart}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="347" y="0" width="116" height="20" uuid="7ccf9da3-9d0f-4e13-8119-3d8e24f5e571"/>
+				<reportElement x="232" y="0" width="116" height="125" uuid="7ccf9da3-9d0f-4e13-8119-3d8e24f5e571"/>
+				<box leftPadding="5" rightPadding="5">
+					<leftPen lineWidth="1.0" lineStyle="Dashed" lineColor="#CCCCCC"/>
+					<bottomPen lineWidth="1.5" lineStyle="Dotted" lineColor="#999999"/>
+					<rightPen lineWidth="1.0" lineStyle="Dashed" lineColor="#CCCCCC"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{dateEnd}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="463" y="0" width="207" height="20" uuid="036816dc-e832-43b8-b532-98b31780c565"/>
+				<reportElement x="348" y="0" width="322" height="125" uuid="036816dc-e832-43b8-b532-98b31780c565"/>
+				<box leftPadding="5" rightPadding="5">
+					<bottomPen lineWidth="1.5" lineStyle="Dotted" lineColor="#999999"/>
+					<rightPen lineWidth="2.5"/>
+				</box>
+				<textElement textAlignment="Justified" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{description}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="false">
-				<reportElement x="116" y="0" width="116" height="20" uuid="11a1a443-54ac-4541-ad44-aa37cbbaa1af"/>
-				<textFieldExpression><![CDATA[$F{client.fullName}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="45" splitType="Stretch"/>
+		<band height="3">
+			<line>
+				<reportElement x="0" y="-43" width="670" height="1" uuid="1c32f6e5-414a-428d-8b06-35cd80e8dff6"/>
+				<graphicElement>
+					<pen lineWidth="2.0"/>
+				</graphicElement>
+			</line>
+		</band>
 	</columnFooter>
 	<pageFooter>
 		<band height="54" splitType="Stretch">
 			<textField>
 				<reportElement x="549" y="34" width="80" height="20" uuid="38194d6e-ed6e-4762-b2b8-e4dfe4529b0b"/>
-				<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font isItalic="true"/>
+				</textElement>
 				<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
 				<reportElement x="629" y="34" width="40" height="20" uuid="f7f4086e-fc14-44d8-8a44-a17acaf35096"/>
-				<textElement verticalAlignment="Bottom"/>
+				<textElement verticalAlignment="Bottom">
+					<font isItalic="true"/>
+				</textElement>
 				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="0" y="0" width="670" height="42" uuid="49006475-bead-4a0e-8bd4-fce4bbbbc0e9"/>
+				<box>
+					<topPen lineWidth="1.5" lineStyle="Dashed" lineColor="#CFCFCF"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Este es un informe de los eventos seleccionados en la tabla en el momento de solicitud de impresión del informe. Si desea un informe de todos los eventos, asegúrese de que no hay ningún filtro activo.]]></text>
+			</staticText>
 		</band>
 	</pageFooter>
 	<summary>
-		<band height="42" splitType="Stretch"/>
+		<band height="43" splitType="Stretch"/>
 	</summary>
 </jasperReport>

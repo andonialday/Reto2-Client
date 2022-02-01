@@ -5,6 +5,8 @@
  */
 package reto2g1cclient.controller;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -20,11 +22,13 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
+import static org.hamcrest.Matchers.hasValue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 import org.junit.FixMethodOrder;
+import org.junit.Ignore;
 import org.junit.runners.MethodSorters;
 import static org.testfx.api.FxAssert.verifyThat;
 import org.testfx.framework.junit.ApplicationTest;
@@ -33,6 +37,7 @@ import static org.testfx.matcher.base.NodeMatchers.isDisabled;
 import static org.testfx.matcher.base.NodeMatchers.isEnabled;
 import static org.testfx.matcher.base.NodeMatchers.isVisible;
 import static org.testfx.matcher.control.TextInputControlMatchers.hasText;
+import reto2g1cclient.application.*;
 import reto2g1cclient.model.Evento;
 
 /**
@@ -73,8 +78,10 @@ public class VEventTableControllerIT extends ApplicationTest {
     //  Table    
     private TableView tbEvent;
     private TableColumn clDateEnd;
-    
+
     private String name = "Evento de test";
+    private String desc = "Descripcion del Evento de Prueba";
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     /**
      * Starts application to be tested.
@@ -87,10 +94,11 @@ public class VEventTableControllerIT extends ApplicationTest {
         //start JavaFX application to be tested    
         //new ClientApplication().start(stage);
         //"lookup" de los nodos de las ventanas previas a VEventTable
-        txtLogin = lookup("#txtLogin").query();
-        txtPassword = lookup("#txtPassword").query();
-        btnSignIn = lookup("#btnSignIn").query();
-        //"lookup" de los nodos de la ventana VEventTable
+        //txtLogin = lookup("#txtLogin").query();
+        //txtPassword = lookup("#txtPassword").query();
+        //btnSignIn = lookup("#btnSignIn").query();
+        //"lookup" de los nodos de la ventana VEventTable 
+        new TestApplication().start(stage);
         txtName = lookup("#txtName").query();
         dpDateStart = lookup("#dpDateStart").query();
         dpDateEnd = lookup("#dpDateEnd").query();
@@ -117,6 +125,7 @@ public class VEventTableControllerIT extends ApplicationTest {
      * This method allows to see users' table view by interacting with login
      * view.
      */
+    @Ignore
     @Test
     public void testA_NavigateToVEventTable() {
         clickOn("#txtLogin");
@@ -144,8 +153,8 @@ public class VEventTableControllerIT extends ApplicationTest {
         //  Campos "rellenablesw"
         verifyThat("#txtName", hasText(""));
         verifyThat("#taDescription", hasText(""));
-        verifyThat("#dpDateStart", hasText(""));
-        verifyThat("#dpDateEnd", hasText(""));
+        verifyThat("#dpDateStart", isEnabled());
+        verifyThat("#dpDateEnd", isEnabled());
         //Verificacion de Botones
         verifyThat("#btnNew", isDisabled());
         verifyThat("#btnSave", isDisabled());
@@ -166,36 +175,34 @@ public class VEventTableControllerIT extends ApplicationTest {
 
     @Test
     public void testC_CreateButtonEnable() {
-        doubleClickOn(txtName);
+        limpiarCampos();
+        clickOn("#txtName");
         write(name);
-        verifyThat("#btCrear", isDisabled());
-        doubleClickOn(taDescription);
-        write("anyDescription");
-        verifyThat("#btCrear", isDisabled());
-        doubleClickOn(dpDateStart);
+        verifyThat("#btnNew", isDisabled());
+        clickOn("#dpDateStart");
         write("10/01/2000");
-        verifyThat("#btCrear", isDisabled());
-        doubleClickOn(dpDateEnd);
+        verifyThat("#btnNew", isDisabled());
+        clickOn("#dpDateEnd");
         write("10/01/2000");
-        verifyThat("#btCrear", isEnabled());
+        verifyThat("#btnNew", isDisabled());
+        clickOn("#taDescription");
+        write(desc);
+        verifyThat(btnNew, isEnabled());
         limpiarCampos();
     }
 
     @Test
     public void testD_CreateWrongDates() {
+        limpiarCampos();
         int rowCount = tbEvent.getItems().size();
-        doubleClickOn(txtName);
+        clickOn("#txtName");
         write(name);
-        verifyThat("#btCrear", isDisabled());
-        doubleClickOn(taDescription);
-        write("anyDescription");
-        verifyThat("#btCrear", isDisabled());
-        doubleClickOn(dpDateStart);
+        clickOn("#dpDateStart");
         write("10/01/2020");
-        verifyThat("#btCrear", isDisabled());
-        doubleClickOn(dpDateEnd);
+        clickOn("#dpDateEnd");
         write("10/01/2000");
-        verifyThat("#btCrear", isEnabled());
+        clickOn("#taDescription");
+        write(desc);
         clickOn(btnNew);
         verifyThat(".alert", isVisible());
         assertEquals("Ha creado el evento", rowCount, tbEvent.getItems().size());
@@ -207,21 +214,20 @@ public class VEventTableControllerIT extends ApplicationTest {
 
     @Test
     public void testE_CreateEventSuccessfull() {
+        limpiarCampos();
         int rowCount = tbEvent.getItems().size();
-        doubleClickOn(txtName);
+        clickOn("#txtName");
         name = "Evento de test";
         write(name);
-        verifyThat("#btCrear", isDisabled());
-        doubleClickOn(taDescription);
-        write("Descripcion del Evento de Prueba");
-        verifyThat("#btCrear", isDisabled());
-        doubleClickOn(dpDateStart);
+        clickOn("#taDescription");
+        write(desc);
+        clickOn("#dpDateStart");
         write("10/01/2000");
-        verifyThat("#btCrear", isDisabled());
-        doubleClickOn(dpDateEnd);
+        press(KeyCode.ENTER);
+        clickOn("#dpDateEnd");
         write("10/01/2020");
-        verifyThat("#btCrear", isEnabled());
-        clickOn(btnNew);
+        press(KeyCode.ENTER);
+        clickOn("#btnNew");
         assertEquals("Error al crear evento", rowCount + 1, tbEvent.getItems().size());
         List<Evento> users = tbEvent.getItems();
         assertEquals("Error al crear evento",
@@ -231,6 +237,7 @@ public class VEventTableControllerIT extends ApplicationTest {
 
     @Test
     public void testF_tableSelect_Deselect() {
+        limpiarCampos();
         //Seleccionando un elemento de la tabla
         int rowCount = tbEvent.getItems().size();
         Node row = lookup(".table-row-cell").nth(rowCount - 1).query();
@@ -238,10 +245,10 @@ public class VEventTableControllerIT extends ApplicationTest {
         clickOn(row);
         Evento event = (Evento) tbEvent.getSelectionModel().getSelectedItem();
         //Carga de datos de evento seleccionado en campos superiores
-        verifyThat("#clDateStart", hasText(event.getDateStart()));
-        verifyThat("#clDateEnd", hasText(event.getDateEnd()));
-        verifyThat("#clName", hasText(event.getName()));
-        verifyThat("#clDescription", hasText(event.getDescription()));
+        verifyThat("#txtName", hasText(event.getName()));
+        verifyThat("#dpDateEnd", hasText(event.getDateEnd()));
+        verifyThat("#dpDateStart", hasText(event.getDateStart()));
+        verifyThat("#taDescription", hasText(event.getDescription()));
         //Deseleccionarelemento de la tabla
         press(KeyCode.CONTROL);
         clickOn(row);
@@ -251,97 +258,106 @@ public class VEventTableControllerIT extends ApplicationTest {
         verifyThat("#taDescription", hasText(""));
         verifyThat("#dpDateStart", hasText(""));
         verifyThat("#dpDateEnd", hasText(""));
+        limpiarCampos();
     }
 
     @Test
-    public void testG_DeleteEventCancel() {
+    public void testG_ModifyEventFormFailure() {
+        limpiarCampos();
         int rowCount = tbEvent.getItems().size();
         Node row = lookup(".table-row-cell").nth(rowCount - 1).query();
         assertNotNull("Row is null: table has not that row. ", row);
         clickOn(row);
-        clickOn(btnDelete);
+        Evento event = (Evento) tbEvent.getSelectionModel().getSelectedItem();
+        clickOn("#dpDateEnd");
+        dpDateEnd.setValue(null);
+        write("01/01/2000");
+        press(KeyCode.ENTER);
+        clickOn(btnSave);
+        verifyThat(".alert", NodeMatchers.isVisible());
+        clickOn("Aceptar");
+        assertEquals("Se ha modificado el Evento", event, tbEvent.getSelectionModel().getSelectedItem());
+    }
+
+    @Test
+    public void testH_ModifyEventFormSuccessfull() {
+        limpiarCampos();
+        int rowCount = tbEvent.getItems().size();
+        Node row = lookup(".table-row-cell").nth(rowCount - 1).query();
+        assertNotNull("Row is null: table has not that row. ", row);
+        clickOn(row);
+        Evento event = (Evento) tbEvent.getSelectionModel().getSelectedItem();
+        clickOn(dpDateEnd);
+        dpDateEnd.setValue(null);
+        write("10/01/2000");
+        press(KeyCode.ENTER);
+        clickOn(btnSave);
+        verifyThat(".alert", NodeMatchers.isVisible());
+        clickOn("Aceptar");
+        assertNotEquals("Se ha modificado el Evento", event, tbEvent.getSelectionModel().getSelectedItem());
+        limpiarCampos();
+    }
+
+    @Test
+    public void testI_ModifyEventTableFailure() {
+        limpiarCampos();
+        int rowCount = tbEvent.getItems().size();
+        Node row = lookup(".table-row-cell").nth(rowCount - 1).query();
+        assertNotNull("Row is null: table has not that row. ", row);
+        clickOn(row);
+        Evento event = (Evento) tbEvent.getSelectionModel().getSelectedItem();
+        tbEvent.getSelectionModel().select(rowCount - 1, clDateEnd);
+        press(KeyCode.ENTER);
+        write("01/01/2000");
+        press(KeyCode.ENTER);
+        verifyThat(".alert", NodeMatchers.isVisible());
+        clickOn("Aceptar");
+        assertEquals("Se ha modificado el Evento", event, tbEvent.getSelectionModel().getSelectedItem());
+        limpiarCampos();
+    }
+
+    @Test
+    public void testJ_ModifyEventTableSuccessfull() {
+        limpiarCampos();
+        int rowCount = tbEvent.getItems().size();
+        Node row = lookup(".table-row-cell").nth(rowCount - 1).query();
+        assertNotNull("Row is null: table has not that row. ", row);
+        clickOn(row);
+        Evento event = (Evento) tbEvent.getSelectionModel().getSelectedItem();
+        tbEvent.getSelectionModel().select(rowCount - 1, clDateEnd);
+        write("10/01/2000");
+        press(KeyCode.ENTER);
+        clickOn("#btnSave");
+        verifyThat(".alert", NodeMatchers.isVisible());
+        clickOn("Aceptar");
+        assertNotEquals("Se ha modificado el Evento", event, tbEvent.getSelectionModel().getSelectedItem());
+        limpiarCampos();
+    }
+
+    @Test
+    public void testK_DeleteEventCancel() {
+        limpiarCampos();
+        int rowCount = tbEvent.getItems().size();
+        Node row = lookup(".table-row-cell").nth(rowCount - 1).query();
+        assertNotNull("Row is null: table has not that row. ", row);
+        clickOn(row);
+        clickOn("#btnDelete");
         verifyThat(".alert", NodeMatchers.isVisible());
         clickOn("Cancelar");
         assertEquals("Se ha borrado el Evento", rowCount, tbEvent.getItems().size());
-        limpiarCampos();
     }
 
     @Test
-    public void testH_DeleteEventSuccessfull() {
+    public void testL_DeleteEventSuccessfull() {
+        limpiarCampos();
         int rowCount = tbEvent.getItems().size();
         Node row = lookup(".table-row-cell").nth(rowCount - 1).query();
         assertNotNull("Row is null: table has not that row. ", row);
         clickOn(row);
-        clickOn(btnDelete);
+        clickOn("#btnDelete");
         verifyThat(".alert", NodeMatchers.isVisible());
         clickOn("Aceptar");
         assertEquals("Se ha borrado el Evento", rowCount - 1, tbEvent.getItems().size());
-        limpiarCampos();
-    }
-
-    @Test
-    public void testI_ModifyEventFormFailure() {
-        int rowCount = tbEvent.getItems().size();
-        Node row = lookup(".table-row-cell").nth(rowCount - 1).query();
-        assertNotNull("Row is null: table has not that row. ", row);
-        clickOn(row);
-        Evento event = (Evento) tbEvent.getSelectionModel().getSelectedItem();
-        clickOn(dpDateEnd);
-        write("01/01/2000");
-        clickOn(btnSave);
-        verifyThat(".alert", NodeMatchers.isVisible());
-        clickOn("Aceptar");
-        assertEquals("Se ha modificado el Evento", event, tbEvent.getSelectionModel().getSelectedItem());
-        limpiarCampos();
-    }
-
-    @Test
-    public void testJ_ModifyEventFormSuccessfull() {
-        int rowCount = tbEvent.getItems().size();
-        Node row = lookup(".table-row-cell").nth(rowCount - 1).query();
-        assertNotNull("Row is null: table has not that row. ", row);
-        clickOn(row);
-        Evento event = (Evento) tbEvent.getSelectionModel().getSelectedItem();
-        clickOn(dpDateEnd);
-        write("10/01/2000");
-        clickOn(btnSave);
-        verifyThat(".alert", NodeMatchers.isVisible());
-        clickOn("Aceptar");
-        assertNotEquals("Se ha modificado el Evento", event, tbEvent.getSelectionModel().getSelectedItem());
-        limpiarCampos();
-    }
-
-    @Test
-    public void testK_ModifyEventTableFailure() {
-        int rowCount = tbEvent.getItems().size();
-        Node row = lookup(".table-row-cell").nth(rowCount - 1).query();
-        assertNotNull("Row is null: table has not that row. ", row);
-        clickOn(row);
-        Evento event = (Evento) tbEvent.getSelectionModel().getSelectedItem();
-        tbEvent.getSelectionModel().select(rowCount-1, clDateEnd);
-        write("01/01/2000");
-        press(KeyCode.ENTER);
-        verifyThat(".alert", NodeMatchers.isVisible());
-        clickOn("Aceptar");
-        assertEquals("Se ha modificado el Evento", event, tbEvent.getSelectionModel().getSelectedItem());
-        limpiarCampos();
-    }
-
-    @Test
-    public void testL_ModifyEventTableSuccessfull() {
-        int rowCount = tbEvent.getItems().size();
-        Node row = lookup(".table-row-cell").nth(rowCount - 1).query();
-        assertNotNull("Row is null: table has not that row. ", row);
-        clickOn(row);
-        Evento event = (Evento) tbEvent.getSelectionModel().getSelectedItem();
-        tbEvent.getSelectionModel().select(rowCount-1, clDateEnd);
-        write("10/01/2000");
-        press(KeyCode.ENTER);
-        clickOn(btnSave);
-        verifyThat(".alert", NodeMatchers.isVisible());
-        clickOn("Aceptar");
-        assertNotEquals("Se ha modificado el Evento", event, tbEvent.getSelectionModel().getSelectedItem());
-        limpiarCampos();
     }
 
 }

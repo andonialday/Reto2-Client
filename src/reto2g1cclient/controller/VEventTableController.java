@@ -50,6 +50,7 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.view.JasperViewer;
+import reto2g1cclient.exception.ClientServerConnectionException;
 import reto2g1cclient.exception.DBServerException;
 import reto2g1cclient.logic.EventFactory;
 import reto2g1cclient.logic.EventInterface;
@@ -57,6 +58,9 @@ import reto2g1cclient.model.Client;
 import reto2g1cclient.model.Evento;
 
 /**
+ * Controlador para la ventana VEventTable destinada a Mostrar los eventos
+ * almacenados en la BBDD y permitir Crear, Modificar o Eliminar eventos en la
+ * misma
  *
  * @author Andoni Alday
  */
@@ -73,25 +77,27 @@ public class VEventTableController {
     private EventInterface ei;
     private ObservableList<Evento> eventData;
     // Booleanos para control de contenido introducido valido
-    private Boolean dateEnd;
-    private Boolean dateStart;
-    private Boolean desc;
-    private Boolean name;
+    private Boolean dateEnd = false;
+    private Boolean dateStart = false;
+    private Boolean desc = false;
+    private Boolean name = false;
     // Booleano para control de seleccion de elemento en tabla para habilitar el Botón Nuevo
-    private Boolean tableSelec;
+    private Boolean tableSelec = false;
     // Integer para control de filtro seleccionado
     private Integer filter;
 
     /**
      * Getter de la Stage sobre la que se va a mostrar la ventana
+     *
      * @return la ventana
      */
     public Stage getStage() {
         return stage;
     }
-    
+
     /**
      * Setter de la Stage sobre la que se va a mostrar la ventana
+     *
      * @param stage sobre la que se va a mostrar la ventana
      */
     public void setStage(Stage stage) {
@@ -100,6 +106,7 @@ public class VEventTableController {
 
     /**
      * Getter del cliente del que se quieren gestionar los eventos
+     *
      * @return el cliente del que se van a gestionar los eventos
      */
     public Client getClient() {
@@ -108,6 +115,7 @@ public class VEventTableController {
 
     /**
      * Setter del cliente cuyos eventos se desean gestionar
+     *
      * @param client del que se quiere gestionar los eventos
      */
     public void setClient(Client client) {
@@ -116,6 +124,7 @@ public class VEventTableController {
 
     /**
      * Getter de la coleccion local de eventos
+     *
      * @return la coleccion local de eventos
      */
     public List<Evento> getEvents() {
@@ -124,6 +133,7 @@ public class VEventTableController {
 
     /**
      * Setter para la coleccion de eventos en la memoria local
+     *
      * @param events coleccion de eventos local
      */
     public void setEvents(List<Evento> events) {
@@ -132,6 +142,7 @@ public class VEventTableController {
 
     /**
      * Getter del parametro que determina si la ventana es editable o no
+     *
      * @return booleano indicativo de si la ventana es editable
      */
     public boolean isEditable() {
@@ -139,15 +150,19 @@ public class VEventTableController {
     }
 
     /**
-     * Setter para determinar si una ventana es editable (ha accedido un cliente o un admin) o no
+     * Setter para determinar si una ventana es editable (ha accedido un cliente
+     * o un admin) o no
+     *
      * @param editable parametro para determinar editabilidad
      */
     public void setEditable(boolean editable) {
         this.editable = editable;
     }
 
-    /** 
-     * Getter para la interfaz de control del controlador con el nucleo de control de la aplicacion
+    /**
+     * Getter para la interfaz de control del controlador con el nucleo de
+     * control de la aplicacion
+     *
      * @return interfaz de control
      */
     public EventInterface getEi() {
@@ -155,7 +170,9 @@ public class VEventTableController {
     }
 
     /**
-     * Setter para la interfaz de control del controlador con el nucleo de control de la aplicacion
+     * Setter para la interfaz de control del controlador con el nucleo de
+     * control de la aplicacion
+     *
      * @param ei interfaz de control
      */
     public void setEi(EventInterface ei) {
@@ -164,6 +181,7 @@ public class VEventTableController {
 
     /**
      * Getter para la coleccion observable de la tabla
+     *
      * @return coleccion de eventos
      */
     public ObservableList<Evento> getEventData() {
@@ -172,6 +190,7 @@ public class VEventTableController {
 
     /**
      * Setter para la coleccion observable de la tabla
+     *
      * @param eventData coleccion de eventos
      */
     public void setEventData(ObservableList<Evento> eventData) {
@@ -469,6 +488,14 @@ public class VEventTableController {
                     + "evento de la base de datos, por favor, intentelo mas tarde."
                     + "\nSi el error persiste, comuníquese con el sevicio tecnico");
             alert2.showAndWait();
+        } catch (ClientServerConnectionException ex) {
+            Alert alert2 = new Alert(Alert.AlertType.WARNING);
+            alert2.setTitle("Error de Conexión");
+            alert2.setHeaderText("Error al conectar con el servidor que alberga la base de datos");
+            alert2.setContentText("Ha sucedido un error al intentar eliminar el "
+                    + "evento de la base de datos, por favor, intentelo mas tarde."
+                    + "\nSi el error persiste, comuníquese con el sevicio tecnico");
+            alert2.showAndWait();
         }
     }
 
@@ -511,6 +538,14 @@ public class VEventTableController {
                         + "\nen el servidor de datos, por favor, intentelo mas tarde."
                         + "\nSi el error persiste, comuníquese con el sevicio tecnico");
                 alert.showAndWait();
+            } catch (ClientServerConnectionException ex) {
+                Alert alert2 = new Alert(Alert.AlertType.WARNING);
+                alert2.setTitle("Error de Conexión");
+                alert2.setHeaderText("Error al conectar con el servidor que alberga la base de datos");
+                alert2.setContentText("Ha sucedido un error al intentar crear el nuevo "
+                        + "evento en la base de datos, por favor, intentelo mas tarde."
+                        + "\nSi el error persiste, comuníquese con el sevicio tecnico");
+                alert2.showAndWait();
             }
         } else {
             lblDateEndEr.setVisible(true);
@@ -571,16 +606,10 @@ public class VEventTableController {
             // de un cliente) se emplearan solo los eventos de ese cliente
             if (client != null) {
                 events = (List<Evento>) ei.findEventByClient(client);
-                for (Evento event : events) {
-                    System.out.println(event.getId());
-                }
                 // Si se accede de forma "general" (desde la ventana del Administrador", 
                 // se cargaran todos los eventos del sistema
             } else {
                 events = (List<Evento>) ei.findAll();
-                for (Evento event : events) {
-                    System.out.println(event.getId());
-                }
             }
         } catch (DBServerException e) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -590,6 +619,14 @@ public class VEventTableController {
                     + "\nSi el error persiste, comuníquese con el sevicio tecnico");
             alert.showAndWait();
             events = null;
+        } catch (ClientServerConnectionException ex) {
+            Alert alert2 = new Alert(Alert.AlertType.WARNING);
+            alert2.setTitle("Error de Conexión");
+            alert2.setHeaderText("Error al conectar con el servidor que alberga la base de datos");
+            alert2.setContentText("Ha sucedido un error al intentar cargar los "
+                    + "eventos de la base de datos, por favor, intentelo mas tarde."
+                    + "\nSi el error persiste, comuníquese con el sevicio tecnico");
+            alert2.showAndWait();
         }
         cambiarFormatoFechas();
     }
@@ -1055,17 +1092,21 @@ public class VEventTableController {
         // Si acepta, se actualizan datos y se imprime informe
         // Si cancela, no se imprime informe
         LOGGER.info("Preparing to print");
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Proceso de impresión de informes");
-        alert.setHeaderText("Ha solicitado imprimir un informe, para ello, se "
-                + "\nvan a actualizar los datos de la tabla en la base de datos. "
-                + "\n¿Esta seguro de continuar?");
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK) {
-            saveData();
-            print();
+        if (tableSelec) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Proceso de impresión de informes");
+            alert.setHeaderText("Ha solicitado imprimir un informe, para ello, se "
+                    + "\nvan a actualizar los datos de la tabla en la base de datos. "
+                    + "\n¿Esta seguro de continuar?");
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK) {
+                saveData();
+                print();
+            } else {
+                event.consume();
+            }
         } else {
-            event.consume();
+            print();
         }
     }
 
@@ -1124,14 +1165,15 @@ public class VEventTableController {
      */
     public void print() {
         try {
-            // Carga del informe para EventTable
-            JasperReport report = JasperCompileManager.compileReport(getClass().getResourceAsStream("/reto2g1cclient/reports/EventReport.jrxml"));
+            // Carga del informe para Equipment table
+            JasperReport report = JasperCompileManager.compileReport(getClass()
+                    .getResourceAsStream("/reto2g1cclient/reports/EventReport.jrxml"));
             JRBeanCollectionDataSource dataItems = new JRBeanCollectionDataSource((Collection<Evento>) this.tbEvent.getItems());
             // Carga de propiedades
             Map<String, Object> parameters = new HashMap<>();
             JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, dataItems);
-            // Inicialización e visor de informe
-            JasperViewer jasperviewer = new JasperViewer(jasperPrint);
+            // Inicialización de visor de informe
+            JasperViewer jasperviewer = new JasperViewer(jasperPrint,false);
             jasperviewer.setVisible(true);
         } catch (JRException ex) {
             Logger.getLogger(VEventTableController.class
@@ -1239,6 +1281,14 @@ public class VEventTableController {
                     + "\nLas Fechas deben estar en formato valido"
                     + "\nLa Fecha de Finalización no puede ser anterior a la de Inicio");
             alert.showAndWait();
+        } catch (ClientServerConnectionException ex) {
+            Alert alert2 = new Alert(Alert.AlertType.WARNING);
+            alert2.setTitle("Error de Conexión");
+            alert2.setHeaderText("Error al conectar con el servidor que alberga la base de datos");
+            alert2.setContentText("Ha sucedido un error al intentar actualizar el "
+                    + "evento de la base de datos, por favor, intentelo mas tarde."
+                    + "\nSi el error persiste, comuníquese con el sevicio tecnico");
+            alert2.showAndWait();
         }
     }
 

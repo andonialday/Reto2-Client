@@ -7,6 +7,7 @@ package reto2g1cclient.logic;
 
 import java.util.Collection;
 import java.util.Date;
+import reto2g1cclient.exception.ClientServerConnectionException;
 import reto2g1cclient.exception.DBServerException;
 import reto2g1cclient.model.Client;
 import reto2g1cclient.model.Evento;
@@ -24,22 +25,25 @@ public interface EventInterface {
      * @param event con los datos de la nueva entrada en la BBDD
      * @throws reto2g1cclient.exception.DBServerException si hay un error en la
      * realizacion del proceso en el servidor
+     * @throws reto2g1cclient.exception.ClientServerConnectionException
      */
-    public void createEvent(Evento event) throws DBServerException;
+    public void createEvent(Evento event) throws DBServerException, ClientServerConnectionException;
 
     /**
      *
      * @param event
      * @throws reto2g1cclient.exception.DBServerException
+     * @throws reto2g1cclient.exception.ClientServerConnectionException
      */
-    public void edit(Evento event) throws DBServerException;
+    public void edit(Evento event) throws DBServerException, ClientServerConnectionException;
 
     /**
      *
      * @param event
      * @throws reto2g1cclient.exception.DBServerException
+     * @throws reto2g1cclient.exception.ClientServerConnectionException
      */
-    public void remove(Evento event) throws DBServerException;
+    public void remove(Evento event) throws DBServerException, ClientServerConnectionException;
 
     /**
      *
@@ -112,8 +116,9 @@ public interface EventInterface {
     /**
      *
      * @return @throws reto2g1cclient.exception.DBServerException
+     * @throws reto2g1cclient.exception.ClientServerConnectionException
      */
-    public Collection<Evento> findAll() throws DBServerException;
+    public Collection<Evento> findAll() throws DBServerException, ClientServerConnectionException;
 
     /**
      *

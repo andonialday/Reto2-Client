@@ -12,6 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.core.GenericType;
+import reto2g1cclient.exception.ClientServerConnectionException;
 import reto2g1cclient.exception.DBServerException;
 import reto2g1cclient.logic.EventInterface;
 import reto2g1cclient.model.Client;
@@ -38,12 +39,14 @@ public class EventImplementation implements EventInterface {
      * @param event
      */
     @Override
-    public void createEvent(Evento event) throws DBServerException {
+    public void createEvent(Evento event) throws DBServerException, ClientServerConnectionException {
         try {
             ejc.create(event);
         } catch (ClientErrorException e) {
             LOGGER.log(Level.SEVERE, "Error al leer los eventos en la base de datos");
             throw new DBServerException(e.getMessage());
+        } catch (Exception e) {
+            throw new ClientServerConnectionException(e.getMessage());
         }
     }
 
@@ -60,6 +63,12 @@ public class EventImplementation implements EventInterface {
         } catch (ClientErrorException e) {
             LOGGER.log(Level.SEVERE, "Error al leer los eventos en la base de datos");
             throw new DBServerException(e.getMessage());
+        } catch (Exception e) {
+            try {
+                throw new ClientServerConnectionException(e.getMessage());
+            } catch (ClientServerConnectionException ex) {
+                Logger.getLogger(EventImplementation.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return ret;
     }
@@ -69,7 +78,7 @@ public class EventImplementation implements EventInterface {
      * @return @throws reto2g1cclient.exception.DBServerException
      */
     @Override
-    public Collection<Evento> findAll() throws DBServerException {
+    public Collection<Evento> findAll() throws DBServerException, ClientServerConnectionException {
         List<Evento> ret = null;
         try {
             ret = ejc.findAll(new GenericType<List<Evento>>() {
@@ -77,6 +86,8 @@ public class EventImplementation implements EventInterface {
         } catch (ClientErrorException e) {
             LOGGER.log(Level.SEVERE, "Error al leer los eventos en la base de datos");
             throw new DBServerException(e.getMessage());
+        } catch (Exception e) {
+            throw new ClientServerConnectionException(e.getMessage());
         }
         return ret;
     }
@@ -86,12 +97,14 @@ public class EventImplementation implements EventInterface {
      * @param event
      */
     @Override
-    public void edit(Evento event) throws DBServerException {
+    public void edit(Evento event) throws DBServerException, ClientServerConnectionException {
         try {
             ejc.edit(event, String.valueOf(event.getId()));
         } catch (ClientErrorException e) {
             LOGGER.log(Level.SEVERE, "Error al leer los eventos en la base de datos");
             throw new DBServerException(e.getMessage());
+        } catch (Exception e) {
+            throw new ClientServerConnectionException(e.getMessage());
         }
     }
 
@@ -100,12 +113,14 @@ public class EventImplementation implements EventInterface {
      * @param event
      */
     @Override
-    public void remove(Evento event) throws DBServerException {
+    public void remove(Evento event) throws DBServerException, ClientServerConnectionException {
         try {
             ejc.remove(String.valueOf(event.getId()));
         } catch (ClientErrorException e) {
             LOGGER.log(Level.SEVERE, "Error al leer los eventos en la base de datos");
             throw new DBServerException(e.getMessage());
+        } catch (Exception e) {
+            throw new ClientServerConnectionException(e.getMessage());
         }
     }
 
