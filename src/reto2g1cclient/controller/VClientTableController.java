@@ -240,16 +240,12 @@ public class VClientTableController {
         optionsForComboType = FXCollections.observableArrayList(SELECT_PARTICULAR,
                 SELECT_ASOCIATION, SELECT_ENTERPRISE, SELECT_PUBLIC_ENTITY);
         cbType.setItems(optionsForComboType);
-        //Do not select any option from the combo box by default
-        cbType.getSelectionModel().select(-1);
 
         //Add the values ​​of the client filter ComboBox
         ObservableList<String> optionsForComboSearch;
         optionsForComboSearch = FXCollections.observableArrayList(SELECT_NAME,
                 SELECT_LOGIN, SELECT_EMAIL, SELECT_TYPE);
         cbSearchBy.setItems(optionsForComboSearch);
-        //Do not select any option from the combo box by default
-        cbSearchBy.getSelectionModel().select(-1);
 
         //Insert the table columns and link them to clients
         colLogin.setCellValueFactory(new PropertyValueFactory<>("login"));
@@ -299,6 +295,7 @@ public class VClientTableController {
             //Buttons enabled
             btnViewEvents.setDisable(false);
             btnDeleteClient.setDisable(false);
+            btnSaveClient.setDisable(false);
 
             //Field controllers
             name = false;
@@ -322,6 +319,7 @@ public class VClientTableController {
             //Buttons disabled
             btnViewEvents.setDisable(true);
             btnDeleteClient.setDisable(true);
+            btnSaveClient.setDisable(true);
 
             //Field controllers
             name = false;
@@ -356,19 +354,29 @@ public class VClientTableController {
      *
      * @return
      */
-    private boolean checkFields() throws FieldsEmptyException,
+    private boolean checkFields(boolean newClientFields) throws FieldsEmptyException,
             MaxCharacterException, EmailNotValidException,
             LoginNotValidException, PasswordNotValidException,
             ConfirmPasswordNotValidException {
 
-        //Checks if all the fields are written
-        if (tfName.getText().trim().isEmpty()
-                || tfEmail.getText().trim().isEmpty()
-                || tfLogin.getText().trim().isEmpty()
-                || tfPassword.getText().trim().isEmpty()
-                || tfConfirmPassword.getText().trim().isEmpty()) {
-            LOGGER.info("Some fields are empty");
-            throw new FieldsEmptyException("Error, some fields are empty");
+        if (newClientFields) {
+            //Check that the fields are complete to add a client
+            if (tfName.getText().trim().isEmpty()
+                    || tfEmail.getText().trim().isEmpty()
+                    || tfLogin.getText().trim().isEmpty()
+                    || tfPassword.getText().trim().isEmpty()
+                    || tfConfirmPassword.getText().trim().isEmpty()) {
+                LOGGER.info("Some fields are empty");
+                throw new FieldsEmptyException("Error, some fields are empty");
+            }
+            //Check that the fields are complete to edit a client
+        } else {
+            if (tfName.getText().trim().isEmpty()
+                    || tfEmail.getText().trim().isEmpty()
+                    || tfLogin.getText().trim().isEmpty()) {
+                LOGGER.info("Some fields are empty");
+                throw new FieldsEmptyException("Error, some fields are empty");
+            }
         }
 
         //Checks if the name field has more than 25 characters
@@ -387,23 +395,25 @@ public class VClientTableController {
                 || tfLogin.getText().trim().length() < 5) {
             throw new LoginNotValidException("Error, invalid login");
         }
+        
+        if (newClientFields) {
+            //Check if the password field is written correctly
+            if (!validatePassword(tfPassword.getText().trim())) {
+                throw new PasswordNotValidException("Error, invalid password");
+            }
 
-        //Check if the password field is written correctly
-        if (!validatePassword(tfPassword.getText().trim())) {
-            throw new PasswordNotValidException("Error, invalid password");
-        }
+            //Check if the confirm password field is written correctly
+            if (!validatePassword(tfConfirmPassword.getText().trim())) {
+                throw new PasswordNotValidException("Error, invalid password");
+            }
 
-        //Check if the confirm password field is written correctly
-        if (!validatePassword(tfConfirmPassword.getText().trim())) {
-            throw new PasswordNotValidException("Error, invalid password");
-        }
-
-        //Check that the confirm password field 
-        //contains exactly the same characters typed
-        if (!tfConfirmPassword.getText().trim()
-                .equals(tfPassword.getText().trim())) {
-            throw new ConfirmPasswordNotValidException("Error, "
-                    + "different confirmation password");
+            //Check that the confirm password field 
+            //contains exactly the same characters typed
+            if (!tfConfirmPassword.getText().trim()
+                    .equals(tfPassword.getText().trim())) {
+                throw new ConfirmPasswordNotValidException("Error, "
+                        + "different confirmation password");
+            }
         }
 
         return true;
@@ -452,26 +462,25 @@ public class VClientTableController {
         alert1.setTitle("Delete Client");
         alert1.setHeaderText(null);
         alert1.setContentText("Are you sure you want to delete this client?");
-        alert1.showAndWait();
         Optional<ButtonType> result = alert1.showAndWait();
         if (result.get() == ButtonType.OK) {
 
             try {
                 LOGGER.info("Delete selected client");
-                
+
                 //Delete the selected client by calling the logic part
                 Client clientToRemove = tbClient
                         .getSelectionModel()
                         .getSelectedItem();
                 clientInterface
                         .removeClient(String.valueOf(clientToRemove.getId()));
-                
+
                 //Update client table 
                 loadClientTable();
-                
+
                 //Refresh the table
                 tbClient.refresh();
-                
+
             } catch (ClientServerConnectionException e) {
                 Alert alert2 = new Alert(AlertType.ERROR);
                 alert2.setTitle("Help");
@@ -491,6 +500,7 @@ public class VClientTableController {
 
     /**
      * Check that the name field is filled
+     *
      * @param observable
      * @param oldValue
      * @param newValue
@@ -506,6 +516,7 @@ public class VClientTableController {
 
     /**
      * Check that the email field is filled
+     *
      * @param observable
      * @param oldValue
      * @param newValue
@@ -521,6 +532,7 @@ public class VClientTableController {
 
     /**
      * Check that the login field is filled
+     *
      * @param observable
      * @param oldValue
      * @param newValue
@@ -536,6 +548,7 @@ public class VClientTableController {
 
     /**
      * Check that the password field is filled
+     *
      * @param observable
      * @param oldValue
      * @param newValue
@@ -551,6 +564,7 @@ public class VClientTableController {
 
     /**
      * Check that the confirm password field is filled
+     *
      * @param observable
      * @param oldValue
      * @param newValue
@@ -596,8 +610,9 @@ public class VClientTableController {
 
         try {
 
-            //Check the information of the data entered in the fields
-            if (checkFields()) {
+            //Check the information entered in the fields 
+            //when all the fields are entered
+            if (checkFields(true)) {
                 LOGGER.info("Correct text fields");
 
                 Alert alert1 = new Alert(AlertType.CONFIRMATION);
@@ -605,7 +620,6 @@ public class VClientTableController {
                 alert1.setHeaderText(null);
                 alert1.setContentText("Are you sure "
                         + "you want to add this client?");
-                alert1.showAndWait();
                 Optional<ButtonType> result = alert1.showAndWait();
                 if (result.get() == ButtonType.OK) {
 
@@ -636,7 +650,7 @@ public class VClientTableController {
                         }
                         //Add the client introduced by calling the logical part
                         clientInterface.createClient(clientToCreate);
-                        
+
                         //Add the client on the Client list to update the obserbable
                         clientList.add(clientToCreate);
 
@@ -724,8 +738,9 @@ public class VClientTableController {
 
         try {
 
-            //Check the information of the data entered in the fields
-            if (checkFields()) {
+            //Check the information entered in the fields 
+            //without being able to modify the password fields
+            if (checkFields(false)) {
                 LOGGER.info("Correct text fields");
 
                 Alert alert1 = new Alert(AlertType.CONFIRMATION);
@@ -733,19 +748,18 @@ public class VClientTableController {
                 alert1.setHeaderText(null);
                 alert1.setContentText("Are you sure "
                         + "you want to edit this client?");
-                alert1.showAndWait();
                 Optional<ButtonType> result = alert1.showAndWait();
                 if (result.get() == ButtonType.OK) {
 
                     try {
                         LOGGER.info("Edit the client");
-                        
+
                         //Edit the client by calling the logical part
                         clientInterface.editClient(clientToEdit);
 
                         //Add the client on the Client list to update the obserbable
                         clientList.add(clientToEdit);
-                        
+
                         //Update client table 
                         loadClientTable();
 
@@ -802,7 +816,6 @@ public class VClientTableController {
         alert1.setTitle("Print Information");
         alert1.setHeaderText(null);
         alert1.setContentText("Do you want to print the information?");
-        alert1.showAndWait();
         Optional<ButtonType> result = alert1.showAndWait();
         if (result.get() == ButtonType.OK) {
 
@@ -862,7 +875,7 @@ public class VClientTableController {
         try {
 
             Collection<Client> clients = clientInterface.getAllClient();
-            
+
             //Type of filter selected in the combobox
             switch (cbSearchBy.getValue()) {
 
@@ -1069,7 +1082,6 @@ public class VClientTableController {
         alert1.setContentText("Are you sure "
                 + "you want to return to the previous window?"
                 + " You will lose all your new data");
-        alert1.showAndWait();
         Optional<ButtonType> result = alert1.showAndWait();
 
         if (result.get() == ButtonType.OK) {
