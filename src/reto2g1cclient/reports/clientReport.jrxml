@@ -62,24 +62,24 @@
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="46" splitType="Stretch">
+		<band height="29" splitType="Stretch">
 			<textField>
-				<reportElement x="0" y="0" width="127" height="46" uuid="18837419-463d-469d-b84d-2f7b7ae90bcf"/>
+				<reportElement x="0" y="0" width="127" height="29" uuid="18837419-463d-469d-b84d-2f7b7ae90bcf"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{fullName}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="127" y="0" width="151" height="46" uuid="9b49ca67-ae0a-4a05-b662-6cada51df4f4"/>
+				<reportElement x="127" y="0" width="151" height="29" uuid="9b49ca67-ae0a-4a05-b662-6cada51df4f4"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{login}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="278" y="0" width="132" height="46" uuid="f9d3a4e9-dfd3-46c2-833d-0fe90eae2f5f"/>
+				<reportElement x="278" y="0" width="132" height="29" uuid="f9d3a4e9-dfd3-46c2-833d-0fe90eae2f5f"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{email}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="410" y="0" width="145" height="46" uuid="b8602dca-6c85-4357-8adc-097a8024ff9f"/>
+				<reportElement x="410" y="0" width="145" height="29" uuid="b8602dca-6c85-4357-8adc-097a8024ff9f"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{type}]]></textFieldExpression>
 			</textField>

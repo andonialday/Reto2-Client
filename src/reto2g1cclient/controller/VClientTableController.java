@@ -335,7 +335,13 @@ public class VClientTableController {
      */
     private void loadClientTable() {
         try {
+            //Clear the data of the table
+            tbClient.getItems().clear();
             clientList = (List<Client>) clientInterface.getAllClient();
+            //Set the data in the table
+            tbClient.setItems(clientsForTable);
+            //Refresh the table
+            tbClient.refresh();
             //MODIFICAR : DBServerException
         } catch (Exception e) {
             LOGGER.info(e.getMessage() + "Failed to load data");
@@ -395,7 +401,7 @@ public class VClientTableController {
                 || tfLogin.getText().trim().length() < 5) {
             throw new LoginNotValidException("Error, invalid login");
         }
-        
+
         if (newClientFields) {
             //Check if the password field is written correctly
             if (!validatePassword(tfPassword.getText().trim())) {
@@ -477,9 +483,6 @@ public class VClientTableController {
 
                 //Update client table 
                 loadClientTable();
-
-                //Refresh the table
-                tbClient.refresh();
 
             } catch (ClientServerConnectionException e) {
                 Alert alert2 = new Alert(AlertType.ERROR);
@@ -657,9 +660,6 @@ public class VClientTableController {
                         //Update client table 
                         loadClientTable();
 
-                        //Refresh the table
-                        tbClient.refresh();
-
                     } catch (ClientServerConnectionException e) {
                         Alert alert2 = new Alert(AlertType.ERROR);
                         alert2.setTitle("Ayuda");
@@ -760,9 +760,12 @@ public class VClientTableController {
                         //Add the client on the Client list to update the obserbable
                         clientList.add(clientToEdit);
 
+                        //Clear the data of the table
+                        tbClient.getItems().clear();
                         //Update client table 
                         loadClientTable();
-
+                        //Set the data in the table
+                        tbClient.setItems(clientsForTable);
                         //Refresh the table
                         tbClient.refresh();
 
@@ -838,7 +841,7 @@ public class VClientTableController {
                 jasperViewer.setVisible(true);
                 // jasperViewer.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
             } catch (JRException ex) {
-                //hacer el catch 
+                //HACER EL CATCH
             }
             //Information alert when you dismiss the confirmation alert
         } else {
