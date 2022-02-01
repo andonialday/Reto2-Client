@@ -19,10 +19,12 @@ import static org.testfx.matcher.base.NodeMatchers.isEnabled;
 import static org.testfx.matcher.base.NodeMatchers.isVisible;
 import static org.testfx.matcher.control.TextInputControlMatchers.hasText;
 import reto2g1cclient.application.ClientApplication;
+
 /**
  * Testing class for Client Table view and controller. 
  * Tests Client Table view behavior using TestFX framework.
- * @author javi
+ * 
+ * @author Jaime San Sebastian
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ClientTest extends ApplicationTest {
@@ -114,8 +116,7 @@ public class ClientTest extends ApplicationTest {
         eraseText(8);
         
         clickOn("#cbType");
-        clickOn("PARTICULAR");
-        //Escoger una opción del Combo Box
+        clickOn("PARTICULAR"); //Escoger una opción del Combo Box
         verifyThat("#btnNewClient", isDisabled());
         
         verifyThat("#btnNewClient", isDisabled());
@@ -145,7 +146,7 @@ public class ClientTest extends ApplicationTest {
         write("abcd*12345");
         
         clickOn("#cbType");
-        //Escoger una opción del Combo Box
+        clickOn("PARTICULAR"); //Escoger una opción del Combo Box
         
         verifyThat("#btnNewClient", isEnabled());
     }
@@ -171,7 +172,7 @@ public class ClientTest extends ApplicationTest {
         clickOn("#tfConfirmPassword");
         write("abcd*12345");
         clickOn("#cbType");
-        //Escoger una opción del Combo Box
+        clickOn("PARTICULAR"); //Escoger una opción del Combo Box
         
         verifyThat("#btnNewClient", isEnabled());
         clickOn("#btnNewClient");
@@ -201,7 +202,7 @@ public class ClientTest extends ApplicationTest {
         clickOn("#tfConfirmPassword");
         write("abcd*12345");
         clickOn("#cbType");
-        //Escoger una opción del Combo Box
+        clickOn("PARTICULAR"); //Escoger una opción del Combo Box
         
         verifyThat("#btnNewClient", isEnabled());
         clickOn("#btnNewClient");
@@ -231,7 +232,7 @@ public class ClientTest extends ApplicationTest {
         clickOn("#tfConfirmPassword");
         write("abcd*12345");
         clickOn("#cbType");
-        //Escoger una opción del Combo Box
+        clickOn("PARTICULAR"); //Escoger una opción del Combo Box
         
         verifyThat("#btnNewClient", isEnabled());
         clickOn("#btnNewClient");
@@ -261,7 +262,7 @@ public class ClientTest extends ApplicationTest {
         clickOn("#tfConfirmPassword");
         write("abcd*12345");
         clickOn("#cbType");
-        //Escoger una opción del Combo Box
+        clickOn("PARTICULAR"); //Escoger una opción del Combo Box
         
         verifyThat("#btnNewClient", isEnabled());
         clickOn("#btnNewClient");
@@ -291,7 +292,7 @@ public class ClientTest extends ApplicationTest {
         write("la contraseña de confirmación debe ser igual a la contraseña");
         
         clickOn("#cbType");
-        //Escoger una opción del Combo Box
+        clickOn("PARTICULAR"); //Escoger una opción del Combo Box
         
         verifyThat("#btnNewClient", isEnabled());
         clickOn("#btnNewClient");
@@ -324,7 +325,7 @@ public class ClientTest extends ApplicationTest {
         write("abcd*12345");
         
         clickOn("#cbType");
-        ////Escoger una opción del Combo Box
+        clickOn("PARTICULAR"); //Escoger una opción del Combo Box
         
         verifyThat("#btnNewClient", isEnabled());
         clickOn("#btnNewClient");
@@ -539,7 +540,7 @@ public class ClientTest extends ApplicationTest {
         verifyThat("#btnSaveClient", isDisabled());
         
         clickOn("#cbType");
-        //Escoger una opción del Combo Box
+        clickOn("PARTICULAR"); //Escoger una opción del Combo Box
         verifyThat("#btnNewClient", isEnabled());
         
         clickOn("#btnSaveClient");
@@ -571,7 +572,7 @@ public class ClientTest extends ApplicationTest {
     public void test7a_SearchFieldEmpty() throws InterruptedException{
         
         clickOn("#cbSearchBy");
-        //Escoger una opción del Combo Box
+        clickOn("PARTICULAR"); //Escoger una opción del Combo Box
         verifyThat("#txtFilter", isEnabled());
         
         clickOn("#btnSearch");
@@ -587,7 +588,7 @@ public class ClientTest extends ApplicationTest {
     public void test7b_SearchFieldNameCorrect() throws InterruptedException{
         
         clickOn("#cbSearchBy");
-        //Escoger la opción de Nombre del Cliente en la Combo Box
+        clickOn("Client Name"); //Escoger opción Client Name del Combo Box
         verifyThat("#txtFilter", isEnabled());
         
         clickOn("#txtFilter");
@@ -606,7 +607,7 @@ public class ClientTest extends ApplicationTest {
     public void test7c_SearchFieldNameIncorrect() throws InterruptedException{
         
         clickOn("#cbSearchBy");
-        //Escoger la opción de Nombre del Cliente en la Combo Box
+        clickOn("Client Name"); //Escoger opción Client Name del Combo Box
         verifyThat("#txtFilter", isEnabled());
         
         clickOn("#txtFilter");
@@ -625,7 +626,7 @@ public class ClientTest extends ApplicationTest {
     public void test7d_SearchFieldLoginCorrect() throws InterruptedException{
         
         clickOn("#cbSearchBy");
-        //Escoger la opción de Login del Cliente en la Combo Box
+        clickOn("Client Login"); //Escoger opción Client Login del Combo Box
         verifyThat("#txtFilter", isEnabled());
         
         clickOn("#txtFilter");
@@ -644,7 +645,7 @@ public class ClientTest extends ApplicationTest {
     public void test7e_SearchFieldLoginIncorrect() throws InterruptedException{
         
         clickOn("#cbSearchBy");
-        //Escoger la opción de Login del Cliente en la Combo Box
+        clickOn("Client Login"); //Escoger opción Client Login del Combo Box
         verifyThat("#txtFilter", isEnabled());
         
         clickOn("#txtFilter");
@@ -663,7 +664,7 @@ public class ClientTest extends ApplicationTest {
     public void test7f_SearchFieldEmailCorrect() throws InterruptedException{
         
         clickOn("#cbSearchBy");
-        //Escoger la opción de Email del Cliente en la Combo Box
+        clickOn("Client Email"); //Escoger opción Client Email del Combo Box
         verifyThat("#txtFilter", isEnabled());
         
         clickOn("#txtFilter");
@@ -682,7 +683,7 @@ public class ClientTest extends ApplicationTest {
     public void test7g_SearchFieldEmailIncorrect() throws InterruptedException{
         
         clickOn("#cbSearchBy");
-        //Escoger la opción de Email del Cliente en la Combo Box
+        clickOn("Client Email"); //Escoger opción Client Email del Combo Box
         verifyThat("#txtFilter", isEnabled());
         
         clickOn("#txtFilter");
@@ -701,7 +702,7 @@ public class ClientTest extends ApplicationTest {
     public void test7h_SearchFieldTypeCorrect() throws InterruptedException{
         
         clickOn("#cbSearchBy");
-        //Escoger la opción de Tipo del Cliente en la Combo Box
+        clickOn("Client Type"); //Escoger opción Client Type del Combo Box
         verifyThat("#txtFilter", isEnabled());
         
         clickOn("#txtFilter");
@@ -720,7 +721,7 @@ public class ClientTest extends ApplicationTest {
     public void test7i_SearchFieldTypeIncorrect() throws InterruptedException{
         
         clickOn("#cbSearchBy");
-        //Escoger la opción de Tipo del Cliente en la Combo Box
+        clickOn("Client Type"); //Escoger opción Client Type del Combo Box
         verifyThat("#txtFilter", isEnabled());
         
         clickOn("#txtFilter");

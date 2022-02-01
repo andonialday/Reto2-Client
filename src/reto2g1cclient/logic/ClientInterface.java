@@ -7,11 +7,13 @@ package reto2g1cclient.logic;
 
 import java.util.Collection;
 import reto2g1cclient.exception.ClientServerConnectionException;
+import reto2g1cclient.exception.DBServerException;
+import reto2g1cclient.exception.LoginOnUseException;
 import reto2g1cclient.model.Client;
 
 /**
  *
- * @author 2dam
+ * @author Jaime San Sebastián
  */
 public interface ClientInterface {
     
@@ -35,4 +37,7 @@ public interface ClientInterface {
     
     public Collection<Client> getAllClient() 
             throws ClientServerConnectionException;
+    
+    public void signUp(Client usr) 
+            throws ClientServerConnectionException, LoginOnUseException, DBServerException;
 }

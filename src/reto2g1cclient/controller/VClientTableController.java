@@ -18,7 +18,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -52,6 +51,8 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.view.JasperViewer;
 import reto2g1cclient.exception.ClientServerConnectionException;
+import reto2g1cclient.exception.DBServerException;
+import reto2g1cclient.exception.LoginOnUseException;
 import reto2g1cclient.implementation.ClientImplementation;
 import reto2g1cclient.logic.ClientInterface;
 import reto2g1cclient.model.Client;
@@ -59,7 +60,8 @@ import reto2g1cclient.model.Type;
 import reto2g1cclient.model.UserStatus;
 
 /**
- *
+ * Controller for the client table fxml
+ * 
  * @author Jaime San Sebastian
  */
 public class VClientTableController {
@@ -164,13 +166,13 @@ public class VClientTableController {
     private List<Client> clientList;
 
     /**
-     * Initialize and show window. Initialize the window, create a scene,
-     * associate it with a stage and show the window
+     * Initialize and show window. 
+     * Initialize the window, create a scene, 
+     * associate it with a stage and show the window.
      *
      * @param root
-     * @throws IOException
      */
-    public void initStage(Parent root) throws IOException {
+    public void initStage(Parent root) {
 
         LOGGER.info("Initializing VClientTable stage.");
 
@@ -276,7 +278,8 @@ public class VClientTableController {
      */
     private void handleSelection(ObservableValue observableValue,
             Object oldValue, Object newValue) {
-
+        LOGGER.info("Control the selection of a client");
+        
         //client selected in the table
         if (newValue != null) {
             //Insert client data into fields
@@ -330,23 +333,31 @@ public class VClientTableController {
     }
 
     /**
-     * Call to the server side so that it takes all the clients. Load the data
-     * of the new client in the table.
+     * Method to load the deleted, created or modified client in the table.
      */
     private void loadClientTable() {
+        LOGGER.info("Load client table");
+        
         try {
+
             //Clear the data of the table
             tbClient.getItems().clear();
+
+            //Call to the server side so that it takes all the clients
             clientList = (List<Client>) clientInterface.getAllClient();
+
             //Set the data in the table
             tbClient.setItems(clientsForTable);
+
             //Refresh the table
             tbClient.refresh();
-            //MODIFICAR : DBServerException
+
         } catch (Exception e) {
-            LOGGER.info(e.getMessage() + "Failed to load data");
+            LOGGER.info("Failed to load data");
+
         }
         LOGGER.info("Load data table");
+
         clientsForTable = FXCollections.observableArrayList(clientList);
         tbClient.setItems(clientsForTable);
     }
@@ -356,7 +367,7 @@ public class VClientTableController {
      * complete before creating or saving a client. Check that the name and
      * login fields have the correct size. Validate that the email and password
      * fields are written correctly. Check that the password and confirm
-     * password fields are the same
+     * password fields are the same.
      *
      * @return
      */
@@ -364,6 +375,7 @@ public class VClientTableController {
             MaxCharacterException, EmailNotValidException,
             LoginNotValidException, PasswordNotValidException,
             ConfirmPasswordNotValidException {
+        LOGGER.info("Check fields values");
 
         if (newClientFields) {
             //Check that the fields are complete to add a client
@@ -426,7 +438,7 @@ public class VClientTableController {
     }
 
     /**
-     * Method that validates the email
+     * Method that validates the email.
      *
      * @param emailStr
      * @return
@@ -437,7 +449,7 @@ public class VClientTableController {
     }
 
     /**
-     * Method that validates the password
+     * Method that validates the password.
      *
      * @param password
      * @return true if its valid
@@ -485,6 +497,7 @@ public class VClientTableController {
                 loadClientTable();
 
             } catch (ClientServerConnectionException e) {
+                LOGGER.info("Error deleting client");
                 Alert alert2 = new Alert(AlertType.ERROR);
                 alert2.setTitle("Help");
                 alert2.setHeaderText("Error");
@@ -502,7 +515,7 @@ public class VClientTableController {
     }
 
     /**
-     * Check that the name field is filled
+     * Check that the name field is filled.
      *
      * @param observable
      * @param oldValue
@@ -510,6 +523,8 @@ public class VClientTableController {
      */
     public void txtNameFull(ObservableValue observable,
             Object oldValue, Object newValue) {
+        LOGGER.info("Check field name filled");
+        
         name = false;
         if (tfName.getText().trim() != null) {
             name = true;
@@ -518,7 +533,7 @@ public class VClientTableController {
     }
 
     /**
-     * Check that the email field is filled
+     * Check that the email field is filled.
      *
      * @param observable
      * @param oldValue
@@ -526,6 +541,8 @@ public class VClientTableController {
      */
     public void txtEmailFull(ObservableValue observable,
             Object oldValue, Object newValue) {
+        LOGGER.info("Check field email filled");
+        
         email = false;
         if (tfEmail.getText().trim() != null) {
             email = true;
@@ -534,7 +551,7 @@ public class VClientTableController {
     }
 
     /**
-     * Check that the login field is filled
+     * Check that the login field is filled.
      *
      * @param observable
      * @param oldValue
@@ -542,6 +559,8 @@ public class VClientTableController {
      */
     public void txtLoginFull(ObservableValue observable,
             Object oldValue, Object newValue) {
+        LOGGER.info("Check field login filled");
+        
         login = false;
         if (tfLogin.getText().trim() != null) {
             login = true;
@@ -550,7 +569,7 @@ public class VClientTableController {
     }
 
     /**
-     * Check that the password field is filled
+     * Check that the password field is filled.
      *
      * @param observable
      * @param oldValue
@@ -558,6 +577,8 @@ public class VClientTableController {
      */
     public void txtPasswordFull(ObservableValue observable,
             Object oldValue, Object newValue) {
+        LOGGER.info("Check field password filled");
+        
         password = false;
         if (tfPassword.getText().trim() != null) {
             password = true;
@@ -566,7 +587,7 @@ public class VClientTableController {
     }
 
     /**
-     * Check that the confirm password field is filled
+     * Check that the confirm password field is filled.
      *
      * @param observable
      * @param oldValue
@@ -574,6 +595,8 @@ public class VClientTableController {
      */
     public void txtConfirmPasswordFull(ObservableValue observable,
             Object oldValue, Object newValue) {
+        LOGGER.info("Check field password filled");
+        
         confirmPassword = false;
         if (tfConfirmPassword.getText().trim() != null) {
             confirmPassword = true;
@@ -583,9 +606,11 @@ public class VClientTableController {
 
     /**
      * Check that the new client button is enabled when all the fields are
-     * complete and there is no client selected in the table
+     * complete and there is no client selected in the table.
      */
     public void filledFields() {
+        LOGGER.info("Check fields filled");
+        
         if (name && login && email && password && confirmPassword
                 && !tableSelect) {
             btnNewClient.setDisable(false);
@@ -652,7 +677,7 @@ public class VClientTableController {
                                 break;
                         }
                         //Add the client introduced by calling the logical part
-                        clientInterface.createClient(clientToCreate);
+                        clientInterface.signUp(clientToCreate);
 
                         //Add the client on the Client list to update the obserbable
                         clientList.add(clientToCreate);
@@ -661,11 +686,33 @@ public class VClientTableController {
                         loadClientTable();
 
                     } catch (ClientServerConnectionException e) {
-                        Alert alert2 = new Alert(AlertType.ERROR);
-                        alert2.setTitle("Ayuda");
-                        alert2.setHeaderText("Error");
-                        alert2.setContentText(e.getMessage());
-                        alert2.showAndWait();
+                        LOGGER.info("Error connecting to the Server");
+                        Alert altErrorSC = new Alert(AlertType.ERROR);
+                        altErrorSC.setTitle("System Error");
+                        altErrorSC.setHeaderText("Could not Connect to the Server");
+                        altErrorSC.setContentText("The application could not connect to the server"
+                                + "\n The Server may be busy with too many incoming requests, "
+                                + "try again later, if this error continues, contact support or check server availability");
+                        altErrorSC.showAndWait();
+                        
+                    } catch (DBServerException e) {
+                        LOGGER.info("Error connecting to the DataBase");
+                        Alert altErrorDB = new Alert(AlertType.ERROR);
+                        altErrorDB.setTitle("System Error");
+                        altErrorDB.setHeaderText("Could not Connect to the DataBase");
+                        altErrorDB.setContentText("The server could not register your info, try again later. "
+                                + "If this error persists, contact support or check the DataBase availability");
+                        altErrorDB.showAndWait();
+
+                    } catch (LoginOnUseException e) {
+                        LOGGER.info("Error, login on use ");
+                        Alert altWarningLog = new Alert(AlertType.WARNING);
+                        altWarningLog.setTitle("Login on use");
+                        altWarningLog.setHeaderText("Login already on use.");
+                        altWarningLog.setContentText("The text value input for the login field is allready on use on the DataBase."
+                                + "You may allready be registered on the database. If not another user is using that login, you"
+                                + "will have to use another one.");
+                        altWarningLog.showAndWait();
                     }
                     //Information alert when you dismiss the confirmation alert
                 } else {
@@ -760,16 +807,11 @@ public class VClientTableController {
                         //Add the client on the Client list to update the obserbable
                         clientList.add(clientToEdit);
 
-                        //Clear the data of the table
-                        tbClient.getItems().clear();
                         //Update client table 
                         loadClientTable();
-                        //Set the data in the table
-                        tbClient.setItems(clientsForTable);
-                        //Refresh the table
-                        tbClient.refresh();
 
                     } catch (ClientServerConnectionException e) {
+                        LOGGER.info("Error editing client");
                         Alert alert2 = new Alert(AlertType.ERROR);
                         alert2.setTitle("Ayuda");
                         alert2.setHeaderText("Error");
@@ -781,7 +823,7 @@ public class VClientTableController {
                     Alert alert3 = new Alert(AlertType.INFORMATION);
                     alert3.setTitle("Unedited client");
                     alert3.setHeaderText(null);
-                    alert3.setContentText(null);
+                    alert3.setContentText("Unedited client");
                     alert3.showAndWait();
                 }
             }
@@ -807,7 +849,7 @@ public class VClientTableController {
 
     /**
      * Method that controls the action button of printing the information of the
-     * clients
+     * clients.
      *
      * @param event the event linked to clicking on the button;
      */
@@ -823,26 +865,40 @@ public class VClientTableController {
         if (result.get() == ButtonType.OK) {
 
             try {
+
                 LOGGER.info("Beginning printing action...");
+
                 JasperReport report
                         = JasperCompileManager.compileReport(getClass()
                                 .getResourceAsStream("/reto2g1cclient/reports/clientReport.jrxml"));
-                //Data for the report: a collection of UserBean passed as a JRDataSource 
-                //implementation 
+
+                //Data for the report: 
+                //a collection of UserBean passed as a JRDataSource implementation 
                 JRBeanCollectionDataSource dataItems
                         = new JRBeanCollectionDataSource((Collection<Client>) this.tbClient.getItems());
+
                 //Map of parameter to be passed to the report
                 Map<String, Object> parameters = new HashMap<>();
+
                 //Fill report with data
-                JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, dataItems);
-                //Create and show the report window. The second parameter false value makes 
-                //report window not to close app.
+                JasperPrint jasperPrint = JasperFillManager
+                        .fillReport(report, parameters, dataItems);
+
+                //Create and show the report window. 
+                //The second parameter false value makes report window not to close app.
                 JasperViewer jasperViewer = new JasperViewer(jasperPrint, false);
                 jasperViewer.setVisible(true);
                 // jasperViewer.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+
             } catch (JRException ex) {
-                //HACER EL CATCH
+                LOGGER.info("Error printing information");
+                Alert alert2 = new Alert(AlertType.ERROR);
+                alert2.setTitle("Ayuda");
+                alert2.setHeaderText("Error opening the report");
+                alert2.setContentText(ex.getMessage());
+                alert2.showAndWait();
             }
+
             //Information alert when you dismiss the confirmation alert
         } else {
             Alert alert3 = new Alert(AlertType.INFORMATION);
@@ -854,25 +910,26 @@ public class VClientTableController {
     }
 
     /**
-     * When you select one of the options the search field is enabled
+     * When you select one of the options the search field is enabled.
      *
      * @param event the event linked to clicking on the button;
      */
     @FXML
     private void handleSearchBy(ActionEvent event) {
-
+        LOGGER.info("Filter field disable");
+        
         txtFilter.setDisable(false);
     }
 
     /**
      * Method that controls the search action button by a specific filter.
      * Depending on the Combo Box filter and the filter introduced in the
-     * search, the filtering will be executed in the table
+     * search, the filtering will be executed in the table.
      *
      * @param event the event linked to clicking on the button;
      */
     @FXML
-    private void handleSearch(ActionEvent event) {
+    private void handleSearch(ActionEvent event) throws ClientServerConnectionException, ClientServerConnectionException, ClientServerConnectionException {
         LOGGER.info("Filtering available clients");
 
         try {
@@ -1028,6 +1085,7 @@ public class VClientTableController {
 
             }
         } catch (Exception e) {
+            LOGGER.info("Error filtering available clients");
             Alert alert = new Alert(AlertType.INFORMATION);
             alert.setTitle("AYUDA");
             alert.setHeaderText("Error");
@@ -1059,7 +1117,8 @@ public class VClientTableController {
             controller.setEditable(true);
             controller.initStage(root);
 
-        } catch (Exception e) {
+        } catch (IOException e) {
+            LOGGER.info("Error opening event table window");
             Alert alert = new Alert(AlertType.INFORMATION);
             alert.setTitle("AYUDA");
             alert.setHeaderText("Error");
@@ -1153,4 +1212,103 @@ public class VClientTableController {
     public Stage getStage() {
         return stage;
     }
+    
+    /**
+     * Method that controls the search action button by a specific filter.
+     * Depending on the Combo Box filter and the filter introduced in the
+     * search, the filtering will be executed in the table.
+     * 
+     * @param event the event linked to clicking on the button;
+
+     @FXML
+    private void handleSearch(ActionEvent event) {
+        LOGGER.info("Run filters");
+		
+        //Create an arraylis that will contain the search data
+        List<Client> clients = new ArrayList<>();
+        clientList = (List<Client>) clientInterface.getAllClient();
+        
+        switch (cbSearchBy.getValue()) {
+            
+            //Filter by name
+            case SELECT_NAME:
+                //Check that the search field contains something typed
+                if (!txtFilter.getText().trim().equals("")) {
+                    //Go through the clients with the information entered
+                    for (Client client : clientList) {
+                        if (client.getFullName().toUpperCase()
+                                .contains(txtFilter.getText().toUpperCase().trim())) {
+                            clients.add(client);
+                        }
+                    }
+                    //Overwrite the observable list with the found data
+                    clientList = clients;
+                } else {
+                    //Load all clients in the table
+                    clientList = (List<Client>) clientInterface.getAllClient();
+                }
+                break;
+                
+            //Filter by login
+            case SELECT_LOGIN:
+                //Check that the search field contains something typed
+                if (!txtFilter.getText().trim().equals("")) {
+                    //Go through the clients with the information entered
+                    for (Client client : clientList) {
+                        if (client.getLogin().toUpperCase()
+                                .contains(txtFilter.getText().toUpperCase().trim())) {
+                            clients.add(client);
+                        }
+                    }
+                    //Overwrite the observable list with the found data
+                    clientList = clients;
+                } else {
+                    //Load all clients in the table
+                    clientList = (List<Client>) clientInterface.getAllClient();
+                }
+                break;
+                
+            //Filter by email
+            case SELECT_EMAIL:
+                //Check that the search field contains something typed
+                if (!txtFilter.getText().trim().equals("")) {
+                    //Go through the clients with the information entered
+                    for (Client client : clientList) {
+                        if (client.getEmail().toUpperCase()
+                                .contains(txtFilter.getText().toUpperCase().trim())) {
+                            clients.add(client);
+                        }
+                    }
+                    //Overwrite the observable list with the found data
+                    clientList = clients;
+                } else {
+                    //Load all clients in the table
+                    clientList = (List<Client>) clientInterface.getAllClient();
+                }
+                break;
+                
+            //Filter by type
+            case SELECT_TYPE:
+                //Check that the search field contains something typed
+                if (!txtFilter.getText().trim().equals("")) {
+                    //Go through the clients with the information entered
+                    for (Client client : clientList) {
+                        if (client.getType().toUpperCase()
+                                .contains(txtFilter.getText().toUpperCase().trim())) {
+                            clients.add(client);
+                        }
+                    }
+                    //Overwrite the observable list with the found data
+                    clientList = clients;
+                } else {
+                    //Load all clients in the table
+                    clientList = (List<Client>) clientInterface.getAllClient();
+                }
+                break;
+                
+        }
+        
+        loadClientTable();
+    }
+    */
 }

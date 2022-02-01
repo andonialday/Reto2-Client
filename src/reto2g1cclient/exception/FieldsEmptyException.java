@@ -7,7 +7,7 @@ package reto2g1cclient.exception;
 
 /**
  *
- * @author JAIME
+ * @author Jaime San Sebastian
  */
 public class FieldsEmptyException extends Exception {
 

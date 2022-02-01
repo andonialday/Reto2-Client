@@ -7,7 +7,7 @@ package reto2g1cclient.exception;
 
 /**
  *
- * @author 2dam
+ * @author Jaime San Sebastian
  */
 public class LoginNotValidException extends Exception {
 
