@@ -328,7 +328,7 @@ public class EquipmentController {
         }catch (ClientServerConnectionException ex) {
              LOGGER.severe("Error en el guardado del equipamiento" + ex);
             Alert altWarningLog = new Alert(AlertType.WARNING);
-            altWarningLog.setTitle("Error al guardar en la base de datos");
+            altWarningLog.setTitle("Error al ejecutar la aplicacion");
             altWarningLog.setHeaderText("La base de datos puede no estar disponible en este momento ");
             altWarningLog.setContentText("Porfavor intentelo mas tarde");
             altWarningLog.showAndWait();
@@ -431,7 +431,7 @@ public class EquipmentController {
             lblWarninNumValue.setVisible(true);
             Alert altWarningLog = new Alert(AlertType.INFORMATION);
             altWarningLog.setTitle("Error ");
-            altWarningLog.setHeaderText("El coste introducido no es numerico o es mayor al coste maximo <b>10000€</b>");
+            altWarningLog.setHeaderText("El coste introducido no es numerico o es mayor al coste maximo 10000€");
             altWarningLog.setContentText("Porfavor introduzca un valor numerico dentro del rango establecido");
             altWarningLog.showAndWait();
             }
@@ -541,9 +541,9 @@ public class EquipmentController {
                     altWarningLog.setHeaderText("Aviso alguno de los valores introducidos no cumple con los parametros"
                             + " o esta vacio");
                     altWarningLog.setContentText("En el caso de ser un coste "
-                            + "debe cumplir con el siguiente formato <b>xxx.yy</b> \n"
+                            + "debe cumplir con el siguiente formato xxx.yy \n"
                             + "a su vez si lo que ha modificado es una fecha debera cumplir "
-                            + "el formato <b>DD/MM/AAAA</b>");
+                            + "el formato DD/MM/AAAA");
                     altWarningLog.showAndWait();
                 }
 
@@ -558,7 +558,7 @@ public class EquipmentController {
             altWarningLog.setTitle("Error  al guardar en la base de datos");
             altWarningLog.setHeaderText("El coste introducido no es numerico");
             altWarningLog.setContentText("El coste que se ha introducido debe ser numerico"
-                    + ",mayor que 0 y ademas con formato <b>xxx.yy</b>."
+                    + ",mayor que 0 y ademas con formato xxx.yy."
                     + "Dado este error se establecera al valor previo a la modificacion");
             altWarningLog.showAndWait();
 
