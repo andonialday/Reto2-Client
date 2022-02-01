@@ -36,6 +36,7 @@ import org.testfx.matcher.base.NodeMatchers;
 import static org.testfx.matcher.base.NodeMatchers.isDisabled;
 import static org.testfx.matcher.base.NodeMatchers.isEnabled;
 import static org.testfx.matcher.base.NodeMatchers.isVisible;
+import org.testfx.matcher.control.TextInputControlMatchers;
 import static org.testfx.matcher.control.TextInputControlMatchers.hasText;
 import reto2g1cclient.application.*;
 import reto2g1cclient.model.Evento;
@@ -79,6 +80,8 @@ public class VEventTableControllerIT extends ApplicationTest {
     private TableView tbEvent;
     private TableColumn clDateEnd;
 
+    private String user = "admin";
+    private String password = "*585CyeJf";
     private String name = "Evento de test";
     private String desc = "Descripcion del Evento de Prueba";
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -129,9 +132,9 @@ public class VEventTableControllerIT extends ApplicationTest {
     @Test
     public void testA_NavigateToVEventTable() {
         clickOn("#txtLogin");
-        write("admin");
+        write(user);
         clickOn("#txtPassword");
-        write("password");
+        write(password);
         clickOn("#btnSignIn");
         verifyThat("#pAdmin", isVisible());
         clickOn("n de Datos");
@@ -172,7 +175,8 @@ public class VEventTableControllerIT extends ApplicationTest {
         verifyThat("#clName", isVisible());
         verifyThat("#clDescription", isVisible());
     }
-
+    
+    @Ignore
     @Test
     public void testC_CreateButtonEnable() {
         limpiarCampos();
@@ -191,6 +195,7 @@ public class VEventTableControllerIT extends ApplicationTest {
         limpiarCampos();
     }
 
+    @Ignore
     @Test
     public void testD_CreateWrongDates() {
         limpiarCampos();
@@ -203,7 +208,7 @@ public class VEventTableControllerIT extends ApplicationTest {
         write("10/01/2000");
         clickOn("#taDescription");
         write(desc);
-        clickOn(btnNew);
+        clickOn("#btnNew");
         verifyThat(".alert", isVisible());
         assertEquals("Ha creado el evento", rowCount, tbEvent.getItems().size());
         List<Evento> users = tbEvent.getItems();
@@ -212,6 +217,7 @@ public class VEventTableControllerIT extends ApplicationTest {
         limpiarCampos();
     }
 
+    @Ignore
     @Test
     public void testE_CreateEventSuccessfull() {
         limpiarCampos();
@@ -224,9 +230,11 @@ public class VEventTableControllerIT extends ApplicationTest {
         clickOn("#dpDateStart");
         write("10/01/2000");
         press(KeyCode.ENTER);
+        release(KeyCode.ENTER);
         clickOn("#dpDateEnd");
         write("10/01/2020");
         press(KeyCode.ENTER);
+        release(KeyCode.ENTER);
         clickOn("#btnNew");
         assertEquals("Error al crear evento", rowCount + 1, tbEvent.getItems().size());
         List<Evento> users = tbEvent.getItems();
@@ -235,6 +243,7 @@ public class VEventTableControllerIT extends ApplicationTest {
         limpiarCampos();
     }
 
+    @Ignore
     @Test
     public void testF_tableSelect_Deselect() {
         limpiarCampos();
@@ -246,8 +255,8 @@ public class VEventTableControllerIT extends ApplicationTest {
         Evento event = (Evento) tbEvent.getSelectionModel().getSelectedItem();
         //Carga de datos de evento seleccionado en campos superiores
         verifyThat("#txtName", hasText(event.getName()));
-        verifyThat("#dpDateEnd", hasText(event.getDateEnd()));
-        verifyThat("#dpDateStart", hasText(event.getDateStart()));
+        assertNotNull("No ha cargado la fecha de inicio al seleccionar", dpDateStart.getValue());
+        assertNotNull("No ha cargado la fecha de finalizacion al seleccionar", dpDateEnd.getValue());
         verifyThat("#taDescription", hasText(event.getDescription()));
         //Deseleccionarelemento de la tabla
         press(KeyCode.CONTROL);
@@ -256,11 +265,12 @@ public class VEventTableControllerIT extends ApplicationTest {
         //Vaciado de campos superiores
         verifyThat("#txtName", hasText(""));
         verifyThat("#taDescription", hasText(""));
-        verifyThat("#dpDateStart", hasText(""));
-        verifyThat("#dpDateEnd", hasText(""));
+        assertEquals("No se ha deseleccionado la fecha", dpDateStart.getValue(), null);
+        assertEquals("No se ha deseleccionado la fecha", dpDateEnd.getValue(), null);
         limpiarCampos();
     }
 
+    @Ignore
     @Test
     public void testG_ModifyEventFormFailure() {
         limpiarCampos();
@@ -273,12 +283,14 @@ public class VEventTableControllerIT extends ApplicationTest {
         dpDateEnd.setValue(null);
         write("01/01/2000");
         press(KeyCode.ENTER);
+        release(KeyCode.ENTER);
         clickOn(btnSave);
         verifyThat(".alert", NodeMatchers.isVisible());
         clickOn("Aceptar");
         assertEquals("Se ha modificado el Evento", event, tbEvent.getSelectionModel().getSelectedItem());
     }
 
+    @Ignore
     @Test
     public void testH_ModifyEventFormSuccessfull() {
         limpiarCampos();
@@ -291,10 +303,9 @@ public class VEventTableControllerIT extends ApplicationTest {
         dpDateEnd.setValue(null);
         write("10/01/2000");
         press(KeyCode.ENTER);
+        release(KeyCode.ENTER);
         clickOn(btnSave);
-        verifyThat(".alert", NodeMatchers.isVisible());
-        clickOn("Aceptar");
-        assertNotEquals("Se ha modificado el Evento", event, tbEvent.getSelectionModel().getSelectedItem());
+        assertEquals("Se ha modificado el Evento", event.getDateEnd(), "10/01/2000");
         limpiarCampos();
     }
 
@@ -307,15 +318,16 @@ public class VEventTableControllerIT extends ApplicationTest {
         clickOn(row);
         Evento event = (Evento) tbEvent.getSelectionModel().getSelectedItem();
         tbEvent.getSelectionModel().select(rowCount - 1, clDateEnd);
+        write("01/01/1000");
         press(KeyCode.ENTER);
-        write("01/01/2000");
-        press(KeyCode.ENTER);
+        release(KeyCode.ENTER);
         verifyThat(".alert", NodeMatchers.isVisible());
         clickOn("Aceptar");
         assertEquals("Se ha modificado el Evento", event, tbEvent.getSelectionModel().getSelectedItem());
         limpiarCampos();
     }
-
+    
+    @Ignore
     @Test
     public void testJ_ModifyEventTableSuccessfull() {
         limpiarCampos();
@@ -327,6 +339,7 @@ public class VEventTableControllerIT extends ApplicationTest {
         tbEvent.getSelectionModel().select(rowCount - 1, clDateEnd);
         write("10/01/2000");
         press(KeyCode.ENTER);
+        release(KeyCode.ENTER);
         clickOn("#btnSave");
         verifyThat(".alert", NodeMatchers.isVisible());
         clickOn("Aceptar");
@@ -334,6 +347,7 @@ public class VEventTableControllerIT extends ApplicationTest {
         limpiarCampos();
     }
 
+    @Ignore
     @Test
     public void testK_DeleteEventCancel() {
         limpiarCampos();
@@ -347,6 +361,7 @@ public class VEventTableControllerIT extends ApplicationTest {
         assertEquals("Se ha borrado el Evento", rowCount, tbEvent.getItems().size());
     }
 
+    @Ignore
     @Test
     public void testL_DeleteEventSuccessfull() {
         limpiarCampos();
@@ -358,6 +373,13 @@ public class VEventTableControllerIT extends ApplicationTest {
         verifyThat(".alert", NodeMatchers.isVisible());
         clickOn("Aceptar");
         assertEquals("Se ha borrado el Evento", rowCount - 1, tbEvent.getItems().size());
+    }
+
+    @Ignore
+    @Test
+    public void testM_printReport() {
+        clickOn("#btnPrint");
+        verifyThat("INFORME", isVisible());
     }
 
 }
