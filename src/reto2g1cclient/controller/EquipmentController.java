@@ -1082,13 +1082,24 @@ public class EquipmentController {
      * @return equipamiento con las fechas actualizadas
      */
     public Equipment devolverFormatoFecha(Equipment equipment) {
-         //Convertir fechas mostradas en fecha compatible con la base de datos
+      try{
+          //Convertir fechas mostradas en fecha compatible con la base de datos
         //  Fecha mostrada en String a LocalDate
         LocalDate date = LocalDate.parse(equipment.getDateAdd(), formatter);
          //  LocalDate a String compatible en base de datos
         String fecha = date.atStartOfDay().atZone(ZoneId.systemDefault()).format(database);
         //Actualizacion de la fecha del equipamiento
-        equipment.setDateAdd(fecha);
+        equipment.setDateAdd(fecha); 
+      }catch(DateTimeParseException e){
+          Alert altWarningLog = new Alert(AlertType.WARNING);
+            altWarningLog.setTitle("La fecha introducida no es correcta ");
+            altWarningLog.setHeaderText("La fecha introducida no cumple los "
+                    + "siguientes paramentros");
+            altWarningLog.setContentText("El coste que se ha introducido deben"
+                    + " cumplir el formato DD/MM/AAAA");
+            altWarningLog.showAndWait();
+      }
+       
 
         return equipment;
     }
