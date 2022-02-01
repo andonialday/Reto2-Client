@@ -5,8 +5,9 @@
  */
 package reto2g1cclient.controller;
 
-import java.time.LocalDate;
+import java.awt.MouseInfo;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -22,7 +23,6 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
-import static org.hamcrest.Matchers.hasValue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
@@ -36,7 +36,6 @@ import org.testfx.matcher.base.NodeMatchers;
 import static org.testfx.matcher.base.NodeMatchers.isDisabled;
 import static org.testfx.matcher.base.NodeMatchers.isEnabled;
 import static org.testfx.matcher.base.NodeMatchers.isVisible;
-import org.testfx.matcher.control.TextInputControlMatchers;
 import static org.testfx.matcher.control.TextInputControlMatchers.hasText;
 import reto2g1cclient.application.*;
 import reto2g1cclient.model.Evento;
@@ -47,9 +46,6 @@ import reto2g1cclient.model.Evento;
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class VEventTableControllerIT extends ApplicationTest {
-
-    public VEventTableControllerIT() {
-    }
 
     //Elementos previos a VEventTable
     //  VSignIn
@@ -86,6 +82,9 @@ public class VEventTableControllerIT extends ApplicationTest {
     private String desc = "Descripcion del Evento de Prueba";
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
+    public VEventTableControllerIT() {
+    }
+    
     /**
      * Starts application to be tested.
      *
@@ -175,7 +174,7 @@ public class VEventTableControllerIT extends ApplicationTest {
         verifyThat("#clName", isVisible());
         verifyThat("#clDescription", isVisible());
     }
-    
+
     @Ignore
     @Test
     public void testC_CreateButtonEnable() {
@@ -315,9 +314,9 @@ public class VEventTableControllerIT extends ApplicationTest {
         int rowCount = tbEvent.getItems().size();
         Node row = lookup(".table-row-cell").nth(rowCount - 1).query();
         assertNotNull("Row is null: table has not that row. ", row);
-        clickOn(row);
+        doubleClickOn(tbEvent.);
         Evento event = (Evento) tbEvent.getSelectionModel().getSelectedItem();
-        tbEvent.getSelectionModel().select(rowCount - 1, clDateEnd);
+        //tbEvent.edit(rowCount, clDateEnd);
         write("01/01/1000");
         press(KeyCode.ENTER);
         release(KeyCode.ENTER);
@@ -326,7 +325,7 @@ public class VEventTableControllerIT extends ApplicationTest {
         assertEquals("Se ha modificado el Evento", event, tbEvent.getSelectionModel().getSelectedItem());
         limpiarCampos();
     }
-    
+
     @Ignore
     @Test
     public void testJ_ModifyEventTableSuccessfull() {

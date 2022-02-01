@@ -509,43 +509,56 @@ public class VEventTableController {
     public void newEvent(ActionEvent event) {
         // Comprobacion de que la fecha de finalizacion no es anterior a la de inicio
         if (dpDateEnd.getValue().isAfter(dpDateStart.getValue()) || dpDateEnd.getValue().isEqual(dpDateStart.getValue())) {
-            try {
-                // Creacion de nuevo evento con carga de datos desde los campos superiores
-                Evento ev = new Evento();
-                ev.setName(txtName.getText().trim());
-                ev.setDescription(taDescription.getText().trim());
-                ev.setDateStart(dpDateStart.getValue().format(formatter));
-                ev.setDateEnd(dpDateEnd.getValue().format(formatter));
-                // Cambio del formato de las fechas al solicitado pr la BBDD
-                ev = devolverFormatoFechas(ev);
-                // Solicitud de creacion del evento a la BBDD
-                ei.createEvent(ev);
-                // Recarga de datos de la BBD y refrescar la tabla
-                loadData();
-                loadTable();
-                tbEvent.refresh();
-                // "Reset" de los campos superior a contenido vacio
-                txtName.setText("");
-                taDescription.setText("");
-                dpDateStart.setValue(null);
-                dpDateEnd.setValue(null);
-            } catch (DBServerException ex) {
-                Logger.getLogger(VEventTableController.class.getName()).log(Level.SEVERE, null, ex);
+            if (txtName.getText().trim().length() < 400 && taDescription.getText().trim().length() < 400) {
+                try {
+                    // Creacion de nuevo evento con carga de datos desde los campos superiores
+                    Evento ev = new Evento();
+                    ev.setName(txtName.getText().trim());
+                    ev.setDescription(taDescription.getText().trim());
+                    ev.setDateStart(dpDateStart.getValue().format(formatter));
+                    ev.setDateEnd(dpDateEnd.getValue().format(formatter));
+                    // Cambio del formato de las fechas al solicitado pr la BBDD
+                    ev = devolverFormatoFechas(ev);
+                    // Solicitud de creacion del evento a la BBDD
+                    ei.createEvent(ev);
+                    // Recarga de datos de la BBD y refrescar la tabla
+                    loadData();
+                    loadTable();
+                    tbEvent.refresh();
+                    // "Reset" de los campos superior a contenido vacio
+                    txtName.setText("");
+                    taDescription.setText("");
+                    dpDateStart.setValue(null);
+                    dpDateEnd.setValue(null);
+                } catch (DBServerException ex) {
+                    Logger.getLogger(VEventTableController.class.getName()).log(Level.SEVERE, null, ex);
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("Error al Crear Evento");
+                    alert.setHeaderText("Error al crear un nuevo evento en la base de datos");
+                    alert.setContentText("Ha sucedido un error al intentar añadir el evento "
+                            + "\nen el servidor de datos, por favor, intentelo mas tarde."
+                            + "\nSi el error persiste, comuníquese con el sevicio tecnico");
+                    alert.showAndWait();
+                } catch (ClientServerConnectionException ex) {
+                    Alert alert2 = new Alert(Alert.AlertType.WARNING);
+                    alert2.setTitle("Error de Conexión");
+                    alert2.setHeaderText("Error al conectar con el servidor que alberga la base de datos");
+                    alert2.setContentText("Ha sucedido un error al intentar crear el nuevo "
+                            + "evento en la base de datos, por favor, intentelo mas tarde."
+                            + "\nSi el error persiste, comuníquese con el sevicio tecnico");
+                    alert2.showAndWait();
+                }
+            } else {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Error al Crear Evento");
-                alert.setHeaderText("Error al crear un nuevo evento en la base de datos");
-                alert.setContentText("Ha sucedido un error al intentar añadir el evento "
-                        + "\nen el servidor de datos, por favor, intentelo mas tarde."
-                        + "\nSi el error persiste, comuníquese con el sevicio tecnico");
+                alert.setTitle("Error de Contenido");
+                alert.setHeaderText("El contenido introducido no es válido");
+                alert.setContentText("El sistema permite una longitud máxima de "
+                        + "50 caracteres para el nombre y 400 para la descripcion,"
+                        + "uno de estos límites se ha excedido. Si quiere añadir un "
+                        + "evento, limite la longitud del nombre y la descripcion "
+                        + "dentro de estos limites.\nDisculpe las molestias. Para "
+                        + "mas informacion, comuniquese con soporte tecnico.");
                 alert.showAndWait();
-            } catch (ClientServerConnectionException ex) {
-                Alert alert2 = new Alert(Alert.AlertType.WARNING);
-                alert2.setTitle("Error de Conexión");
-                alert2.setHeaderText("Error al conectar con el servidor que alberga la base de datos");
-                alert2.setContentText("Ha sucedido un error al intentar crear el nuevo "
-                        + "evento en la base de datos, por favor, intentelo mas tarde."
-                        + "\nSi el error persiste, comuníquese con el sevicio tecnico");
-                alert2.showAndWait();
             }
         } else {
             lblDateEndEr.setVisible(true);
@@ -1154,6 +1167,7 @@ public class VEventTableController {
             alert.setTitle("Nuevos valores no validos");
             alert.setHeaderText("Debe introducir valores validos:"
                     + "\nEl Nombre y la Descripción no pueden ser nulos"
+                    + "\nni superar las longitudes maximas de 50 y 400 caracteres respectivamente"
                     + "\nLas Fechas deben estar en formato valido"
                     + "\nLa Fecha de Finalización no puede ser anterior a la de Inicio");
             alert.showAndWait();
@@ -1173,7 +1187,7 @@ public class VEventTableController {
             Map<String, Object> parameters = new HashMap<>();
             JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, dataItems);
             // Inicialización de visor de informe
-            JasperViewer jasperviewer = new JasperViewer(jasperPrint,false);
+            JasperViewer jasperviewer = new JasperViewer(jasperPrint, false);
             jasperviewer.setVisible(true);
         } catch (JRException ex) {
             Logger.getLogger(VEventTableController.class
