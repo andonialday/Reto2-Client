@@ -111,6 +111,7 @@ public class MenuAdminController {
         alert.setTitle("Ventana EventEquipment");
         alert.setHeaderText("VEventEquipment no disponible");
         alert.setContentText("La ventana VEventEquipment no se ha podido desarrollar por falta de tiempo, perdone las molestias");
+        alert.showAndWait();
         /*
         try {            
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/reto2g1cclient/view/VEventEquipment.fxml"));
