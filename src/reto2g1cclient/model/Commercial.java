@@ -9,7 +9,6 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * Esta clase es un tipo de Usuario que extiende de User
@@ -18,27 +17,12 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 public class Commercial extends User implements Serializable{
     
-    
-    
-    
-    
-    
-    
     //La especializacion del Comercial se implementa mediante las opciones de la clase Especialization
     private Especialization especialization;
+    
     //La lista de clientes que tiene un comercial 
     private List<Client> clients;
 
-    public Commercial(Especialization especialization, List<Client> clients) {
-        super();
-        this.especialization = especialization;
-        this.clients = clients;
-    }
-
-    public Commercial() {
-        
-    }
-    
     /**
      * Metodo para obtener la especializacion
      * @return Devuelve una Especializacion
@@ -51,7 +35,6 @@ public class Commercial extends User implements Serializable{
      * Metodo`para obtener el Listado de clientes
      * @return Devuelve el array de clientes
      */
-    @XmlTransient
     public List<Client> getClients() {
         return clients;
     }

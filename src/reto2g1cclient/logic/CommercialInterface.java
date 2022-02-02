@@ -5,8 +5,11 @@
  */
 package reto2g1cclient.logic;
 
+import java.util.Collection;
 import java.util.List;
-import reto2g1cclient.model.Client;
+import reto2g1cclient.exception.ClientServerConnectionException;
+import reto2g1cclient.exception.LoginOnUseException;
+import reto2g1cclient.exception.DBServerException;
 import reto2g1cclient.model.Commercial;
 
 
@@ -16,8 +19,7 @@ import reto2g1cclient.model.Commercial;
  * @author Enaitz Izagirre
  */
 public interface CommercialInterface {
-    
-     /**
+        /**
      *
      * @param commercial
      */
@@ -29,11 +31,8 @@ public interface CommercialInterface {
      */
     public void edit(Commercial commercial);
     
-    /**
-     *
-     * @param commercial
-     */
-    public void remove(Commercial commercial);
+  
+    public void remove(String id);
     
     
     /**
@@ -43,14 +42,17 @@ public interface CommercialInterface {
      */
     public Commercial find(Integer id);
     
-    
-    
     /**
      *
      * @return
      */
-    public List<Commercial> findAll();
+    public Collection<Commercial> findAll();
     
+    /**
+     * 
+     * @param usr
+     */
+    public void signUp(Commercial usr) throws LoginOnUseException ,ClientServerConnectionException,DBServerException  ;
     
     
 }
