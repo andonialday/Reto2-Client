@@ -5,13 +5,15 @@
  */
 package reto2g1cclient.logic;
 
+import reto2g1cclient.view.ViewSignableImplementation;
+
 
 /**
  * Class Factory to get View
  * @author Aitor Perez
  */
 public class ViewSignableFactory {
-
+    
     /**
      * Method to give a new View to the Controller
      * @return View to the Controller

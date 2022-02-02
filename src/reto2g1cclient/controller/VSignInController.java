@@ -25,6 +25,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import reto2g1cclient.exception.*;
 import reto2g1cclient.model.*;
+import reto2g1cclient.logic.*;
 
 /**
  * FXML Controller class
@@ -80,7 +81,7 @@ public class VSignInController {
      * @param root
      * @throws IOException
      */
-    // añadir enlace de recuperar contraseña
+        //AÑADIR ENLACE DE RECUPERAR CONTRASEÑA
     public void initStage(Parent root) throws IOException {
 
         LOGGER.info("Initializing Login stage.");
@@ -154,17 +155,17 @@ public class VSignInController {
         LOGGER.info("Clicked on SignIn");
         User usr = null;
         try {
-            // implementar antes de hacer SignIn
-                // cifrar contraseña con clave pública
-                // combertir contraseña ya cifrada a hexadecimal
+                //IMPLEMENTAR ANTES DE HACER SIGN IN
+                //CIFRAR CONTRASEÑA CON CLAVE PÚBLICA
+                //CONVERTIR CONTRASEÑA YA CIFRADA A HEXADECIMAL
             usr = sig.signIn(user);
             try {
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/reto1client/view/VFinal.fxml"));
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/reto1client/view/VClientMain.fxml"));
                 Parent root = (Parent) fxmlLoader.load();
-                // cambiar por el controller correspondiente al resultado del login
-                    // con un instanceOf comprobar si es User.User, Use.Client o User.Commercial
-                    // ejecutar VAdminController, VCLientController o VCommercialController
-                //VFinalController controller = ((VFinalController) fxmlLoader.getController());
+                    //CAMBIAR POR EL CONTROLLER CORRESPONDIENTE AL RESULTADO DEL LOGIN
+                    //CON UN INSTANCEOF, COMPROBAR SI ES User.User, User.Client O User.Commercial
+                    //EJECUTAR VAdminController, VClientController O VCommercialController
+                    //VFinalController controller = ((VFinalController) fxmlLoader.getController());
                 Stage primaryStage = this.stage;
                 controller.setUser(usr);
                 controller.setStage(primaryStage);
@@ -217,9 +218,9 @@ public class VSignInController {
             VSignUpController controller = ((VSignUpController) fxmlLoader.getController());
             Stage primaryStage = this.stage;
             controller.setStage(primaryStage);
-            // delimitar ventana SignUp para registro de clientes
-                // para registro de Comerciales se hace desde la VAdminController
-            // controller.setType("client");
+                //DELIMITAR VENTANA SIGN UP PARA REGISTRO DE CLIENTES
+                //PARA REGISTRO DE COMERCIALES SE HACE DESDE EL VAdminController
+                //controller.setType("client");
             controller.initStage(root);
         } catch (IOException ex) {
             LOGGER.info("Error initializing VSignUp");
