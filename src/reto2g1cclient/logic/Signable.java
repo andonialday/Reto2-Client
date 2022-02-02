@@ -15,7 +15,6 @@ import reto2g1cclient.model.*;
  */
 public interface Signable {
 
-   
     public User signIn(User usr) throws DBServerException, CredentialErrorException, ClientServerConnectionException;
 
     public void signUp(User usr) throws DBServerException, LoginOnUseException, ClientServerConnectionException;

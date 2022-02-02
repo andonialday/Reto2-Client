@@ -8,6 +8,7 @@ package reto2g1cclient.model;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
+import java.util.Set;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -19,31 +20,21 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class User implements Serializable {
 
     private Integer id;
+
     private String login;
     private String email;
     private String fullName;
+
     private UserStatus status;
+
     private Privilege privilege;
+    
     private String password;
+
     private Date lastPasswordChange;
 
-    public User(Integer id, String login, String email, String fullName, 
-            UserStatus status, Privilege privilege, String password, 
-            Date lastPasswordChange) {
-        this.id = id;
-        this.login = login;
-        this.email = email;
-        this.fullName = fullName;
-        this.status = status;
-        this.privilege = privilege;
-        this.password = password;
-        this.lastPasswordChange = lastPasswordChange;
-    }
+    private Set<SignIn> signIns;
 
-    public User() {
-        
-    }
-  
     /**
      * Método Getter para obtener la ID del usuario
      *
@@ -192,45 +183,43 @@ public class User implements Serializable {
     }
 
     /**
-     * Método toString que convierte a String el objeto usuario
-     * 
-     * @return String
+     * Método Getter para obtener los ultimos inicios de sesion de un usuario
+     *
+     * @return los ultimos inicios de sesion del usuario
      */
+    public Set<SignIn> getSignIns() {
+        return signIns;
+    }
+
+    /**
+     * Método Setter para determinar los ultimos inicios de sesion de un usuario
+     *
+     * @param signIns los ultimos inicios de sesion del usuario
+     */
+    public void setSignIns(Set<SignIn> signIns) {
+        this.signIns = signIns;
+    }
+
     @Override
     public String toString() {
-        return "User{" + "id=" + id + ", login=" + login + ", email=" + email + ", fullName=" + fullName + ", status=" + status + ", privilege=" + privilege + ", password=" + password + ", lastPasswordChange=" + lastPasswordChange + '}';
+        return "User{" + "id=" + id + ", login=" + login + ", email=" + email + ", fullName=" + fullName + ", status=" + status + ", privilege=" + privilege + ", password=" + password + ", lastPasswordChange=" + lastPasswordChange + ", signIns=" + signIns + '}';
     }
 
-    /**
-     * Método hashCode que complementa al método equals 
-     * y sirve para comparar los datos del objeto usuario.
-     * Devuelve un número entero.
-     * 
-     * @return int
-     */
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 73 * hash + Objects.hashCode(this.id);
-        hash = 73 * hash + Objects.hashCode(this.login);
-        hash = 73 * hash + Objects.hashCode(this.email);
-        hash = 73 * hash + Objects.hashCode(this.fullName);
-        hash = 73 * hash + Objects.hashCode(this.status);
-        hash = 73 * hash + Objects.hashCode(this.privilege);
-        hash = 73 * hash + Objects.hashCode(this.password);
-        hash = 73 * hash + Objects.hashCode(this.lastPasswordChange);
+        int hash = 5;
+        hash = 19 * hash + Objects.hashCode(this.id);
+        hash = 19 * hash + Objects.hashCode(this.login);
+        hash = 19 * hash + Objects.hashCode(this.email);
+        hash = 19 * hash + Objects.hashCode(this.fullName);
+        hash = 19 * hash + Objects.hashCode(this.status);
+        hash = 19 * hash + Objects.hashCode(this.privilege);
+        hash = 19 * hash + Objects.hashCode(this.password);
+        hash = 19 * hash + Objects.hashCode(this.lastPasswordChange);
+        hash = 19 * hash + Objects.hashCode(this.signIns);
         return hash;
     }
-
-    /**
-     * Método equals que compara los datos del objeto usuario, 
-     * para saber si son del mismo tipo y tienen los mismos datos.
-     * Nos devuelve el valor true si son iguales
-     * y el valor false si no lo son.
-     *  
-     * @param obj
-     * @return boolean
-     */
+  
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -265,6 +254,9 @@ public class User implements Serializable {
             return false;
         }
         if (!Objects.equals(this.lastPasswordChange, other.lastPasswordChange)) {
+            return false;
+        }
+        if (!Objects.equals(this.signIns, other.signIns)) {
             return false;
         }
         return true;

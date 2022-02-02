@@ -89,7 +89,7 @@ public class VSignUpController {
     //Patron para el Login que solo permite Mayusculas,Minusculas,numeros y no admite espacios.
     private final Pattern log = Pattern
             .compile("^[A-Za-z0-9-]*$");
-    //Patron para la ContraseÒa requiere y permite  Numeros,Mayusculas,Minusculas,Simbolos especiales y no admite espacios
+    //Patron para la Contrase√±a requiere y permite  Numeros,Mayusculas,Minusculas,Simbolos especiales y no admite espacios
     private final Pattern pass = Pattern
             .compile("^.*(?=.{6,25})(?=..*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+*=]).*$");
     //Patron para el nombre requiere y permite Mayusculas,Minusculas,Numeros y espacios.
@@ -127,14 +127,14 @@ public class VSignUpController {
         btSignUp.setOnAction(this::signUp);
         btSignUp.setDisable(true);
         btBack.setOnAction(this::backSingIn);
-        // A—ADIR LOS NUEVOS LABEL
+        // A√ëADIR LOS NUEVOS LABEL
         txtName.textProperty().addListener(this::txtNameVal);
         txtLogin.textProperty().addListener(this::txtLoginVal);
         txtEmail.textProperty().addListener(this::txtEmailVal);
         txtPassword.textProperty().addListener(this::txtPasswordVal);
         txtConfirmPassword.textProperty().addListener(this::txtConfirmPasswordVal);
 
-        // MÈtodo para comprobar si se ejecuta SignUp de Client o Commercial
+        // M√©todo para comprobar si se ejecuta SignUp de Client o Commercial
         // checkType();
         stage.show();
         LOGGER.info("SignUp window started... ");
@@ -302,8 +302,8 @@ public class VSignUpController {
         cpassword = txtConfirmPassword.getText().trim();
 
         //Comprobacion si el nombre cumple los requisitos
-        // El Name tendr· m·ximo 25 car·cteres alfanumÈricos
-        //(se admiten espacios, pero si comienza o termina con espacios, estos ser·n ignorados)
+        // El Name tendr√° m√°ximo 25 car√°cteres alfanum√©ricos
+        //(se admiten espacios, pero si comienza o termina con espacios, estos ser√°n ignorados)
         Matcher matchname = namePat.matcher(name);
         if (name.length() <= 25 && matchname.matches()) {
 
@@ -321,7 +321,7 @@ public class VSignUpController {
         }
         LOGGER.info("Name validated, Correct: " + bName);
         //Comprobacion si el login cumple los requisitos
-        // El Login debe ser mÌnimo 5 car·cteres, m·ximo 25, alfanumÈricos (no se admiten espacios)
+        // El Login debe ser m√≠nimo 5 car√°cteres, m√°ximo 25, alfanum√©ricos (no se admiten espacios)
         Matcher matchlog = log.matcher(login);
         if (login.length() <= 25 && login.length() >= 5 && matchlog.matches()) {
             lblLogin.setVisible(false);
@@ -342,7 +342,7 @@ public class VSignUpController {
         }
         LOGGER.info("Login validated, Correct: " + bLogin);
         //Comprobacion si el email cumple con los parametros
-        // El Email deber· cumplir comprobaciÛn de ser email (patrÛn) y m·ximo 50 car·cteres (no se admiten espacios)
+        // El Email deber√° cumplir comprobaci√≥n de ser email (patr√≥n) y m√°ximo 50 car√°cteres (no se admiten espacios)
         Matcher matcher = pattern.matcher(email);
         if (email.length() <= 50 && matcher.matches()) {
 
@@ -362,10 +362,10 @@ public class VSignUpController {
 
         }
         LOGGER.info("Email validated, Correct: " + bEmail);
-        //Comprobacion si la contraseÒa cumple los parametros
-        //La contraseÒa deber· ser de mÌnimo 6 car·cteres, m·ximo 25, y DEBE
-        //contener car·cteres alfanumÈricos (mayus, minus , numÈricos y no se admiten espacios)
-        //y mÌnimo un car·cter especial (*, %, $, etc...)
+        //Comprobacion si la contrase√±a cumple los parametros
+        //La contrase√±a deber√° ser de m√≠nimo 6 car√°cteres, m√°ximo 25, y DEBE
+        //contener car√°cteres alfanum√©ricos (mayus, minus , num√©ricos y no se admiten espacios)
+        //y m√≠nimo un car√°cter especial (*, %, $, etc...)
 
         Matcher matchpass = pass.matcher(password);
         if (password.length() >= 6 && password.length() <= 25 && matchpass.matches()) {
@@ -385,7 +385,7 @@ public class VSignUpController {
             txtPassword.setText("");
 
         }
-        //Si contraseÒa erronea se fuerza error en confirmar contraseÒa
+        //Si contrase√±a erronea se fuerza error en confirmar contrase√±a
         if (password.equalsIgnoreCase(cpassword) && bPassword) {
             lblCPassword.setVisible(false);
         } else {
@@ -441,10 +441,10 @@ public class VSignUpController {
      */
     // cambiar para que reciba un User user = new Client 
     // o un User user = new Commercial
-    // desde el mÈtodo de CheckType;
-    // public void signUp(User user) ¥{
+    // desde el m√©todo de CheckType;
+    // public void signUp(User user) ¬¥{
     // siendo el user un instanceOf Client o Commercial
-    // gestionar que en funcion de Type se ejecute un user.setType Û un user.setSpecialization
+    // gestionar que en funcion de Type se ejecute un user.setType √≥ un user.setSpecialization
     public void signUp() {
         LOGGER.info("Sign In procedure initiated");
         User user = new Client();
@@ -457,7 +457,6 @@ public class VSignUpController {
         try {
             sig.signUp(user);
             LOGGER.info("Sign In Correct");
-
             Alert altInfoSignUp = new Alert(AlertType.INFORMATION);
             altInfoSignUp.setTitle("SignUp Completado");
             altInfoSignUp.setHeaderText(null);
@@ -552,7 +551,7 @@ public class VSignUpController {
         LOGGER.info("Volviendo a ventana SignIn");
         Alert alert = new Alert(AlertType.CONFIRMATION);
         alert.setTitle("Volver a SignIn");
-        alert.setHeaderText("øSeguro que desea volver a la ventana de SignIn?");
+        alert.setHeaderText("¬øSeguro que desea volver a la ventana de SignIn?");
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
             LOGGER.info("Cerrada ventana SignUp y volviendo a SignIn");

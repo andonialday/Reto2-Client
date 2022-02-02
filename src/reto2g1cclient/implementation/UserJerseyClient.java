@@ -9,6 +9,7 @@ import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.GenericType;
 import reto2g1cclient.model.User;
 
 /**
@@ -22,7 +23,7 @@ import reto2g1cclient.model.User;
  *        client.close();
  * </pre>
  *
- * @author Ordenador
+ * @author Andoni Alday
  */
 public class UserJerseyClient {
 
@@ -61,7 +62,7 @@ public class UserJerseyClient {
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
     }
 
-    public <T> T signIn(Class<T> responseType, String login, String password) throws ClientErrorException {
+    public <T> T signIn(GenericType<T> responseType, String login, String password) throws ClientErrorException {
         WebTarget resource = webTarget;
         resource = resource.path(java.text.MessageFormat.format("signIn/{0}/{1}", new Object[]{login, password}));
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);

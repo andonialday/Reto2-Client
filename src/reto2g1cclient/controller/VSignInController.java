@@ -24,8 +24,9 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import reto2g1cclient.exception.*;
+import reto2g1cclient.logic.Signable;
+import reto2g1cclient.logic.ViewSignableFactory;
 import reto2g1cclient.model.*;
-import reto2g1cclient.logic.*;
 
 /**
  * FXML Controller class
@@ -75,13 +76,15 @@ public class VSignInController {
     @FXML
     private Hyperlink hyperSignUp;
 
+    @FXML
+    private Hyperlink hyperReset;
+
     /**
      * Initialize and show window
      *
      * @param root
      * @throws IOException
      */
-        //AÑADIR ENLACE DE RECUPERAR CONTRASEÑA
     public void initStage(Parent root) throws IOException {
 
         LOGGER.info("Initializing Login stage.");
@@ -90,7 +93,7 @@ public class VSignInController {
         Scene scene = new Scene(root);
 
         //CSS (route & scene)
-        String css = this.getClass().getResource("/reto1client/view/javaFXUIStyles.css").toExternalForm();
+        String css = this.getClass().getResource("/reto2g1cclient/view/javaFXUIStyles.css").toExternalForm();
         scene.getStylesheets().add(css);
 
         //Associate the scene to the stage
@@ -107,6 +110,7 @@ public class VSignInController {
         btnSignIn.setOnAction(this::signIn);
         btnExit.setOnAction(this::exit);
         hyperSignUp.setOnAction(this::signUp);
+        hyperReset.setOnAction(this::reset);
 
         //Show main window
         stage.show();
@@ -155,23 +159,41 @@ public class VSignInController {
         LOGGER.info("Clicked on SignIn");
         User usr = null;
         try {
-                //IMPLEMENTAR ANTES DE HACER SIGN IN
-                //CIFRAR CONTRASEÑA CON CLAVE PÚBLICA
-                //CONVERTIR CONTRASEÑA YA CIFRADA A HEXADECIMAL
             usr = sig.signIn(user);
-            try {
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/reto1client/view/VClientMain.fxml"));
-                Parent root = (Parent) fxmlLoader.load();
-                    //CAMBIAR POR EL CONTROLLER CORRESPONDIENTE AL RESULTADO DEL LOGIN
-                    //CON UN INSTANCEOF, COMPROBAR SI ES User.User, User.Client O User.Commercial
-                    //EJECUTAR VAdminController, VClientController O VCommercialController
-                    //VFinalController controller = ((VFinalController) fxmlLoader.getController());
-                Stage primaryStage = this.stage;
-                controller.setUser(usr);
-                controller.setStage(primaryStage);
-                controller.initStage(root);
-            } catch (IOException ex) {
-                LOGGER.info("Error trying to show post SignIn window");
+            if (usr.getPrivilege().equals(Privilege.USER)) {
+                // Inicio de ventana de cliente
+                //      Por falta de tiempo, se ha optado por sustituir VClient por VFinal
+                try {
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/reto2g1cclient/view/VFinal.fxml"));
+                    Parent root = (Parent) fxmlLoader.load();
+                    VFinalController controller = ((VFinalController) fxmlLoader.getController());
+                    Stage primaryStage = this.stage;
+                    controller.setUser(usr);
+                    controller.setStage(primaryStage);
+                    controller.initStage(root);
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Seccion no finalizada");
+                    alert.setHeaderText("Ha iniciado con Éxito Sesión, " + usr.getFullName()
+                            + ",\n pero por descragia no podemos mostrarle el contenido en estos momentos");
+                    alert.setContentText("La seccion de la aplicacion a la que intenta "
+                            + "acceder no se encuentra disponible en este momento."
+                            + "\nLamentamos las molestias.");
+                    alert.showAndWait();
+                } catch (IOException ex) {
+                    LOGGER.info("Error trying to show post SignIn window");
+                }
+            } else {
+                try {
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/reto2g1cclient/view/VAdmin.fxml"));
+                    Parent root = (Parent) fxmlLoader.load();
+                    VAdminController controller = ((VAdminController) fxmlLoader.getController());
+                    Stage primaryStage = this.stage;
+                    controller.setUser(usr);
+                    controller.setStage(primaryStage);
+                    controller.initStage(root);
+                } catch (IOException ex) {
+                    LOGGER.info("Error trying to show post SignIn window");
+                }
             }
         } catch (ClientServerConnectionException e) {
             LOGGER.info("Error Connecting to Server");
@@ -182,7 +204,7 @@ public class VSignInController {
                     + "\n The Server may be busy with too many incoming requests, "
                     + "try again later, if this error continues, contact support or check server availability");
             alert.showAndWait();
-        } catch (DBConnectionException e) {
+        } catch (DBServerException e) {
             LOGGER.info("Sign In Data Comprobation Error");
             Alert alert = new Alert(AlertType.ERROR);
             alert.setTitle("System Error");
@@ -213,17 +235,35 @@ public class VSignInController {
     private void signUp(ActionEvent event) {
         LOGGER.info("Initializing SignUp");
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/reto1client/view/VSignUp.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/reto2g1cclient/view/VSignUp.fxml"));
             Parent root = (Parent) fxmlLoader.load();
             VSignUpController controller = ((VSignUpController) fxmlLoader.getController());
             Stage primaryStage = this.stage;
             controller.setStage(primaryStage);
-                //DELIMITAR VENTANA SIGN UP PARA REGISTRO DE CLIENTES
-                //PARA REGISTRO DE COMERCIALES SE HACE DESDE EL VAdminController
-                //controller.setType("client");
             controller.initStage(root);
         } catch (IOException ex) {
             LOGGER.info("Error initializing VSignUp");
+        }
+    }
+
+    /**
+     * This method is executed when the user clicks the hyperlink SignUp. The
+     * Sign Up window will open.
+     *
+     * @param event
+     */
+    @FXML
+    private void reset(ActionEvent event) {
+        LOGGER.info("Initializing Password Reset");
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/reto2g1cclient/view/VReset.fxml"));
+            Parent root = (Parent) fxmlLoader.load();
+            VResetController controller = ((VResetController) fxmlLoader.getController());
+            Stage primaryStage = this.stage;
+            controller.setStage(primaryStage);
+            controller.initStage(root);
+        } catch (IOException ex) {
+            LOGGER.info("Error initializing Password Reset");
         }
     }
 
