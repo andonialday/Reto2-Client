@@ -18,7 +18,7 @@ import reto2g1cclient.logic.EquipmentInterface;
 import reto2g1cclient.model.Equipment;
 
 /**
- *
+ * Clase para la implementacion del Equipamiento
  * @author Aitor Perez
  */
 public class EquipmentImplementation implements EquipmentInterface {

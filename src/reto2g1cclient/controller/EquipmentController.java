@@ -678,10 +678,7 @@ public class EquipmentController {
         bolCost = false;
         try {
             if (!newValue.trim().equals("") ) {
-                //PROBANDOOO
-               /* if(newValue.length() >= 6){
-                    tfCost.setText(oldValue);
-                }*/
+                
                     
                 Double c = Double.valueOf(newValue);
                 lblWarninNumValue.setVisible(false);
@@ -1053,7 +1050,7 @@ public class EquipmentController {
         }
     }
 
-    /* -------------------------- SOLUCION PARA FECHAS  ------------------------------*/
+    
 
     /**
      * Metodo para cambiar el formato de las fechas de los equipamientos del de la
