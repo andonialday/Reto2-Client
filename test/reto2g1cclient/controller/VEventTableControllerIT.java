@@ -76,10 +76,13 @@ public class VEventTableControllerIT extends ApplicationTest {
     private TableView tbEvent;
     private TableColumn clDateEnd;
 
-    private String user = "admin";
-    private String password = "*585CyeJf";
-    private String name = "Evento de test";
-    private String desc = "Descripcion del Evento de Prueba";
+    private static final String user = "admin";
+    private static final String password = "Abcd*1234";
+    private static final String fechaStart = "10/01/2000";
+    private static final String fechaEndOK = "10/01/2020";
+    private static final String fechaEndFail = "10/01/1000";
+    private static final String name = "Evento de test";
+    private static final String desc = "Descripcion del Evento de Prueba";
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     public VEventTableControllerIT() {
@@ -148,9 +151,10 @@ public class VEventTableControllerIT extends ApplicationTest {
         clickOn("#txtPassword");
         write(password);
         clickOn("#btnSignIn");
-        verifyThat("#pAdmin", isVisible());
-        clickOn("n de Datos");
-        clickOn("Ver Eventos");
+        sleep(2000);
+        //verifyThat("#pAdmin", isVisible());
+        clickOn("#mData");
+        clickOn("#miEvent");
         verifyThat("#pEventTable", isVisible());
     }
 
@@ -197,7 +201,7 @@ public class VEventTableControllerIT extends ApplicationTest {
         write(name);
         verifyThat("#btnNew", isDisabled());
         clickOn("#dpDateStart");
-        write("10/01/2000");
+        write(fechaStart);
         verifyThat("#btnNew", isDisabled());
         clickOn("#dpDateEnd");
         write("10/01/2000");
@@ -238,7 +242,6 @@ public class VEventTableControllerIT extends ApplicationTest {
         limpiarCampos();
         int rowCount = tbEvent.getItems().size();
         clickOn("#txtName");
-        name = "Evento de test";
         write(name);
         clickOn("#taDescription");
         write(desc);
@@ -357,7 +360,8 @@ public class VEventTableControllerIT extends ApplicationTest {
         limpiarCampos();
     }
 
-    //@Ignore
+    //works
+    @Ignore
     @Test
     public void testJ_ModifyEventTableSuccessfull() {
         limpiarCampos();
@@ -382,9 +386,7 @@ public class VEventTableControllerIT extends ApplicationTest {
         press(KeyCode.ENTER);
         release(KeyCode.ENTER);
         clickOn("#btnSave");
-        verifyThat(".alert", NodeMatchers.isVisible());
-        clickOn("Aceptar");
-        assertNotEquals("Se ha modificado el Evento", event, tbEvent.getSelectionModel().getSelectedItem());
+        assertNotEquals("No se ha modificado el Evento", event, tbEvent.getSelectionModel().getSelectedItem());
         limpiarCampos();
     }
 

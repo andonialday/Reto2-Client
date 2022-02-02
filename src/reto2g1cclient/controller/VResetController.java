@@ -35,9 +35,9 @@ import reto2g1cclient.logic.ViewSignableFactory;
  * @author Jaime San Sebastian
  */
 public class VResetController {
-
+    
     private static final Logger LOGGER = Logger.getLogger("package.class");
-
+    
     @FXML
     private TextField tfLogin;
     @FXML
@@ -46,9 +46,9 @@ public class VResetController {
     private Button btnContinue;
     @FXML
     private Button btnCancel;
-
+    
     private Stage stage;
-
+    
     private Signable sig;
 
     /**
@@ -75,7 +75,7 @@ public class VResetController {
      * @param root
      */
     public void initStage(Parent root) {
-
+        
         LOGGER.info("Initializing VReset stage.");
 
         //Create a new scene
@@ -99,7 +99,7 @@ public class VResetController {
         //Show main window
         stage.show();
     }
-
+    
     private void handleWindowShowing(WindowEvent event) {
         LOGGER.info("Beginning VClientTable::handleWindowShowing");
         //Login label is visible
@@ -111,7 +111,7 @@ public class VResetController {
         //Cancel button is enabled
         btnCancel.setDisable(false);
     }
-
+    
     private void loginInput(ObservableValue observableValue, String oldValue, String newValue) {
         if (newValue.trim().equals("")) {
             btnContinue.setDisable(true);
@@ -129,6 +129,9 @@ public class VResetController {
     private void handleContinue(ActionEvent event) {
         try {
             sig.resetPassword(tfLogin.getText());
+            Alert alert = new Alert(AlertType.INFORMATION);
+            alert.setTitle("Contraseña cambiada correctamente");
+            alert.setContentText("Se ha enviado un correo electronico con la nueva contraseña");
         } catch (ClientServerConnectionException ex) {
             Logger.getLogger(VResetController.class.getName()).log(Level.SEVERE, null, ex);
             Alert altWarningLog = new Alert(AlertType.WARNING);
@@ -167,7 +170,7 @@ public class VResetController {
     @FXML
     private void handleCancel(ActionEvent event) throws IOException {
         LOGGER.info("Returning to VAdmin window");
-
+        
         Alert alert1 = new Alert(Alert.AlertType.CONFIRMATION);
         alert1.setTitle("Back to VAdmin");
         alert1.setHeaderText(null);
