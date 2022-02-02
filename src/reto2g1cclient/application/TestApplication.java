@@ -6,22 +6,27 @@
 package reto2g1cclient.application;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
-import reto2g1cclient.controller.VClientTableController;
-import reto2g1cclient.controller.VSignInController;
-import reto2g1cclient.logic.ClientFactory;
+import reto2g1cclient.controller.VEventTableController;
+import reto2g1cclient.model.Evento;
 
 /**
  * Client Main class to Launch Client App
  * @author Enaitz Izagirre
  */
-public class ClientApplication extends Application {
+public class TestApplication extends Application {
 
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    
     /**
      * Method to Launch Client 
      * @param args Java Arguments to launch the main
@@ -38,21 +43,14 @@ public class ClientApplication extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
         Logger.getLogger("Initializing client...");
-        
         //get the route of the 1. View
-        //PRUEBA DE RUTA CON LA VENTANA VClientTable (la ruta final sera la primera ventana de la aplicación)
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/reto2g1cclient/view/VClientTable.fxml"));
-            
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/reto2g1cclient/view/VEventTable.fxml"));
         Parent root = (Parent) loader.load();
-        
         //get the controller of the view
-        //PRUEBA CON EL CONTROLADOR DE LA VENTANA VClientTable
-        VClientTableController controller = ((VClientTableController) loader.getController());
+        VEventTableController controller = ((VEventTableController) loader.getController());
         controller.setStage(primaryStage);
-        //controller.setClientInterface(ClientFactory.getClient());
-        //FIN DE PRUEBA CON LA VENTANA VClientTable (si el servidor funciona, descomentar la línea anterior)
-        
         //initializate the stage
+        controller.setEditable(true);
         controller.initStage(root);
     }
 }

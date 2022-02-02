@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+
+<Pane prefHeight="480.0" prefWidth="720.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="reto2g1cclient.controller.VAdminController">
+    <children>
+       <fx:include fx:id="hbMenu" source="MenuAdmin.fxml"/>
+    </children>
+    <children>
+        <Label fx:id="lblWelcome" alignment="CENTER" contentDisplay="CENTER" layoutX="120.0" layoutY="230.0" prefHeight="20.0" prefWidth="480.0" text="Panel de Gestion" textAlignment="CENTER" wrapText="true">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Label>
+    </children>
+</Pane>

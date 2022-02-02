@@ -40,7 +40,7 @@ public class User implements Serializable {
      *
      * @return el id de un usuario
      */
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -49,7 +49,7 @@ public class User implements Serializable {
      *
      * @param id el id de un usuario a establecer
      */
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -172,11 +172,11 @@ public class User implements Serializable {
     }
 
     /**
-     * Método Setter para determinar el momento del último cambio de contraseña
-     * del usuario
+     * Método Getter para obtener el momento del último cambio de contraseña del
+     * usuario
      *
-     * @param lastPasswordChange el momento del ultimo cambio de contraseña de
-     * un usuario a establecer
+     * @param lastPasswordChange el cambio de contraseña de un usuario a
+     * establecer
      */
     public void setLastPasswordChange(Date lastPasswordChange) {
         this.lastPasswordChange = lastPasswordChange;
@@ -219,7 +219,7 @@ public class User implements Serializable {
         hash = 19 * hash + Objects.hashCode(this.signIns);
         return hash;
     }
-
+  
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -232,6 +232,9 @@ public class User implements Serializable {
             return false;
         }
         final User other = (User) obj;
+        if (this.id != other.id) {
+            return false;
+        }
         if (!Objects.equals(this.login, other.login)) {
             return false;
         }
@@ -242,9 +245,6 @@ public class User implements Serializable {
             return false;
         }
         if (!Objects.equals(this.password, other.password)) {
-            return false;
-        }
-        if (!Objects.equals(this.id, other.id)) {
             return false;
         }
         if (this.status != other.status) {

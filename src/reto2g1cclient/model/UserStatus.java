@@ -6,13 +6,15 @@
 package reto2g1cclient.model;
 
 import java.io.Serializable;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * La enumeración del estado de la cuenta del usuario, con los posibles valores
  * del campo
  *
- * @author Jaime San Sebastián y Enaitz Izaguirre
+ * @author Jaime San Sebastián y Enaitz Izagirre
  */
+@XmlRootElement
 public enum UserStatus implements Serializable {
 
     /**

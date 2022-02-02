@@ -23,7 +23,7 @@ import reto2g1cclient.model.User;
  *        client.close();
  * </pre>
  *
- * @author Ordenador
+ * @author Andoni Alday
  */
 public class UserJerseyClient {
 

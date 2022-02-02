@@ -6,10 +6,11 @@
 package reto2g1cclient.implementation;
 
 import java.util.List;
+import javax.ws.rs.ClientErrorException;
+import javax.ws.rs.core.GenericType;
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
 import javax.ws.rs.ClientErrorException;
-import javax.ws.rs.core.GenericType;
 import reto2g1cclient.cypher.EncryptAsim;
 import reto2g1cclient.exception.*;
 import reto2g1cclient.logic.Signable;
@@ -49,7 +50,7 @@ public class ViewSignableImplementation implements Signable {
             }, usr.getLogin(), EncryptAsim.encryption(usr.getPassword()));
             usr = user.get(0);
             if (usr == null) {
-                throw new CredentialErrorException("No existe ningún usuario con esas credenciales");
+                throw new CredentialErrorException("No existe ningÃºn usuario con esas credenciales");
             }
         } catch (ClientErrorException e) {
             throw new DBServerException(e.getMessage());
@@ -65,8 +66,7 @@ public class ViewSignableImplementation implements Signable {
     public void signUp(User usr) throws DBServerException, LoginOnUseException, ClientServerConnectionException {
         try {
             usr.setPassword(EncryptAsim.encryption(usr.getPassword()));
-            User user = ujc.signUp(User.class,
-                    usr);
+            User user = ujc.signUp(User.class, usr);
             if (!usr.getFullName().equals(user.getFullName()) || !usr.getEmail().equals(user.getEmail())) {
                 throw new LoginOnUseException("El login está en uso");
             }
@@ -80,8 +80,7 @@ public class ViewSignableImplementation implements Signable {
     @Override
     public void resetPassword(String log) throws DBServerException, ClientServerConnectionException {
         try {
-            ujc.resetPasswordByLogin(User.class,
-                    log);
+            ujc.resetPasswordByLogin(User.class, log);
         } catch (ClientErrorException e) {
             throw new DBServerException(e.getMessage());
         } catch (Exception es) {

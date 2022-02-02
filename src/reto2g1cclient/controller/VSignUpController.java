@@ -46,21 +46,31 @@ public class VSignUpController {
     @FXML
     private Label lblName;
     @FXML
+    private Label lbName;
+    @FXML
     private TextField txtLogin;
     @FXML
     private Label lblLogin;
+    @FXML
+    private Label lbLogin;
     @FXML
     private TextField txtEmail;
     @FXML
     private Label lblEmail;
     @FXML
+    private Label lbEmail;
+    @FXML
     private PasswordField txtPassword;
     @FXML
     private Label lblPassword;
     @FXML
+    private Label lbPassword;
+    @FXML
     private PasswordField txtConfirmPassword;
     @FXML
     private Label lblCPassword;
+    @FXML
+    private Label lbConfirm;
     @FXML
     private Button btSignUp;
     @FXML
@@ -91,6 +101,7 @@ public class VSignUpController {
     private Stage stage;
 
     private static Logger LOGGER = Logger.getLogger("package.class");
+    private Signable  sig;
 
     /**
      * Initializes the controller class.
@@ -99,6 +110,7 @@ public class VSignUpController {
      * ventana muestre sus elementos hijos (Cuadros de texto,Botones...)
      */
     public void initStage(Parent root) {
+        sig = ViewSignableFactory.getView();
         LOGGER.info("Initializing SignUp window... ");
         Scene scene = new Scene(root);
         scene.getStylesheets().add("/reto1client/view/javaFXUIStyles.css");
@@ -115,6 +127,7 @@ public class VSignUpController {
         btSignUp.setOnAction(this::signUp);
         btSignUp.setDisable(true);
         btBack.setOnAction(this::backSingIn);
+        // AÑADIR LOS NUEVOS LABEL
         txtName.textProperty().addListener(this::txtNameVal);
         txtLogin.textProperty().addListener(this::txtLoginVal);
         txtEmail.textProperty().addListener(this::txtEmailVal);
@@ -149,6 +162,11 @@ public class VSignUpController {
         lblEmail.setVisible(false);
         lblPassword.setVisible(false);
         lblCPassword.setVisible(false);
+        lbName.setVisible(true);
+        lbLogin.setVisible(true);
+        lbEmail.setVisible(true);
+        lbPassword.setVisible(true);
+        lbConfirm.setVisible(true);
     }
 
     /**
@@ -429,13 +447,13 @@ public class VSignUpController {
     // gestionar que en funcion de Type se ejecute un user.setType ó un user.setSpecialization
     public void signUp() {
         LOGGER.info("Sign In procedure initiated");
-        User user = new User();
+        User user = new Client();
         user.setFullName(name);
         user.setLogin(login);
         user.setEmail(email);
         user.setPassword(password);
-        Signable sig = ViewSignableFactory.getView();
-        User usr = null;
+        user.setPrivilege(Privilege.USER);
+        user.setStatus(UserStatus.ENABLED);
         try {
             sig.signUp(user);
             LOGGER.info("Sign In Correct");
@@ -537,8 +555,7 @@ public class VSignUpController {
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
             LOGGER.info("Cerrada ventana SignUp y volviendo a SignIn");
-            stage.close();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/reto1client/view/VSignIn.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/reto2g1cclient/view/VSignIn.fxml"));
             try {
                 Parent root = (Parent) loader.load();
                 VSignInController controller = loader.getController();
