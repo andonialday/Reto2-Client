@@ -43,8 +43,7 @@ public class User implements Serializable {
     public User() {
         
     }
-
-    
+  
     /**
      * Método Getter para obtener la ID del usuario
      *

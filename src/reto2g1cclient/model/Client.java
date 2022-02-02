@@ -18,6 +18,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement
 public class Client extends User implements Serializable{
+
     
     private Type type;
     private Set<Event> events;
@@ -26,16 +27,13 @@ public class Client extends User implements Serializable{
     public Client() {
         
     }
-
     
     public Client(Type type, Set<Event> events, Commercial commercial) {
         this.type = type;
         this.events = events;
         this.commercial = commercial;
     }
-
-    
-    
+  
     /**
      * Método Getter para obtener el tipo de un cliente
      *
