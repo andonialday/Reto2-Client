@@ -45,16 +45,16 @@ public class VPasswordController {
     private boolean actual, newPass, confirm;
 
     /*
-    * Getter del usuario que ha iniciado sesión y está usando la aplicación que va a cambiar su contrasenia
-    * @return user usuario que ha iniciado sesión
+    * Getter del usuario que ha iniciado sesiï¿½n y estï¿½ usando la aplicaciï¿½n que va a cambiar su contrasenia
+    * @return user usuario que ha iniciado sesiï¿½n
      */
     public User getUser() {
         return user;
     }
 
     /*
-    * Setter del usuario que ha iniciado sesión y está usando la aplicación que va a cambiar su contrasenia
-    * @param user usuario que ha iniciado sesión
+    * Setter del usuario que ha iniciado sesiï¿½n y estï¿½ usando la aplicaciï¿½n que va a cambiar su contrasenia
+    * @param user usuario que ha iniciado sesiï¿½n
      */
     public void setUser(User user) {
         this.user = user;
@@ -126,7 +126,7 @@ public class VPasswordController {
     }
 
     /**
-     * Metodo para validar que el campo de contraseña actual una vez eliminados
+     * Metodo para validar que el campo de contraseï¿½a actual una vez eliminados
      * los espacios del principio y del final no es nulo
      *
      * @param observableValue Campo a validar
@@ -146,7 +146,7 @@ public class VPasswordController {
     }
 
     /**
-     * Metodo para validar que el campo de contraseña nueva una vez eliminados
+     * Metodo para validar que el campo de contraseï¿½a nueva una vez eliminados
      * los espacios del principio y del final no es nulo
      *
      * @param observableValue Campo a validar
@@ -166,7 +166,7 @@ public class VPasswordController {
     }
 
     /**
-     * Metodo para validar que el campo de contraseña nueva confirmada una vez
+     * Metodo para validar que el campo de contraseï¿½a nueva confirmada una vez
      * eliminados los espacios del principio y del final no es nulo
      *
      * @param observableValue Campo a validar
@@ -203,7 +203,7 @@ public class VPasswordController {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Error al Actualizar");
             alert.setHeaderText("Error al Actualizar valores en la Base de Datos");
-            alert.setContentText("No se ha podido actualizar su contraseña en la base de datos."
+            alert.setContentText("No se ha podido actualizar su contraseï¿½a en la base de datos."
                     + "\nPor favor, intentelo mas tarde. "
                     + "\nSi el error persiste, contacte con soporte tecnico");
             alert.showAndWait();                
@@ -212,7 +212,7 @@ public class VPasswordController {
             alert.setTitle("Error de Conexion");
             alert.setHeaderText("Error al Conectar con la Base de Datos");
             alert.setContentText("No se ha podido con la base de datos, lo que ha imposibilitado "
-                    + "\nla actualizacion de su contraseña. Por favor, intentelo mas tarde. "
+                    + "\nla actualizacion de su contraseï¿½a. Por favor, intentelo mas tarde. "
                     + "\nSi el error persiste, contacte con soporte tecnico");
             alert.showAndWait();    
             }
@@ -221,9 +221,9 @@ public class VPasswordController {
             alert.setTitle("Error de Datos");
             alert.setHeaderText("Error al Actualizar valores en la Base de Datos");
             alert.setContentText("Debe introducir valores validos:"
-                    + "\nEl Nombre y la Descripción no pueden ser nulos"
+                    + "\nEl Nombre y la Descripciï¿½n no pueden ser nulos"
                     + "\nLas Fechas deben estar en formato valido"
-                    + "\nLa Fecha de Finalización no puede ser anterior a la de Inicio");
+                    + "\nLa Fecha de Finalizaciï¿½n no puede ser anterior a la de Inicio");
             alert.showAndWait();
             txtPassActual.setText("");
             txtPassNew.setText("");
@@ -255,7 +255,7 @@ public class VPasswordController {
         LOGGER.info("Volviendo a ventana VAdmin");
         Alert alert = new Alert(AlertType.CONFIRMATION);
         alert.setTitle("Volver a Ventana Principal");
-        alert.setHeaderText("¿Seguro que desea volver a su Ventana Principal?");
+        alert.setHeaderText("ï¿½Seguro que desea volver a su Ventana Principal?");
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
             LOGGER.info("Cerrada ventana VPassword y volviendo a VAdmin");
@@ -266,7 +266,7 @@ public class VPasswordController {
                 controller.setStage(this.stage);
                 controller.initStage(root);
             } catch (IOException ex) {
-                LOGGER.log(Level.SEVERE, "Error al volver a la ventana de sesión del usuario");
+                LOGGER.log(Level.SEVERE, "Error al volver a la ventana de sesiï¿½n del usuario");
             }
         }
     }
@@ -301,7 +301,7 @@ public class VPasswordController {
             controller.setStage(this.stage);
             controller.initStage(root);
         } catch (IOException ex) {
-            LOGGER.log(Level.SEVERE, "Error al volver a la ventana de sesión del usuario");
+            LOGGER.log(Level.SEVERE, "Error al volver a la ventana de sesiï¿½n del usuario");
         }
     }
 
