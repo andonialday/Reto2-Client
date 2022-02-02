@@ -27,7 +27,6 @@ import javafx.stage.WindowEvent;
 import reto2g1cclient.exception.ClientServerConnectionException;
 import reto2g1cclient.exception.DBServerException;
 import reto2g1cclient.logic.Signable;
-import reto2g1cclient.logic.ViewSignableFactory;
 
 /**
  *
@@ -94,7 +93,7 @@ public class VResetController {
         tfLogin.textProperty().addListener(this::loginInput);
 
         //Initialization of the Signable Interface
-        sig = ViewSignableFactory.getView();
+        //sig = ViewSignableFactory.getView();
         
         //Show main window
         stage.show();
@@ -124,7 +123,7 @@ public class VResetController {
      * Method that controls the continue button
      *
      * @param event the event linked to clicking on the button;
-     */
+     
     @FXML
     private void handleContinue (ActionEvent event) {
         try {
@@ -149,6 +148,7 @@ public class VResetController {
             altWarningLog.showAndWait();
         }
     }
+    */
     
     /**
      * Method that controls the cancel button

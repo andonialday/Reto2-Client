@@ -5,6 +5,7 @@
  */
 package reto2g1cclient.implementation;
 
+import java.util.ResourceBundle;
 import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
@@ -31,7 +32,7 @@ public class ClientJersey {
     
     //Adapt the port of the BASE_URI to the HTTP Port of the Glassfish
     private static final String 
-            BASE_URI = "http://localhost:8080/Reto2G1cServer/webresources";
+            BASE_URI = ResourceBundle.getBundle("reto2g1cclient.properties.config").getString("RESTFUL");
 
     public ClientJersey() {
         client = javax.ws.rs.client.ClientBuilder.newClient();
