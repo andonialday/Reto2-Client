@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="360.0" prefWidth="480.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="reto2g1cclient.controller.VClientController">
+   <children>
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutY="50.0" prefHeight="20.0" prefWidth="480.0" text="Bienvenido a RentalG1c" textAlignment="CENTER" wrapText="true">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <TextField id="txtLogin" fx:id="tfLogin" editable="false" focusTraversable="false" layoutX="213.0" layoutY="92.0" promptText="login" />
+      <TextField id="txtName" fx:id="tfName" editable="false" focusTraversable="false" layoutX="213.0" layoutY="142.0" promptText="name" />
+      <TextField id="txtEmail" fx:id="tfEmail" editable="false" focusTraversable="false" layoutX="213.0" layoutY="192.0" promptText="email" />
+      <Label layoutX="118.0" layoutY="96.0" text="Login" />
+      <Label layoutX="118.0" layoutY="146.0" text="Nombre" />
+      <Label layoutX="118.0" layoutY="196.0" text="Email" />
+      <Label layoutX="118.0" layoutY="246.0" text="Tipo" />
+      <Button fx:id="btnAccept" layoutX="287.0" layoutY="301.0" mnemonicParsing="false" onAction="#handleAccept" prefHeight="32.0" prefWidth="95.0" style="-fx-background-color: blue;" text="Aceptar" textFill="WHITE" />
+      <Button fx:id="btnCancel" layoutX="100.0" layoutY="301.0" mnemonicParsing="false" onAction="#handleCancel" prefHeight="32.0" prefWidth="95.0" text="Cancelar" />
+      <ComboBox fx:id="cbType" layoutX="212.0" layoutY="242.0" onAction="#handleChangeType" prefWidth="150.0" promptText="Particular" />
+   </children>
+</Pane>

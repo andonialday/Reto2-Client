@@ -10,7 +10,7 @@ import reto2g1cclient.model.*;
 
 /**
  * Signable Interface 
- * @author Jaime San Sebastian,Enaitz Izagirre
+ * @author Jaime San Sebastián y Enaitz Izagirre
  */
 public interface Signable {
  
@@ -34,4 +34,8 @@ public interface Signable {
      */
     public User signUp(User usr) throws ClientServerConnectionException, DBConnectionException, LoginOnUseException;
     
+    
+    
+    
+    //Introducir uno más: el de añadir contraseña
 }

@@ -13,8 +13,6 @@ import java.util.Set;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
-
-
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 /**
@@ -68,6 +66,7 @@ public class Equipment implements Serializable {
     public void setName(String name) {
         this.name.set(name);
     }
+
     
     /**
      * Metodo Getter para obtener la ID del Equipamiento

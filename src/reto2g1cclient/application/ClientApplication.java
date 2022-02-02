@@ -12,7 +12,9 @@ import static javafx.application.Application.launch;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
+import reto2g1cclient.controller.VClientTableController;
 import reto2g1cclient.controller.VSignInController;
+import reto2g1cclient.logic.ClientFactory;
 
 /**
  * Client Main class to Launch Client App
@@ -36,15 +38,21 @@ public class ClientApplication extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
         Logger.getLogger("Initializing client...");
+        
         //get the route of the 1. View
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/reto2g1cclient/view/VSignIn.fxml"));
+        //PRUEBA DE RUTA CON LA VENTANA VClientTable (la ruta final sera la primera ventana de la aplicación)
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/reto2g1cclient/view/VClientTable.fxml"));
             
         Parent root = (Parent) loader.load();
+        
         //get the controller of the view
-        VSignInController controller = ((VSignInController) loader.getController());
+        //PRUEBA CON EL CONTROLADOR DE LA VENTANA VClientTable
+        VClientTableController controller = ((VClientTableController) loader.getController());
         controller.setStage(primaryStage);
+        //controller.setClientInterface(ClientFactory.getClient());
+        //FIN DE PRUEBA CON LA VENTANA VClientTable (si el servidor funciona, descomentar la línea anterior)
+        
         //initializate the stage
         controller.initStage(root);
-
     }
 }
