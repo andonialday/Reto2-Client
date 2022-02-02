@@ -20,6 +20,7 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import reto2g1cclient.model.User;
 
 /**
  * Controlador del Menu del Administrador
@@ -161,9 +162,9 @@ public class MenuAdminController {
         alert.setContentText("La ventana VEventEquipment no se ha podido desarrollar por falta de tiempo, perdone las molestias");
          */
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/reto2g1cclient/view/Vcommerce.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/reto2g1cclient/view/VcommercialTable.fxml"));
             Parent root = (Parent) fxmlLoader.load();
-            VCommerceController controller = ((VCommerceController) fxmlLoader.getController());
+            VCommercialTableController controller = ((VCommercialTableController) fxmlLoader.getController());
             Stage primaryStage = this.stage;
             controller.setStage(primaryStage);
             controller.initStage(root);
