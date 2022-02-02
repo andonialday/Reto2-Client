@@ -17,6 +17,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import reto2g1cclient.model.User;
 
 /**
  * Controlador de la ventana de VAdmin
@@ -32,6 +33,23 @@ public class VAdminController {
     private static final Logger LOGGER = Logger.getLogger("package.class");
 
     private Stage stage;
+
+    private static User usr;
+
+    // Setters && Getter
+    /**
+     * Setter for the user attribute, so the user's FullName can be shown on
+     * view startup
+     *
+     * @param user received freom VSignIn on correct Signin result
+     */
+    public void setUser(User user) {
+        this.usr = user;
+    }
+    
+    public static User getUser() {
+        return usr;
+    }
 
     /**
      * Sets the stage
@@ -51,6 +69,7 @@ public class VAdminController {
         return stage;
     }
 
+    //Controlador del Menu
     @FXML
     private Label lblWelcome;
 

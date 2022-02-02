@@ -46,31 +46,31 @@ public class VSignUpController {
     @FXML
     private Label lblName;
     @FXML
-    private Label lbName;
+    private Label lblNameInfo;
     @FXML
     private TextField txtLogin;
     @FXML
     private Label lblLogin;
     @FXML
-    private Label lbLogin;
+    private Label lblLoginInfo;
     @FXML
     private TextField txtEmail;
     @FXML
     private Label lblEmail;
     @FXML
-    private Label lbEmail;
+    private Label lblEmailInfo;
     @FXML
     private PasswordField txtPassword;
     @FXML
     private Label lblPassword;
     @FXML
-    private Label lbPassword;
+    private Label lblPasswordInfo;
     @FXML
     private PasswordField txtConfirmPassword;
     @FXML
     private Label lblCPassword;
     @FXML
-    private Label lbConfirm;
+    private Label lblConfirmInfo;
     @FXML
     private Button btSignUp;
     @FXML
@@ -162,11 +162,11 @@ public class VSignUpController {
         lblEmail.setVisible(false);
         lblPassword.setVisible(false);
         lblCPassword.setVisible(false);
-        lbName.setVisible(true);
-        lbLogin.setVisible(true);
-        lbEmail.setVisible(true);
-        lbPassword.setVisible(true);
-        lbConfirm.setVisible(true);
+        lblConfirmInfo.setVisible(true);
+        lblPasswordInfo.setVisible(true);
+        lblEmailInfo.setVisible(true);
+        lblLoginInfo.setVisible(true);
+        lblNameInfo.setVisible(true);
     }
 
     /**
@@ -462,8 +462,8 @@ public class VSignUpController {
             altInfoSignUp.setHeaderText(null);
             altInfoSignUp.setContentText("Registro Exitoso, redireccionando a ventana de SignIn");
             altInfoSignUp.showAndWait();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/reto1client/view/VSignIn.fxml"));
             try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/reto2g1cclient/view/VSignIn.fxml"));
                 Parent root = (Parent) loader.load();
                 VSignInController controller = ((VSignInController) loader.getController());
                 controller.setStage(this.stage);

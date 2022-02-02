@@ -36,7 +36,7 @@ import reto2g1cclient.model.User;
  * @author Ordenador
  */
 public class VPasswordController {
-
+    
     private static Logger LOGGER = Logger.getLogger("package.class");
     private final Pattern pass = Pattern.compile("^.*(?=.{6,25})(?=..*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+*=]).*$");
     private User user;
@@ -68,23 +68,23 @@ public class VPasswordController {
     public void setStage(Stage primaryStage) {
         this.stage = primaryStage;
     }
-
+    
     @FXML
-    PasswordField txtPassActual;
+    private PasswordField txtPassActual;
     @FXML
-    PasswordField txtPassNew;
+    private PasswordField txtPassNew;
     @FXML
-    PasswordField txtPassConfirm;
+    private PasswordField txtPassConfirm;
     @FXML
-    Label lblErrorActual;
+    private Label lblErrorActual;
     @FXML
-    Label lblErrorPassword;
+    private Label lblErrorPassword;
     @FXML
-    Label lblErrorConfirm;
+    private Label lblErrorConfirm;
     @FXML
-    Button btnContinue;
+    private Button btnContinue;
     @FXML
-    Button btnCancel;
+    private Button btnCancel;
 
     /**
      * Initializes the controller class.
@@ -98,23 +98,23 @@ public class VPasswordController {
         Scene scene = new Scene(root);
         stage.setTitle("VPassword");
         stage.setResizable(false);
-
+        
         stage.setOnShowing(this::handleWindowShowing);
         stage.setOnCloseRequest(this::closeVPassword);
         stage.setScene(scene);
-
+        
         txtPassActual.requestFocus();
         txtPassActual.textProperty().addListener(this::txtActualVal);
         txtPassNew.textProperty().addListener(this::txtPassVal);
         txtPassConfirm.textProperty().addListener(this::txtConfirmVal);
-
+        
         btnContinue.setOnAction(this::changePass);
         btnCancel.setOnAction(this::back);
-
+        
         stage.show();
         LOGGER.info("Password Changing window started... ");
     }
-
+    
     public void handleWindowShowing(WindowEvent event) {
         LOGGER.info("Beginning VEventTableController::handleWindowShowing");
         // Visibilidad de labels
@@ -184,7 +184,7 @@ public class VPasswordController {
         }
         buttonActivation();
     }
-
+    
     private void buttonActivation() {
         if (newPass && actual && confirm) {
             btnContinue.setDisable(false);
@@ -192,38 +192,40 @@ public class VPasswordController {
             btnContinue.setDisable(true);
         }
     }
-
+    
     public void changePass(ActionEvent event) {
         if (user.getPassword().equals(txtPassActual.getText())) {
             try {
-                user.setPassword(txtPassNew.getText());
+                String password = txtPassNew.getText();
+                user.setPassword(password);
                 sig.changePassword(user);
+                user.setPassword(password);
                 postChange();
             } catch (DBServerException ex) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Error al Actualizar");
-            alert.setHeaderText("Error al Actualizar valores en la Base de Datos");
-            alert.setContentText("No se ha podido actualizar su contrase�a en la base de datos."
-                    + "\nPor favor, intentelo mas tarde. "
-                    + "\nSi el error persiste, contacte con soporte tecnico");
-            alert.showAndWait();                
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Error al Actualizar");
+                alert.setHeaderText("Error al Actualizar valores en la Base de Datos");
+                alert.setContentText("No se ha podido actualizar su contrase�a en la base de datos."
+                        + "\nPor favor, intentelo mas tarde. "
+                        + "\nSi el error persiste, contacte con soporte tecnico");
+                alert.showAndWait();
             } catch (ClientServerConnectionException ex) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Error de Conexion");
-            alert.setHeaderText("Error al Conectar con la Base de Datos");
-            alert.setContentText("No se ha podido con la base de datos, lo que ha imposibilitado "
-                    + "\nla actualizacion de su contrase�a. Por favor, intentelo mas tarde. "
-                    + "\nSi el error persiste, contacte con soporte tecnico");
-            alert.showAndWait();    
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Error de Conexion");
+                alert.setHeaderText("Error al Conectar con la Base de Datos");
+                alert.setContentText("No se ha podido con la base de datos, lo que ha imposibilitado "
+                        + "\nla actualizacion de su contrase�a. Por favor, intentelo mas tarde. "
+                        + "\nSi el error persiste, contacte con soporte tecnico");
+                alert.showAndWait();
             }
         } else {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Error de Datos");
-            alert.setHeaderText("Error al Actualizar valores en la Base de Datos");
+            alert.setHeaderText("Los datos no son válidos");
             alert.setContentText("Debe introducir valores validos:"
-                    + "\nEl Nombre y la Descripci�n no pueden ser nulos"
-                    + "\nLas Fechas deben estar en formato valido"
-                    + "\nLa Fecha de Finalizaci�n no puede ser anterior a la de Inicio");
+                    + "\nLa contraseña actual debe ser su contraseña actual"
+                    + "\nLa nueva contraseña debe contener mayúsculas, minúsculas, números y mínimo un carácter especial"
+                    + "\nLa contraseña confirmada debe ser igual a la nueva contraseña");
             alert.showAndWait();
             txtPassActual.setText("");
             txtPassNew.setText("");
@@ -231,7 +233,7 @@ public class VPasswordController {
             lblErrorActual.setVisible(true);
         }
     }
-
+    
     public boolean validatePassword() {
         boolean valid = false;
         Matcher matchpass = pass.matcher(txtPassNew.getText());
@@ -250,7 +252,7 @@ public class VPasswordController {
         }
         return valid;
     }
-
+    
     public void back(ActionEvent event) {
         LOGGER.info("Volviendo a ventana VAdmin");
         Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -291,18 +293,22 @@ public class VPasswordController {
             LOGGER.info("Closing aborted");
         }
     }
-
+    
     private void postChange() {
         LOGGER.info("Cerrada ventana VPassword y volviendo a VAdmin");
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Cambio de contraseña exitoso");
+        alert.setContentText("Se ha cambiado su contraseña con éxito, se le redireccionará a la ventana principal");
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/reto2g1cclient/view/VAdmin.fxml"));
         try {
             Parent root = (Parent) loader.load();
             VAdminController controller = loader.getController();
+            controller.setUser(user);
             controller.setStage(this.stage);
             controller.initStage(root);
         } catch (IOException ex) {
             LOGGER.log(Level.SEVERE, "Error al volver a la ventana de sesi�n del usuario");
         }
     }
-
+    
 }

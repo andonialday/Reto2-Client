@@ -5,27 +5,27 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.layout.HBox?>
 
-<HBox fx:id="hbMenu" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="reto2g1cclient.controller.MenuAdminController">
-   <children>
-       <MenuBar fx:id="mbAdmin" prefHeight="25.0" prefWidth="960.0">
-           <menus>
-               <Menu fx:id="mData" mnemonicParsing="false" text="Gestión de Datos">
-                   <items>
-                       <MenuItem fx:id="miRental" mnemonicParsing="false" text="Ver Alquileres" />
-                  <MenuItem fx:id="miClient" mnemonicParsing="false" text="Ver Clientes" />
-                  <MenuItem fx:id="miCommercial" mnemonicParsing="false" text="Ver Comerciales" />
-                  <MenuItem fx:id="miEquipment" mnemonicParsing="false" text="Ver Equipamientos" />
-                  <MenuItem fx:id="miEvent" mnemonicParsing="false" text="Ver Eventos" />
-                   </items>
-               </Menu>
-               <Menu fx:id="mSession" mnemonicParsing="false" text="Sesión">
-                   <items>
-                       <MenuItem fx:id="miLogout" mnemonicParsing="false" text="Cerrar Sesión " />
-                  <MenuItem fx:id="miPassword" mnemonicParsing="false" text="Cambiar Contraseña" />
-                       <MenuItem fx:id="miExit" mnemonicParsing="false" text="Salir" />
-                   </items>
-               </Menu>
-           </menus>
-       </MenuBar>
-   </children>
+<HBox fx:id="hBoxMenu" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="reto2g1cclient.controller.MenuAdminController">
+    <children>
+        <MenuBar fx:id="mbAdmin" prefHeight="25.0" prefWidth="960.0">
+            <menus>
+                <Menu fx:id="mData" mnemonicParsing="false" text="Gestión de Datos">
+                    <items>
+                        <MenuItem fx:id="miRental" mnemonicParsing="false" text="Ver Alquileres" onAction="#goToEventEquipment"/>
+                        <MenuItem fx:id="miClient" mnemonicParsing="false" text="Ver Clientes" onAction="#goToClient"/>
+                        <MenuItem fx:id="miCommercial" mnemonicParsing="false" text="Ver Comerciales" onAction="#goToCommercial"/>
+                        <MenuItem fx:id="miEquipment" mnemonicParsing="false" text="Ver Equipamientos" onAction="#goToEquipment"/>
+                        <MenuItem fx:id="miEvent" mnemonicParsing="false" text="Ver Eventos" onAction="#goToEvent"/>
+                    </items>
+                </Menu>
+                <Menu fx:id="mSession" mnemonicParsing="false" text="Sesión">
+                    <items>
+                        <MenuItem fx:id="miLogout" mnemonicParsing="false" text="Cerrar Sesión" onAction="#logOut"/>
+                        <MenuItem fx:id="miPassword" mnemonicParsing="false" text="Cambiar Contraseña" onAction="#password"/>
+                        <MenuItem fx:id="miExit" mnemonicParsing="false" text="Salir" onAction="#salir"/>
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+    </children>
 </HBox>

@@ -18,9 +18,8 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
-import reto2g1cclient.model.User;
 
 /**
  * Controlador del Menu del Administrador
@@ -29,34 +28,51 @@ import reto2g1cclient.model.User;
 public class MenuAdminController {
 
     private static final Logger LOGGER = Logger.getLogger("package.class");
+    
+    @FXML
+    private HBox hBoxMenu;
+    @FXML
     private MenuBar mbAdmin;
+    @FXML
     private Menu mData;
+    @FXML
     private Menu mSession;
+    @FXML
     private MenuItem miRental;
+    @FXML
     private MenuItem miClient;
+    @FXML
     private MenuItem miCommercial;
+    @FXML
     private MenuItem miEquipment;
+    @FXML
     private MenuItem miEvent;
+    @FXML
     private MenuItem miLogout;
+    @FXML
     private MenuItem miPassword;
+    @FXML
     private MenuItem miExit;
+    
     private Stage stage;
+    
     // User for Password changing
-    private User user;
+    //private User user;
+
     /*
     * Getter del usuario que ha iniciado sesión y está usando la aplicación
     * @return user usuario que ha iniciado sesión
     */
-    public User getUser() {
-        return user;
-    }
+    //public User getUser() {
+    //    return user;
+    //}
     /*
     * Setter del usuario que ha iniciado sesión y está usando la aplicación
     * @param user usuario que ha iniciado sesión
     */
-    public void setUser(User user) {
-        this.user = user;
-    }
+    //public void setUser(User user) {
+    //    user = user;
+    //}
 
     /**
      * Getter del Stage que va a emplear el menú
@@ -81,18 +97,6 @@ public class MenuAdminController {
      * los submenús y agrupamientos de los mismos.
      */
     public void initStage() {
-        // Setting Menu
-        miRental.setOnAction(this::goToEventEquipment);
-        miClient.setOnAction(this::goToClient);
-        miCommercial.setOnAction(this::goToCommercial);
-        miEquipment.setOnAction(this::goToEquipment);
-        miEvent.setOnAction(this::goToEvent);
-        miLogout.setOnAction(this::logOut);
-        miPassword.setOnAction(this::password);
-        miExit.setOnAction(this::exitProgram);
-        mData.getItems().addAll(miRental, miClient, miCommercial, miEquipment, miEvent);
-        mSession.getItems().addAll(miLogout, miPassword, miExit);
-        mbAdmin.getMenus().addAll(mData, mSession);
     }
 
     /**
@@ -136,12 +140,13 @@ public class MenuAdminController {
         alert.setContentText("La ventana VEventEquipment no se ha podido desarrollar por falta de tiempo, perdone las molestias");
          */
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/reto2g1cclient/view/VClient.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/reto2g1cclient/view/VClientTable.fxml"));
             Parent root = (Parent) fxmlLoader.load();
-            VClientController controller = ((VClientController) fxmlLoader.getController());
-            Stage primaryStage = this.stage;
+            VClientTableController controller = ((VClientTableController) fxmlLoader.getController());
+            Stage primaryStage = new Stage();
             controller.setStage(primaryStage);
             controller.initStage(root);
+            hBoxMenu.getScene().getWindow().hide();
         } catch (IOException ex) {
             LOGGER.info("Error initializing VSignUp");
         }
@@ -162,12 +167,13 @@ public class MenuAdminController {
         alert.setContentText("La ventana VEventEquipment no se ha podido desarrollar por falta de tiempo, perdone las molestias");
          */
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/reto2g1cclient/view/VcommercialTable.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/reto2g1cclient/view/VCommercialTable.fxml"));
             Parent root = (Parent) fxmlLoader.load();
             VCommercialTableController controller = ((VCommercialTableController) fxmlLoader.getController());
-            Stage primaryStage = this.stage;
+            Stage primaryStage = new Stage();
             controller.setStage(primaryStage);
             controller.initStage(root);
+            hBoxMenu.getScene().getWindow().hide();
         } catch (IOException ex) {
             LOGGER.info("Error initializing VSignUp");
         }
@@ -191,9 +197,10 @@ public class MenuAdminController {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/reto2g1cclient/view/VEquipmentTable.fxml"));
             Parent root = (Parent) fxmlLoader.load();
             EquipmentController controller = ((EquipmentController) fxmlLoader.getController());
-            Stage primaryStage = this.stage;
+            Stage primaryStage = new Stage();
             controller.setStage(primaryStage);
             controller.initStage(root);
+            hBoxMenu.getScene().getWindow().hide();
         } catch (IOException ex) {
             LOGGER.info("Error initializing VSignUp");
         }
@@ -217,9 +224,11 @@ public class MenuAdminController {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/reto2g1cclient/view/VEventTable.fxml"));
             Parent root = (Parent) fxmlLoader.load();
             VEventTableController controller = ((VEventTableController) fxmlLoader.getController());
-            Stage primaryStage = this.stage;
+            Stage primaryStage = new Stage();
+            controller.setEditable(true);
             controller.setStage(primaryStage);
             controller.initStage(root);
+            hBoxMenu.getScene().getWindow().hide();
         } catch (IOException ex) {
             LOGGER.info("Error initializing VSignUp");
         }
@@ -241,12 +250,13 @@ public class MenuAdminController {
         + "\nno se ha podido desarrollar por falta de tiempo, perdone las molestias");
          */
         try {
+            hBoxMenu.getScene().getWindow().hide();
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/reto2g1cclient/view/VPassword.fxml"));
             Parent root = (Parent) fxmlLoader.load();
             VPasswordController controller = ((VPasswordController) fxmlLoader.getController());
-            Stage primaryStage = this.stage;
-            controller.setUser(user);
+            Stage primaryStage = new Stage();
             controller.setStage(primaryStage);
+            controller.setUser(VAdminController.getUser());
             controller.initStage(root);
         } catch (IOException ex) {
             LOGGER.info("Error initializing VSignUp");
@@ -265,9 +275,10 @@ public class MenuAdminController {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/reto2g1cclient/view/VSignIn.fxml"));
             Parent root = (Parent) fxmlLoader.load();
             VSignInController controller = ((VSignInController) fxmlLoader.getController());
-            Stage primaryStage = this.stage;
+            Stage primaryStage = new Stage();
             controller.setStage(primaryStage);
             controller.initStage(root);
+            hBoxMenu.getScene().getWindow().hide();
         } catch (IOException ex) {
             LOGGER.info("Error initializing VSignUp");
         }
@@ -280,26 +291,6 @@ public class MenuAdminController {
      */
     @FXML
     private void salir(ActionEvent event) {
-        LOGGER.info("Requesting confirmation for application closing...");
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Está Cerrando el Programa");
-        alert.setHeaderText("¿Seguro que desea cerrar el programa?");
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK) {
-            Platform.exit();
-            LOGGER.info("Closing the application");
-        } else {
-            event.consume();
-            LOGGER.info("Closing aborted");
-        }
-    }
-    
-    /**
-     * Metodo a ejecutar cuando se pulsa en la "X" de la ventana
-     *
-     * @param event evento de cierre de la ventana
-     */
-    public void exitProgram(ActionEvent event) {
         LOGGER.info("Requesting confirmation for application closing...");
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Está Cerrando el Programa");

@@ -36,8 +36,8 @@ public class UserJerseyClient {
         webTarget = client.target(BASE_URI).path("entities.user");
     }
 
-    public void updatePass(Object requestEntity) throws ClientErrorException {
-        webTarget.path("updatePassword/[user]").request(javax.ws.rs.core.MediaType.APPLICATION_XML).put(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_XML));
+    public void updatePass(Object requestEntity, String id, String password) throws ClientErrorException {
+        webTarget.path(java.text.MessageFormat.format("updatePassword/{0}/{1}", new Object[]{id, password})).request(javax.ws.rs.core.MediaType.APPLICATION_XML).put(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_XML));
     }
 
     public String countREST() throws ClientErrorException {

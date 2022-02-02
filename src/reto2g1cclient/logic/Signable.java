@@ -19,7 +19,7 @@ public interface Signable {
 
     public void signUp(User usr) throws DBServerException, LoginOnUseException, ClientServerConnectionException;
 
-    public void resetPassword(String log) throws ClientServerConnectionException, DBServerException;
+    public void resetPassword(String log) throws ClientServerConnectionException, DBServerException, CredentialErrorException;
 
     public void changePassword(User usr) throws ClientServerConnectionException, DBServerException;
 

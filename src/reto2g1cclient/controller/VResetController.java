@@ -7,6 +7,7 @@ package reto2g1cclient.controller;
 
 import java.io.IOException;
 import java.util.Optional;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
@@ -16,22 +17,27 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import reto2g1cclient.exception.ClientServerConnectionException;
+import reto2g1cclient.exception.CredentialErrorException;
+import reto2g1cclient.exception.DBServerException;
 import reto2g1cclient.logic.Signable;
+import reto2g1cclient.logic.ViewSignableFactory;
 
 /**
  *
  * @author Jaime San Sebastian
  */
 public class VResetController {
-    
+
     private static final Logger LOGGER = Logger.getLogger("package.class");
-    
+
     @FXML
     private TextField tfLogin;
     @FXML
@@ -40,11 +46,11 @@ public class VResetController {
     private Button btnContinue;
     @FXML
     private Button btnCancel;
-    
+
     private Stage stage;
-    
+
     private Signable sig;
-    
+
     /**
      * Sets the stage
      *
@@ -62,7 +68,7 @@ public class VResetController {
     public Stage getStage() {
         return stage;
     }
-    
+
     /**
      * Initialize and show window
      *
@@ -89,12 +95,11 @@ public class VResetController {
         tfLogin.textProperty().addListener(this::loginInput);
 
         //Initialization of the Signable Interface
-        //sig = ViewSignableFactory.getView();
-        
+        sig = ViewSignableFactory.getView();
         //Show main window
         stage.show();
     }
-    
+
     private void handleWindowShowing(WindowEvent event) {
         LOGGER.info("Beginning VClientTable::handleWindowShowing");
         //Login label is visible
@@ -102,11 +107,11 @@ public class VResetController {
         //TextField Login is editable
         tfLogin.setEditable(true);
         //Continue button is disabled
-        btnContinue.setDisable(true);        
+        btnContinue.setDisable(true);
         //Cancel button is enabled
         btnCancel.setDisable(false);
     }
-    
+
     private void loginInput(ObservableValue observableValue, String oldValue, String newValue) {
         if (newValue.trim().equals("")) {
             btnContinue.setDisable(true);
@@ -114,14 +119,14 @@ public class VResetController {
             btnContinue.setDisable(false);
         }
     }
-    
+
     /**
      * Method that controls the continue button
      *
      * @param event the event linked to clicking on the button;
-     
+     */
     @FXML
-    private void handleContinue (ActionEvent event) {
+    private void handleContinue(ActionEvent event) {
         try {
             sig.resetPassword(tfLogin.getText());
         } catch (ClientServerConnectionException ex) {
@@ -142,10 +147,18 @@ public class VResetController {
                     + "\ny notificarle de la misma por correo electrónico"
                     + "\nPor favor, inténtelo más tarde. Si el error persiste, comuníquese con soporte técnico.");
             altWarningLog.showAndWait();
+        } catch (CredentialErrorException e) {
+            Logger.getLogger(VResetController.class.getName()).log(Level.SEVERE, null, e);
+            Alert altWarningLog = new Alert(AlertType.WARNING);
+            altWarningLog.setTitle("Error de Credenciales");
+            altWarningLog.setHeaderText("Error al restaurar la contraseña");
+            altWarningLog.setContentText("Ha sucedido un error al intentar restaurar su contraseña "
+                    + "\ny notificarle de la misma por correo electrónico"
+                    + "\nPor favor, inténtelo más tarde. Si el error persiste, comuníquese con soporte técnico.");
+            altWarningLog.showAndWait();
         }
     }
-    */
-    
+
     /**
      * Method that controls the cancel button
      *
@@ -160,27 +173,22 @@ public class VResetController {
         alert1.setHeaderText(null);
         alert1.setContentText("Are you sure "
                 + "you want to return to the previous window?");
-        alert1.showAndWait();
         Optional<ButtonType> result = alert1.showAndWait();
-
         if (result.get() == ButtonType.OK) {
-            LOGGER.info("Closing VReset window and returning to VAdmin");
-            stage.close();
-            FXMLLoader loader = new FXMLLoader(getClass()
-                    .getResource("/reto2client/view/VAdmin.fxml"));
-
-            /*try {
+            try {
+                LOGGER.info("Closing VReset window and returning to VAdmin");
+                FXMLLoader loader = new FXMLLoader(getClass()
+                        .getResource("/reto2cclient/view/VSignIn.fxml"));
                 Parent root = (Parent) loader.load();
-                VAdminController controller = loader.getController();
+                VSignInController controller = (VSignInController) loader.getController();
                 controller.setStage(this.stage);
                 controller.initStage(root);
-
             } catch (IOException ex) {
                 LOGGER.info("Error closing reset password window");
-            }*/
+            }
         }
     }
-    
+
     /**
      * Method to advise the user when uses the UI's innate close button (button
      * X) that the application will close

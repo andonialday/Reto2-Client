@@ -5,7 +5,6 @@
  */
 package reto2g1cclient.controller;
 
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import javafx.scene.control.Button;
@@ -34,90 +33,92 @@ import reto2g1cclient.model.Equipment;
  * @author Aitor Perez
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class EquipmentControllerIT extends ApplicationTest{
-   /*   private TextField txtLogin;
+public class EquipmentControllerIT extends ApplicationTest {
+
+    /*   private TextField txtLogin;
     private PasswordField txtPassword;
     private Button btnSignIn;*/
-     
-     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-  private TableView<Equipment> tbEquipment;
-    
+
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private TableView<Equipment> tbEquipment;
+
     private TableColumn<Equipment, String> clName;
-    
+
     private TableColumn<Equipment, String> clCost;
-    
+
     private TableColumn<Equipment, String> clDescription;
-    
+
     private TableColumn<Equipment, String> clDate;
-    
+
     private Button btnBack;
-    
+
     private Button btnDeleteEquip;
-    
+
     private Button btnSaveEquip;
-    
+
     private Button btnFind;
-    
+
     private ComboBox cbSearch;
-    
+
     private TextField tfFinding;
-    
+
     private TextField tfName; //= lookup("#tfName").query();
-    
-  private TextField tfCost;
-    
+
+    private TextField tfCost;
+
     private DatePicker dpDate;
-    
+
     private TextArea taDescription;
-    
+
     private Button btnCrearEquip;
-    
+
     private Button btnPrint;
-    
+
     private Label lblNameEquipment;
-    
+
     private Label lblName;
-    
+
     private Label lblCost;
-    
+
     private Label lblDescription;
-    
+
     private Label lblBuyData;
-    
+
     private Label lblWarninNumValue;
-    
+
     private Label lblWarningDate;
-     /**
+
+    /**
      * Starts application to be tested.
+     *
      * @param stage Primary Stage object
      * @throws Exception If there is any error
      */
     @Override
     public void start(Stage stage) throws Exception {
-         //txtLogin = lookup("#txtLogin").query();
-         new ClientApplication().start(stage);
-         tfName = lookup("#tfName").query();
-         tfCost = lookup("#tfCost").query();
-         tfFinding = lookup("#tfFinding").query();
-         taDescription = lookup("#taDescription").query();
-         dpDate = lookup("#dpDate").query();
-         btnBack = lookup("#btnBack").query();
-         btnCrearEquip = lookup("#btnCrearEquip").query();
-         btnDeleteEquip = lookup("#btnDeleteEquip").query();
-         btnFind = lookup("#btnFind").query();
-         btnPrint = lookup("btnPrint").query();
-         btnSaveEquip = lookup("btnSaveEquip").query();
-         cbSearch = lookup("#cbSearch").query();
+        //txtLogin = lookup("#txtLogin").query();
+        new ClientApplication().start(stage);
+        tfName = lookup("#tfName").query();
+        tfCost = lookup("#tfCost").query();
+        tfFinding = lookup("#tfFinding").query();
+        taDescription = lookup("#taDescription").query();
+        dpDate = lookup("#dpDate").query();
+        btnBack = lookup("#btnBack").query();
+        btnCrearEquip = lookup("#btnCrearEquip").query();
+        btnDeleteEquip = lookup("#btnDeleteEquip").query();
+        btnFind = lookup("#btnFind").query();
+        btnPrint = lookup("btnPrint").query();
+        btnSaveEquip = lookup("btnSaveEquip").query();
+        cbSearch = lookup("#cbSearch").query();
         // clCost = lookup("#clCost").queryAll(Equipment, String);
         // clDate = lookup("#clDate").query();
-         
-         
-       
+
     }
+
     public EquipmentControllerIT() {
-        
-    
+
     }
+
     /*
     -Test para comprobar si el servidor esta apagado notifica al usuario
     
@@ -128,7 +129,7 @@ public class EquipmentControllerIT extends ApplicationTest{
     
     
     
-    */
+     */
     @Ignore
     @Test
     public void testA_NavigateToVEquipmentTable() {
@@ -142,35 +143,36 @@ public class EquipmentControllerIT extends ApplicationTest{
         clickOn("Ver Eventos");
         verifyThat("#pEventTable", isVisible());
     }
+
     /*Test para verificar activacion de boton y que se crean */
     @Test
-    public void testB_HabilitarBotonNuevoEquipamiento(){
+    public void testB_HabilitarBotonNuevoEquipamiento() {
         clickOn("#tfName");
         write("Altavoz");
-        
+
         clickOn("#tfCost");
         write("100");
         clickOn("#dpDate");
-        dpDate.setValue(LocalDate.parse(("01/02/2020"),formatter));
-        
+        dpDate.setValue(LocalDate.parse(("01/02/2020"), formatter));
+
         press(KeyCode.ENTER);
         release(KeyCode.ENTER);
         clickOn("#taDescription");
         write("el perro de sanroque no tiene rabo");
-        
-        
+
         verifyThat("#btnCrearEquip", isEnabled());
         clickOn("#btnCrearEquip");
-      /*  int rowCount=tbEquipment.getItems().size();
+        /*  int rowCount=tbEquipment.getItems().size();
         assertNotEquals("Table has no data: Cannot test.",
                         rowCount,0);*/
     }
-    public void vaciarCampos(){
+
+    public void vaciarCampos() {
         tfName.clear();
-      /*  tfCost.clear();
+        /*  tfCost.clear();
         dpDate.setValue(null);
         taDescription.clear();*/
-        
+
     }
-    
+
 }

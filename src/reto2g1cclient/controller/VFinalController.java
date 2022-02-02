@@ -138,7 +138,7 @@ public class VFinalController {
         if (result.get() == ButtonType.OK) {
             LOGGER.info("Signing Out");
             stage.close();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/reto1client/view/VSignIn.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/reto2g1cclient/view/VSignIn.fxml"));
             Parent root = (Parent) loader.load();
             VSignInController controller = loader.getController();
             controller.setStage(this.stage);

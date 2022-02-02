@@ -68,7 +68,7 @@ public class ViewSignableImplementation implements Signable {
     }
 
     @Override
-    public void resetPassword(String log) throws DBServerException, ClientServerConnectionException {
+    public void resetPassword(String log) throws DBServerException, ClientServerConnectionException, CredentialErrorException {
         try {
             ujc.resetPasswordByLogin(User.class, log);
         } catch (ClientErrorException e) {
@@ -82,7 +82,7 @@ public class ViewSignableImplementation implements Signable {
     public void changePassword(User usr) throws DBServerException, ClientServerConnectionException {
         try {
             usr.setPassword(EncryptAsim.encryption(usr.getPassword()));
-            ujc.updatePass(usr);
+            ujc.updatePass(usr, usr.getId().toString(), usr.getPassword());
         } catch (ClientErrorException e) {
             throw new DBServerException(e.getMessage());
         } catch (Exception es) {

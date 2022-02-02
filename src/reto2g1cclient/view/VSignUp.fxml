@@ -40,15 +40,15 @@
         </PasswordField>
         <Button id="btBack" fx:id="btBack" cancelButton="true" layoutX="217.0" layoutY="463.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="108.0" text="Back" />
         <Button id="btSignUp" fx:id="btSignUp" layoutX="396.0" layoutY="463.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="108.0" style="-fx-background-color: blue;" text="Sign Up" textFill="WHITE" />
-      <Label fx:id="lblName" alignment="CENTER" contentDisplay="CENTER" layoutX="71.0" layoutY="83.0" prefHeight="42.0" prefWidth="581.0" text="El Nombre debe tener máximo 25 carácteres alfanuméricos &#10;(se admiten espacios, pero si comienza o termina con espacios, estos serán ignorados)" textAlignment="CENTER" textFill="RED" />
-      <Label fx:id="lblLogin" alignment="CENTER" contentDisplay="CENTER" layoutY="173.0" prefHeight="17.0" prefWidth="720.0" text="El Login debe ser mínimo 5 carácteres, máximo 25, alfanuméricos (no se admiten espacios)" textAlignment="CENTER" textFill="RED" />
-      <Label fx:id="lblEmail" alignment="CENTER" contentDisplay="CENTER" layoutX="129.0" layoutY="253.0" prefHeight="17.0" prefWidth="464.0" text="El Email debe ser un email real (longitud máxima 50 carácteres)" textAlignment="CENTER" textFill="RED" />
-      <Label fx:id="lblPassword" alignment="CENTER" contentDisplay="CENTER" layoutX="130.0" layoutY="334.0" prefHeight="42.0" prefWidth="464.0" text="La Contraseña debe tener mínimo 6 carácteres alfanuméricos,&#10; incluyendo mayúsculas y minúsculas y un carácter especial" textFill="RED" />
-      <Label fx:id="lblCPassword" alignment="CENTER" contentDisplay="CENTER" layoutX="195.0" layoutY="431.0" prefHeight="17.0" prefWidth="333.0" text="Las Contraseñas deben ser iguales" textFill="RED" />
-      <Label id="lblConfirmInfo" layoutX="122.0" layoutY="408.0" text="Confirmar Contraseña" />
-      <Label id="lblPasswordnfo" layoutX="122.0" layoutY="310.0" text="Contraseña" />
-      <Label id="lblEmailInfo" layoutX="122.0" layoutY="229.0" text="Email" />
-      <Label id="lblLoginInfo" layoutX="122.0" layoutY="149.0" text="Login" />
-      <Label id="lblNombreInfo" layoutX="122.0" layoutY="59.0" text="Nombre" />
+        <Label fx:id="lblName" alignment="CENTER" contentDisplay="CENTER" layoutX="71.0" layoutY="83.0" prefHeight="42.0" prefWidth="581.0" text="El Nombre debe tener máximo 25 carácteres alfanuméricos &#10;(se admiten espacios, pero si comienza o termina con espacios, estos serán ignorados)" textAlignment="CENTER" textFill="RED" />
+        <Label fx:id="lblLogin" alignment="CENTER" contentDisplay="CENTER" layoutY="173.0" prefHeight="17.0" prefWidth="720.0" text="El Login debe ser mínimo 5 carácteres, máximo 25, alfanuméricos (no se admiten espacios)" textAlignment="CENTER" textFill="RED" />
+        <Label fx:id="lblEmail" alignment="CENTER" contentDisplay="CENTER" layoutX="129.0" layoutY="253.0" prefHeight="17.0" prefWidth="464.0" text="El Email debe ser un email real (longitud máxima 50 carácteres)" textAlignment="CENTER" textFill="RED" />
+        <Label fx:id="lblPassword" alignment="CENTER" contentDisplay="CENTER" layoutX="130.0" layoutY="334.0" prefHeight="42.0" prefWidth="464.0" text="La Contraseña debe tener mínimo 6 carácteres alfanuméricos,&#10; incluyendo mayúsculas y minúsculas y un carácter especial" textFill="RED" />
+        <Label fx:id="lblCPassword" alignment="CENTER" contentDisplay="CENTER" layoutX="195.0" layoutY="431.0" prefHeight="17.0" prefWidth="333.0" text="Las Contraseñas deben ser iguales" textFill="RED" />
+        <Label fx:id="lblConfirmInfo" layoutX="122.0" layoutY="408.0" text="Confirmar Contraseña" />
+        <Label fx:id="lblPasswordInfo" layoutX="122.0" layoutY="310.0" text="Contraseña" />
+        <Label fx:id="lblEmailInfo" layoutX="122.0" layoutY="229.0" text="Email" />
+        <Label fx:id="lblLoginInfo" layoutX="122.0" layoutY="149.0" text="Login" />
+        <Label fx:id="lblNameInfo" layoutX="122.0" layoutY="59.0" text="Nombre" />
     </children>
 </Pane>

@@ -160,9 +160,10 @@ public class VSignInController {
         User usr = null;
         try {
             usr = sig.signIn(user);
+            usr.setPassword(user.getPassword());
             if (usr.getPrivilege().equals(Privilege.USER)) {
                 // Inicio de ventana de cliente
-                //      Por falta de tiempo, se ha optado por sustituir VClient por VFinal
+                //      Por falta de tiempo, se ha optado por sustituir VClient y VCommercial por VFinal
                 try {
                     FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/reto2g1cclient/view/VFinal.fxml"));
                     Parent root = (Parent) fxmlLoader.load();
@@ -188,6 +189,7 @@ public class VSignInController {
                     Parent root = (Parent) fxmlLoader.load();
                     VAdminController controller = ((VAdminController) fxmlLoader.getController());
                     Stage primaryStage = this.stage;
+                    controller.setUser(usr);
                     controller.setStage(primaryStage);
                     controller.initStage(root);
                 } catch (IOException ex) {

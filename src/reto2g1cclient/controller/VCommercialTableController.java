@@ -176,14 +176,14 @@ public class VCommercialTableController {
     private List<Commercial> commercialList;
 
     //Booleanos de control para habilitar botones
-    private Boolean name;
-    private Boolean email;
-    private Boolean login;
-    private Boolean password;
+    private Boolean name = false;
+    private Boolean email = false;
+    private Boolean login = false;
+    private Boolean password = false;
     //confirma password
-    private Boolean passwordR;
+    private Boolean passwordR = false;
     //para saber si la tabla esta seleccionada (para el modi )
-    private Boolean tableSelec;
+    private Boolean tableSelec = false;
 
     /**
      * Inicializa y muestra la ventana . Metodo para mostrar la ventana con los
