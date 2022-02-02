@@ -188,7 +188,6 @@ public class VSignInController {
                     Parent root = (Parent) fxmlLoader.load();
                     VAdminController controller = ((VAdminController) fxmlLoader.getController());
                     Stage primaryStage = this.stage;
-                    controller.setUser(usr);
                     controller.setStage(primaryStage);
                     controller.initStage(root);
                 } catch (IOException ex) {
