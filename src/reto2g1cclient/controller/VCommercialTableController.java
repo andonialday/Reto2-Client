@@ -55,7 +55,6 @@ import reto2g1cclient.exception.LoginOnUseException;
 import reto2g1cclient.exception.DBServerException;
 import reto2g1cclient.logic.CommercialFactory;
 import reto2g1cclient.logic.CommercialInterface;
-import reto2g1cclient.model.Client;
 import reto2g1cclient.model.Commercial;
 import reto2g1cclient.model.Especialization;
 import reto2g1cclient.model.UserStatus;

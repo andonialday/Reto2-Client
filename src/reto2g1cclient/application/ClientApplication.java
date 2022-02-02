@@ -13,8 +13,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
 import reto2g1cclient.controller.VClientTableController;
-import reto2g1cclient.controller.VSignInController;
-import reto2g1cclient.logic.ClientFactory;
 
 /**
  * Client Main class to Launch Client App

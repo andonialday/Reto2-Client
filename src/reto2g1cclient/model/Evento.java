@@ -8,7 +8,6 @@ package reto2g1cclient.model;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.Set;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javax.xml.bind.annotation.XmlRootElement;

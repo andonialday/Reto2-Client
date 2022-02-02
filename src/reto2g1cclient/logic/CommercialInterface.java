@@ -51,6 +51,9 @@ public interface CommercialInterface {
     /**
      * 
      * @param usr
+     * @throws reto2g1cclient.exception.LoginOnUseException
+     * @throws reto2g1cclient.exception.ClientServerConnectionException
+     * @throws reto2g1cclient.exception.DBServerException
      */
     public void signUp(Commercial usr) throws LoginOnUseException ,ClientServerConnectionException,DBServerException  ;
     

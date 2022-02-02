@@ -53,7 +53,6 @@ import net.sf.jasperreports.view.JasperViewer;
 import reto2g1cclient.exception.ClientServerConnectionException;
 import reto2g1cclient.exception.DBServerException;
 import reto2g1cclient.exception.LoginOnUseException;
-import reto2g1cclient.implementation.ClientImplementation;
 import reto2g1cclient.logic.ClientFactory;
 import reto2g1cclient.logic.ClientInterface;
 import reto2g1cclient.model.Client;

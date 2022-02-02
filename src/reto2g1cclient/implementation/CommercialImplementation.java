@@ -7,7 +7,6 @@ package reto2g1cclient.implementation;
 
 
 import java.util.Collection;
-import java.util.List;
 import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.core.GenericType;
 import reto2g1cclient.cypher.EncryptAsim;
@@ -15,7 +14,6 @@ import reto2g1cclient.exception.ClientServerConnectionException;
 import reto2g1cclient.exception.DBServerException;
 import reto2g1cclient.exception.LoginOnUseException;
 import reto2g1cclient.logic.CommercialInterface;
-import reto2g1cclient.model.Client;
 import reto2g1cclient.model.Commercial;
 
 

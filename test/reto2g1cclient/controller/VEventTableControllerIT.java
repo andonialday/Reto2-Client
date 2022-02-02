@@ -6,12 +6,10 @@
 package reto2g1cclient.controller;
 
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -19,7 +17,6 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.PasswordField;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -40,7 +37,7 @@ import static org.testfx.matcher.base.NodeMatchers.isDisabled;
 import static org.testfx.matcher.base.NodeMatchers.isEnabled;
 import static org.testfx.matcher.base.NodeMatchers.isVisible;
 import static org.testfx.matcher.control.TextInputControlMatchers.hasText;
-import reto2g1cclient.application.*;
+import reto2g1cclient.application.ClientApplication;
 import reto2g1cclient.model.Evento;
 
 /**
@@ -103,7 +100,7 @@ public class VEventTableControllerIT extends ApplicationTest {
         //txtPassword = lookup("#txtPassword").query();
         //btnSignIn = lookup("#btnSignIn").query();
         //"lookup" de los nodos de la ventana VEventTable 
-        new TestApplication().start(stage);
+        new ClientApplication().start(stage);
         txtName = lookup("#txtName").query();
         dpDateStart = lookup("#dpDateStart").query();
         dpDateEnd = lookup("#dpDateEnd").query();
@@ -144,7 +141,6 @@ public class VEventTableControllerIT extends ApplicationTest {
      * This method allows to see users' table view by interacting with login
      * view.
      */
-    @Ignore
     @Test
     public void testA_NavigateToVEventTable() {
         clickOn("#txtLogin");

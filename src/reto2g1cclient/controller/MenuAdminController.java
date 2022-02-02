@@ -299,7 +299,7 @@ public class MenuAdminController {
      *
      * @param event evento de cierre de la ventana
      */
-    public void exitProgram(WindowEvent event) {
+    public void exitProgram(ActionEvent event) {
         LOGGER.info("Requesting confirmation for application closing...");
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Está Cerrando el Programa");

@@ -7,8 +7,6 @@ package reto2g1cclient.logic;
 
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
-import javax.ws.rs.PathParam;
 import reto2g1cclient.exception.ClientServerConnectionException;
 import reto2g1cclient.exception.DBServerException;
 import reto2g1cclient.model.Equipment;

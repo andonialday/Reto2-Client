@@ -8,21 +8,16 @@ package reto2g1cclient.controller;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import static java.time.temporal.TemporalQueries.zone;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
-import static org.junit.Assert.assertNotEquals;
 import org.junit.Test;
 import org.junit.FixMethodOrder;
 import org.junit.Ignore;
@@ -31,7 +26,7 @@ import static org.testfx.api.FxAssert.verifyThat;
 import org.testfx.framework.junit.ApplicationTest;
 import static org.testfx.matcher.base.NodeMatchers.isEnabled;
 import static org.testfx.matcher.base.NodeMatchers.isVisible;
-import reto2g1cclient.application.TestAplicationEquipment;
+import reto2g1cclient.application.ClientApplication;
 import reto2g1cclient.model.Equipment;
 
 /**
@@ -100,7 +95,7 @@ public class EquipmentControllerIT extends ApplicationTest{
     @Override
     public void start(Stage stage) throws Exception {
          //txtLogin = lookup("#txtLogin").query();
-         new TestAplicationEquipment().start(stage);
+         new ClientApplication().start(stage);
          tfName = lookup("#tfName").query();
          tfCost = lookup("#tfCost").query();
          tfFinding = lookup("#tfFinding").query();
