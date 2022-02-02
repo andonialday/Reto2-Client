@@ -6,11 +6,13 @@
 package reto2g1cclient.model;
 
 import java.io.Serializable;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Enumeracion Especialization del Commercial, indicando su especialziacion profesional
  * @author Enaitz Izagirre
  */
+@XmlRootElement
 public enum Especialization implements Serializable{
 
     /**

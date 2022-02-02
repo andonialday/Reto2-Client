@@ -6,6 +6,7 @@
 package reto2g1cclient.model;
 
 import java.io.Serializable;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Enumeración Type para el Cliente, indicando el tipo del mismo <i>(El cliente
@@ -13,6 +14,7 @@ import java.io.Serializable;
  *
  * @author Jaime San Sebastian
  */
+@XmlRootElement
 public enum Type implements Serializable {
 
     /**

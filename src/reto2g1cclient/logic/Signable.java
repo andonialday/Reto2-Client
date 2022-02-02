@@ -10,7 +10,7 @@ import reto2g1cclient.model.*;
 
 /**
  * Signable Interface 
- * @author Jaime San Sebastian,Enaitz Izagirre
+ * @author Jaime San Sebastián y Enaitz Izagirre
  */
 public interface Signable {
  
@@ -22,7 +22,7 @@ public interface Signable {
      * @throws reto1libraries.exception.DBConnectionException Error processing feedback from the Database
      * @throws reto1libraries.exception.CredentialErrorException If the user is not correct
      */
-    public User signIn(User usr) throws ClientServerConnectionException, DBServerException, CredentialErrorException;
+    public User signIn(User usr) throws ClientServerConnectionException, DBConnectionException, CredentialErrorException;
     
     /**
      * Sign Up Method Interface
@@ -32,6 +32,10 @@ public interface Signable {
      * @throws reto1libraries.exception.DBConnectionException Error processing feedback from the Database
      * @throws reto1libraries.exception.LoginOnUseException If the User Parameters are rown
      */
-    public User signUp(User usr) throws ClientServerConnectionException, DBServerException, LoginOnUseException;
+    public User signUp(User usr) throws ClientServerConnectionException, DBConnectionException, LoginOnUseException;
     
+    
+    
+    
+    //Introducir uno más: el de añadir contraseña
 }

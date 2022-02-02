@@ -10,8 +10,8 @@ import java.util.Objects;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * Entidad EventEquipment, representativa de la relacion entre os Evento y los
- Equipment, indicando la Quantity <i>(Cantidad de Equipment)</i> de la
+ * Entidad EventEquipment, representativa de la relacion entre os Event y los
+ * Equipment, indicando la Quantity <i>(Cantidad de Equipment)</i> de la
  * relación
  *
  * @author Andoni Alday , Aitor Perez
@@ -21,45 +21,45 @@ public class EventEquipment implements Serializable {
 
     private EventEquipmentId eventEquipmentId;
 
-    private Evento event;
+    private Event event;
 
     private Equipment equipment;
 
     private Integer quantity;
 
     /**
-     * Método Getter para obtener la ID combinada de Evento y Equipment
+     * Método Getter para obtener la ID combinada de Event y Equipment
      *
-     * @return eventEquipmentId ID combinada de Evento y Equipment
+     * @return eventEquipmentId ID combinada de Event y Equipment
      */
     public EventEquipmentId getEventEquipmentId() {
         return eventEquipmentId;
     }
 
     /**
-     * Método Setter para asignar una ID combinada de Evento y Equipment
+     * Método Setter para asignar una ID combinada de Event y Equipment
      *
-     * @param eventEquipmentId ID combinada de Evento y Equipment
+     * @param eventEquipmentId ID combinada de Event y Equipment
      */
     public void setEventEquipmentId(EventEquipmentId eventEquipmentId) {
         this.eventEquipmentId = eventEquipmentId;
     }
 
     /**
-     * Método Getter para obtener el Evento de la relación
+     * Método Getter para obtener el Event de la relación
      *
-     * @return event Evento de la relación
+     * @return event Event de la relación
      */
-    public Evento getEvent() {
+    public Event getEvent() {
         return event;
     }
 
     /**
-     * Método Setter para asignar un Evento a la relación
+     * Método Setter para asignar un Event a la relación
      *
-     * @param event Evento a asignar a la relación
+     * @param event Event a asignar a la relación
      */
-    public void setEvent(Evento event) {
+    public void setEvent(Event event) {
         this.event = event;
     }
 
@@ -102,10 +102,6 @@ public class EventEquipment implements Serializable {
         this.quantity = quantity;
     }
 
-    /**
-     *
-     * @return
-     */
     @Override
     public int hashCode() {
         int hash = 3;
@@ -115,11 +111,6 @@ public class EventEquipment implements Serializable {
         return hash;
     }
 
-    /**
-     *
-     * @param obj
-     * @return
-     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -144,10 +135,6 @@ public class EventEquipment implements Serializable {
         return true;
     }
 
-    /**
-     *
-     * @return
-     */
     @Override
     public String toString() {
         return "EventEquipment{" + "event=" + event + ", equipment=" + equipment + ", quantity=" + quantity + '}';

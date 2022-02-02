@@ -11,14 +11,13 @@ import java.util.Date;
 import java.util.Objects;
 import java.util.Set;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 /**
  * Entidad Equipment para gestion y control de Equipamiento
  * @author Aitor Perez
  */
 @XmlRootElement
 public class Equipment implements Serializable {
-        
+    
     private Integer id;
     private String description;
     private Date dateAdd;
@@ -93,7 +92,6 @@ public class Equipment implements Serializable {
      * Metodo Getter para obtener los Event <i>(Eventos)</i> asignados al Equipamiento
      * @return Events <i>(Eventos)</i> del Equipamiento
      */
-    @XmlTransient
     public Set<EventEquipment> getEvents() {
         return events;
     }

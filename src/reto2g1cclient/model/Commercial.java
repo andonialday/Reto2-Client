@@ -9,7 +9,6 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * Esta clase es un tipo de Usuario que extiende de User
@@ -36,7 +35,6 @@ public class Commercial extends User implements Serializable{
      * Metodo`para obtener el Listado de clientes
      * @return Devuelve el array de clientes
      */
-    @XmlTransient
     public List<Client> getClients() {
         return clients;
     }

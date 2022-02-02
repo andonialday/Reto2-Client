@@ -8,7 +8,6 @@ package reto2g1cclient.model;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
-import java.util.Set;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -20,27 +19,37 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class User implements Serializable {
 
     private Integer id;
-
     private String login;
     private String email;
     private String fullName;
-
     private UserStatus status;
-
     private Privilege privilege;
-    
     private String password;
-
     private Date lastPasswordChange;
 
-    private Set<SignIn> signIns;
+    public User(Integer id, String login, String email, String fullName, 
+            UserStatus status, Privilege privilege, String password, 
+            Date lastPasswordChange) {
+        this.id = id;
+        this.login = login;
+        this.email = email;
+        this.fullName = fullName;
+        this.status = status;
+        this.privilege = privilege;
+        this.password = password;
+        this.lastPasswordChange = lastPasswordChange;
+    }
 
+    public User() {
+        
+    }
+  
     /**
      * Método Getter para obtener la ID del usuario
      *
      * @return el id de un usuario
      */
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -49,7 +58,7 @@ public class User implements Serializable {
      *
      * @param id el id de un usuario a establecer
      */
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -172,54 +181,56 @@ public class User implements Serializable {
     }
 
     /**
-     * Método Setter para determinar el momento del último cambio de contraseña
-     * del usuario
+     * Método Getter para obtener el momento del último cambio de contraseña del
+     * usuario
      *
-     * @param lastPasswordChange el momento del ultimo cambio de contraseña de
-     * un usuario a establecer
+     * @param lastPasswordChange el cambio de contraseña de un usuario a
+     * establecer
      */
     public void setLastPasswordChange(Date lastPasswordChange) {
         this.lastPasswordChange = lastPasswordChange;
     }
 
     /**
-     * Método Getter para obtener los ultimos inicios de sesion de un usuario
-     *
-     * @return los ultimos inicios de sesion del usuario
+     * Método toString que convierte a String el objeto usuario
+     * 
+     * @return String
      */
-    public Set<SignIn> getSignIns() {
-        return signIns;
+    @Override
+    public String toString() {
+        return "User{" + "id=" + id + ", login=" + login + ", email=" + email + ", fullName=" + fullName + ", status=" + status + ", privilege=" + privilege + ", password=" + password + ", lastPasswordChange=" + lastPasswordChange + '}';
     }
 
     /**
-     * Método Setter para determinar los ultimos inicios de sesion de un usuario
-     *
-     * @param signIns los ultimos inicios de sesion del usuario
+     * Método hashCode que complementa al método equals 
+     * y sirve para comparar los datos del objeto usuario.
+     * Devuelve un número entero.
+     * 
+     * @return int
      */
-    public void setSignIns(Set<SignIn> signIns) {
-        this.signIns = signIns;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" + "id=" + id + ", login=" + login + ", email=" + email + ", fullName=" + fullName + ", status=" + status + ", privilege=" + privilege + ", password=" + password + ", lastPasswordChange=" + lastPasswordChange + ", signIns=" + signIns + '}';
-    }
-
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 19 * hash + Objects.hashCode(this.id);
-        hash = 19 * hash + Objects.hashCode(this.login);
-        hash = 19 * hash + Objects.hashCode(this.email);
-        hash = 19 * hash + Objects.hashCode(this.fullName);
-        hash = 19 * hash + Objects.hashCode(this.status);
-        hash = 19 * hash + Objects.hashCode(this.privilege);
-        hash = 19 * hash + Objects.hashCode(this.password);
-        hash = 19 * hash + Objects.hashCode(this.lastPasswordChange);
-        hash = 19 * hash + Objects.hashCode(this.signIns);
+        int hash = 7;
+        hash = 73 * hash + Objects.hashCode(this.id);
+        hash = 73 * hash + Objects.hashCode(this.login);
+        hash = 73 * hash + Objects.hashCode(this.email);
+        hash = 73 * hash + Objects.hashCode(this.fullName);
+        hash = 73 * hash + Objects.hashCode(this.status);
+        hash = 73 * hash + Objects.hashCode(this.privilege);
+        hash = 73 * hash + Objects.hashCode(this.password);
+        hash = 73 * hash + Objects.hashCode(this.lastPasswordChange);
         return hash;
     }
 
+    /**
+     * Método equals que compara los datos del objeto usuario, 
+     * para saber si son del mismo tipo y tienen los mismos datos.
+     * Nos devuelve el valor true si son iguales
+     * y el valor false si no lo son.
+     *  
+     * @param obj
+     * @return boolean
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -232,6 +243,9 @@ public class User implements Serializable {
             return false;
         }
         final User other = (User) obj;
+        if (this.id != other.id) {
+            return false;
+        }
         if (!Objects.equals(this.login, other.login)) {
             return false;
         }
@@ -244,9 +258,6 @@ public class User implements Serializable {
         if (!Objects.equals(this.password, other.password)) {
             return false;
         }
-        if (!Objects.equals(this.id, other.id)) {
-            return false;
-        }
         if (this.status != other.status) {
             return false;
         }
@@ -254,9 +265,6 @@ public class User implements Serializable {
             return false;
         }
         if (!Objects.equals(this.lastPasswordChange, other.lastPasswordChange)) {
-            return false;
-        }
-        if (!Objects.equals(this.signIns, other.signIns)) {
             return false;
         }
         return true;

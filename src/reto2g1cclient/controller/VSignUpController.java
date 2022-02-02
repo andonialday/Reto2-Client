@@ -28,6 +28,8 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import reto2g1cclient.exception.*;
+import reto2g1cclient.logic.Signable;
+import reto2g1cclient.logic.ViewSignableFactory;
 import reto2g1cclient.model.*;
 
 /**
