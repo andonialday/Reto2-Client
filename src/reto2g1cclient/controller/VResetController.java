@@ -181,7 +181,7 @@ public class VResetController {
             try {
                 LOGGER.info("Closing VReset window and returning to VAdmin");
                 FXMLLoader loader = new FXMLLoader(getClass()
-                        .getResource("/reto2cclient/view/VSignIn.fxml"));
+                        .getResource("/reto2g1cclient/view/VSignIn.fxml"));
                 Parent root = (Parent) loader.load();
                 VSignInController controller = (VSignInController) loader.getController();
                 controller.setStage(this.stage);
