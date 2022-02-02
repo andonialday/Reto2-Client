@@ -5,11 +5,13 @@
  */
 package reto2g1cclient.controller;
 
-import java.awt.MouseInfo;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -17,6 +19,7 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -36,7 +39,6 @@ import org.testfx.matcher.base.NodeMatchers;
 import static org.testfx.matcher.base.NodeMatchers.isDisabled;
 import static org.testfx.matcher.base.NodeMatchers.isEnabled;
 import static org.testfx.matcher.base.NodeMatchers.isVisible;
-import org.testfx.matcher.control.TableViewMatchers;
 import static org.testfx.matcher.control.TextInputControlMatchers.hasText;
 import reto2g1cclient.application.*;
 import reto2g1cclient.model.Evento;
@@ -85,7 +87,7 @@ public class VEventTableControllerIT extends ApplicationTest {
 
     public VEventTableControllerIT() {
     }
-    
+
     /**
      * Starts application to be tested.
      *
@@ -114,7 +116,7 @@ public class VEventTableControllerIT extends ApplicationTest {
         btnSave = lookup("#btnSave").query();
         btnDelete = lookup("#btnDelete").query();
         btnBack = lookup("#btnBack").query();
-        tbEvent = lookup("#tbEvent").queryTableView();        
+        tbEvent = lookup("#tbEvent").queryTableView();
     }
 
     public void limpiarCampos() {
@@ -124,6 +126,20 @@ public class VEventTableControllerIT extends ApplicationTest {
         dpDateEnd.setValue(null);
     }
 
+    /*
+    protected static TableCell<?, ?> localizarCelda(String tableSelector, int row, int column) {
+      List<Node> current = row(tableSelector, row).getChildrenUnmodifiable();
+      while (current.size() == 1 && !(current.get(0) instanceof TableCell)) {
+          current = ((Parent) current.get(0)).getChildrenUnmodifiable();
+      }
+
+      Node node = current.get(column);
+      if (node instanceof TableCell) {
+          return (TableCell<?, ?>) node;
+      }
+      else {
+          throw new RuntimeException("Expected TableRowSkin with only TableCells as children");
+      }*/
     /**
      * This method allows to see users' table view by interacting with login
      * view.
@@ -295,6 +311,7 @@ public class VEventTableControllerIT extends ApplicationTest {
         assertEquals("Se ha modificado el Evento", event, tbEvent.getSelectionModel().getSelectedItem());
     }
 
+    //works
     @Ignore
     @Test
     public void testH_ModifyEventFormSuccessfull() {
@@ -313,17 +330,28 @@ public class VEventTableControllerIT extends ApplicationTest {
         assertEquals("Se ha modificado el Evento", event.getDateEnd(), "10/01/2000");
         limpiarCampos();
     }
-    
+
+    //works
     @Ignore
     @Test
     public void testI_ModifyEventTableFailure() {
         limpiarCampos();
         int rowCount = tbEvent.getItems().size();
         Node row = lookup(".table-row-cell").nth(rowCount - 1).query();
+        clickOn(row);
         assertNotNull("Row is null: table has not that row. ", row);
         Evento event = (Evento) tbEvent.getSelectionModel().getSelectedItem();
-        clickOn(row);
-        tbEvent.edit(rowCount, clDateEnd);
+        String click = event.getDateEnd();
+        Set<Node> list = lookup(click).queryAll();
+        Node cell = null;
+        for (Iterator<Node> it = list.iterator(); it.hasNext();) {
+            cell = it.next();
+        }
+        doubleClickOn(cell);
+        press(KeyCode.CONTROL);
+        press(KeyCode.A);
+        release(KeyCode.CONTROL);
+        release(KeyCode.A);
         write("01/01/1000");
         press(KeyCode.ENTER);
         release(KeyCode.ENTER);
@@ -333,7 +361,7 @@ public class VEventTableControllerIT extends ApplicationTest {
         limpiarCampos();
     }
 
-    @Ignore
+    //@Ignore
     @Test
     public void testJ_ModifyEventTableSuccessfull() {
         limpiarCampos();
@@ -343,6 +371,17 @@ public class VEventTableControllerIT extends ApplicationTest {
         clickOn(row);
         Evento event = (Evento) tbEvent.getSelectionModel().getSelectedItem();
         tbEvent.getSelectionModel().select(rowCount - 1, clDateEnd);
+        String click = event.getDateEnd();
+        Set<Node> list = lookup(click).queryAll();
+        Node cell = null;
+        for (Iterator<Node> it = list.iterator(); it.hasNext();) {
+            cell = it.next();
+        }
+        doubleClickOn(cell);
+        press(KeyCode.CONTROL);
+        press(KeyCode.A);
+        release(KeyCode.CONTROL);
+        release(KeyCode.A);
         write("10/01/2000");
         press(KeyCode.ENTER);
         release(KeyCode.ENTER);
@@ -367,7 +406,7 @@ public class VEventTableControllerIT extends ApplicationTest {
         clickOn("Cancelar");
         assertEquals("Se ha borrado el Evento", rowCount, tbEvent.getItems().size());
     }
-    
+
     //works
     @Ignore
     @Test
