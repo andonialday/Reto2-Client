@@ -54,6 +54,7 @@ import reto2g1cclient.exception.ClientServerConnectionException;
 import reto2g1cclient.exception.DBServerException;
 import reto2g1cclient.exception.LoginOnUseException;
 import reto2g1cclient.implementation.ClientImplementation;
+import reto2g1cclient.logic.ClientFactory;
 import reto2g1cclient.logic.ClientInterface;
 import reto2g1cclient.model.Client;
 import reto2g1cclient.model.Type;
@@ -61,7 +62,7 @@ import reto2g1cclient.model.UserStatus;
 
 /**
  * Controller for the client table fxml
- * 
+ *
  * @author Jaime San Sebastian
  */
 public class VClientTableController {
@@ -166,8 +167,7 @@ public class VClientTableController {
     private List<Client> clientList;
 
     /**
-     * Initialize and show window. 
-     * Initialize the window, create a scene, 
+     * Initialize and show window. Initialize the window, create a scene,
      * associate it with a stage and show the window.
      *
      * @param root
@@ -186,6 +186,8 @@ public class VClientTableController {
         stage.setTitle("Client Table");
         stage.setResizable(false);
 
+        clientInterface = ClientFactory.getClient();
+        
         //Set Windows event handlers 
         stage.setOnShowing(this::handleWindowShowing); //show window
         stage.setOnCloseRequest(this::closeVClientTable); //close window
@@ -256,8 +258,7 @@ public class VClientTableController {
         colType.setCellValueFactory(new PropertyValueFactory<>("type"));
 
         try {
-            clientsForTable = FXCollections
-                    .observableArrayList(clientInterface.getAllClient());
+            clientsForTable = FXCollections.observableArrayList(clientInterface.getAllClient());
             tbClient.setItems(clientsForTable);
         } catch (ClientServerConnectionException ex) {
             LOGGER.info("Error, client collection not working");
@@ -279,7 +280,7 @@ public class VClientTableController {
     private void handleSelection(ObservableValue observableValue,
             Object oldValue, Object newValue) {
         LOGGER.info("Control the selection of a client");
-        
+
         //client selected in the table
         if (newValue != null) {
             //Insert client data into fields
@@ -337,7 +338,7 @@ public class VClientTableController {
      */
     private void loadClientTable() {
         LOGGER.info("Load client table");
-        
+
         try {
 
             //Clear the data of the table
@@ -524,7 +525,7 @@ public class VClientTableController {
     public void txtNameFull(ObservableValue observable,
             Object oldValue, Object newValue) {
         LOGGER.info("Check field name filled");
-        
+
         name = false;
         if (tfName.getText().trim() != null) {
             name = true;
@@ -542,7 +543,7 @@ public class VClientTableController {
     public void txtEmailFull(ObservableValue observable,
             Object oldValue, Object newValue) {
         LOGGER.info("Check field email filled");
-        
+
         email = false;
         if (tfEmail.getText().trim() != null) {
             email = true;
@@ -560,7 +561,7 @@ public class VClientTableController {
     public void txtLoginFull(ObservableValue observable,
             Object oldValue, Object newValue) {
         LOGGER.info("Check field login filled");
-        
+
         login = false;
         if (tfLogin.getText().trim() != null) {
             login = true;
@@ -578,7 +579,7 @@ public class VClientTableController {
     public void txtPasswordFull(ObservableValue observable,
             Object oldValue, Object newValue) {
         LOGGER.info("Check field password filled");
-        
+
         password = false;
         if (tfPassword.getText().trim() != null) {
             password = true;
@@ -596,7 +597,7 @@ public class VClientTableController {
     public void txtConfirmPasswordFull(ObservableValue observable,
             Object oldValue, Object newValue) {
         LOGGER.info("Check field password filled");
-        
+
         confirmPassword = false;
         if (tfConfirmPassword.getText().trim() != null) {
             confirmPassword = true;
@@ -610,7 +611,7 @@ public class VClientTableController {
      */
     public void filledFields() {
         LOGGER.info("Check fields filled");
-        
+
         if (name && login && email && password && confirmPassword
                 && !tableSelect) {
             btnNewClient.setDisable(false);
@@ -679,9 +680,6 @@ public class VClientTableController {
                         //Add the client introduced by calling the logical part
                         clientInterface.signUp(clientToCreate);
 
-                        //Add the client on the Client list to update the obserbable
-                        clientList.add(clientToCreate);
-
                         //Update client table 
                         loadClientTable();
 
@@ -694,7 +692,7 @@ public class VClientTableController {
                                 + "\n The Server may be busy with too many incoming requests, "
                                 + "try again later, if this error continues, contact support or check server availability");
                         altErrorSC.showAndWait();
-                        
+
                     } catch (DBServerException e) {
                         LOGGER.info("Error connecting to the DataBase");
                         Alert altErrorDB = new Alert(AlertType.ERROR);
@@ -803,9 +801,6 @@ public class VClientTableController {
 
                         //Edit the client by calling the logical part
                         clientInterface.editClient(clientToEdit);
-
-                        //Add the client on the Client list to update the obserbable
-                        clientList.add(clientToEdit);
 
                         //Update client table 
                         loadClientTable();
@@ -917,7 +912,7 @@ public class VClientTableController {
     @FXML
     private void handleSearchBy(ActionEvent event) {
         LOGGER.info("Filter field disable");
-        
+
         txtFilter.setDisable(false);
     }
 
@@ -927,173 +922,91 @@ public class VClientTableController {
      * search, the filtering will be executed in the table.
      *
      * @param event the event linked to clicking on the button;
+     *
+     * @FXML private void handleSearch(ActionEvent event) throws
+     * ClientServerConnectionException, ClientServerConnectionException,
+     * ClientServerConnectionException { LOGGER.info("Filtering available
+     * clients");
+     *
+     * try {
+     *
+     * Collection<Client> clients = clientInterface.getAllClient();
+     *
+     * //Type of filter selected in the combobox switch (cbSearchBy.getValue())
+     * {
+     *
+     * //Filter by client name case SELECT_NAME: //Check that there is something
+     * written in the search field if (txtFilter.getText().trim().isEmpty()) {
+     * LOGGER.info("Search field are empty"); throw new
+     * FieldsEmptyException("Error, " + "search field are empty"); } //Check
+     * that the entered name exists Client clientName = null; for (Client client
+     * : clients) { if (client.getFullName() .contains(txtFilter.getText())) {
+     * clientName = client; break; } //Show an alert if the entered name does
+     * not exist if (clientName == null) { Alert alert3 = new
+     * Alert(AlertType.INFORMATION); alert3.setTitle("Error");
+     * alert3.setHeaderText(null); alert3.setContentText("Client not found");
+     * alert3.showAndWait(); //If the entered name exist add the client to the
+     * table } else { LOGGER.info("Client found"); //Delete all clients from the
+     * table if (tbClient.getItems().size() >= 1) { clients.clear(); } //Show
+     * the requested client in the table
+     * tbClient.setItems((ObservableList<Client>) clientName); } } break;
+     *
+     * //Filter by client login case SELECT_LOGIN: //Check that there is
+     * something written in the search field if
+     * (txtFilter.getText().trim().isEmpty()) { LOGGER.info("Search field are
+     * empty"); throw new FieldsEmptyException("Error, " + "search field are
+     * empty"); } //Check that the entered login exists Client clientLogin =
+     * null; for (Client client : clients) { if (client.getLogin()
+     * .contains(txtFilter.getText())) { clientLogin = client; break; } //Show
+     * an alert if the entered login does not exist if (clientLogin == null) {
+     * Alert alert3 = new Alert(AlertType.INFORMATION);
+     * alert3.setTitle("Error"); alert3.setHeaderText(null);
+     * alert3.setContentText("Client not found"); alert3.showAndWait(); //If the
+     * entered login exist add the client to the table } else {
+     * LOGGER.info("Client found"); //Delete all clients from the table if
+     * (tbClient.getItems().size() >= 1) { clients.clear(); } //Show the
+     * requested client in the table tbClient.setItems((ObservableList<Client>)
+     * clientLogin); } } break;
+     *
+     * //Filter by client email case SELECT_EMAIL: //Check that there is
+     * something written in the search field if
+     * (txtFilter.getText().trim().isEmpty()) { LOGGER.info("Search field are
+     * empty"); throw new FieldsEmptyException("Error, " + "search field are
+     * empty"); } //Check that the entered email exists Client clientEmail =
+     * null; for (Client client : clients) { if (client.getEmail()
+     * .contains(txtFilter.getText())) { clientEmail = client; break; } //Show
+     * an alert if the entered email does not exist if (clientEmail == null) {
+     * Alert alert3 = new Alert(AlertType.INFORMATION);
+     * alert3.setTitle("Error"); alert3.setHeaderText(null);
+     * alert3.setContentText("Client not found"); alert3.showAndWait(); //If the
+     * entered email exist add the client to the table } else {
+     * LOGGER.info("Client found"); //Delete all clients from the table if
+     * (tbClient.getItems().size() >= 1) { clients.clear(); } //Show the
+     * requested client in the table tbClient.setItems((ObservableList<Client>)
+     * clientEmail); } } break;
+     *
+     * //Filter by client type case SELECT_TYPE: //Check that there is something
+     * written in the search field if (txtFilter.getText().trim().isEmpty()) {
+     * LOGGER.info("Search field are empty"); throw new
+     * FieldsEmptyException("Error, " + "search field are empty"); } //Check
+     * that the entered type exists Client clientType = null; for (Client client
+     * : clients) { if (client.getType() .equals(txtFilter.getText())) {
+     * clientType = client; break; } //Show an alert if the entered type does
+     * not exist if (clientType == null) { Alert alert3 = new
+     * Alert(AlertType.INFORMATION); alert3.setTitle("Error");
+     * alert3.setHeaderText(null); alert3.setContentText("Client not found");
+     * alert3.showAndWait(); //If the entered type exist add the client to the
+     * table } else { LOGGER.info("Client found"); //Delete all clients from the
+     * table if (tbClient.getItems().size() >= 1) { clients.clear(); } //Show
+     * the requested client in the table
+     * tbClient.setItems((ObservableList<Client>) clientType); } } break;
+     *
+     * }
+     * } catch (Exception e) { LOGGER.info("Error filtering available clients");
+     * Alert alert = new Alert(AlertType.INFORMATION); alert.setTitle("AYUDA");
+     * alert.setHeaderText("Error"); alert.setContentText(e.getMessage());
+     * alert.showAndWait(); } }
      */
-    @FXML
-    private void handleSearch(ActionEvent event) throws ClientServerConnectionException, ClientServerConnectionException, ClientServerConnectionException {
-        LOGGER.info("Filtering available clients");
-
-        try {
-
-            Collection<Client> clients = clientInterface.getAllClient();
-
-            //Type of filter selected in the combobox
-            switch (cbSearchBy.getValue()) {
-
-                //Filter by client name
-                case SELECT_NAME:
-                    //Check that there is something written in the search field
-                    if (txtFilter.getText().trim().isEmpty()) {
-                        LOGGER.info("Search field are empty");
-                        throw new FieldsEmptyException("Error, "
-                                + "search field are empty");
-                    }
-                    //Check that the entered name exists
-                    Client clientName = null;
-                    for (Client client : clients) {
-                        if (client.getFullName()
-                                .contains(txtFilter.getText())) {
-                            clientName = client;
-                            break;
-                        }
-                        //Show an alert if the entered name does not exist
-                        if (clientName == null) {
-                            Alert alert3 = new Alert(AlertType.INFORMATION);
-                            alert3.setTitle("Error");
-                            alert3.setHeaderText(null);
-                            alert3.setContentText("Client not found");
-                            alert3.showAndWait();
-                            //If the entered name exist add the client to the table
-                        } else {
-                            LOGGER.info("Client found");
-                            //Delete all clients from the table
-                            if (tbClient.getItems().size() >= 1) {
-                                clients.clear();
-                            }
-                            //Show the requested client in the table
-                            tbClient.setItems((ObservableList<Client>) clientName);
-                        }
-                    }
-                    break;
-
-                //Filter by client login
-                case SELECT_LOGIN:
-                    //Check that there is something written in the search field
-                    if (txtFilter.getText().trim().isEmpty()) {
-                        LOGGER.info("Search field are empty");
-                        throw new FieldsEmptyException("Error, "
-                                + "search field are empty");
-                    }
-                    //Check that the entered login exists
-                    Client clientLogin = null;
-                    for (Client client : clients) {
-                        if (client.getLogin()
-                                .contains(txtFilter.getText())) {
-                            clientLogin = client;
-                            break;
-                        }
-                        //Show an alert if the entered login does not exist
-                        if (clientLogin == null) {
-                            Alert alert3 = new Alert(AlertType.INFORMATION);
-                            alert3.setTitle("Error");
-                            alert3.setHeaderText(null);
-                            alert3.setContentText("Client not found");
-                            alert3.showAndWait();
-                            //If the entered login exist add the client to the table
-                        } else {
-                            LOGGER.info("Client found");
-                            //Delete all clients from the table
-                            if (tbClient.getItems().size() >= 1) {
-                                clients.clear();
-                            }
-                            //Show the requested client in the table
-                            tbClient.setItems((ObservableList<Client>) clientLogin);
-                        }
-                    }
-                    break;
-
-                //Filter by client email
-                case SELECT_EMAIL:
-                    //Check that there is something written in the search field
-                    if (txtFilter.getText().trim().isEmpty()) {
-                        LOGGER.info("Search field are empty");
-                        throw new FieldsEmptyException("Error, "
-                                + "search field are empty");
-                    }
-                    //Check that the entered email exists
-                    Client clientEmail = null;
-                    for (Client client : clients) {
-                        if (client.getEmail()
-                                .contains(txtFilter.getText())) {
-                            clientEmail = client;
-                            break;
-                        }
-                        //Show an alert if the entered email does not exist
-                        if (clientEmail == null) {
-                            Alert alert3 = new Alert(AlertType.INFORMATION);
-                            alert3.setTitle("Error");
-                            alert3.setHeaderText(null);
-                            alert3.setContentText("Client not found");
-                            alert3.showAndWait();
-                            //If the entered email exist add the client to the table
-                        } else {
-                            LOGGER.info("Client found");
-                            //Delete all clients from the table
-                            if (tbClient.getItems().size() >= 1) {
-                                clients.clear();
-                            }
-                            //Show the requested client in the table
-                            tbClient.setItems((ObservableList<Client>) clientEmail);
-                        }
-                    }
-                    break;
-
-                //Filter by client type
-                case SELECT_TYPE:
-                    //Check that there is something written in the search field
-                    if (txtFilter.getText().trim().isEmpty()) {
-                        LOGGER.info("Search field are empty");
-                        throw new FieldsEmptyException("Error, "
-                                + "search field are empty");
-                    }
-                    //Check that the entered type exists
-                    Client clientType = null;
-                    for (Client client : clients) {
-                        if (client.getType()
-                                .equals(txtFilter.getText())) {
-                            clientType = client;
-                            break;
-                        }
-                        //Show an alert if the entered type does not exist
-                        if (clientType == null) {
-                            Alert alert3 = new Alert(AlertType.INFORMATION);
-                            alert3.setTitle("Error");
-                            alert3.setHeaderText(null);
-                            alert3.setContentText("Client not found");
-                            alert3.showAndWait();
-                            //If the entered type exist add the client to the table
-                        } else {
-                            LOGGER.info("Client found");
-                            //Delete all clients from the table
-                            if (tbClient.getItems().size() >= 1) {
-                                clients.clear();
-                            }
-                            //Show the requested client in the table
-                            tbClient.setItems((ObservableList<Client>) clientType);
-                        }
-                    }
-                    break;
-
-            }
-        } catch (Exception e) {
-            LOGGER.info("Error filtering available clients");
-            Alert alert = new Alert(AlertType.INFORMATION);
-            alert.setTitle("AYUDA");
-            alert.setHeaderText("Error");
-            alert.setContentText(e.getMessage());
-            alert.showAndWait();
-        }
-    }
-
     /**
      * Method that controls the action button that allows to see the different
      * events of a specific client.
@@ -1106,7 +1019,7 @@ public class VClientTableController {
 
         Client clientEvents = tbClient.getSelectionModel().getSelectedItem();
 
-        try {
+        /* try {
             LOGGER.info("Open VEventTable");
             FXMLLoader loader = new FXMLLoader(getClass()
                     .getResource("/reto2client/view/VEventTable.fxml"));
@@ -1124,7 +1037,7 @@ public class VClientTableController {
             alert.setHeaderText("Error");
             alert.setContentText(e.getMessage());
             alert.showAndWait();
-        }
+        }*/
     }
 
     /**
@@ -1152,7 +1065,7 @@ public class VClientTableController {
             FXMLLoader loader = new FXMLLoader(getClass()
                     .getResource("/reto2client/view/VAdmin.fxml"));
 
-            try {
+            /* try {
                 Parent root = (Parent) loader.load();
                 VAdminController controller = loader.getController();
                 controller.setStage(this.stage);
@@ -1160,7 +1073,7 @@ public class VClientTableController {
 
             } catch (IOException ex) {
                 LOGGER.info("Error closing client table window");
-            }
+            }*/
             this.stage.close();
         }
     }
@@ -1212,24 +1125,24 @@ public class VClientTableController {
     public Stage getStage() {
         return stage;
     }
-    
+
     /**
      * Method that controls the search action button by a specific filter.
      * Depending on the Combo Box filter and the filter introduced in the
      * search, the filtering will be executed in the table.
-     * 
+     *
      * @param event the event linked to clicking on the button;
-
-     @FXML
-    private void handleSearch(ActionEvent event) {
+     */
+    @FXML
+    private void handleSearch(ActionEvent event) throws ClientServerConnectionException {
         LOGGER.info("Run filters");
-		
+
         //Create an arraylis that will contain the search data
         List<Client> clients = new ArrayList<>();
         clientList = (List<Client>) clientInterface.getAllClient();
-        
+
         switch (cbSearchBy.getValue()) {
-            
+
             //Filter by name
             case SELECT_NAME:
                 //Check that the search field contains something typed
@@ -1248,7 +1161,7 @@ public class VClientTableController {
                     clientList = (List<Client>) clientInterface.getAllClient();
                 }
                 break;
-                
+
             //Filter by login
             case SELECT_LOGIN:
                 //Check that the search field contains something typed
@@ -1267,7 +1180,7 @@ public class VClientTableController {
                     clientList = (List<Client>) clientInterface.getAllClient();
                 }
                 break;
-                
+
             //Filter by email
             case SELECT_EMAIL:
                 //Check that the search field contains something typed
@@ -1286,15 +1199,15 @@ public class VClientTableController {
                     clientList = (List<Client>) clientInterface.getAllClient();
                 }
                 break;
-                
+
             //Filter by type
             case SELECT_TYPE:
                 //Check that the search field contains something typed
                 if (!txtFilter.getText().trim().equals("")) {
                     //Go through the clients with the information entered
                     for (Client client : clientList) {
-                        if (client.getType().toUpperCase()
-                                .contains(txtFilter.getText().toUpperCase().trim())) {
+                        if (client.getType()
+                                .equals(txtFilter.getText().toUpperCase().trim())) {
                             clients.add(client);
                         }
                     }
@@ -1305,10 +1218,9 @@ public class VClientTableController {
                     clientList = (List<Client>) clientInterface.getAllClient();
                 }
                 break;
-                
         }
-        
+
         loadClientTable();
     }
-    */
+
 }

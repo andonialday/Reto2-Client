@@ -9,6 +9,7 @@ import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
+import reto2g1cclient.model.*;
 
 /**
  * Jersey REST client generated for REST resource:ClientFacadeREST
@@ -30,7 +31,7 @@ public class ClientJersey {
     
     //Adapt the port of the BASE_URI to the HTTP Port of the Glassfish
     private static final String 
-            BASE_URI = "http://localhost:29674/Reto2G1cServer/webresources";
+            BASE_URI = "http://localhost:8080/Reto2G1cServer/webresources";
 
     public ClientJersey() {
         client = javax.ws.rs.client.ClientBuilder.newClient();
@@ -95,6 +96,12 @@ public class ClientJersey {
                 .delete();
     }
 
+    public <T> T signUp(Class<T> responseType, reto2g1cclient.model.Client user) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path(java.text.MessageFormat.format("signUp/{0}/{1}/{2}/{3}/{4}", new Object[]{user.getLogin(), user.getEmail(), user.getPassword(), user.getFullName(), user.getType()}));
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
+    }
+    
     public void close() {
         client.close();
     }
