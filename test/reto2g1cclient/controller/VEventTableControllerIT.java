@@ -5,10 +5,12 @@
  */
 package reto2g1cclient.controller;
 
+import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeoutException;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -22,15 +24,15 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
-import javafx.stage.Stage;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.FixMethodOrder;
-import org.junit.Ignore;
 import org.junit.runners.MethodSorters;
 import static org.testfx.api.FxAssert.verifyThat;
+import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit.ApplicationTest;
 import org.testfx.matcher.base.NodeMatchers;
 import static org.testfx.matcher.base.NodeMatchers.isDisabled;
@@ -47,7 +49,7 @@ import reto2g1cclient.model.Evento;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class VEventTableControllerIT extends ApplicationTest {
 
-    //Elementos previos a VEventTable
+   //Elementos previos a VEventTable
     //  VSignIn
     private TextField txtLogin;
     private PasswordField txtPassword;
@@ -92,18 +94,14 @@ public class VEventTableControllerIT extends ApplicationTest {
      * Starts application to be tested.
      *
      * @param stage Primary Stage object
-     * @throws Exception If there is any error
      */
-    @Override
-    public void start(Stage stage) throws Exception {
-        //start JavaFX application to be tested    
-        //new ClientApplication().start(stage);
-        //"lookup" de los nodos de las ventanas previas a VEventTable
-        //txtLogin = lookup("#txtLogin").query();
-        //txtPassword = lookup("#txtPassword").query();
-        //btnSignIn = lookup("#btnSignIn").query();
-        //"lookup" de los nodos de la ventana VEventTable 
-        new ClientApplication().start(stage);
+    @BeforeClass
+    public static void setupClass() throws TimeoutException {
+        FxToolkit.registerPrimaryStage();
+        FxToolkit.setupApplication(ClientApplication.class);
+    }
+    
+    private void analizarComponentesVentana() {        
         txtName = lookup("#txtName").query();
         dpDateStart = lookup("#dpDateStart").query();
         dpDateEnd = lookup("#dpDateEnd").query();
@@ -126,26 +124,12 @@ public class VEventTableControllerIT extends ApplicationTest {
         dpDateEnd.setValue(null);
     }
 
-    /*
-    protected static TableCell<?, ?> localizarCelda(String tableSelector, int row, int column) {
-      List<Node> current = row(tableSelector, row).getChildrenUnmodifiable();
-      while (current.size() == 1 && !(current.get(0) instanceof TableCell)) {
-          current = ((Parent) current.get(0)).getChildrenUnmodifiable();
-      }
-
-      Node node = current.get(column);
-      if (node instanceof TableCell) {
-          return (TableCell<?, ?>) node;
-      }
-      else {
-          throw new RuntimeException("Expected TableRowSkin with only TableCells as children");
-      }*/
     /**
      * This method allows to see users' table view by interacting with login
      * view.
      */
     @Test
-    public void testA_NavigateToVEventTable() {
+    public void testA_NavigateToVEventTable() throws IOException {
         clickOn("#txtLogin");
         write(user);
         clickOn("#txtPassword");
@@ -159,9 +143,9 @@ public class VEventTableControllerIT extends ApplicationTest {
     }
 
     //works
-    @Ignore
     @Test
     public void testB_VEventTableInitialState() {
+        analizarComponentesVentana();
         //Verificacion de elementos superiores
         //  Labels indicativos
         verifyThat("#lblName", isVisible());
@@ -193,9 +177,9 @@ public class VEventTableControllerIT extends ApplicationTest {
     }
 
     //works
-    @Ignore
     @Test
     public void testC_CreateButtonEnable() {
+        analizarComponentesVentana();
         limpiarCampos();
         clickOn("#txtName");
         write(name);
@@ -213,9 +197,9 @@ public class VEventTableControllerIT extends ApplicationTest {
     }
 
     //works
-    @Ignore
     @Test
     public void testD_CreateWrongDates() {
+        analizarComponentesVentana();
         limpiarCampos();
         int rowCount = tbEvent.getItems().size();
         clickOn("#txtName");
@@ -236,9 +220,9 @@ public class VEventTableControllerIT extends ApplicationTest {
     }
 
     //works
-    @Ignore
     @Test
     public void testE_CreateEventSuccessfull() {
+        analizarComponentesVentana();
         limpiarCampos();
         int rowCount = tbEvent.getItems().size();
         clickOn("#txtName");
@@ -262,9 +246,9 @@ public class VEventTableControllerIT extends ApplicationTest {
     }
 
     //works
-    @Ignore
     @Test
     public void testF_tableSelect_Deselect() {
+        analizarComponentesVentana();
         limpiarCampos();
         //Seleccionando un elemento de la tabla
         int rowCount = tbEvent.getItems().size();
@@ -290,9 +274,9 @@ public class VEventTableControllerIT extends ApplicationTest {
     }
 
     //works
-    @Ignore
     @Test
     public void testG_ModifyEventFormFailure() {
+        analizarComponentesVentana();
         limpiarCampos();
         int rowCount = tbEvent.getItems().size();
         Node row = lookup(".table-row-cell").nth(rowCount - 1).query();
@@ -311,9 +295,9 @@ public class VEventTableControllerIT extends ApplicationTest {
     }
 
     //works
-    @Ignore
     @Test
     public void testH_ModifyEventFormSuccessfull() {
+        analizarComponentesVentana();
         limpiarCampos();
         int rowCount = tbEvent.getItems().size();
         Node row = lookup(".table-row-cell").nth(rowCount - 1).query();
@@ -331,9 +315,9 @@ public class VEventTableControllerIT extends ApplicationTest {
     }
 
     //works
-    @Ignore
     @Test
     public void testI_ModifyEventTableFailure() {
+        analizarComponentesVentana();
         limpiarCampos();
         int rowCount = tbEvent.getItems().size();
         Node row = lookup(".table-row-cell").nth(rowCount - 1).query();
@@ -361,9 +345,9 @@ public class VEventTableControllerIT extends ApplicationTest {
     }
 
     //works
-    @Ignore
     @Test
     public void testJ_ModifyEventTableSuccessfull() {
+        analizarComponentesVentana();
         limpiarCampos();
         int rowCount = tbEvent.getItems().size();
         Node row = lookup(".table-row-cell").nth(rowCount - 1).query();
@@ -391,9 +375,9 @@ public class VEventTableControllerIT extends ApplicationTest {
     }
 
     //works
-    @Ignore
     @Test
     public void testK_DeleteEventCancel() {
+        analizarComponentesVentana();
         limpiarCampos();
         int rowCount = tbEvent.getItems().size();
         Node row = lookup(".table-row-cell").nth(rowCount - 1).query();
@@ -406,9 +390,9 @@ public class VEventTableControllerIT extends ApplicationTest {
     }
 
     //works
-    @Ignore
     @Test
     public void testL_DeleteEventSuccessfull() {
+        analizarComponentesVentana();
         limpiarCampos();
         int rowCount = tbEvent.getItems().size();
         Node row = lookup(".table-row-cell").nth(rowCount - 1).query();
@@ -418,13 +402,6 @@ public class VEventTableControllerIT extends ApplicationTest {
         verifyThat(".alert", NodeMatchers.isVisible());
         clickOn("Aceptar");
         assertEquals("Se ha borrado el Evento", rowCount - 1, tbEvent.getItems().size());
-    }
-
-    @Ignore
-    @Test
-    public void testM_printReport() {
-        clickOn("#btnPrint");
-        //verifyThat();
     }
 
 }

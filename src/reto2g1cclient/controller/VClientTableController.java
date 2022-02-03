@@ -186,7 +186,7 @@ public class VClientTableController {
         stage.setResizable(false);
 
         clientInterface = ClientFactory.getClient();
-        
+
         //Set Windows event handlers 
         stage.setOnShowing(this::handleWindowShowing); //show window
         stage.setOnCloseRequest(this::closeVClientTable); //close window
@@ -916,97 +916,6 @@ public class VClientTableController {
     }
 
     /**
-     * Method that controls the search action button by a specific filter.
-     * Depending on the Combo Box filter and the filter introduced in the
-     * search, the filtering will be executed in the table.
-     *
-     * @param event the event linked to clicking on the button;
-     *
-     * @FXML private void handleSearch(ActionEvent event) throws
-     * ClientServerConnectionException, ClientServerConnectionException,
-     * ClientServerConnectionException { LOGGER.info("Filtering available
-     * clients");
-     *
-     * try {
-     *
-     * Collection<Client> clients = clientInterface.getAllClient();
-     *
-     * //Type of filter selected in the combobox switch (cbSearchBy.getValue())
-     * {
-     *
-     * //Filter by client name case SELECT_NAME: //Check that there is something
-     * written in the search field if (txtFilter.getText().trim().isEmpty()) {
-     * LOGGER.info("Search field are empty"); throw new
-     * FieldsEmptyException("Error, " + "search field are empty"); } //Check
-     * that the entered name exists Client clientName = null; for (Client client
-     * : clients) { if (client.getFullName() .contains(txtFilter.getText())) {
-     * clientName = client; break; } //Show an alert if the entered name does
-     * not exist if (clientName == null) { Alert alert3 = new
-     * Alert(AlertType.INFORMATION); alert3.setTitle("Error");
-     * alert3.setHeaderText(null); alert3.setContentText("Client not found");
-     * alert3.showAndWait(); //If the entered name exist add the client to the
-     * table } else { LOGGER.info("Client found"); //Delete all clients from the
-     * table if (tbClient.getItems().size() >= 1) { clients.clear(); } //Show
-     * the requested client in the table
-     * tbClient.setItems((ObservableList<Client>) clientName); } } break;
-     *
-     * //Filter by client login case SELECT_LOGIN: //Check that there is
-     * something written in the search field if
-     * (txtFilter.getText().trim().isEmpty()) { LOGGER.info("Search field are
-     * empty"); throw new FieldsEmptyException("Error, " + "search field are
-     * empty"); } //Check that the entered login exists Client clientLogin =
-     * null; for (Client client : clients) { if (client.getLogin()
-     * .contains(txtFilter.getText())) { clientLogin = client; break; } //Show
-     * an alert if the entered login does not exist if (clientLogin == null) {
-     * Alert alert3 = new Alert(AlertType.INFORMATION);
-     * alert3.setTitle("Error"); alert3.setHeaderText(null);
-     * alert3.setContentText("Client not found"); alert3.showAndWait(); //If the
-     * entered login exist add the client to the table } else {
-     * LOGGER.info("Client found"); //Delete all clients from the table if
-     * (tbClient.getItems().size() >= 1) { clients.clear(); } //Show the
-     * requested client in the table tbClient.setItems((ObservableList<Client>)
-     * clientLogin); } } break;
-     *
-     * //Filter by client email case SELECT_EMAIL: //Check that there is
-     * something written in the search field if
-     * (txtFilter.getText().trim().isEmpty()) { LOGGER.info("Search field are
-     * empty"); throw new FieldsEmptyException("Error, " + "search field are
-     * empty"); } //Check that the entered email exists Client clientEmail =
-     * null; for (Client client : clients) { if (client.getEmail()
-     * .contains(txtFilter.getText())) { clientEmail = client; break; } //Show
-     * an alert if the entered email does not exist if (clientEmail == null) {
-     * Alert alert3 = new Alert(AlertType.INFORMATION);
-     * alert3.setTitle("Error"); alert3.setHeaderText(null);
-     * alert3.setContentText("Client not found"); alert3.showAndWait(); //If the
-     * entered email exist add the client to the table } else {
-     * LOGGER.info("Client found"); //Delete all clients from the table if
-     * (tbClient.getItems().size() >= 1) { clients.clear(); } //Show the
-     * requested client in the table tbClient.setItems((ObservableList<Client>)
-     * clientEmail); } } break;
-     *
-     * //Filter by client type case SELECT_TYPE: //Check that there is something
-     * written in the search field if (txtFilter.getText().trim().isEmpty()) {
-     * LOGGER.info("Search field are empty"); throw new
-     * FieldsEmptyException("Error, " + "search field are empty"); } //Check
-     * that the entered type exists Client clientType = null; for (Client client
-     * : clients) { if (client.getType() .equals(txtFilter.getText())) {
-     * clientType = client; break; } //Show an alert if the entered type does
-     * not exist if (clientType == null) { Alert alert3 = new
-     * Alert(AlertType.INFORMATION); alert3.setTitle("Error");
-     * alert3.setHeaderText(null); alert3.setContentText("Client not found");
-     * alert3.showAndWait(); //If the entered type exist add the client to the
-     * table } else { LOGGER.info("Client found"); //Delete all clients from the
-     * table if (tbClient.getItems().size() >= 1) { clients.clear(); } //Show
-     * the requested client in the table
-     * tbClient.setItems((ObservableList<Client>) clientType); } } break;
-     *
-     * }
-     * } catch (Exception e) { LOGGER.info("Error filtering available clients");
-     * Alert alert = new Alert(AlertType.INFORMATION); alert.setTitle("AYUDA");
-     * alert.setHeaderText("Error"); alert.setContentText(e.getMessage());
-     * alert.showAndWait(); } }
-     */
-    /**
      * Method that controls the action button that allows to see the different
      * events of a specific client.
      *
@@ -1018,10 +927,10 @@ public class VClientTableController {
 
         Client clientEvents = tbClient.getSelectionModel().getSelectedItem();
 
-        /* try {
+        try {
             LOGGER.info("Open VEventTable");
             FXMLLoader loader = new FXMLLoader(getClass()
-                    .getResource("/reto2client/view/VEventTable.fxml"));
+                    .getResource("/reto2g1cclient/view/VEventTable.fxml"));
             Parent root = (Parent) loader.load();
             VEventTableController controller = loader.getController();
             controller.setStage(this.stage);
@@ -1036,7 +945,7 @@ public class VClientTableController {
             alert.setHeaderText("Error");
             alert.setContentText(e.getMessage());
             alert.showAndWait();
-        }*/
+        }
     }
 
     /**
@@ -1048,42 +957,40 @@ public class VClientTableController {
      */
     @FXML
     private void handleBack(ActionEvent event) throws IOException {
-        LOGGER.info("Returning to VAdmin window");
-
-        Alert alert1 = new Alert(AlertType.CONFIRMATION);
-        alert1.setTitle("Back to VAdmin");
-        alert1.setHeaderText(null);
-        alert1.setContentText("Are you sure "
-                + "you want to return to the previous window?"
-                + " You will lose all your new data");
-        Optional<ButtonType> result = alert1.showAndWait();
-
+        LOGGER.info("Requesting confirmation for application closing...");
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Volviendo a Ventana Principal");
+        alert.setHeaderText("¿Seguro que desea volver a la ventana principal? Se perdera el progreso no guardado");
+        Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
-            LOGGER.info("Closing VClientTable window and returning to VAdmin");
-
-            FXMLLoader loader = new FXMLLoader(getClass()
-                    .getResource("/reto2client/view/VAdmin.fxml"));
-
-            /* try {
+            try {
+                LOGGER.info("Cambiando a ventana de Admin");
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/reto2g1cclient/view/VAdmin.fxml"));
                 Parent root = (Parent) loader.load();
-                VAdminController controller = loader.getController();
+                VAdminController controller = ((VAdminController) loader.getController());
                 controller.setStage(this.stage);
                 controller.initStage(root);
-
-            } catch (IOException ex) {
-                LOGGER.info("Error closing client table window");
-            }*/
-            this.stage.close();
+            } catch (Exception e) {
+                Alert alert2 = new Alert(Alert.AlertType.WARNING);
+                alert2.setTitle("Error al cambiar de ventana");
+                alert2.setHeaderText("Error al volver a la ventana anterior");
+                alert2.setContentText("Ha sucedido un error al intentar volver a la ventana anterior, intentelo de nuevo. "
+                        + "\nSi el error persiste, puede deberse a que la ventana a la que se intenta ir no este implementada todavia");
+                alert2.showAndWait();
+            }
+        } else {
+            event.consume();
+            LOGGER.info("Closing aborted");
         }
-    }
+}
 
-    /**
-     * Method to advise the user when uses the UI's innate close button (button
-     * X) that the application will close.
-     *
-     * @param event the event linked to clicking on the button;
-     */
-    public void closeVClientTable(WindowEvent event) {
+/**
+ * Method to advise the user when uses the UI's innate close button (button X)
+ * that the application will close.
+ *
+ * @param event the event linked to clicking on the button;
+ */
+public void closeVClientTable(WindowEvent event) {
         LOGGER.info("Requesting confirmation for application closing...");
         Alert alert = new Alert(AlertType.CONFIRMATION);
         alert.setTitle("Program is closing");
@@ -1133,7 +1040,7 @@ public class VClientTableController {
      * @param event the event linked to clicking on the button;
      */
     @FXML
-    private void handleSearch(ActionEvent event) throws ClientServerConnectionException {
+        private void handleSearch(ActionEvent event) throws ClientServerConnectionException {
         LOGGER.info("Run filters");
 
         //Create an arraylis that will contain the search data

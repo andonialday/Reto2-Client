@@ -428,8 +428,8 @@ public class VEventTableController {
     public void back(ActionEvent event) {
         LOGGER.info("Requesting confirmation for application closing...");
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Esta Cerrando el Programa");
-        alert.setHeaderText("¿Seguro que desea cerrar el programa?");
+        alert.setTitle("Volviendo a Ventana Principal");
+        alert.setHeaderText("¿Seguro que desea volver a la ventana principal? Se perdera el progreso no guardado");
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
             try {
