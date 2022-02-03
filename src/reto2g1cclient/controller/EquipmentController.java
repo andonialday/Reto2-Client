@@ -741,7 +741,7 @@ public class EquipmentController {
      */
     public void validateEquipData() {
         if (bolName && bolDescription && bolCost && bolDateBuy && !bolTableEquipSelec) {
-            LOGGER.info("Validate All data is empty");
+           
 
             btnCrearEquip.setDisable(false);
         } else {

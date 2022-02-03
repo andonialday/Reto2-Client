@@ -6,9 +6,12 @@
 package reto2g1cclient.controller;
 
 import static groovy.xml.dom.DOMCategory.name;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeoutException;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -25,6 +28,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 import org.junit.FixMethodOrder;
@@ -41,7 +45,7 @@ import reto2g1cclient.application.ClientApplication;
 import reto2g1cclient.model.Evento;
 
 /**
- *
+ * Clase para verificar 
  * @author Aitor Perez
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -100,6 +104,7 @@ public class EquipmentControllerIT extends ApplicationTest {
 
     private Label lblWarningDate;
     
+    private static final String DESCRIPCION = "Altavoz de ceramica hecho en china a 1000º para exteriores TESES";
     
     
     /**
@@ -120,46 +125,79 @@ public class EquipmentControllerIT extends ApplicationTest {
      * @param stage Primary Stage object
      * @throws Exception If there is any error
      */
-   
-    public void lookEquipment()  {
-        //txtLogin = lookup("#txtLogin").query();
+   /**
+    * metodo para "cargar" los componentes de la ventana VEquipmentTable y el 
+    * robot los pueda usar y reconocer
+    */
+    public void analizaComponentesEquipamiento()  {
+       
         
         tfName = lookup("#tfName").query();
         tfCost = lookup("#tfCost").query();
         tfFinding = lookup("#tfFinding").query();
         taDescription = lookup("#taDescription").query();
+        tbEquipment = lookup("#tbEquipment").query();
         dpDate = lookup("#dpDate").query();
         btnBack = lookup("#btnBack").query();
-        btnCrearEquip = lookup("#btnCrearEquip").query();
+        btnSaveEquip = lookup("#btnSaveEquip").query();
         btnCrearEquip = lookup("#btnCrearEquip").query();
         btnDeleteEquip = lookup("#btnDeleteEquip").query();
         btnFind = lookup("#btnFind").query();
         btnPrint = lookup("#btnPrint").query();
-        btnSaveEquip = lookup("#btnSaveEquip").query();
+        
         cbSearch = lookup("#cbSearch").query();
         
 
     }
 
-    public EquipmentControllerIT() {
-
-    }
-
-    /*
-    -Test para comprobar si el servidor esta apagado notifica al usuario
-    
-    -Test comprobar si el boton de nuevo equipamiento se habilita y crea equipamiento
-    -Test comprobar si el boton de nuevo equipamiento se  NOO se habilita y NOO crea equipamiento y lanza excepcion
-    
-    
-    
    
+
+  
     
+    
+    /**
+     * Metodo para limpiar la seleccion de la tabla.
      */
-   
+    public void limpiarSeleccionDeFila() {
+        Node row = lookup(".table-row-cell").nth(0).query();
+        press(KeyCode.CONTROL);
+        clickOn(row);
+        release(KeyCode.CONTROL);
+        /**
+         * El "robot" es "tan rapido" que confunde los clicks individuales por
+         * dobleclick, entrando en el modo de edicio nde la tabla, para evitar
+         * esto, se ha añadido un sleep de 1s para separ los clicks y
+         * deseleccionar correctamente de la tabla
+         */
+        sleep(1000);
+        press(KeyCode.CONTROL);
+        clickOn(row);
+        release(KeyCode.CONTROL);
+    }
+    /**
+     *  Metodo pra recorrer cuantos elementos hay en la tabla para verificar que 
+     * se han añadido o no una fila mas
+     * @param rowCount contador de filas
+     * @return la cantidad de filas
+     */
+   public int comprobarCreaciones(int rowCount){
+       List<Equipment> equipments = tbEquipment.getItems();
+        int count = 0;
+        for (Equipment equipment : equipments) {
+          if(equipment.getDescription().equals(DESCRIPCION + rowCount) ){
+              count ++;
+          }  
+            
+        }
+        return count;
+   }
+
+    /**
+     * Metodo para registrarse y acceder a la ventana de equipamiento
+     */
     @Test
     public void testA_NavigateToVEquipmentTable() {
-        lookEquipment();
+        analizaComponentesEquipamiento();
         clickOn("#txtLogin");
         write("admin");
         clickOn("#txtPassword");
@@ -171,10 +209,12 @@ public class EquipmentControllerIT extends ApplicationTest {
         clickOn("#miEquipment");
         verifyThat("#pEquipment", isVisible());
     }
-    
+    /**
+     * Test para comprobar el estado inicial de la ventana de equipamiento
+     */
      @Test
     public void testB_VEventTableInitialState() {
-        lookEquipment();
+        analizaComponentesEquipamiento();
         //Verificacion de elementos superiores
         //  Labels indicativos
         verifyThat("#lblName", isVisible());
@@ -208,73 +248,87 @@ public class EquipmentControllerIT extends ApplicationTest {
     
     
 
-    /*Test para verificar activacion de boton y que se crean */
+    
+
+    /**
+     * Metodo para habilitar boton de crear equipamiento y verificar si se habilita
+     * y si se crea un equipamiento y se añade a la tabla
+     */
     @Test
-    public void testC_HabilitarBotonNuevoEquipamiento() {
-        lookEquipment();
-        //int rowCount = tbEquipment.getItems().size();
+    public void testC_HabilitarBotonNuevoEquipamientoyCreacion() {
+        analizaComponentesEquipamiento();
+        vaciarCampos();
+        int rowCount = tbEquipment.getItems().size();
         clickOn("#tfName");
-        write("Altavoz");
+        write("Altavoz philips TESTEADO");
 
         clickOn("#tfCost");
         write("100");
         clickOn("#dpDate");
-        dpDate.setValue(LocalDate.parse(("01/02/2020"), formatter));
+        dpDate.setValue(LocalDate.parse(("06/06/2021"), formatter));
 
         press(KeyCode.ENTER);
         release(KeyCode.ENTER);
         clickOn("#taDescription");
-        write("el perro de sanroque no tiene rabo");
+        write(DESCRIPCION + rowCount);
 
         verifyThat("#btnCrearEquip", isEnabled());
-         clickOn("#btnCrearEquip");
-         //Error
-/*          assertEquals("Error al crear evento",  tbEquipment.getItems().size()  , tbEquipment.getItems().size());
-        List<Equipment> users = tbEquipment.getItems();
-        assertEquals("Error al crear evento",
-                users.stream().filter(u -> u.getName().equals(tfName)).count(), 1);*/
+         clickOn("#btnCrearEquip");     
+         int count = comprobarCreaciones(rowCount);
+        assertEquals("Error al crear Equipamiento",  rowCount + 1, tbEquipment.getItems().size());
+        
+        assertEquals("Error al crear Equipamiento", 1,count);
     }
-    
+  
+    /**
+     * Metodo para verificar que introduciendo datos no validos no se crea un 
+     * equipamiento nuevo
+     */
     @Test
     public void testD_VerificacionCrearEquipamientoFail() {
-        vaciarCampos();
-      lookEquipment();
-       // int rowCount = tbEquipment.getItems().size();
+        
+      analizaComponentesEquipamiento();
+      vaciarCampos();
+       int rowCount = tbEquipment.getItems().size();
         clickOn("#tfName");
         write("Altavoz");
 
         clickOn("#tfCost");
-        write("100000");
+        write("100000000");
         clickOn("#dpDate");
         dpDate.setValue(LocalDate.parse(("01/02/2020"), formatter));
 
         press(KeyCode.ENTER);
         release(KeyCode.ENTER);
         clickOn("#taDescription");
-        write("el perro de sanroque no tiene rabo");
+        write(DESCRIPCION);
 
         verifyThat("#btnCrearEquip", isEnabled());
          clickOn("#btnCrearEquip");
          verifyThat(".alert", NodeMatchers.isVisible());
         clickOn("Aceptar");
-         //Error
-/*          assertEquals("Error al crear evento", rowCount  , tbEquipment.getItems().size());
-        List<Equipment> users = tbEquipment.getItems();
-        assertEquals("Error al crear evento",
-                users.stream().filter(u -> u.getName().equals(tfName)).count(), 1);*/
         
-      
+         assertEquals("Se a creado equipamiento",  rowCount , tbEquipment.getItems().size());
+        int count = comprobarCreaciones(rowCount);
+        assertEquals("Se a creado equipamiento", 0,count);
+        limpiarSeleccionDeFila();
+        vaciarCampos();
         
     }
-     
+     /**
+      * Test para visualizar los campos de la tabla en la parte superior de la ventana 
+      * cuando seleccionamos una fila
+      */
+   
     @Test
     public void testE_tableSelect_Deselect() {
         vaciarCampos();
+         analizaComponentesEquipamiento();
         //Seleccionando un elemento de la tabla
         int rowCount = tbEquipment.getItems().size();
         Node row = lookup(".table-row-cell").nth(rowCount - 1).query();
         assertNotNull("Row is null: table has not that row. ", row);
-        clickOn(row);
+         clickOn(row);
         Equipment equipment = (Equipment) tbEquipment.getSelectionModel().getSelectedItem();
         //Carga de datos de equipmaiento seleccionado en campos superiores
         verifyThat("#tfName", hasText(equipment.getName()));
@@ -283,6 +337,7 @@ public class EquipmentControllerIT extends ApplicationTest {
         assertNotNull("No ha cargado la fecha de compra", dpDate.getValue());
         
         //Deseleccionarelemento de la tabla
+        sleep(1000);
         press(KeyCode.CONTROL);
         clickOn(row);
         release(KeyCode.CONTROL);
@@ -295,28 +350,44 @@ public class EquipmentControllerIT extends ApplicationTest {
         
         vaciarCampos();
     }
-    //works
-    @Ignore
+    
+    /**
+     * Metodo para modificar el coste de un equipamiento
+     * seleccionado en la tabla de manera erronea verificando la aparicion
+     * de una alerta
+     */
     @Test
     public void testF_ModifyEquipmentFormFail() {
         vaciarCampos();
+         analizaComponentesEquipamiento();
         int rowCount = tbEquipment.getItems().size();
         Node row = lookup(".table-row-cell").nth(rowCount - 1).query();
         assertNotNull("Row is null: table has not that row. ", row);
         clickOn(row);
         Equipment equipment = (Equipment) tbEquipment.getSelectionModel().getSelectedItem();
-        clickOn("#dateAdd");
-        dpDate.setValue(null);
-        write("03/02/2022");
-        press(KeyCode.ENTER);
-        release(KeyCode.ENTER);
-        clickOn("#btnSaveEquip");
+               String click = equipment.getCost();
+        Set<Node> list = lookup(click).queryAll();
+        Node cell = null;
+        for (Iterator<Node> it = list.iterator(); it.hasNext();) {
+            cell = it.next();
+        }
+        doubleClickOn(cell);
+        
+        
+        write("03/02/2066");
+       clickOn("#btnSaveEquip");
+        
         verifyThat(".alert", NodeMatchers.isVisible());
         clickOn("Aceptar");
         assertEquals("Equipamiento modificado", equipment, tbEquipment.getSelectionModel().getSelectedItem());
+        limpiarSeleccionDeFila();
     }
-     //works
-    @Ignore
+     
+    /**
+      * Metodo para modificar la fecha de compra de un equipamiento
+     * seleccionado en la tabla de manera valida verificando que la fecha
+     * introducida es igual a la fecha que se ha guardado
+     */
     @Test
     public void testG_ModifyEquipmentFormSuccessfull() {
         vaciarCampos();
@@ -331,11 +402,16 @@ public class EquipmentControllerIT extends ApplicationTest {
         press(KeyCode.ENTER);
         release(KeyCode.ENTER);
         clickOn("#btnSaveEquip");
-        assertEquals("Se ha modificado el Evento", equipment.getDateAdd(), "02/09/1999");
+        assertEquals("No se ha modificado el Evento", equipment.getDateAdd(), "02/09/1999");
+        vaciarCampos();
+        limpiarSeleccionDeFila();
         vaciarCampos();
     }
-        //works
-    @Ignore
+       
+    
+    /**
+     * Metodo para verificar que se puede cancelar el borrado de un equipamiento
+     */
     @Test
     public void testH_DeleteEventCancel() {
         vaciarCampos();
@@ -343,14 +419,19 @@ public class EquipmentControllerIT extends ApplicationTest {
         Node row = lookup(".table-row-cell").nth(rowCount - 1).query();
         assertNotNull("Row is null: table has not that row. ", row);
         clickOn(row);
-        clickOn("#btnDelete");
+        clickOn("#btnDeleteEquip");
         verifyThat(".alert", NodeMatchers.isVisible());
         clickOn("Cancelar");
         assertEquals("NO Se ha borrado el Equipamiento", rowCount, tbEquipment.getItems().size());
+        analizaComponentesEquipamiento();
+           vaciarCampos();
     }
 
-    //works
-    @Ignore
+    
+    /**
+     * Metodo para verificar que se puede eliminar un equipamiento seleccionado
+     * en la tabla
+     */
     @Test
     public void testI_DeleteEventSuccessfull() {
         vaciarCampos();
@@ -362,20 +443,186 @@ public class EquipmentControllerIT extends ApplicationTest {
         verifyThat(".alert", NodeMatchers.isVisible());
         clickOn("Aceptar");
         assertEquals("Se ha borrado el equipamiento", rowCount - 1, tbEquipment.getItems().size());
+        analizaComponentesEquipamiento();
+           
     }
-     @Ignore
+    
+    /**
+     * Metodo para verificar que se puede editar con dobleclick la fecha de compra
+     * en la tabla editable y añadiendo datos erroneos lanza una alerta y no se
+     * varia el dato.
+     */
     @Test
-    public void testM_printReport() {
+    public void testJ_ModificarEnTablaEditableSuccessfull(){
+          vaciarCampos();
+       
+        int rowCount = tbEquipment.getItems().size();
+        Node row = lookup(".table-row-cell").nth(rowCount - 1).query();
+        assertNotNull("Row is null: table has not that row. ", row);
+        clickOn(row);
+        tbEquipment.getSelectionModel().select(rowCount - 1, clDate);
+        Equipment equipment = (Equipment) tbEquipment.getSelectionModel().getSelectedItem();
+        String click = equipment.getDateAdd();
+        Set<Node> list = lookup(click).queryAll();
+        Node cell = null;
+        for (Iterator<Node> it = list.iterator(); it.hasNext();) {
+            cell = it.next();
+        }
+        doubleClickOn(cell);
+        press(KeyCode.CONTROL);
+        press(KeyCode.A);
+        release(KeyCode.CONTROL);
+        release(KeyCode.A);
+        write("drgredgd");
+        press(KeyCode.ENTER);
+        release(KeyCode.ENTER);
+        verifyThat(".alert", NodeMatchers.isVisible());
+        clickOn("Aceptar");
+      
+        assertNotEquals("Se se ha modificado el Equipamiento", equipment.getDateAdd(),"drgredgd");
+        
+        vaciarCampos();
+        limpiarSeleccionDeFila();
+    }
+
+    /**
+     * Metodo para verificar que se puede editar con dobleclick la fecha de compra
+     * en la tabla editable y añadiendo datos correctos se verifica que la fecha se ha cambiado
+     */
+    @Test
+     public void testK_ModifyEventTableSuccessfull() {
+        vaciarCampos();
+       
+        int rowCount = tbEquipment.getItems().size();
+        Node row = lookup(".table-row-cell").nth(rowCount - 1).query();
+        assertNotNull("Row is null: table has not that row. ", row);
+        clickOn(row);
+        tbEquipment.getSelectionModel().select(rowCount - 1, clDate);
+        Equipment equipment = (Equipment) tbEquipment.getSelectionModel().getSelectedItem();
+        String click = equipment.getDateAdd();
+        Set<Node> list = lookup(click).queryAll();
+        Node cell = null;
+        for (Iterator<Node> it = list.iterator(); it.hasNext();) {
+            cell = it.next();
+        }
+        doubleClickOn(cell);
+        press(KeyCode.CONTROL);
+        press(KeyCode.A);
+        release(KeyCode.CONTROL);
+        release(KeyCode.A);
+        write("02/01/2021");
+        press(KeyCode.ENTER);
+        release(KeyCode.ENTER);
+        equipment = (Equipment) tbEquipment.getSelectionModel().getSelectedItem();
+        assertEquals("No se ha modificado el E", equipment.getDateAdd(), "02/01/2021");
+        vaciarCampos();
+        limpiarSeleccionDeFila();
+    }
+     
+      /**
+     * Metodo que comprueba que a la hora de filtrar en el caso de no escribir 
+     * nada mostrara topdos los equipamientos
+     */
+    @Test
+     public void testL_filtrarVacio(){
+          analizaComponentesEquipamiento();
+        vaciarCampos();
+        List<Equipment> equipments = tbEquipment.getItems();
+        clickOn("#btnFind");
+        sleep(250);
+        List<Equipment> equipments2 = tbEquipment.getItems();
+        
+         
+        assertEquals("Se han filtrado todos los equipamientos", equipments.size(),equipments2.size());
+        vaciarCampos();
+     }
+
+    /**
+     * Metodo que comprueba que a la hora de filtrar en el caso de escribir un nombre,
+     * ya que, de manera preseleccionada el primer filtro es el nombre, verifica
+     * que solo aparecen los equipamientos con ese nombre
+     * 
+     */ 
+    @Test
+     public void testM_filtrarNombre(){
+          analizaComponentesEquipamiento();
+        vaciarCampos();
+        testL_filtrarVacio();
+        List<Equipment> equipments = tbEquipment.getItems();
+        clickOn("#tfFinding");
+        write("altavoz");
+        sleep(250);
+       
+         clickOn("#btnFind");
+          List<Equipment> equipments2 = tbEquipment.getItems();
+         
+        assertNotEquals("No se ha filtrado el equipamiento", equipments.size(),equipments2.size());
+        vaciarCampos();
+     }
+      
+     
+    
+    /**
+     * Metodo para comprobar que el boton de imprimir funciona
+     */
+    @Test
+    public void testN_printReport() {
         clickOn("#btnPrint");
         //verifyThat();
     }
+
+    /**
+     * Metodo para volver a la ventana de admin
+     * @throws IOException en el caso de haber un error
+     */
+    @Test
+     public void testO_VolverVentanaAdmin() throws IOException {
+        // Comprobacion de Atras -> Cancelar -> Mantener en VEventTable
+        clickOn("#btnBack");
+        verifyThat(".alert", NodeMatchers.isVisible());
+        clickOn("Cancelar");
+        verifyThat("#pEquipment", isVisible());
+        // Comprobacion de Atras -> Aceptar -> Retorno a VAdmin
+        clickOn("#btnBack");
+        verifyThat(".alert", NodeMatchers.isVisible());
+        clickOn("Aceptar");
+        verifyThat("#pAdmin", isVisible());
+        // Retorno a VEventTable mediante menu de navegacion
+        clickOn("#mData");
+        clickOn("#miEquipment");
+        verifyThat("#pEquipment", isVisible());
+    }
+
+    /**
+     * Metodo para volver a la ventana de equipamiento
+     * @throws IOException en el caso de haber un error
+     */
+    @Test
+     public void testP_NavigateToEquipmentTable() throws IOException {
+       
+        /**
+         * Para suplir posibles delays en la respuesta del servidor, se ha
+         * aniadido un sleep de 2s para darle algo de tiempo a los test
+         */
+        sleep(2000);
+        verifyThat("#pAdmin", isVisible());
+        clickOn("#mData");
+        clickOn("#miEvent");
+        verifyThat("#pEventTable", isVisible());
+    }
+
+    /**
+     * Metodo para vaciar campos
+     */
     public void vaciarCampos() {
-        lookEquipment();
+        analizaComponentesEquipamiento();
         tfName.clear();
           tfCost.clear();
         dpDate.setValue(null);
         taDescription.clear();
+        tfFinding.clear();
 
     }
+    
 
 }
