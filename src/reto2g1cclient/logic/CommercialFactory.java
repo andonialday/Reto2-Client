@@ -13,6 +13,10 @@ import reto2g1cclient.implementation.CommercialImplementation;
  */
 public class CommercialFactory {
     
+    /**
+     *
+     * @return
+     */
     public static CommercialInterface getImplementation(){
         CommercialInterface coI = new CommercialImplementation();
         return coI;

@@ -127,6 +127,7 @@ public class EventImplementation implements EventInterface {
     /**
      *
      * @return
+     * @throws reto2g1cclient.exception.DBServerException
      */
     @Override
     public String count() throws DBServerException {

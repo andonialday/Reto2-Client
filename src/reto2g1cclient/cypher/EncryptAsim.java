@@ -53,7 +53,11 @@ public class EncryptAsim {
         }
     }
     
-    
+    /**
+     *
+     * @param plainText
+     * @return
+     */
     public static String encryption(String plainText){
         pub();
         String res = null;

@@ -200,11 +200,19 @@ public class User implements Serializable {
         this.signIns = signIns;
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public String toString() {
         return "User{" + "id=" + id + ", login=" + login + ", email=" + email + ", fullName=" + fullName + ", status=" + status + ", privilege=" + privilege + ", password=" + password + ", lastPasswordChange=" + lastPasswordChange + ", signIns=" + signIns + '}';
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public int hashCode() {
         int hash = 5;
@@ -220,6 +228,11 @@ public class User implements Serializable {
         return hash;
     }
   
+    /**
+     *
+     * @param obj
+     * @return
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {

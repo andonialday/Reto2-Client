@@ -31,7 +31,10 @@ public interface CommercialInterface {
      */
     public void edit(Commercial commercial);
     
-  
+    /**
+     *
+     * @param id
+     */
     public void remove(String id);
     
     

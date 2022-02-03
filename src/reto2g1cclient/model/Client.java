@@ -23,10 +23,19 @@ public class Client extends User implements Serializable{
     private Set<Event> events;
     private Commercial commercial;
 
+    /**
+     *
+     */
     public Client() {
         
     }
     
+    /**
+     *
+     * @param type
+     * @param events
+     * @param commercial
+     */
     public Client(Type type, Set<Event> events, Commercial commercial) {
         this.type = type;
         this.events = events;

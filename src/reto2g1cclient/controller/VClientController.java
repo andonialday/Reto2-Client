@@ -24,6 +24,10 @@ public class VClientController {
     private ClientInterface clientInterface;
     private Stage stage;
     
+    /**
+     *
+     * @param clientInterface
+     */
     public void setClientInterface(ClientInterface clientInterface) {
         this.clientInterface = clientInterface;
     }
@@ -59,6 +63,10 @@ public class VClientController {
     @FXML
     private ComboBox<?> cbType;
 
+    /**
+     *
+     * @param root
+     */
     public void initStage(Parent root) {
         Scene scene = new Scene(root);
         stage.setScene(scene);

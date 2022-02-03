@@ -30,6 +30,15 @@ public class Equipment implements Serializable {
     private final SimpleStringProperty cost;
     private final SimpleObjectProperty<Set<EventEquipment>> events;
     
+    /**
+     *
+     * @param id
+     * @param name
+     * @param description
+     * @param cost
+     * @param dateAdd
+     * @param events
+     */
     public Equipment(String id, String name, String description, String cost, String dateAdd, Set<EventEquipment> events){
         this.id = new SimpleStringProperty(id);
         this.name = new SimpleStringProperty(name);
@@ -38,7 +47,11 @@ public class Equipment implements Serializable {
         this.description = new SimpleStringProperty(description);
         this.events = new SimpleObjectProperty<>(events);
     }
-      public Equipment() {
+
+    /**
+     *
+     */
+    public Equipment() {
         this.id = new SimpleStringProperty();
         this.name = new SimpleStringProperty();
         this.dateAdd = new SimpleStringProperty();
@@ -147,12 +160,20 @@ public class Equipment implements Serializable {
         this.events.set(events);
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public String toString() {
         return "Equipment{" + "id=" + id + ", description=" + description + ", dateAdd=" + dateAdd + ", cost=" + cost +
                ", events=" + events + '}';
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public int hashCode() {
         int hash = 3;
@@ -165,6 +186,11 @@ public class Equipment implements Serializable {
         return hash;
     }
 
+    /**
+     *
+     * @param obj
+     * @return
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {

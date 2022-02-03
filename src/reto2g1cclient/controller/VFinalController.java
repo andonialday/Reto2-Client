@@ -47,6 +47,9 @@ public class VFinalController {
     private User usr;
     private static final Logger LOGGER = Logger.getLogger("package.class");
 
+    /**
+     *
+     */
     public VFinalController() {
         msg = "Bienvenido ";
     }

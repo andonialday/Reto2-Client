@@ -11,6 +11,10 @@ package reto2g1cclient.exception;
  */
 public class EmailNotValidException extends Exception {
 
+    /**
+     *
+     * @param msg
+     */
     public EmailNotValidException(String msg) {
         super(msg);
     }

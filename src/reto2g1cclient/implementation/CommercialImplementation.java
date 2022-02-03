@@ -25,6 +25,9 @@ public class CommercialImplementation implements CommercialInterface{
 
     private final CommercialJersey coJ ;
     
+    /**
+     *
+     */
     public CommercialImplementation(){
         coJ = new CommercialJersey();
     }
@@ -58,6 +61,10 @@ public class CommercialImplementation implements CommercialInterface{
         }
     }
 
+    /**
+     *
+     * @param id
+     */
     @Override
     public void remove(String id) {
         try {

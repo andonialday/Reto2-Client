@@ -26,10 +26,21 @@ public class EquipmentImplementation implements EquipmentInterface {
     private final EquipmentJerseyClient EquipmentClient;
     private static final Logger LOGGER = Logger.getLogger("package.class");
 
+    /**
+     *
+     */
     public EquipmentImplementation() {
         EquipmentClient = new EquipmentJerseyClient();
     }
 
+    /**
+     *
+     * @param min
+     * @param max
+     * @return
+     * @throws DBServerException
+     * @throws ClientServerConnectionException
+     */
     @Override
     public Collection<Equipment> findCostRange(Double min, Double max)throws DBServerException, ClientServerConnectionException{
           List<Equipment> result = null;
@@ -48,6 +59,12 @@ public class EquipmentImplementation implements EquipmentInterface {
         return result;
     }
 
+    /**
+     *
+     * @param equipment
+     * @throws DBServerException
+     * @throws ClientServerConnectionException
+     */
     @Override
     public void create(Equipment equipment) throws DBServerException, ClientServerConnectionException{
        
@@ -63,6 +80,12 @@ public class EquipmentImplementation implements EquipmentInterface {
         
     }
 
+    /**
+     *
+     * @param equipment
+     * @throws DBServerException
+     * @throws ClientServerConnectionException
+     */
     @Override
     public void edit(Equipment equipment) throws DBServerException, ClientServerConnectionException {
          try {
@@ -76,6 +99,12 @@ public class EquipmentImplementation implements EquipmentInterface {
         }
     }
 
+    /**
+     *
+     * @param equipment
+     * @throws DBServerException
+     * @throws ClientServerConnectionException
+     */
     @Override
     public void remove(Equipment equipment) throws DBServerException, ClientServerConnectionException {
         try{
@@ -89,6 +118,13 @@ public class EquipmentImplementation implements EquipmentInterface {
         }
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     * @throws DBServerException
+     * @throws ClientServerConnectionException
+     */
     @Override
     public Equipment find(Integer id) throws DBServerException, ClientServerConnectionException {
         Equipment result = null;
@@ -105,6 +141,12 @@ public class EquipmentImplementation implements EquipmentInterface {
 
     }
 
+    /**
+     *
+     * @return
+     * @throws DBServerException
+     * @throws ClientServerConnectionException
+     */
     @Override
     public Collection<Equipment> findAll() throws DBServerException, ClientServerConnectionException {
         List<Equipment> result = null;
@@ -122,6 +164,14 @@ public class EquipmentImplementation implements EquipmentInterface {
         return result;
     }
 
+    /**
+     *
+     * @param from
+     * @param to
+     * @return
+     * @throws DBServerException
+     * @throws ClientServerConnectionException
+     */
     @Override
     public Collection<Equipment> findRange(Integer from, Integer to) throws DBServerException, ClientServerConnectionException {
         List<Equipment> result = null;
@@ -138,6 +188,12 @@ public class EquipmentImplementation implements EquipmentInterface {
         return result;
     }
 
+    /**
+     *
+     * @return
+     * @throws DBServerException
+     * @throws ClientServerConnectionException
+     */
     @Override
     public String countREST() throws DBServerException, ClientServerConnectionException {
         String result = null;
@@ -153,6 +209,13 @@ public class EquipmentImplementation implements EquipmentInterface {
         return result;
     }
 
+    /**
+     *
+     * @param datePrev
+     * @return
+     * @throws DBServerException
+     * @throws ClientServerConnectionException
+     */
     @Override
     public Collection<Equipment> findOrderPreviousDate(Date datePrev)throws DBServerException, ClientServerConnectionException{
         List<Equipment> result = null;
@@ -169,7 +232,15 @@ public class EquipmentImplementation implements EquipmentInterface {
         }
         return result;
     }
-        @Override
+
+    /**
+     *
+     * @param dateAfter
+     * @return
+     * @throws DBServerException
+     * @throws ClientServerConnectionException
+     */
+    @Override
         public Collection<Equipment> findOrderAfterDate(Date dateAfter) throws DBServerException, ClientServerConnectionException{ 
             List<Equipment> result = null;
         
@@ -187,8 +258,14 @@ public class EquipmentImplementation implements EquipmentInterface {
         return result;
         }
         
-        
-        @Override
+    /**
+     *
+     * @param year
+     * @return
+     * @throws DBServerException
+     * @throws ClientServerConnectionException
+     */
+    @Override
         public Collection<Equipment> deleteOldEquip(Date year)throws DBServerException, ClientServerConnectionException{
             
               List<Equipment> result = null;
@@ -206,7 +283,14 @@ public class EquipmentImplementation implements EquipmentInterface {
         return result;
         }
 
-        @Override
+    /**
+     *
+     * @param ratio
+     * @return
+     * @throws DBServerException
+     * @throws ClientServerConnectionException
+     */
+    @Override
         public Collection<Equipment> updateCost(Double ratio)throws DBServerException, ClientServerConnectionException{
               List<Equipment> result = null;
         

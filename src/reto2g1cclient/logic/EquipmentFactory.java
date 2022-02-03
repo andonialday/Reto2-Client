@@ -13,6 +13,10 @@ import reto2g1cclient.implementation.EquipmentImplementation;
  */
 public class EquipmentFactory {
     
+    /**
+     *
+     * @return
+     */
     public static EquipmentInterface getImplementation(){
         EquipmentInterface ei = new EquipmentImplementation();
         return ei;

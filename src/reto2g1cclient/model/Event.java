@@ -127,11 +127,19 @@ public class Event implements Serializable {
         this.equipments = equipments;
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public String toString() {
         return "Event{" + "id=" + id + ", dateStart=" + dateStart + ", dateEnd=" + dateEnd + ", description=" + description + ", client=" + client + ", equipments=" + equipments + '}';
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public int hashCode() {
         int hash = 3;
@@ -144,6 +152,11 @@ public class Event implements Serializable {
         return hash;
     }
 
+    /**
+     *
+     * @param obj
+     * @return
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {

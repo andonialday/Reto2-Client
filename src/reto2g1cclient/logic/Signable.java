@@ -15,12 +15,40 @@ import reto2g1cclient.model.*;
  */
 public interface Signable {
 
+    /**
+     *
+     * @param usr
+     * @return
+     * @throws DBServerException
+     * @throws CredentialErrorException
+     * @throws ClientServerConnectionException
+     */
     public User signIn(User usr) throws DBServerException, CredentialErrorException, ClientServerConnectionException;
 
+    /**
+     *
+     * @param usr
+     * @throws DBServerException
+     * @throws LoginOnUseException
+     * @throws ClientServerConnectionException
+     */
     public void signUp(User usr) throws DBServerException, LoginOnUseException, ClientServerConnectionException;
 
+    /**
+     *
+     * @param log
+     * @throws ClientServerConnectionException
+     * @throws DBServerException
+     * @throws CredentialErrorException
+     */
     public void resetPassword(String log) throws ClientServerConnectionException, DBServerException, CredentialErrorException;
 
+    /**
+     *
+     * @param usr
+     * @throws ClientServerConnectionException
+     * @throws DBServerException
+     */
     public void changePassword(User usr) throws ClientServerConnectionException, DBServerException;
 
 }

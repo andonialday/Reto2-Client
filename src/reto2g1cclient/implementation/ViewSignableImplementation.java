@@ -28,10 +28,21 @@ public class ViewSignableImplementation implements Signable {
     private static final Logger LOGGER = Logger.getLogger("package.class");
     private UserJerseyClient ujc;
 
+    /**
+     *
+     */
     public ViewSignableImplementation() {
         ujc = new UserJerseyClient();
     }
     
+    /**
+     *
+     * @param usr
+     * @return
+     * @throws DBServerException
+     * @throws CredentialErrorException
+     * @throws ClientServerConnectionException
+     */
     @Override
     public User signIn(User usr) throws DBServerException, CredentialErrorException, ClientServerConnectionException {
         List<User> user;
@@ -52,6 +63,13 @@ public class ViewSignableImplementation implements Signable {
         return usr;
     }
 
+    /**
+     *
+     * @param usr
+     * @throws DBServerException
+     * @throws LoginOnUseException
+     * @throws ClientServerConnectionException
+     */
     @Override
     public void signUp(User usr) throws DBServerException, LoginOnUseException, ClientServerConnectionException {
         try {
@@ -67,6 +85,13 @@ public class ViewSignableImplementation implements Signable {
         }
     }
 
+    /**
+     *
+     * @param log
+     * @throws DBServerException
+     * @throws ClientServerConnectionException
+     * @throws CredentialErrorException
+     */
     @Override
     public void resetPassword(String log) throws DBServerException, ClientServerConnectionException, CredentialErrorException {
         try {
@@ -78,6 +103,12 @@ public class ViewSignableImplementation implements Signable {
         }
     }
 
+    /**
+     *
+     * @param usr
+     * @throws DBServerException
+     * @throws ClientServerConnectionException
+     */
     @Override
     public void changePassword(User usr) throws DBServerException, ClientServerConnectionException {
         try {

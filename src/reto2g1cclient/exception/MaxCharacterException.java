@@ -11,6 +11,10 @@ package reto2g1cclient.exception;
  */
 public class MaxCharacterException extends Exception {
 
+    /**
+     *
+     * @param msg
+     */
     public MaxCharacterException(String msg) {
         super(msg);
     }

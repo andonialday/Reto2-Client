@@ -17,27 +17,69 @@ import reto2g1cclient.model.Client;
  */
 public interface ClientInterface {
     
+    /**
+     *
+     * @param client
+     * @throws ClientServerConnectionException
+     */
     public void createClient(Client client) 
             throws ClientServerConnectionException;
     
+    /**
+     *
+     * @param client
+     * @throws ClientServerConnectionException
+     */
     public void editClient(Client client) 
             throws ClientServerConnectionException;
     
+    /**
+     *
+     * @param clientId
+     * @throws ClientServerConnectionException
+     */
     public void removeClient(String clientId) 
             throws ClientServerConnectionException;
     
+    /**
+     *
+     * @param client
+     * @throws ClientServerConnectionException
+     */
     public void searchClient(Client client) 
             throws ClientServerConnectionException;
     
+    /**
+     *
+     * @param client
+     * @throws ClientServerConnectionException
+     */
     public void findClientCommercial(Client client) 
             throws ClientServerConnectionException;
     
+    /**
+     *
+     * @param client
+     * @throws ClientServerConnectionException
+     */
     public void deleteAllClientDisabled(Client client) 
             throws ClientServerConnectionException;
     
+    /**
+     *
+     * @return
+     * @throws ClientServerConnectionException
+     */
     public Collection<Client> getAllClient() 
             throws ClientServerConnectionException;
     
+    /**
+     *
+     * @param usr
+     * @throws ClientServerConnectionException
+     * @throws LoginOnUseException
+     * @throws DBServerException
+     */
     public void signUp(Client usr) 
             throws ClientServerConnectionException, LoginOnUseException, DBServerException;
 }

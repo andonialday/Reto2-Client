@@ -11,6 +11,10 @@ package reto2g1cclient.exception;
  */
 public class FieldsEmptyException extends Exception {
 
+    /**
+     *
+     * @param msg
+     */
     public FieldsEmptyException(String msg) {
         super(msg);
     }

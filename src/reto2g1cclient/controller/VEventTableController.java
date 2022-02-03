@@ -750,10 +750,12 @@ public class VEventTableController {
      * busqueda
      *
      * 1.- Nombre del Evento - Se mostraran eventos que contengan el texto en su
-     * nombre<br/>2.- Fecha de Inicio - Se mostraran eventos cuya fecha de
-     * inicio coincida con la introducida<br/>3.- Fecha de Finalizacion - Se
+     * nombre
+     * 2.- Fecha de Inicio - Se mostraran eventos cuya fecha de
+     * inicio coincida con la introducida
+     * 3.- Fecha de Finalizacion - Se
      * mostraran eventos cuya fecha de finalizacion coincida con la
-     * introducida<br/>
+     * introducida
      * 4.- Descripcion del Evento - Se mostraran eventos que contengan el texto
      * en su descripcion
      *

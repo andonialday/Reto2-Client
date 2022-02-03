@@ -11,6 +11,10 @@ package reto2g1cclient.exception;
  */
 public class LoginNotValidException extends Exception {
 
+    /**
+     *
+     * @param msg
+     */
     public LoginNotValidException(String msg) {
         super(msg);
     }

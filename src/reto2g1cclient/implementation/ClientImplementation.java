@@ -23,10 +23,18 @@ public class ClientImplementation implements ClientInterface{
 
     private final ClientJersey clientJersey;
     
+    /**
+     *
+     */
     public ClientImplementation() {
             clientJersey = new ClientJersey();
     }
     
+    /**
+     *
+     * @param client
+     * @throws ClientServerConnectionException
+     */
     @Override
     public void createClient (Client client)
             throws ClientServerConnectionException {
@@ -37,6 +45,11 @@ public class ClientImplementation implements ClientInterface{
         }
     }
 
+    /**
+     *
+     * @param client
+     * @throws ClientServerConnectionException
+     */
     @Override
     public void editClient(Client client) 
             throws ClientServerConnectionException {
@@ -47,6 +60,11 @@ public class ClientImplementation implements ClientInterface{
         }
     }
 
+    /**
+     *
+     * @param clientId
+     * @throws ClientServerConnectionException
+     */
     @Override
     public void removeClient(String clientId) 
             throws ClientServerConnectionException {
@@ -57,24 +75,44 @@ public class ClientImplementation implements ClientInterface{
         }
     }
 
+    /**
+     *
+     * @param client
+     * @throws ClientServerConnectionException
+     */
     @Override
     public void searchClient(Client client) 
             throws ClientServerConnectionException {
         
     }
 
+    /**
+     *
+     * @param client
+     * @throws ClientServerConnectionException
+     */
     @Override
     public void findClientCommercial(Client client) 
             throws ClientServerConnectionException {
         
     }
 
+    /**
+     *
+     * @param client
+     * @throws ClientServerConnectionException
+     */
     @Override
     public void deleteAllClientDisabled(Client client) 
             throws ClientServerConnectionException {
         
     }
 
+    /**
+     *
+     * @return
+     * @throws ClientServerConnectionException
+     */
     @Override
     public Collection<Client> getAllClient() 
             throws ClientServerConnectionException {
@@ -88,6 +126,13 @@ public class ClientImplementation implements ClientInterface{
         return clients;
     }
     
+    /**
+     *
+     * @param usr
+     * @throws ClientServerConnectionException
+     * @throws LoginOnUseException
+     * @throws DBServerException
+     */
     @Override
     public void signUp(Client usr) throws ClientServerConnectionException,  LoginOnUseException,  DBServerException{
         try {

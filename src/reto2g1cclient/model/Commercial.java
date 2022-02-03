@@ -55,11 +55,19 @@ public class Commercial extends User implements Serializable{
         this.clients = clients;
     }
    
+    /**
+     *
+     * @return
+     */
     @Override
     public String toString() {
         return super.toString() + " Tipo - Commercial{" + "especialization=" + especialization + ", clients=" + clients + '}';
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public int hashCode() {
         int hash = 5;
@@ -69,7 +77,11 @@ public class Commercial extends User implements Serializable{
         return hash;
     }
 
-   
+    /**
+     *
+     * @param obj
+     * @return
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {

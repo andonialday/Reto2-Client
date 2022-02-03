@@ -12,6 +12,11 @@ import reto2g1cclient.implementation.ClientImplementation;
  */
 public class ClientFactory {
     //INTERFAZ IGUAL A NEW IMPLEMENTACIÓN
+
+    /**
+     *
+     * @return
+     */
     public static ClientInterface getClient() {
         ClientInterface client = new ClientImplementation();
         return client;

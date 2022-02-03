@@ -47,6 +47,10 @@ public class VAdminController {
         this.usr = user;
     }
     
+    /**
+     *
+     * @return
+     */
     public static User getUser() {
         return usr;
     }

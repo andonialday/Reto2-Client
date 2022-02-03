@@ -54,7 +54,10 @@ public class VCommercialController {
     
     private String msg;
     
-     public VCommercialController() {
+    /**
+     *
+     */
+    public VCommercialController() {
         msg = "Bienvenido ";
     }
     

@@ -48,6 +48,12 @@ public class VPasswordController {
     * Getter del usuario que ha iniciado sesi�n y est� usando la aplicaci�n que va a cambiar su contrasenia
     * @return user usuario que ha iniciado sesi�n
      */
+
+    /**
+     *
+     * @return
+     */
+
     public User getUser() {
         return user;
     }
@@ -56,6 +62,12 @@ public class VPasswordController {
     * Setter del usuario que ha iniciado sesi�n y est� usando la aplicaci�n que va a cambiar su contrasenia
     * @param user usuario que ha iniciado sesi�n
      */
+
+    /**
+     *
+     * @param user
+     */
+
     public void setUser(User user) {
         this.user = user;
     }
@@ -115,6 +127,10 @@ public class VPasswordController {
         LOGGER.info("Password Changing window started... ");
     }
     
+    /**
+     *
+     * @param event
+     */
     public void handleWindowShowing(WindowEvent event) {
         LOGGER.info("Beginning VEventTableController::handleWindowShowing");
         // Visibilidad de labels
@@ -193,6 +209,10 @@ public class VPasswordController {
         }
     }
     
+    /**
+     *
+     * @param event
+     */
     public void changePass(ActionEvent event) {
         if (user.getPassword().equals(txtPassActual.getText())) {
             try {
@@ -234,6 +254,10 @@ public class VPasswordController {
         }
     }
     
+    /**
+     *
+     * @return
+     */
     public boolean validatePassword() {
         boolean valid = false;
         Matcher matchpass = pass.matcher(txtPassNew.getText());
@@ -253,6 +277,10 @@ public class VPasswordController {
         return valid;
     }
     
+    /**
+     *
+     * @param event
+     */
     public void back(ActionEvent event) {
         LOGGER.info("Volviendo a ventana VAdmin");
         Alert alert = new Alert(AlertType.CONFIRMATION);
