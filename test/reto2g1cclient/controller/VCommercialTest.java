@@ -34,7 +34,7 @@ import reto2g1cclient.application.ClientApplication;
 import reto2g1cclient.model.Commercial;
 
 /**
- *
+ * Test de la ventana VCommercialTable
  * @author Enaitz Izagirre
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -79,7 +79,7 @@ public class VCommercialTest extends ApplicationTest {
     }
 
     /**
-     * Starts application to be tested.
+     * Inicio de las variables para hacer test
      *
      * @param stage Primary Stage object
      * @throws Exception If there is any error
@@ -103,6 +103,9 @@ public class VCommercialTest extends ApplicationTest {
 
     }
 
+	/**
+	* Limpia los campos de los text files
+	*/
     public void limpiarCampos() {
         //limpia campos
         txtName.clear();
@@ -114,7 +117,9 @@ public class VCommercialTest extends ApplicationTest {
         press(KeyCode.ENTER).release(KeyCode.ENTER);
 
     }
-
+    /**
+    * Metodo para hacer login en admin y entrar a la tabal del comercial para empezar los test
+    */
     @Test
     public void testA_NavigateToCommercialTable() {
         clickOn("#txtLogin");
@@ -129,7 +134,9 @@ public class VCommercialTest extends ApplicationTest {
         verifyThat("#pCommercialTable", isVisible());
     }
 
-    //works
+    /**
+    * Comprueba el estado de los valores de la tabla 
+    */
     @Ignore
     @Test
     public void testB_VCommercialTableInitialState() {
@@ -167,8 +174,7 @@ public class VCommercialTest extends ApplicationTest {
     }
 
     /**
-     * Test that the client confirm password entered is not correct. An error
-     * label will appear indicating it.
+     * Comprueba que añade correctamente un commercial
      *
      * @throws java.lang.InterruptedException
      */
@@ -192,18 +198,16 @@ public class VCommercialTest extends ApplicationTest {
         write("abcd*12345");
 
         clickOn("#cbEspecialization");
-        clickOn("SONIDO"); //Escoger una opción del Combo Box
-
+        clickOn("SONIDO");
         verifyThat("#btnNew", isEnabled());
         clickOn("#btnNew");
 
         press(KeyCode.ENTER).release(KeyCode.ENTER);
-        //Comprobar que el cliente se ha añadido correctamente a la tabla
+       
     }
 
     /**
-     * Test that the client email entered is not correct. An error label will
-     * appear indicating it.
+     * Comprueba que al escribir mal el campo email no permite añadir un nuevo commercial
      *
      * @throws java.lang.InterruptedException
      */
@@ -224,15 +228,20 @@ public class VCommercialTest extends ApplicationTest {
         clickOn("#tfConfirmPassword");
         write("Abcd*12345");
         clickOn("#cbEspecialization");
-        clickOn("SONIDO"); //Escoger una opción del Combo Box
+        clickOn("SONIDO"); 
 
         verifyThat("#btnNew", isEnabled());
         clickOn("#btnNew");
+	    
+	verifyThat(".alert", NodeMatchers.isVisible());
+        clickOn("Aceptar");
 
         verifyThat("#lblErrorEmail", isEnabled());
     }
 
-    //works
+    /**
+    * Selecciona y Deslecciona la tabla comprobando el cambio en los campos respectivos
+    */
     @Ignore
     @Test
     public void testE_tableSelect_Deselect() {
@@ -259,6 +268,9 @@ public class VCommercialTest extends ApplicationTest {
         limpiarCampos();
     }
 
+	/**
+	* Comprueba que se elimina el commercial
+	*/
     @Ignore
     @Test
     public void testF_Delete() {
@@ -269,9 +281,13 @@ public class VCommercialTest extends ApplicationTest {
 
         verifyThat("#btnDelete", isEnabled());
         clickOn("#btnDelete");
+	//Acepta la notificacion
         press(KeyCode.ENTER).release(KeyCode.ENTER);
     }
 
+	/**
+	* Cancela la eliminacion del commercial
+	*/
     @Ignore
     @Test
     public void testG_DeleteCancel() {
@@ -286,6 +302,9 @@ public class VCommercialTest extends ApplicationTest {
         
     }
 
+	/**
+	* Comprueba la modificacion del commercial 
+	*/
     @Ignore
     @Test
     public void testH_Modify() {
@@ -304,6 +323,9 @@ public class VCommercialTest extends ApplicationTest {
 	verifyThat("#btnSave", isDisabled());
     }
 
+	/*
+	* Cancela la modificacion del commercial
+	*/
     @Ignore
     @Test
     public void testH_ModifyCancel() {
@@ -323,6 +345,9 @@ public class VCommercialTest extends ApplicationTest {
 	verifyThat("#btnSave", isDisabled());
     }
 
+	/**
+	* Comprueba que el boton de imprimir funciona , al mostrar un formulario ageno no se puede comprobar su visibilidad
+	*/
     @Ignore
     @Test
     public void testI_Print() {
@@ -330,6 +355,9 @@ public class VCommercialTest extends ApplicationTest {
         press(KeyCode.ENTER).release(KeyCode.ENTER);
     }
 
+	/*
+	* Comprueba el boton back y que regresa a la ventana correspondiente
+	*/
     @Ignore
     @Test
     public void testJ_Back() throws InterruptedException {
@@ -339,6 +367,9 @@ public class VCommercialTest extends ApplicationTest {
         verifyThat("#VAdmin", isVisible());
     }
 
+	/*
+	* Cancela el metodo de ir a la ventana anterior 
+	*/
     @Ignore
     @Test
     public void testK_BackCancel() throws InterruptedException {
