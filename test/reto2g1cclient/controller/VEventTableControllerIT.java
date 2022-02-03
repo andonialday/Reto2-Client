@@ -121,7 +121,7 @@ public class VEventTableControllerIT extends ApplicationTest {
         btnDelete = lookup("#btnDelete").query();
         btnBack = lookup("#btnBack").query();
         tbEvent = lookup("#tbEvent").queryTableView();
-        lblDateEndEr = lookup("#lblDateEndEr").query();        
+        lblDateEndEr = lookup("#lblDateEndEr").query();
     }
 
     /**
@@ -164,7 +164,7 @@ public class VEventTableControllerIT extends ApplicationTest {
      * @throws java.io.IOException
      */
     @Test
-    public void testA_NavigateToVEventTable() throws IOException {
+    public void testA1_NavigateToVEventTable() throws IOException {
         clickOn("#txtLogin");
         write(user);
         clickOn("#txtPassword");
@@ -176,6 +176,33 @@ public class VEventTableControllerIT extends ApplicationTest {
          */
         sleep(2000);
         verifyThat("#pAdmin", isVisible());
+        clickOn("#mData");
+        clickOn("#miEvent");
+        verifyThat("#pEventTable", isVisible());
+    }
+
+    /**
+     * Metodo para viajar comprobar la funcionalidad del boton Atras,
+     * mostrandole a el usuario un mensaje avisandole de que perdera el progreso
+     * no guardado.
+     * <br/>Primero se cancela el proceso, confirmando que se mantiene en la
+     * ventana VEventTable
+     * <br/>Despues de vuelve a solicitar "regresar", volviendo a VAdmin y
+     * retorno a VEventTable para el resto de test
+     */
+    @Test
+    public void testA2_BackToAdminVAndReturnToVEventTable() throws IOException {
+        // Comprobacion de Atras -> Cancelar -> Mantener en VEventTable
+        clickOn("#btnBack");
+        verifyThat(".alert", NodeMatchers.isVisible());
+        clickOn("Cancelar");
+        verifyThat("#pEventTable", isVisible());
+        // Comprobacion de Atras -> Aceptar -> Retorno a VAdmin
+        clickOn("#btnBack");
+        verifyThat(".alert", NodeMatchers.isVisible());
+        clickOn("Aceptar");
+        verifyThat("#pAdmin", isVisible());
+        // Retorno a VEventTable mediante menu de navegacion
         clickOn("#mData");
         clickOn("#miEvent");
         verifyThat("#pEventTable", isVisible());
