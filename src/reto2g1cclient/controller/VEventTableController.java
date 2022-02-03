@@ -508,7 +508,9 @@ public class VEventTableController {
     @FXML
     public void newEvent(ActionEvent event) {
         // Comprobacion de que la fecha de finalizacion no es anterior a la de inicio
-        if (dpDateEnd.getValue().isAfter(dpDateStart.getValue()) || dpDateEnd.getValue().isEqual(dpDateStart.getValue())) {
+        if (dpDateEnd.getValue().isAfter(dpDateStart.getValue()) || dpDateEnd.getValue().isEqual(dpDateStart.getValue())) {    
+            // Si el label estaba visible por valor de fecha invalida anteriormente, se vuelve a esconder
+            lblDateEndEr.setVisible(false);
             if (txtName.getText().trim().length() < 400 && taDescription.getText().trim().length() < 400) {
                 try {
                     // Creacion de nuevo evento con carga de datos desde los campos superiores
@@ -771,7 +773,7 @@ public class VEventTableController {
                     //Carga los datos de la base de datos
                     loadData();
                     //Filtrar los elementos cuyo nombre no contenga el texto de filtrado
-                    temp = events.stream().filter(ev -> !ev.getName().toLowerCase().contains(txtSearch.getText().toLowerCase())).collect(Collectors.toList());
+                    temp = events.stream().filter(ev -> !ev.getName().toLowerCase().contains(txtSearch.getText().trim().toLowerCase())).collect(Collectors.toList());
                     //Eliminar de la coleccion local los elementos filtrados
                     events.removeAll(temp);
                     break;
@@ -780,25 +782,31 @@ public class VEventTableController {
                     //Carga los datos de la base de datos
                     loadData();
                     //Filtrar los elementos cuya fecha de inicio no coincida con la introducida
-                    temp = events.stream().filter(ev -> (LocalDate.parse(ev.getDateStart(), formatter)).compareTo(LocalDate.parse(txtSearch.getText(), formatter)) < 0).collect(Collectors.toList());
-                    //Eliminar de la coleccion local los elementos filtrados
-                    events.removeAll(temp);
+                        // Control si el texto de busqueda es nulo (si lo es, no realiza filtrado)
+                    if (!txtSearch.getText().trim().equals("")) {
+                        temp = events.stream().filter(ev -> (LocalDate.parse(ev.getDateStart(), formatter)).compareTo(LocalDate.parse(txtSearch.getText().trim(), formatter)) < 0).collect(Collectors.toList());
+                        //Eliminar de la coleccion local los elementos filtrados
+                        events.removeAll(temp);
+                    }
                     break;
-                // Filtro Fecha Fin
+                    // Filtro Fecha Fin
                 case 3:
                     //Carga los datos de la base de datos
                     loadData();
                     //Filtrar los elementos cuya fecha de finalizacion no coincida con la introducida
-                    temp = events.stream().filter(ev -> (LocalDate.parse(ev.getDateEnd(), formatter)).compareTo(LocalDate.parse(txtSearch.getText(), formatter)) < 0).collect(Collectors.toList());
-                    //Eliminar de la coleccion local los elementos filtrados
-                    events.removeAll(temp);
+                        // Control si el texto de busqueda es nulo (si lo es, no realiza filtrado)
+                    if (!txtSearch.getText().trim().equals("")) {
+                        temp = events.stream().filter(ev -> (LocalDate.parse(ev.getDateEnd(), formatter)).compareTo(LocalDate.parse(txtSearch.getText().trim(), formatter)) < 0).collect(Collectors.toList());
+                        //Eliminar de la coleccion local los elementos filtrados
+                        events.removeAll(temp);
+                    }
                     break;
                 // Filtro Descripcion
                 case 4:
                     //Carga los datos de la base de datos
                     loadData();
                     //Filtrar los elementos cuya descripcion no contenga el texto de filtrado
-                    temp = events.stream().filter(ev -> !ev.getDescription().toLowerCase().contains(txtSearch.getText().toLowerCase())).collect(Collectors.toList());
+                    temp = events.stream().filter(ev -> !ev.getDescription().toLowerCase().contains(txtSearch.getText().trim().toLowerCase())).collect(Collectors.toList());
                     //Eliminar de la coleccion local los elementos filtrados
                     events.removeAll(temp);
                     break;
