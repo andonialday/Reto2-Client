@@ -6,7 +6,6 @@
 package reto2g1cclient.controller;
 
 import java.io.IOException;
-import java.time.format.DateTimeFormatter;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -82,14 +81,13 @@ public class VEventTableControllerIT extends ApplicationTest {
     //  Label
     private Label lblDateEndEr;
 
-    private static final String user = "admin";
-    private static final String password = "Abcd*1234";
-    private static final String fechaStart = "10/01/2000";
-    private static final String fechaEndOK = "10/01/3000";
-    private static final String fechaEndFail = "10/01/1000";
-    private static final String name = "Evento de test";
-    private static final String desc = "Descripcion del Evento de Prueba";
-    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private static final String USER = "admin";
+    private static final String PASSWORD = "Abcd*1234";
+    private static final String FECHASTART = "10/01/2000";
+    private static final String FECHAENDOK = "10/01/3000";
+    private static final String FECHAENDFAIL = "10/01/1000";
+    private static final String NAME = "Evento de test";
+    private static final String DESC = "Descripcion del Evento de Prueba";
 
     /**
      * Starts application to be tested.
@@ -166,9 +164,9 @@ public class VEventTableControllerIT extends ApplicationTest {
     @Test
     public void testA1_NavigateToVEventTable() throws IOException {
         clickOn("#txtLogin");
-        write(user);
+        write(USER);
         clickOn("#txtPassword");
-        write(password);
+        write(PASSWORD);
         clickOn("#btnSignIn");
         /**
          * Para suplir posibles delays en la respuesta del servidor, se ha
@@ -293,16 +291,16 @@ public class VEventTableControllerIT extends ApplicationTest {
         analizarComponentesVentana();
         limpiarCampos();
         clickOn("#txtName");
-        write(name);
+        write(NAME);
         verifyThat("#btnNew", isDisabled());
         clickOn("#dpDateStart");
-        write(fechaStart);
+        write(FECHASTART);
         verifyThat("#btnNew", isDisabled());
         clickOn("#dpDateEnd");
-        write(fechaEndOK);
+        write(FECHAENDOK);
         verifyThat("#btnNew", isDisabled());
         clickOn("#taDescription");
-        write(desc);
+        write(DESC);
         verifyThat(btnNew, isEnabled());
         limpiarCampos();
     }
@@ -318,13 +316,13 @@ public class VEventTableControllerIT extends ApplicationTest {
         analizarComponentesVentana();
         int rowCount = tbEvent.getItems().size();
         clickOn("#txtName");
-        write(name + " " + rowCount);
+        write(NAME + " " + rowCount);
         clickOn("#dpDateStart");
-        write(fechaStart);
+        write(FECHASTART);
         clickOn("#dpDateEnd");
-        write(fechaEndFail);
+        write(FECHAENDFAIL);
         clickOn("#taDescription");
-        write(desc);
+        write(DESC);
         clickOn("#btnNew");
         assertEquals("Ha creado el evento", rowCount, tbEvent.getItems().size());
         verifyThat(lblDateEndEr, isVisible());
@@ -343,11 +341,11 @@ public class VEventTableControllerIT extends ApplicationTest {
         analizarComponentesVentana();
         limpiarCampos();
         clickOn("#dpDateStart");
-        write(name);
+        write(NAME);
         press(KeyCode.ENTER);
         assertEquals("No se ha deseleccionado la fecha", dpDateStart.getValue(), null);
         clickOn("#dpDateEnd");
-        write(name);
+        write(NAME);
         press(KeyCode.ENTER);
         assertEquals("No se ha deseleccionado la fecha", dpDateEnd.getValue(), null);
         limpiarCampos();
@@ -363,21 +361,21 @@ public class VEventTableControllerIT extends ApplicationTest {
         limpiarCampos();
         int rowCount = tbEvent.getItems().size();
         clickOn("#txtName");
-        write(name + " " + rowCount);
+        write(NAME + " " + rowCount);
         clickOn("#taDescription");
-        write(desc);
+        write(DESC);
         clickOn("#dpDateStart");
-        write(fechaStart);
+        write(FECHASTART);
         press(KeyCode.ENTER);
         release(KeyCode.ENTER);
         clickOn("#dpDateEnd");
-        write(fechaStart);
+        write(FECHASTART);
         press(KeyCode.ENTER);
         release(KeyCode.ENTER);
         clickOn("#btnNew");
         assertEquals("Error al crear evento", rowCount + 1, tbEvent.getItems().size());
         List<Evento> users = tbEvent.getItems();
-        assertEquals("Error al crear evento", users.stream().filter(u -> u.getName().equals(name + " " + rowCount)).count(), 1);
+        assertEquals("Error al crear evento", users.stream().filter(u -> u.getName().equals(NAME + " " + rowCount)).count(), 1);
         limpiarCampos();
     }
 
@@ -399,7 +397,7 @@ public class VEventTableControllerIT extends ApplicationTest {
         Evento event = (Evento) tbEvent.getSelectionModel().getSelectedItem();
         clickOn(dpDateEnd);
         dpDateEnd.setValue(null);
-        write(fechaEndFail);
+        write(FECHAENDFAIL);
         press(KeyCode.ENTER);
         release(KeyCode.ENTER);
         clickOn(btnSave);
@@ -425,11 +423,11 @@ public class VEventTableControllerIT extends ApplicationTest {
         Evento event = (Evento) tbEvent.getSelectionModel().getSelectedItem();
         clickOn(dpDateEnd);
         dpDateEnd.setValue(null);
-        write(fechaEndOK);
+        write(FECHAENDOK);
         press(KeyCode.ENTER);
         release(KeyCode.ENTER);
         clickOn(btnSave);
-        assertEquals("No se ha modificado el Evento", event.getDateEnd(), fechaEndOK);
+        assertEquals("No se ha modificado el Evento", event.getDateEnd(), FECHAENDOK);
         limpiarCampos();
         limpiarSeleccion();
     }
@@ -463,7 +461,7 @@ public class VEventTableControllerIT extends ApplicationTest {
         press(KeyCode.A);
         release(KeyCode.CONTROL);
         release(KeyCode.A);
-        write(fechaEndFail);
+        write(FECHAENDFAIL);
         press(KeyCode.ENTER);
         release(KeyCode.ENTER);
         verifyThat(".alert", NodeMatchers.isVisible());
@@ -498,11 +496,11 @@ public class VEventTableControllerIT extends ApplicationTest {
         press(KeyCode.A);
         release(KeyCode.CONTROL);
         release(KeyCode.A);
-        write(fechaEndOK);
+        write(FECHAENDOK);
         press(KeyCode.ENTER);
         release(KeyCode.ENTER);
         event = (Evento) tbEvent.getSelectionModel().getSelectedItem();
-        assertEquals("No se ha modificado el Evento", event.getDateEnd(), fechaEndOK);
+        assertEquals("No se ha modificado el Evento", event.getDateEnd(), FECHAENDOK);
         limpiarCampos();
         limpiarSeleccion();
     }
