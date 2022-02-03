@@ -74,9 +74,6 @@ public class VCommercialTest extends ApplicationTest {
 
     private static final String user = "admin";
     private static final String password = "Abcd*1234";
-    private static final String name = "Evento de test";
-    private static final String desc = "Descripcion del Evento de Prueba";
-    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     public VCommercialTest() {
     }
