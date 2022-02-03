@@ -7,6 +7,7 @@ package reto2g1cclient.controller;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.concurrent.TimeoutException;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -17,11 +18,13 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.FixMethodOrder;
 import org.junit.Ignore;
 import org.junit.runners.MethodSorters;
 import static org.testfx.api.FxAssert.verifyThat;
+import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit.ApplicationTest;
 import static org.testfx.matcher.base.NodeMatchers.isDisabled;
 import static org.testfx.matcher.base.NodeMatchers.isEnabled;
@@ -90,16 +93,30 @@ public class EquipmentControllerIT extends ApplicationTest {
 
     private Label lblWarningDate;
 
+    
+    
+    /**
+     * Inicia el main del cliente para poder ejecutar los teses.
+     *
+     * @throws TimeoutException Excepcion en caso de que java no responda en un
+     * tiempo determinado
+     */
+    @BeforeClass
+    public static void setUpClass() throws TimeoutException {
+        FxToolkit.registerPrimaryStage();
+        FxToolkit.setupApplication(ClientApplication.class);
+    }
+    
     /**
      * Starts application to be tested.
      *
      * @param stage Primary Stage object
      * @throws Exception If there is any error
      */
-    @Override
-    public void start(Stage stage) throws Exception {
+   
+    public void lookEquipment()  {
         //txtLogin = lookup("#txtLogin").query();
-        new ClientApplication().start(stage);
+        
         tfName = lookup("#tfName").query();
         tfCost = lookup("#tfCost").query();
         tfFinding = lookup("#tfFinding").query();
@@ -134,6 +151,7 @@ public class EquipmentControllerIT extends ApplicationTest {
    
     @Test
     public void testA_NavigateToVEquipmentTable() {
+        lookEquipment();
         clickOn("#txtLogin");
         write("admin");
         clickOn("#txtPassword");
@@ -148,6 +166,7 @@ public class EquipmentControllerIT extends ApplicationTest {
     
      @Test
     public void testB_VEventTableInitialState() {
+        lookEquipment();
         //Verificacion de elementos superiores
         //  Labels indicativos
         verifyThat("#lblName", isVisible());
@@ -184,6 +203,7 @@ public class EquipmentControllerIT extends ApplicationTest {
     /*Test para verificar activacion de boton y que se crean */
     @Test
     public void testC_HabilitarBotonNuevoEquipamiento() {
+        lookEquipment();
         clickOn("#tfName");
         write("Altavoz");
 
@@ -206,10 +226,11 @@ public class EquipmentControllerIT extends ApplicationTest {
     
 
     public void vaciarCampos() {
+        lookEquipment();
         tfName.clear();
-        /*  tfCost.clear();
+          tfCost.clear();
         dpDate.setValue(null);
-        taDescription.clear();*/
+        taDescription.clear();
 
     }
 
