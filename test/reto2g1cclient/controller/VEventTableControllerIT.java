@@ -81,6 +81,7 @@ public class VEventTableControllerIT extends ApplicationTest {
     //  Label
     private Label lblDateEndEr;
 
+    //Variables escritura test
     private static final String USER = "admin";
     private static final String PASSWORD = "Abcd*1234";
     private static final String FECHASTART = "10/01/2000";
@@ -88,6 +89,9 @@ public class VEventTableControllerIT extends ApplicationTest {
     private static final String FECHAENDFAIL = "10/01/1000";
     private static final String NAME = "Evento de test";
     private static final String DESC = "Descripcion del Evento de Prueba";
+    //Variables filtrado
+    private static final String FILTERNAME = "test";
+    private static final String FILTERDESC = "Prueba";
 
     /**
      * Starts application to be tested.
@@ -133,6 +137,18 @@ public class VEventTableControllerIT extends ApplicationTest {
         taDescription.clear();
         dpDateStart.setValue(null);
         dpDateEnd.setValue(null);
+        txtSearch.clear();
+        clickOn(cbSearch);
+        sleep(200);
+        type(KeyCode.UP);
+        sleep(200);
+        type(KeyCode.UP);
+        sleep(200);
+        type(KeyCode.UP);
+        sleep(200);
+        type(KeyCode.UP);
+        sleep(200);
+        type(KeyCode.ENTER);
     }
 
     /**
@@ -188,6 +204,7 @@ public class VEventTableControllerIT extends ApplicationTest {
      * <br/>Despues de vuelve a solicitar "regresar", volviendo a VAdmin y
      * retorno a VEventTable para el resto de test
      */
+    @Ignore
     @Test
     public void testA2_BackToAdminVAndReturnToVEventTable() throws IOException {
         // Comprobacion de Atras -> Cancelar -> Mantener en VEventTable
@@ -249,6 +266,7 @@ public class VEventTableControllerIT extends ApplicationTest {
      * los componentes superiores. Al deseleccionar el elemento se "vacian" los
      * componentes superiores
      */
+    @Ignore
     @Test
     public void testC_tableSelect_Deselect() {
         analizarComponentesVentana();
@@ -286,6 +304,7 @@ public class VEventTableControllerIT extends ApplicationTest {
      * Metodo para comprobar la habilitacion del boton de Crear nuevo Evento
      * tras informar los campos superiores.
      */
+    @Ignore
     @Test
     public void testD_CreateButtonEnable() {
         analizarComponentesVentana();
@@ -311,6 +330,7 @@ public class VEventTableControllerIT extends ApplicationTest {
      * en el boton no se crear el nuevo evento y se muestra un label al usuario
      * indicandole de su error
      */
+    @Ignore
     @Test
     public void testE_CreateWrongDateEnd() {
         analizarComponentesVentana();
@@ -336,6 +356,7 @@ public class VEventTableControllerIT extends ApplicationTest {
      * "automatizados" y borrar automaticamente las fechas en formato erroneo al
      * perder el foco</i>
      */
+    @Ignore
     @Test
     public void testF_CreateWrongDateFormats() {
         analizarComponentesVentana();
@@ -355,6 +376,7 @@ public class VEventTableControllerIT extends ApplicationTest {
      * Metodo para comproabr que se crean eventos nuevos si se rellenan los
      * campos con datos validos
      */
+    @Ignore
     @Test
     public void testG_CreateEventSuccessfull() {
         analizarComponentesVentana();
@@ -387,6 +409,7 @@ public class VEventTableControllerIT extends ApplicationTest {
      * finalizacion al ser posiblemente el parametro que mas conflictos puede
      * provocar en un evento.</i>
      */
+    @Ignore
     @Test
     public void testH_ModifyEventFormFailure() {
         analizarComponentesVentana();
@@ -413,6 +436,7 @@ public class VEventTableControllerIT extends ApplicationTest {
      * campos superiores y se introducen valores validos el evento se modifica
      * correctamente
      */
+    @Ignore
     @Test
     public void testI_ModifyEventFormSuccessfull() {
         analizarComponentesVentana();
@@ -441,6 +465,7 @@ public class VEventTableControllerIT extends ApplicationTest {
      * finalizacion al ser posiblemente el parametro que mas conflictos puede
      * provocar en un evento.</i>
      */
+    @Ignore
     @Test
     public void testJ_ModifyEventTableFailure() {
         analizarComponentesVentana();
@@ -476,6 +501,7 @@ public class VEventTableControllerIT extends ApplicationTest {
      * editable y se introducen valores validos el evento se modifica
      * correctamente
      */
+    @Ignore
     @Test
     public void testK_ModifyEventTableSuccessfull() {
         analizarComponentesVentana();
@@ -509,6 +535,7 @@ public class VEventTableControllerIT extends ApplicationTest {
      * Metodo para comprobar que si se selecciona un evento, se pulsa en
      * cancelar y se deniega la confirmacion, el evento no se elimina
      */
+    @Ignore
     @Test
     public void testL_DeleteEventCancel() {
         analizarComponentesVentana();
@@ -528,6 +555,7 @@ public class VEventTableControllerIT extends ApplicationTest {
      * Metodo para comprobar que si se selecciona un evento y se pulsa en
      * aceptar, confirmando la solicitud, el evento se elimina
      */
+    @Ignore
     @Test
     public void testM_DeleteEventSuccessfull() {
         analizarComponentesVentana();
@@ -541,6 +569,143 @@ public class VEventTableControllerIT extends ApplicationTest {
         assertEquals("Se ha borrado el Evento", rowCount - 1, tbEvent.getItems().size());
         limpiarCampos();
         limpiarSeleccion();
+    }
+
+    /**
+     * Test para comprobar que realiza filtrados vacios
+     */
+    @Ignore
+    @Test
+    public void testN_filtrarVacio() {
+        analizarComponentesVentana();
+        limpiarCampos();
+        clickOn(btnSearch);
+        sleep(250);
+        List<Evento> users = tbEvent.getItems();
+        assertEquals("Error al filtrar eventos", users.stream().filter(u -> u.getDescription().toLowerCase().contains("")).count(), tbEvent.getItems().size());
+        limpiarCampos();
+    }
+
+    /**
+     * Test para comprobar que realiza filtrado por nombre
+     */
+    @Ignore
+    @Test
+    public void testO_filtrarPorNombre() {
+        analizarComponentesVentana();
+        limpiarCampos();
+        testN_filtrarVacio();
+        clickOn(txtSearch);
+        write(FILTERNAME);
+        clickOn(btnSearch);
+        sleep(250);
+        List<Evento> users = tbEvent.getItems();
+        assertEquals("Error al filtrar eventos", users.stream().filter(u -> u.getName().toLowerCase().contains(FILTERNAME.toLowerCase())).count(), tbEvent.getItems().size());
+        limpiarCampos();
+    }
+
+    
+
+    /**
+     * Test para comprobar que realiza filtrado por fecha de inicio
+     */
+    @Ignore
+    @Test
+    public void testP_filtrarPorFechaInicio() {
+        analizarComponentesVentana();
+        limpiarCampos();
+        testN_filtrarVacio();
+        clickOn(cbSearch);
+        sleep(200);
+        type(KeyCode.DOWN);
+        sleep(200);
+        type(KeyCode.DOWN);
+        sleep(200);
+        type(KeyCode.ENTER);
+        clickOn(txtSearch);
+        write(FECHASTART);
+        clickOn(btnSearch);
+        sleep(250);
+        List<Evento> users = tbEvent.getItems();
+        assertEquals("Error al filtrar eventos", users.stream().filter(u -> u.getDateStart().contains(FECHASTART)).count(), tbEvent.getItems().size());
+        limpiarCampos();
+    }
+
+    /**
+     * Test para comprobar que realiza filtrado por fecha de finalizacion
+     */
+    @Test
+    public void testQ_filtrarPorFechaFin() {
+        analizarComponentesVentana();
+        limpiarCampos();
+        testN_filtrarVacio();
+        clickOn(cbSearch);
+        sleep(200);
+        type(KeyCode.DOWN);
+        sleep(200);
+        type(KeyCode.DOWN);
+        sleep(200);
+        type(KeyCode.DOWN);
+        sleep(200);
+        type(KeyCode.ENTER);
+        clickOn(txtSearch);
+        write(FECHAENDOK);
+        clickOn(btnSearch);
+        sleep(250);
+        List<Evento> users = tbEvent.getItems();
+        assertEquals("Error al filtrar eventos", users.stream().filter(u -> u.getDateEnd().contains(FECHAENDOK)).count(), tbEvent.getItems().size());
+        limpiarCampos();
+    }
+
+    /**
+     * Test para comprobar que realiza filtrado por descripcion
+     */
+    @Test
+    public void testR_filtrarPorDescripcion() {
+        analizarComponentesVentana();
+        limpiarCampos();
+        testN_filtrarVacio();
+        clickOn(cbSearch);
+        sleep(200);
+        type(KeyCode.DOWN);
+        sleep(200);
+        type(KeyCode.DOWN);
+        sleep(200);
+        type(KeyCode.DOWN);
+        sleep(200);
+        type(KeyCode.DOWN);
+        sleep(200);
+        type(KeyCode.ENTER);
+        clickOn(txtSearch);
+        write(FILTERDESC);
+        clickOn(btnSearch);
+        sleep(250);
+        List<Evento> users = tbEvent.getItems();
+        assertEquals("Error al filtrar eventos", users.stream().filter(u -> u.getDescription().toLowerCase().contains(FILTERDESC.toLowerCase())).count(), tbEvent.getItems().size());
+        limpiarCampos();
+    }
+    
+    /**
+     * Test para comprobar que realiza falla al filtrar por fecha si se
+     * introduce texto sin formato valido
+     */
+    @Test
+    public void testS_filtrarError() {
+        analizarComponentesVentana();
+        limpiarCampos();
+        testN_filtrarVacio();
+        clickOn(cbSearch);
+        sleep(100);
+        type(KeyCode.DOWN);
+        sleep(100);
+        type(KeyCode.DOWN);
+        sleep(100);
+        type(KeyCode.ENTER);
+        clickOn(txtSearch);
+        write(FILTERDESC);
+        clickOn(btnSearch);
+        verifyThat(".alert", NodeMatchers.isVisible());
+        clickOn("Aceptar");
     }
 
 }
