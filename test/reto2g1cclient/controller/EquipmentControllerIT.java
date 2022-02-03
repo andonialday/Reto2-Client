@@ -5,33 +5,40 @@
  */
 package reto2g1cclient.controller;
 
+import static groovy.xml.dom.DOMCategory.name;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.concurrent.TimeoutException;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import static org.hibernate.criterion.Projections.rowCount;
+import org.junit.BeforeClass;
+import org.testfx.api.FxToolkit;
+import reto2g1cclient.model.Equipment;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
-import javafx.stage.Stage;
-import org.junit.BeforeClass;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 import org.junit.FixMethodOrder;
 import org.junit.Ignore;
 import org.junit.runners.MethodSorters;
 import static org.testfx.api.FxAssert.verifyThat;
-import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit.ApplicationTest;
+import org.testfx.matcher.base.NodeMatchers;
 import static org.testfx.matcher.base.NodeMatchers.isDisabled;
 import static org.testfx.matcher.base.NodeMatchers.isEnabled;
 import static org.testfx.matcher.base.NodeMatchers.isVisible;
 import static org.testfx.matcher.control.TextInputControlMatchers.hasText;
 import reto2g1cclient.application.ClientApplication;
-import reto2g1cclient.model.Equipment;
+import reto2g1cclient.model.Evento;
 
 /**
  *
@@ -92,7 +99,7 @@ public class EquipmentControllerIT extends ApplicationTest {
     private Label lblWarninNumValue;
 
     private Label lblWarningDate;
-
+    
     
     
     /**
@@ -124,10 +131,11 @@ public class EquipmentControllerIT extends ApplicationTest {
         dpDate = lookup("#dpDate").query();
         btnBack = lookup("#btnBack").query();
         btnCrearEquip = lookup("#btnCrearEquip").query();
+        btnCrearEquip = lookup("#btnCrearEquip").query();
         btnDeleteEquip = lookup("#btnDeleteEquip").query();
         btnFind = lookup("#btnFind").query();
-        btnPrint = lookup("btnPrint").query();
-        btnSaveEquip = lookup("btnSaveEquip").query();
+        btnPrint = lookup("#btnPrint").query();
+        btnSaveEquip = lookup("#btnSaveEquip").query();
         cbSearch = lookup("#cbSearch").query();
         
 
@@ -161,7 +169,7 @@ public class EquipmentControllerIT extends ApplicationTest {
        // verifyThat("#pAdmin", isVisible());
         clickOn("#mData");
         clickOn("#miEquipment");
-        verifyThat("#pEquipmentTable", isVisible());
+        verifyThat("#pEquipment", isVisible());
     }
     
      @Test
@@ -204,6 +212,7 @@ public class EquipmentControllerIT extends ApplicationTest {
     @Test
     public void testC_HabilitarBotonNuevoEquipamiento() {
         lookEquipment();
+        //int rowCount = tbEquipment.getItems().size();
         clickOn("#tfName");
         write("Altavoz");
 
@@ -218,13 +227,148 @@ public class EquipmentControllerIT extends ApplicationTest {
         write("el perro de sanroque no tiene rabo");
 
         verifyThat("#btnCrearEquip", isEnabled());
-        clickOn("#btnCrearEquip");
-        /*  int rowCount=tbEquipment.getItems().size();
-        assertNotEquals("Table has no data: Cannot test.",
-                        rowCount,0);*/
+         clickOn("#btnCrearEquip");
+         //Error
+/*          assertEquals("Error al crear evento",  tbEquipment.getItems().size()  , tbEquipment.getItems().size());
+        List<Equipment> users = tbEquipment.getItems();
+        assertEquals("Error al crear evento",
+                users.stream().filter(u -> u.getName().equals(tfName)).count(), 1);*/
     }
     
+    @Test
+    public void testD_VerificacionCrearEquipamientoFail() {
+        vaciarCampos();
+      lookEquipment();
+       // int rowCount = tbEquipment.getItems().size();
+        clickOn("#tfName");
+        write("Altavoz");
 
+        clickOn("#tfCost");
+        write("100000");
+        clickOn("#dpDate");
+        dpDate.setValue(LocalDate.parse(("01/02/2020"), formatter));
+
+        press(KeyCode.ENTER);
+        release(KeyCode.ENTER);
+        clickOn("#taDescription");
+        write("el perro de sanroque no tiene rabo");
+
+        verifyThat("#btnCrearEquip", isEnabled());
+         clickOn("#btnCrearEquip");
+         verifyThat(".alert", NodeMatchers.isVisible());
+        clickOn("Aceptar");
+         //Error
+/*          assertEquals("Error al crear evento", rowCount  , tbEquipment.getItems().size());
+        List<Equipment> users = tbEquipment.getItems();
+        assertEquals("Error al crear evento",
+                users.stream().filter(u -> u.getName().equals(tfName)).count(), 1);*/
+        
+      
+        
+    }
+     
+    @Test
+    public void testE_tableSelect_Deselect() {
+        vaciarCampos();
+        //Seleccionando un elemento de la tabla
+        int rowCount = tbEquipment.getItems().size();
+        Node row = lookup(".table-row-cell").nth(rowCount - 1).query();
+        assertNotNull("Row is null: table has not that row. ", row);
+        clickOn(row);
+        Equipment equipment = (Equipment) tbEquipment.getSelectionModel().getSelectedItem();
+        //Carga de datos de equipmaiento seleccionado en campos superiores
+        verifyThat("#tfName", hasText(equipment.getName()));
+        verifyThat("#tfCost", hasText(equipment.getCost()));
+        verifyThat("#taDescription", hasText(equipment.getDescription()));
+        assertNotNull("No ha cargado la fecha de compra", dpDate.getValue());
+        
+        //Deseleccionarelemento de la tabla
+        press(KeyCode.CONTROL);
+        clickOn(row);
+        release(KeyCode.CONTROL);
+        //Vaciado de campos superiores
+        verifyThat("#tfName", hasText(""));
+        verifyThat("#tfCost", hasText(""));
+        
+        verifyThat("#taDescription", hasText(""));
+        assertEquals("No se ha deseleccionado la fecha", dpDate.getValue(), null);
+        
+        vaciarCampos();
+    }
+    //works
+    @Ignore
+    @Test
+    public void testF_ModifyEquipmentFormFail() {
+        vaciarCampos();
+        int rowCount = tbEquipment.getItems().size();
+        Node row = lookup(".table-row-cell").nth(rowCount - 1).query();
+        assertNotNull("Row is null: table has not that row. ", row);
+        clickOn(row);
+        Equipment equipment = (Equipment) tbEquipment.getSelectionModel().getSelectedItem();
+        clickOn("#dateAdd");
+        dpDate.setValue(null);
+        write("03/02/2022");
+        press(KeyCode.ENTER);
+        release(KeyCode.ENTER);
+        clickOn("#btnSaveEquip");
+        verifyThat(".alert", NodeMatchers.isVisible());
+        clickOn("Aceptar");
+        assertEquals("Equipamiento modificado", equipment, tbEquipment.getSelectionModel().getSelectedItem());
+    }
+     //works
+    @Ignore
+    @Test
+    public void testG_ModifyEquipmentFormSuccessfull() {
+        vaciarCampos();
+        int rowCount = tbEquipment.getItems().size();
+        Node row = lookup(".table-row-cell").nth(rowCount - 1).query();
+        assertNotNull("Row is null: table has not that row. ", row);
+        clickOn(row);
+      Equipment equipment = (Equipment) tbEquipment.getSelectionModel().getSelectedItem();
+        clickOn(dpDate);
+        dpDate.setValue(null);
+        write("02/09/1999");
+        press(KeyCode.ENTER);
+        release(KeyCode.ENTER);
+        clickOn("#btnSaveEquip");
+        assertEquals("Se ha modificado el Evento", equipment.getDateAdd(), "02/09/1999");
+        vaciarCampos();
+    }
+        //works
+    @Ignore
+    @Test
+    public void testH_DeleteEventCancel() {
+        vaciarCampos();
+        int rowCount = tbEquipment.getItems().size();
+        Node row = lookup(".table-row-cell").nth(rowCount - 1).query();
+        assertNotNull("Row is null: table has not that row. ", row);
+        clickOn(row);
+        clickOn("#btnDelete");
+        verifyThat(".alert", NodeMatchers.isVisible());
+        clickOn("Cancelar");
+        assertEquals("NO Se ha borrado el Equipamiento", rowCount, tbEquipment.getItems().size());
+    }
+
+    //works
+    @Ignore
+    @Test
+    public void testI_DeleteEventSuccessfull() {
+        vaciarCampos();
+        int rowCount = tbEquipment.getItems().size();
+        Node row = lookup(".table-row-cell").nth(rowCount - 1).query();
+        assertNotNull("Row is null: table has not that row. ", row);
+        clickOn(row);
+        clickOn("#btnDeleteEquip");
+        verifyThat(".alert", NodeMatchers.isVisible());
+        clickOn("Aceptar");
+        assertEquals("Se ha borrado el equipamiento", rowCount - 1, tbEquipment.getItems().size());
+    }
+     @Ignore
+    @Test
+    public void testM_printReport() {
+        clickOn("#btnPrint");
+        //verifyThat();
+    }
     public void vaciarCampos() {
         lookEquipment();
         tfName.clear();
