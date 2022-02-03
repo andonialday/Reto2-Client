@@ -9,6 +9,8 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.security.InvalidKeyException;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
@@ -35,9 +37,12 @@ public class EncryptAsim {
 
     private static void pub() {
         try {
-            BufferedReader reader = null;
-            reader = new BufferedReader(new FileReader(ResourceBundle.getBundle("reto2g1cclient.properties.config").getString("PUBLICKEYPATH")));
+            InputStream is = EncryptAsim.class.getResourceAsStream("public.key");
+            InputStreamReader isReader = new InputStreamReader(is);
+            BufferedReader reader = new BufferedReader(isReader);
             String pubK = reader.readLine();
+            System.out.println(pubK);
+            is.close();
             LOGGER.info("Clave publica leida");
             X509EncodedKeySpec x5 = new X509EncodedKeySpec(DatatypeConverter.parseHexBinary(pubK));
             pubKey = KeyFactory.getInstance("RSA").generatePublic(x5);

@@ -23,8 +23,10 @@ import org.junit.Ignore;
 import org.junit.runners.MethodSorters;
 import static org.testfx.api.FxAssert.verifyThat;
 import org.testfx.framework.junit.ApplicationTest;
+import static org.testfx.matcher.base.NodeMatchers.isDisabled;
 import static org.testfx.matcher.base.NodeMatchers.isEnabled;
 import static org.testfx.matcher.base.NodeMatchers.isVisible;
+import static org.testfx.matcher.control.TextInputControlMatchers.hasText;
 import reto2g1cclient.application.ClientApplication;
 import reto2g1cclient.model.Equipment;
 
@@ -110,8 +112,7 @@ public class EquipmentControllerIT extends ApplicationTest {
         btnPrint = lookup("btnPrint").query();
         btnSaveEquip = lookup("btnSaveEquip").query();
         cbSearch = lookup("#cbSearch").query();
-        // clCost = lookup("#clCost").queryAll(Equipment, String);
-        // clDate = lookup("#clDate").query();
+        
 
     }
 
@@ -127,26 +128,62 @@ public class EquipmentControllerIT extends ApplicationTest {
     
     
     
-    
+   
     
      */
-    @Ignore
+   
     @Test
     public void testA_NavigateToVEquipmentTable() {
         clickOn("#txtLogin");
         write("admin");
         clickOn("#txtPassword");
-        write("password");
+        write("Abcd*1234");
         clickOn("#btnSignIn");
-        verifyThat("#pAdmin", isVisible());
-        clickOn("n de Datos");
-        clickOn("Ver Eventos");
-        verifyThat("#pEventTable", isVisible());
+        sleep(2000);
+       // verifyThat("#pAdmin", isVisible());
+        clickOn("#mData");
+        clickOn("#miEquipment");
+        verifyThat("#pEquipmentTable", isVisible());
     }
+    
+     @Test
+    public void testB_VEventTableInitialState() {
+        //Verificacion de elementos superiores
+        //  Labels indicativos
+        verifyThat("#lblName", isVisible());
+        verifyThat("#lblCost", isVisible());
+        verifyThat("#lblDescription", isVisible());
+        verifyThat("#lblBuyData", isVisible());
+         //  Labels de error
+        //  Campos "rellenables"
+        verifyThat("#tfName", hasText(""));
+        verifyThat("#tfCost", hasText(""));
+        verifyThat("#taDescription", hasText(""));
+        verifyThat("#dpDate", isEnabled());
+        //Verificacion de Botones
+        verifyThat("#btnCrearEquip", isDisabled());
+        verifyThat("#btnSaveEquip", isDisabled());
+        verifyThat("#btnDeleteEquip", isDisabled());
+        verifyThat("#btnBack", isEnabled());
+        verifyThat("#btnPrint", isEnabled());
+      
+          //Verificacion seccion busqueda
+        verifyThat("#tfFinding", hasText(""));
+        verifyThat("#btnFind", isEnabled());
+        verifyThat("#cbSearch", isEnabled());
+        //Verificacion Tabla
+        verifyThat("#clName", isVisible());
+        verifyThat("#clCost", isVisible());
+        verifyThat("#clDescription", isVisible());
+        verifyThat("#clDate", isVisible());
+       
+    }
+    
+    
 
     /*Test para verificar activacion de boton y que se crean */
     @Test
-    public void testB_HabilitarBotonNuevoEquipamiento() {
+    public void testC_HabilitarBotonNuevoEquipamiento() {
         clickOn("#tfName");
         write("Altavoz");
 
@@ -166,6 +203,7 @@ public class EquipmentControllerIT extends ApplicationTest {
         assertNotEquals("Table has no data: Cannot test.",
                         rowCount,0);*/
     }
+    
 
     public void vaciarCampos() {
         tfName.clear();
