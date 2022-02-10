@@ -425,7 +425,7 @@ public class VEventTableControllerIT extends ApplicationTest {
         release(KeyCode.ENTER);
         clickOn(btnSave);
         verifyThat(".alert", NodeMatchers.isVisible());
-        //verifyThat("La Fecha de Inicio no ", isVisible());
+        verifyThat("La fecha de finalizacion es anterior a la de inicio. Revise las fechas por favor.", isVisible());
         sleep(500);
         type(KeyCode.ENTER);
         assertEquals("Se ha modificado el Evento", event, tbEvent.getSelectionModel().getSelectedItem());
