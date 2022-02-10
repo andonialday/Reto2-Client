@@ -269,7 +269,7 @@ public class VEventTableControllerIT extends ApplicationTest {
      * los componentes superiores. Al deseleccionar el elemento se "vacian" los
      * componentes superiores
      */
-    //@Ignore
+    @Ignore
     @Test
     public void testC_tableSelect_Deselect() {
         analizarComponentesVentana();
@@ -307,7 +307,7 @@ public class VEventTableControllerIT extends ApplicationTest {
      * Metodo para comprobar la habilitacion del boton de Crear nuevo Evento
      * tras informar los campos superiores.
      */
-    //@Ignore
+    @Ignore
     @Test
     public void testD_CreateButtonEnable() {
         analizarComponentesVentana();
@@ -332,7 +332,7 @@ public class VEventTableControllerIT extends ApplicationTest {
      * en el boton no se crear el nuevo evento y se muestra un label al usuario
      * indicandole de su error
      */
-    //@Ignore
+    @Ignore
     @Test
     public void testE_CreateWrongDateEnd() {
         analizarComponentesVentana();
@@ -358,7 +358,7 @@ public class VEventTableControllerIT extends ApplicationTest {
      * "automatizados" y borrar automaticamente las fechas en formato erroneo al
      * perder el foco</i>
      */
-    //@Ignore
+    @Ignore
     @Test
     public void testF_CreateWrongDateFormats() {
         analizarComponentesVentana();
@@ -410,6 +410,7 @@ public class VEventTableControllerIT extends ApplicationTest {
      * finalizacion al ser posiblemente el parametro que mas conflictos puede
      * provocar en un evento.</i>
      */
+    @Ignore
     @Test
     public void testH_ModifyEventFormFailure() {
         analizarComponentesVentana();
@@ -466,7 +467,7 @@ public class VEventTableControllerIT extends ApplicationTest {
      * finalizacion al ser posiblemente el parametro que mas conflictos puede
      * provocar en un evento.</i>
      */
-    //@Ignore
+    @Ignore
     @Test
     public void testJ_ModifyEventTableFailure() {
         analizarComponentesVentana();
@@ -504,7 +505,7 @@ public class VEventTableControllerIT extends ApplicationTest {
      * editable y se introducen valores validos el evento se modifica
      * correctamente
      */
-    //@Ignore
+    @Ignore
     @Test
     public void testK_ModifyEventTableSuccessfull() {
         analizarComponentesVentana();
@@ -538,7 +539,7 @@ public class VEventTableControllerIT extends ApplicationTest {
      * Metodo para comprobar que si se selecciona un evento, se pulsa en
      * cancelar y se deniega la confirmacion, el evento no se elimina
      */
-    //@Ignore
+    @Ignore
     @Test
     public void testL_DeleteEventCancel() {
         analizarComponentesVentana();
@@ -559,7 +560,7 @@ public class VEventTableControllerIT extends ApplicationTest {
      * Metodo para comprobar que si se selecciona un evento y se pulsa en
      * aceptar, confirmando la solicitud, el evento se elimina
      */
-    //@Ignore
+    @Ignore
     @Test
     public void testM_DeleteEventSuccessfull() {
         analizarComponentesVentana();
@@ -578,7 +579,7 @@ public class VEventTableControllerIT extends ApplicationTest {
     /**
      * Test para comprobar que realiza filtrados vacios
      */
-    //@Ignore
+    @Ignore
     @Test
     public void testN_filtrarVacio() {
         analizarComponentesVentana();
@@ -592,7 +593,7 @@ public class VEventTableControllerIT extends ApplicationTest {
     /**
      * Test para comprobar que filtra mostrando todos los eventos disponibles
      */
-    //@Ignore
+    @Ignore
     @Test
     public void testN2_filtrarTodos() {
         analizarComponentesVentana();
@@ -617,7 +618,7 @@ public class VEventTableControllerIT extends ApplicationTest {
     /**
      * Test para comprobar que realiza filtrado por nombre
      */
-    //@Ignore
+    @Ignore
     @Test
     public void testO_filtrarPorNombre() {
         analizarComponentesVentana();
@@ -634,7 +635,7 @@ public class VEventTableControllerIT extends ApplicationTest {
     /**
      * Test para comprobar que realiza filtrado por fecha de inicio
      */
-    //@Ignore
+    @Ignore
     @Test
     public void testP_filtrarPorFechaInicio() {
         analizarComponentesVentana();
@@ -656,6 +657,7 @@ public class VEventTableControllerIT extends ApplicationTest {
     /**
      * Test para comprobar que realiza filtrado por fecha de finalizacion
      */
+    @Ignore
     @Test
     public void testQ_filtrarPorFechaFin() {
         analizarComponentesVentana();
@@ -679,6 +681,7 @@ public class VEventTableControllerIT extends ApplicationTest {
     /**
      * Test para comprobar que realiza filtrado por descripcion
      */
+    @Ignore
     @Test
     public void testR_filtrarPorDescripcion() {
         analizarComponentesVentana();
@@ -705,6 +708,7 @@ public class VEventTableControllerIT extends ApplicationTest {
      * Test para comprobar que realiza falla al filtrar por fecha si se
      * introduce texto sin formato valido
      */
+    @Ignore
     @Test
     public void testS_filtrarError() {
         analizarComponentesVentana();
