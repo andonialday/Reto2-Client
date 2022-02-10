@@ -264,12 +264,14 @@ public class EquipmentController {
         stage.setOnShowing(this::handleWindowShowing);
          stage.setOnCloseRequest(this::closeVEquipmentTable);
         //Botones
+       
         btnBack.setOnAction(this::back);
         btnCrearEquip.setOnAction(this::newEquipment);
         btnDeleteEquip.setOnAction(this::deleteEquipment);
         btnSaveEquip.setOnAction(this::saveEquipment);
         btnFind.setOnAction(this::filterEquipments);
         btnPrint.setOnAction(this::printData);
+        cbSearch.valueProperty().addListener(this::cleanFind);
         
         //Fields textArea y DatePicker
         tfName.textProperty().addListener(this::tfNameValue);
@@ -278,12 +280,13 @@ public class EquipmentController {
         dpDate.valueProperty().addListener(this::dpDateAddValue);
         
         //Filtros
-        ObservableList<String> filters = FXCollections.observableArrayList("Nombre del Equipamiento", "Coste maximo", "Coste minimo", "Fecha de compra", "Descripción");
+        ObservableList<String> filters = FXCollections.observableArrayList("Nombre del Equipamiento", "Coste maximo", "Coste minimo", "Fecha de compra", "Descripción","Todos los Equipamientos");
         cbSearch.getItems().addAll(filters);
-
+        
         //Implementacion del Equipamiento
         eqif = EquipmentFactory.getImplementation();
         //Recuperacion y Cargado de datos en la ventana
+       
         loaddata();
         loadTblEquipment();
         setTableData();
@@ -640,6 +643,9 @@ public class EquipmentController {
         }
     }
 
+   
+    
+    
     /**
      * ******* METODOS PARA HABILITAR LOS BOTONES ****************
      */
@@ -740,7 +746,7 @@ public class EquipmentController {
      * 
      */
     public void validateEquipData() {
-        if (bolName && bolDescription && bolCost && bolDateBuy && !bolTableEquipSelec) {
+        if (bolName && bolDescription && bolCost && bolDateBuy) {
            
 
             btnCrearEquip.setDisable(false);
@@ -878,13 +884,17 @@ public class EquipmentController {
             dpDate.setValue(LocalDate.parse(t.getNewValue(), formatter));
             ((Equipment) t.getTableView().getItems().get(
                     t.getTablePosition().getRow())).setDateAdd(t.getNewValue());
+            
+            
+            
             editandoFormatosCondicionales(tbEquipment.getSelectionModel().getSelectedItem());
+           
         } catch (DateTimeParseException e) {
             Alert altWarningLog = new Alert(AlertType.WARNING);
             altWarningLog.setTitle("La fecha introducida no es correcta ");
             altWarningLog.setHeaderText("La fecha introducida no cumple los "
                     + "siguientes paramentros");
-            altWarningLog.setContentText("El coste que se ha introducido deben"
+            altWarningLog.setContentText("La fecha que se ha introducido de"
                     + " cumplir el formato DD/MM/AAAA");
             altWarningLog.showAndWait();
             ((Equipment) t.getTableView().getItems().get(
@@ -910,7 +920,7 @@ public class EquipmentController {
             tfCost.setText(newValue.getCost());
             taDescription.setText(newValue.getDescription());
             dpDate.setValue(LocalDate.parse(newValue.getDateAdd(), formatter));
-            btnCrearEquip.setDisable(true);
+            btnCrearEquip.setDisable(false);
             btnSaveEquip.setDisable(false);
             btnDeleteEquip.setDisable(false);
             bolCost = false;
@@ -936,7 +946,13 @@ public class EquipmentController {
 
         }
     }
-
+    public void cleanFind(ObservableValue observable, Object oldValue, Object newValue){
+        
+       if( oldValue != newValue ){
+           tfFinding.setText("");
+           LOGGER.info("Borrando caja de busqueda");
+       }
+    }
     /**
       * Metodo para ejecutar filtrados en la tabla en función de la opcion seleccionada
       * 
@@ -949,12 +965,14 @@ public class EquipmentController {
         LOGGER.info("ejecutando filtros ");
 
         try {
-
+            
             List<Equipment> eqs = new ArrayList<>();
             loaddata();
+            
             switch (cbSearch.getSelectionModel().getSelectedIndex()) {
                 case 0:
                     //Filtra por nombre y en el caso de no introducir nada muestra todos
+                    
                     if (!tfFinding.getText().trim().equals("")) {
                         for (Equipment eq : equipments) {
                             if (eq.getName().toUpperCase().contains(tfFinding.getText().toUpperCase().trim())) {
@@ -965,8 +983,10 @@ public class EquipmentController {
                             }
                         }
                         equipments = eqs;
+                      
                     } else {
                         loaddata();
+                        
                     }
 
                     break;
@@ -1030,6 +1050,16 @@ public class EquipmentController {
                     }
 
                     break;
+                    
+                     case 5:
+                    //Filtra por descripcion y en el caso de no introducir nada muestra todos
+                    if (tfFinding.getText().trim().equals("")) {
+                       
+                        loaddata();
+                    }
+
+                    break;
+                    
                 default:
 
                     loaddata();

@@ -255,7 +255,7 @@ public class EquipmentControllerIT extends ApplicationTest {
      * y si se crea un equipamiento y se añade a la tabla
      */
     @Test
-    public void testC_HabilitarBotonNuevoEquipamientoyCreacion() {
+    public void testC_NuevoEquipamientGood() {
         analizaComponentesEquipamiento();
         vaciarCampos();
         int rowCount = tbEquipment.getItems().size();
@@ -272,12 +272,42 @@ public class EquipmentControllerIT extends ApplicationTest {
         clickOn("#taDescription");
         write(DESCRIPCION + rowCount);
 
-        verifyThat("#btnCrearEquip", isEnabled());
+      
          clickOn("#btnCrearEquip");     
          int count = comprobarCreaciones(rowCount);
         assertEquals("Error al crear Equipamiento",  rowCount + 1, tbEquipment.getItems().size());
         
         assertEquals("Error al crear Equipamiento", 1,count);
+    }
+    
+    
+    
+    
+    /**
+     * Metodo para habilitar boton de crear equipamiento y verificar si se habilita
+     * y si se crea un equipamiento y se añade a la tabla
+     */
+  
+    @Test
+    public void testD_VerificarBotonNewHabilitado() {
+        analizaComponentesEquipamiento();
+        vaciarCampos();
+        int rowCount = tbEquipment.getItems().size();
+        clickOn("#tfName");
+        write("Altavoz philips TESTEADO");
+
+        clickOn("#tfCost");
+        write("100");
+        clickOn("#dpDate");
+        dpDate.setValue(LocalDate.parse(("06/06/2021"), formatter));
+
+        press(KeyCode.ENTER);
+        release(KeyCode.ENTER);
+        clickOn("#taDescription");
+        write(DESCRIPCION + rowCount);
+
+         verifyThat("#btnCrearEquip", isEnabled());
+       
     }
   
     /**
@@ -285,7 +315,7 @@ public class EquipmentControllerIT extends ApplicationTest {
      * equipamiento nuevo
      */
     @Test
-    public void testD_VerificacionCrearEquipamientoFail() {
+    public void testE_VerificacionCrearEquipamientoFail() {
         
       analizaComponentesEquipamiento();
       vaciarCampos();
@@ -321,7 +351,7 @@ public class EquipmentControllerIT extends ApplicationTest {
       */
    
     @Test
-    public void testE_tableSelect_Deselect() {
+    public void testF_tableSelect_Deselect() {
         vaciarCampos();
          analizaComponentesEquipamiento();
         //Seleccionando un elemento de la tabla
@@ -357,7 +387,7 @@ public class EquipmentControllerIT extends ApplicationTest {
      * de una alerta
      */
     @Test
-    public void testF_ModifyEquipmentFormFail() {
+    public void testG_ModifyEquipmentFormFail() {
         vaciarCampos();
          analizaComponentesEquipamiento();
         int rowCount = tbEquipment.getItems().size();
@@ -377,10 +407,12 @@ public class EquipmentControllerIT extends ApplicationTest {
         write("03/02/2066");
        clickOn("#btnSaveEquip");
         
-        verifyThat(".alert", NodeMatchers.isVisible());
+        verifyThat("El coste que se ha introducido debe ser numerico,mayor que 0 y menor que 10000 ademas con formato xxx.yy.Dado este error se establecera al valor previo a la modificacion", NodeMatchers.isVisible());
+        sleep(2000);
         clickOn("Aceptar");
         assertEquals("Equipamiento modificado", equipment, tbEquipment.getSelectionModel().getSelectedItem());
         limpiarSeleccionDeFila();
+        sleep(2000);
     }
      
     /**
@@ -389,7 +421,7 @@ public class EquipmentControllerIT extends ApplicationTest {
      * introducida es igual a la fecha que se ha guardado
      */
     @Test
-    public void testG_ModifyEquipmentFormSuccessfull() {
+    public void testH_ModifyEquipmentFormSuccessfull() {
         vaciarCampos();
         int rowCount = tbEquipment.getItems().size();
         Node row = lookup(".table-row-cell").nth(rowCount - 1).query();
@@ -413,14 +445,14 @@ public class EquipmentControllerIT extends ApplicationTest {
      * Metodo para verificar que se puede cancelar el borrado de un equipamiento
      */
     @Test
-    public void testH_DeleteEventCancel() {
+    public void testI_DeleteEventCancel() {
         vaciarCampos();
         int rowCount = tbEquipment.getItems().size();
         Node row = lookup(".table-row-cell").nth(rowCount - 1).query();
         assertNotNull("Row is null: table has not that row. ", row);
         clickOn(row);
         clickOn("#btnDeleteEquip");
-        verifyThat(".alert", NodeMatchers.isVisible());
+        verifyThat("¿Seguro que desea Eliminar el Equipamiento Seleccionado?", NodeMatchers.isVisible());
         clickOn("Cancelar");
         assertEquals("NO Se ha borrado el Equipamiento", rowCount, tbEquipment.getItems().size());
         analizaComponentesEquipamiento();
@@ -433,14 +465,14 @@ public class EquipmentControllerIT extends ApplicationTest {
      * en la tabla
      */
     @Test
-    public void testI_DeleteEventSuccessfull() {
+    public void testJ_DeleteEventSuccessfull() {
         vaciarCampos();
         int rowCount = tbEquipment.getItems().size();
         Node row = lookup(".table-row-cell").nth(rowCount - 1).query();
         assertNotNull("Row is null: table has not that row. ", row);
         clickOn(row);
         clickOn("#btnDeleteEquip");
-        verifyThat(".alert", NodeMatchers.isVisible());
+        verifyThat("¿Seguro que desea Eliminar el Equipamiento Seleccionado?", NodeMatchers.isVisible());
         clickOn("Aceptar");
         assertEquals("Se ha borrado el equipamiento", rowCount - 1, tbEquipment.getItems().size());
         analizaComponentesEquipamiento();
@@ -453,7 +485,7 @@ public class EquipmentControllerIT extends ApplicationTest {
      * varia el dato.
      */
     @Test
-    public void testJ_ModificarEnTablaEditableSuccessfull(){
+    public void testK_ModificarEnTablaEditableSuccessfull(){
           vaciarCampos();
        
         int rowCount = tbEquipment.getItems().size();
@@ -476,7 +508,7 @@ public class EquipmentControllerIT extends ApplicationTest {
         write("drgredgd");
         press(KeyCode.ENTER);
         release(KeyCode.ENTER);
-        verifyThat(".alert", NodeMatchers.isVisible());
+        verifyThat("La fecha que se ha introducido de cumplir el formato DD/MM/AAAA", NodeMatchers.isVisible());
         clickOn("Aceptar");
       
         assertNotEquals("Se se ha modificado el Equipamiento", equipment.getDateAdd(),"drgredgd");
@@ -490,7 +522,7 @@ public class EquipmentControllerIT extends ApplicationTest {
      * en la tabla editable y añadiendo datos correctos se verifica que la fecha se ha cambiado
      */
     @Test
-     public void testK_ModifyEventTableSuccessfull() {
+     public void testL_ModifyEventTableSuccessfull() {
         vaciarCampos();
        
         int rowCount = tbEquipment.getItems().size();
@@ -524,7 +556,7 @@ public class EquipmentControllerIT extends ApplicationTest {
      * nada mostrara topdos los equipamientos
      */
     @Test
-     public void testL_filtrarVacio(){
+     public void testM_filtrarVacio(){
           analizaComponentesEquipamiento();
         vaciarCampos();
         List<Equipment> equipments = tbEquipment.getItems();
@@ -544,10 +576,10 @@ public class EquipmentControllerIT extends ApplicationTest {
      * 
      */ 
     @Test
-     public void testM_filtrarNombre(){
+     public void testN_filtrarNombre(){
           analizaComponentesEquipamiento();
         vaciarCampos();
-        testL_filtrarVacio();
+        testM_filtrarVacio();
         List<Equipment> equipments = tbEquipment.getItems();
         clickOn("#tfFinding");
         write("altavoz");
@@ -562,14 +594,8 @@ public class EquipmentControllerIT extends ApplicationTest {
       
      
     
-    /**
-     * Metodo para comprobar que el boton de imprimir funciona
-     */
-    @Test
-    public void testN_printReport() {
-        clickOn("#btnPrint");
-        //verifyThat();
-    }
+   
+ 
 
     /**
      * Metodo para volver a la ventana de admin
@@ -579,12 +605,12 @@ public class EquipmentControllerIT extends ApplicationTest {
      public void testO_VolverVentanaAdmin() throws IOException {
         // Comprobacion de Atras -> Cancelar -> Mantener en VEventTable
         clickOn("#btnBack");
-        verifyThat(".alert", NodeMatchers.isVisible());
+        verifyThat("¿Seguro que desea volver a la ventana anterior?", NodeMatchers.isVisible());
         clickOn("Cancelar");
         verifyThat("#pEquipment", isVisible());
         // Comprobacion de Atras -> Aceptar -> Retorno a VAdmin
         clickOn("#btnBack");
-        verifyThat(".alert", NodeMatchers.isVisible());
+        verifyThat("¿Seguro que desea volver a la ventana anterior?", NodeMatchers.isVisible());
         clickOn("Aceptar");
         verifyThat("#pAdmin", isVisible());
         // Retorno a VEventTable mediante menu de navegacion
@@ -605,10 +631,11 @@ public class EquipmentControllerIT extends ApplicationTest {
          * aniadido un sleep de 2s para darle algo de tiempo a los test
          */
         sleep(2000);
-        verifyThat("#pAdmin", isVisible());
+        verifyThat("#mbAdmin", isVisible());
+         sleep(2000);
         clickOn("#mData");
-        clickOn("#miEvent");
-        verifyThat("#pEventTable", isVisible());
+        clickOn("#miEquipment");
+        verifyThat("#pEquipment", isVisible());
     }
 
     /**
