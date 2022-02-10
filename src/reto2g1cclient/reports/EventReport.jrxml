@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="710" pageHeight="1040" columnWidth="670" leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="30" isFloatColumnFooter="true" uuid="8fd666c2-09bd-490d-b339-9ed4cef8d707">
-	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.zoom" value="1.1"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="131"/>
+	<property name="ireport.y" value="0"/>
 	<field name="name" class="java.lang.String"/>
 	<field name="dateStart" class="java.lang.String"/>
 	<field name="dateEnd" class="java.lang.String"/>
@@ -129,6 +129,14 @@
 	</detail>
 	<pageFooter>
 		<band height="54" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="19" width="670" height="35" uuid="49006475-bead-4a0e-8bd4-fce4bbbbc0e9"/>
+				<box leftPadding="90" rightPadding="90"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Este es un informe de los eventos mostrados en la tabla en el momento de solicitud de impresión del informe. Si desea un informe de todos los eventos, asegúrese de que no hay ningún filtro activo.]]></text>
+			</staticText>
 			<textField>
 				<reportElement x="549" y="34" width="80" height="20" uuid="38194d6e-ed6e-4762-b2b8-e4dfe4529b0b"/>
 				<textElement textAlignment="Right" verticalAlignment="Bottom">
@@ -145,18 +153,4 @@
 			</textField>
 		</band>
 	</pageFooter>
-	<summary>
-		<band height="43" splitType="Stretch">
-			<staticText>
-				<reportElement x="0" y="1" width="670" height="42" uuid="49006475-bead-4a0e-8bd4-fce4bbbbc0e9"/>
-				<box leftPadding="90" rightPadding="90">
-					<topPen lineWidth="2.5" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isItalic="true"/>
-				</textElement>
-				<text><![CDATA[Este es un informe de los eventos mostrados en la tabla en el momento de solicitud de impresión del informe. Si desea un informe de todos los eventos, asegúrese de que no hay ningún filtro activo.]]></text>
-			</staticText>
-		</band>
-	</summary>
 </jasperReport>

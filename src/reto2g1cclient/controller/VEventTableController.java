@@ -11,6 +11,8 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -69,6 +71,7 @@ public class VEventTableController {
     private static final Logger LOGGER = Logger.getLogger("package.class");
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private static final DateTimeFormatter database = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
+    private static final List<String> filt = new ArrayList<String>(Arrays.asList("Nombre del Evento", "Fecha de Inicio", "Fecha de Finalización", "Descripción", "Todos"));
     private Stage stage;
     private Client client;
     private List<Evento> events = null;
@@ -360,7 +363,7 @@ public class VEventTableController {
         // Cargar Datos Iniciales en tabla
         loadTable();
         // Seccion Busqueda
-        ObservableList<String> filtros = FXCollections.observableArrayList("Nombre del Evento", "Fecha de Inicio", "Fecha de Finalización", "Descripción");
+        ObservableList<String> filtros = FXCollections.observableArrayList(filt);
         cbSearch.getItems().addAll(filtros);
         cbSearch.getSelectionModel().selectedItemProperty().addListener(this::selectedFilter);
         filter = 1;
@@ -508,7 +511,7 @@ public class VEventTableController {
     @FXML
     public void newEvent(ActionEvent event) {
         // Comprobacion de que la fecha de finalizacion no es anterior a la de inicio
-        if (dpDateEnd.getValue().isAfter(dpDateStart.getValue()) || dpDateEnd.getValue().isEqual(dpDateStart.getValue())) {    
+        if (dpDateEnd.getValue().isAfter(dpDateStart.getValue()) || dpDateEnd.getValue().isEqual(dpDateStart.getValue())) {
             // Si el label estaba visible por valor de fecha invalida anteriormente, se vuelve a esconder
             lblDateEndEr.setVisible(false);
             if (txtName.getText().trim().length() < 400 && taDescription.getText().trim().length() < 400) {
@@ -719,6 +722,7 @@ public class VEventTableController {
         //numerico para almacenar el filtro seleccionado
         LOGGER.info("Filtering parameter selection changed");
         if (newValue != null) {
+            txtSearch.setText("");
             switch (cbSearch.getSelectionModel().getSelectedIndex()) {
                 // Filtro Nombre
                 case 0:
@@ -750,14 +754,11 @@ public class VEventTableController {
      * busqueda
      *
      * 1.- Nombre del Evento - Se mostraran eventos que contengan el texto en su
-     * nombre
-     * 2.- Fecha de Inicio - Se mostraran eventos cuya fecha de
-     * inicio coincida con la introducida
-     * 3.- Fecha de Finalizacion - Se
-     * mostraran eventos cuya fecha de finalizacion coincida con la
-     * introducida
-     * 4.- Descripcion del Evento - Se mostraran eventos que contengan el texto
-     * en su descripcion
+     * nombre 2.- Fecha de Inicio - Se mostraran eventos cuya fecha de inicio
+     * coincida con la introducida 3.- Fecha de Finalizacion - Se mostraran
+     * eventos cuya fecha de finalizacion coincida con la introducida 4.-
+     * Descripcion del Evento - Se mostraran eventos que contengan el texto en
+     * su descripcion
      *
      * Si no se introduce ningun texto, sea cual sea el filtro seleccionado, se
      * mostraran todos los eventos disponibles
@@ -784,21 +785,21 @@ public class VEventTableController {
                     //Carga los datos de la base de datos
                     loadData();
                     //Filtrar los elementos cuya fecha de inicio no coincida con la introducida
-                        // Control si el texto de busqueda es nulo (si lo es, no realiza filtrado)
+                    // Control si el texto de busqueda es nulo (si lo es, no realiza filtrado)
                     if (!txtSearch.getText().trim().equals("")) {
-                        temp = events.stream().filter(ev -> (LocalDate.parse(ev.getDateStart(), formatter)).compareTo(LocalDate.parse(txtSearch.getText().trim(), formatter)) < 0).collect(Collectors.toList());
+                        temp = events.stream().filter(ev -> (LocalDate.parse(ev.getDateStart(), formatter)).compareTo(LocalDate.parse(txtSearch.getText().trim(), formatter)) != 0).collect(Collectors.toList());
                         //Eliminar de la coleccion local los elementos filtrados
                         events.removeAll(temp);
                     }
                     break;
-                    // Filtro Fecha Fin
+                // Filtro Fecha Fin
                 case 3:
                     //Carga los datos de la base de datos
                     loadData();
                     //Filtrar los elementos cuya fecha de finalizacion no coincida con la introducida
-                        // Control si el texto de busqueda es nulo (si lo es, no realiza filtrado)
+                    // Control si el texto de busqueda es nulo (si lo es, no realiza filtrado)
                     if (!txtSearch.getText().trim().equals("")) {
-                        temp = events.stream().filter(ev -> (LocalDate.parse(ev.getDateEnd(), formatter)).compareTo(LocalDate.parse(txtSearch.getText().trim(), formatter)) < 0).collect(Collectors.toList());
+                        temp = events.stream().filter(ev -> (LocalDate.parse(ev.getDateEnd(), formatter)).compareTo(LocalDate.parse(txtSearch.getText().trim(), formatter)) != 0).collect(Collectors.toList());
                         //Eliminar de la coleccion local los elementos filtrados
                         events.removeAll(temp);
                     }
@@ -824,9 +825,8 @@ public class VEventTableController {
         } catch (DateTimeParseException e) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Fecha introducida o valida");
-            alert.setHeaderText("Ha realizado una busqueda por fecha con texto no valido, "
-                    + "si desea buscar por fechas,\nintroduzcala en formato DD/MM/AAAA "
-                    + "(por ejemplo, 14/02/2008)");
+            alert.setHeaderText("Ha realizado una busqueda por fecha con texto no valido");
+            alert.setContentText("Si desea buscar por fecha, introduzcala en formato DD/MM/AAAA (por ejemplo, 14/02/2008)");
             alert.showAndWait();
         }
     }
@@ -839,6 +839,10 @@ public class VEventTableController {
     public void validateData() {
         if (name && dateStart && dateEnd && desc && !tableSelec) {
             btnNew.setDisable(false);
+        } else if (tableSelec) {
+            if (name || dateStart || dateEnd || desc) {
+                btnNew.setDisable(false);
+            }
         } else {
             btnNew.setDisable(true);
         }
@@ -991,7 +995,8 @@ public class VEventTableController {
                     + "la longitud maxima de 50 caracteres");
             alert.showAndWait();
         }
-        tbEvent.refresh();
+        loadData();
+        loadTable();
     }
 
     /**
@@ -1017,7 +1022,7 @@ public class VEventTableController {
             } else {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Error en el valor de la fecha");
-                alert.setHeaderText("La Fecha de Inicio no puede ser posterior a "
+                alert.setContentText("La Fecha de Inicio no puede ser posterior a "
                         + "la Fecha de Finalizacion");
                 alert.showAndWait();
                 ((Evento) t.getTableView().getItems().get(
@@ -1033,7 +1038,8 @@ public class VEventTableController {
             ((Evento) t.getTableView().getItems().get(
                     t.getTablePosition().getRow())).setDateStart(t.getOldValue());
         }
-        tbEvent.refresh();
+        loadData();
+        loadTable();
     }
 
     /**
@@ -1059,24 +1065,24 @@ public class VEventTableController {
                 // Si no se cumple la comprobacion, se avisa al usuario y se devuelve el valor anterior
             } else {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Error en el valor de la fecha");
-                alert.setHeaderText("La Fecha de Finalizacion no puede ser anterior "
-                        + "a la Fecha de Inicio");
+                alert.setTitle("Error");
+                alert.setHeaderText("Error en el valor de la fecha");
+                alert.setContentText("La Fecha de Finalizacion no puede ser anterior a la Fecha de Inicio");
                 alert.showAndWait();
-                ((Evento) t.getTableView().getItems().get(
-                        t.getTablePosition().getRow())).setDateEnd(t.getOldValue());
             }
         } catch (DateTimeParseException e) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Error en el formato de Fecha");
-            alert.setHeaderText("Ha intentado cambiar la Fecha por una no valida."
+            alert.setTitle("Error");
+            alert.setHeaderText("Error en el formato de Fecha");
+            alert.setContentText("Ha intentado cambiar la Fecha por una no valida."
                     + "\nAsegurese de que la fecha exista y este introducida en "
                     + "formato DD/MM/AAAA");
             alert.showAndWait();
             ((Evento) t.getTableView().getItems().get(
                     t.getTablePosition().getRow())).setDateEnd(t.getOldValue());
         }
-        tbEvent.refresh();
+        loadData();
+        loadTable();
     }
 
     /**
@@ -1102,7 +1108,8 @@ public class VEventTableController {
                     + "la longitud maxima de 400 caracteres");
             alert.showAndWait();
         }
-        tbEvent.refresh();
+        loadData();
+        loadTable();
     }
 
     /**
@@ -1147,39 +1154,46 @@ public class VEventTableController {
                 && txtName.getText().trim().length() <= 50
                 && taDescription.getText().trim().length() != 0
                 && taDescription.getText().trim().length() <= 400
-                && dpDateEnd.getValue() != null && dpDateStart.getValue() != null
-                && dpDateEnd.getValue().compareTo(dpDateStart.getValue()) >= 0) {
-            // Para evitar duplicados, se quita el evento a actualizar de la 
-            // coleccion local que e ha cargado en la tabla
-            events.remove(tbEvent.getSelectionModel().getSelectedItem());
-            // Se guardan los datos del evento seleccionado en uno nuevo, conservando 
-            // asi su id y otros datos que no se muestrean en la tabla
-            Evento e = tbEvent.getSelectionModel().getSelectedItem();
-            // Se actualizan los datos del evento
-            e.setName(txtName.getText());
-            e.setDescription(taDescription.getText());
-            e.setDateEnd(dpDateEnd.getValue().format(formatter));
-            e.setDateStart(dpDateStart.getValue().format(formatter));
-            // Se devuelve el evento actualizado a la coleccion local
-            events.add(e);
-            // Se intentan actualizar todos los elementos de la coleccion de la tabla,
-            // intentando solventar posibles fallos de actualizacion de datos en intentos anteriores
-            for (Evento ev : events) {
-                editando(ev);
+                && dpDateEnd.getValue() != null && dpDateStart.getValue() != null) {
+            if (dpDateEnd.getValue().compareTo(dpDateStart.getValue()) < 0) {
+                dpDateStart.setValue(dpDateEnd.getValue());
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Fechas no validas");
+                alert.setHeaderText("Las fechas del evento no son validas");
+                alert.setContentText("La fecha de finalizacion es anterior a la de inicio. Revise las fechas por favor.");
+                alert.showAndWait();
+            } else {
+                // Para evitar duplicados, se quita el evento a actualizar de la 
+                // coleccion local que e ha cargado en la tabla
+                events.remove(tbEvent.getSelectionModel().getSelectedItem());
+                // Se guardan los datos del evento seleccionado en uno nuevo, conservando 
+                // asi su id y otros datos que no se muestrean en la tabla
+                Evento e = tbEvent.getSelectionModel().getSelectedItem();
+                // Se actualizan los datos del evento
+                e.setName(txtName.getText());
+                e.setDescription(taDescription.getText());
+                e.setDateEnd(dpDateEnd.getValue().format(formatter));
+                e.setDateStart(dpDateStart.getValue().format(formatter));
+                // Se devuelve el evento actualizado a la coleccion local
+                events.add(e);
+                // Se intentan actualizar todos los elementos de la coleccion de la tabla,
+                // intentando solventar posibles fallos de actualizacion de datos en intentos anteriores
+                for (Evento ev : events) {
+                    editando(ev);
+                }
+                // Recarga de datos tras actualización (sea fallida o exitosa, mostrando los datos en la BBDD)
+                loadData();
+                loadTable();
+                tbEvent.refresh();
+                LOGGER.info("Updating changes on DataBase");
             }
-            // Recarga de datos tras actualización (sea fallida o exitosa, mostrando los datos en la BBDD)
-            loadData();
-            loadTable();
-            tbEvent.refresh();
-            LOGGER.info("Updating changes on DataBase");
         } else {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Nuevos valores no validos");
             alert.setHeaderText("Debe introducir valores validos:"
                     + "\nEl Nombre y la Descripción no pueden ser nulos"
                     + "\nni superar las longitudes maximas de 50 y 400 caracteres respectivamente"
-                    + "\nLas Fechas deben estar en formato valido"
-                    + "\nLa Fecha de Finalización no puede ser anterior a la de Inicio");
+                    + "\nLas Fechas deben estar en formato valido");
             alert.showAndWait();
         }
     }
